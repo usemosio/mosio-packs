@@ -1,0 +1,99 @@
+{
+  "$schema": "https://mosio.me/schema/registry.json",
+  "name": "mosio",
+  "homepage": "https://mosio.me",
+  "items": [
+    {
+      "name": "blueprint",
+      "type": "mosio:recipe",
+      "title": "Blueprint",
+      "description": "White technical drawing on blue paper, drawn in order, revised by hand, with one part coming to life. Good for how products work, science classes, creators and fiction.",
+      "tags": [
+        "edukasi",
+        "teknologi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "paper-popup",
+      "type": "mosio:recipe",
+      "title": "Pop-up book",
+      "description": "A pop-up book as a stage: white-edged paper characters, sets rising from the page, hanging signs and typed speech bubbles. Good for kids' stories, classes and places.",
+      "tags": [
+        "cerita",
+        "ilustrasi",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "kolase-arsip",
+      "type": "mosio:recipe",
+      "title": "Archive collage",
+      "description": "A newsprint collage: sticker-outlined archive cutouts, bold serif headlines, one blue circle per beat and stepped motion. Good for explainers and business histories.",
+      "tags": [
+        "edukasi",
+        "cerita",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "microscope",
+      "type": "mosio:recipe",
+      "title": "Microscope lens",
+      "description": "One unbroken zoom from slide to a single cell, measurements read from the image, focus breathing at each lens. Good for biology classes, food makers and skincare.",
+      "tags": [
+        "edukasi",
+        "data"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "dataviz",
+      "type": "mosio:recipe",
+      "title": "Data story",
+      "description": "A chart drawn mark by mark with a red-blue pencil on cream paper, with handwritten notes. Good for business reports, classes, creators and data stories.",
+      "tags": [
+        "data",
+        "edukasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "ink-wash",
+      "type": "mosio:recipe",
+      "title": "Ink wash",
+      "description": "Ink painting on rice paper: brushstrokes become bamboo and misty hills, a scroll of steps, empty paper, one red seal. Good for craftspeople, culture and art classes.",
+      "tags": [
+        "ilustrasi",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    }
+  ]
+}

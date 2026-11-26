@@ -1,0 +1,55 @@
+# Notices
+
+These recipes adapt MIT-licensed upstream style material. Each upstream is credited below.
+
+## blueprint
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/blueprint/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## paper-popup
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/paper-popup/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## kolase-arsip
+
+herk-edit-kit style library (01 explainer collage; brand assets and example projects excluded)
+https://github.com/nateherkai/herk-edit-kit
+commit 10511e5af86fc47756ea89803b397422e2d89284, `style-library/01-vox-explainer/DESIGN.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## microscope
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/microscope/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## dataviz
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/dataviz/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## ink-wash
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/ink-wash/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## MIT License terms
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of the upstream style material and associated documentation files, to deal in it without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies, subject to the following conditions: the above copyright notice and this permission notice shall be included in all copies or substantial portions of the material. THE MATERIAL IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE MATERIAL OR ITS USE.
