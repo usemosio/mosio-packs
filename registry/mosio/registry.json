@@ -8803,12 +8803,12 @@
       "name": "icon-screen-mirror",
       "type": "mosio:scene",
       "title": "Screen Mirror Icon",
-      "description": "An animated screen-mirror icon: the strokes draw in, then it plays its hover animation.",
+      "description": "An animated airplay icon: the strokes draw in, then it plays its hover animation.",
       "tags": [
         "icon",
         "icons",
         "adapted",
-        "screen-mirror"
+        "airplay"
       ],
       "version": "1.0.0",
       "license": "MIT"
