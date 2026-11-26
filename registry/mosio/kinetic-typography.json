@@ -1,0 +1,342 @@
+{
+  "name": "kinetic-typography",
+  "type": "mosio:recipe",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Mosio",
+  "source": {
+    "repo": "mosio recipes",
+    "commit": "fa390cbb6de8d4c73df625a7c91fd12e1292ea50",
+    "path": "recipes/kinetic-typography"
+  },
+  "params": {
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{1,39}$",
+          "default": "kinetic-typography",
+          "description": "Project name written to mosio.json."
+        },
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "Output size and length.",
+          "properties": {
+            "ratio": {
+              "enum": [
+                "9:16",
+                "16:9"
+              ],
+              "default": "9:16",
+              "description": "Aspect ratio: 9:16 vertical for social, 16:9 landscape."
+            },
+            "duration_s": {
+              "type": "number",
+              "minimum": 6,
+              "maximum": 40,
+              "default": 12,
+              "description": "Total length in seconds after transitions. Beats share it by weight."
+            }
+          }
+        },
+        "content": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "What the video says.",
+          "properties": {
+            "beats": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 7,
+              "default": [
+                {
+                  "role": "hook",
+                  "text": "Kinetic type",
+                  "key": "type"
+                },
+                {
+                  "role": "fact",
+                  "text": "Moves every word",
+                  "key": "Moves"
+                },
+                {
+                  "role": "fact",
+                  "text": "In sync with time",
+                  "key": "time"
+                },
+                {
+                  "role": "step",
+                  "text": "Rendered frame by frame",
+                  "key": "frame"
+                },
+                {
+                  "role": "cta",
+                  "text": "Straight to MP4",
+                  "key": "MP4"
+                }
+              ],
+              "description": "One entry per scene, in order. Each beat is a short line; every word enters on its own.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "role",
+                  "text"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,23}$",
+                    "description": "Optional scene id (used in every data-mosio-id). Defaults to the role name; a repeated role gets -2, -3."
+                  },
+                  "role": {
+                    "enum": [
+                      "hook",
+                      "fact",
+                      "step",
+                      "payoff",
+                      "cta"
+                    ],
+                    "description": "What this beat does in the story; picks the scene template."
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "The words on screen, written literally into the scene HTML."
+                  },
+                  "key": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "description": "The word or words of the text to stress with the accent colour. Must occur in the text."
+                  },
+                  "weight": {
+                    "enum": [
+                      "short",
+                      "medium",
+                      "long"
+                    ],
+                    "default": "medium",
+                    "description": "Relative screen time of this beat."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "style": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "Look: brand colours, type size and motion speed.",
+          "properties": {
+            "brand": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Brand colours. They are written to shared/tokens.css, so changing one re-renders every scene.",
+              "default": {},
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Background colour of every scene (--bg in shared/tokens.css).",
+                  "default": "#0f172a"
+                },
+                "main": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Main brand colour: large shapes and the key surface (--main).",
+                  "default": "#38bdf8"
+                },
+                "accent": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Accent colour for the one thing that matters on screen: key word, winner bar, price (--accent).",
+                  "default": "#f59e0b"
+                },
+                "text": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Text colour on the background (--text).",
+                  "default": "#f8fafc"
+                },
+                "text_on_accent": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Text colour used on top of the accent colour, for example on a button (--text-on-accent).",
+                  "default": "#0f172a"
+                }
+              }
+            },
+            "font_scale": {
+              "type": "number",
+              "minimum": 0.6,
+              "maximum": 1.25,
+              "default": 1,
+              "description": "Multiplier on every type size (--type-scale). 1 is the designed size; check `mosio inspect` for overflow above 1."
+            },
+            "pacing": {
+              "enum": [
+                "calm",
+                "medium",
+                "brisk"
+              ],
+              "default": "medium",
+              "description": "Speed of the motion inside each scene: calm slows entrances by about 30 percent, brisk speeds them by about 25 percent. Scene lengths do not change."
+            },
+            "case": {
+              "enum": [
+                "upper",
+                "as-typed"
+              ],
+              "default": "upper",
+              "description": "Show the text in capitals (CSS only; the HTML keeps the words as typed) or exactly as typed (--text-case)."
+            }
+          }
+        }
+      }
+    },
+    "example": {
+      "name": "kinetic-demo",
+      "format": {
+        "ratio": "9:16",
+        "duration_s": 12
+      },
+      "content": {
+        "beats": [
+          {
+            "role": "hook",
+            "text": "Kinetic type",
+            "key": "type"
+          },
+          {
+            "role": "fact",
+            "text": "Moves every word",
+            "key": "every"
+          },
+          {
+            "role": "fact",
+            "text": "In sync with time",
+            "key": "time"
+          },
+          {
+            "role": "step",
+            "text": "Rendered frame by frame",
+            "key": "frame"
+          },
+          {
+            "role": "cta",
+            "text": "Straight to MP4",
+            "key": "MP4",
+            "weight": "long"
+          }
+        ]
+      },
+      "style": {
+        "brand": {
+          "bg": "#0f172a",
+          "main": "#38bdf8",
+          "accent": "#f59e0b",
+          "text": "#f8fafc",
+          "text_on_accent": "#0f172a"
+        },
+        "font_scale": 1,
+        "pacing": "medium",
+        "case": "upper"
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "RECIPE.md",
+      "role": "instructions",
+      "content": "# kinetic-typography\n\nShort lines of big type. One scene per line, every word lands on its own beat, one accent word per line. Good for a hook, a slogan or a quote sequence, vertical or landscape.\n\nSource: `fixtures/w1-kinetic`, re-authored as one scene per line with CSS animations (no the timeline, no libraries).\n\n## Beats\n| role | template | looks like | limit |\n|---|---|---|---|\n| `hook`, `payoff` | `scenes/hook.html` | one word per line at display size, a bar draws in above | 4 words |\n| `fact`, `step` | `scenes/line.html` | words flow left to right, small running number, rule underneath | 9 words |\n| `cta` | `scenes/cta.html` | centred line, accent pill grows under it | 6 words |\n\nA beat has `role`, `text`, optional `key` (the accent word or words, must occur in the text), optional `weight` (`short`, `medium`, `long`, relative screen time) and optional `id` (the scene id; defaults to the role). 2 to 7 beats, 6 to 40 s.\n\n## The controls worth changing first\n- `style.brand.accent` and `style.brand.main`: accent word, pill and bar colours (`shared/tokens.css`).\n- `style.font_scale` 0.6 to 1.25: type size. Above 1 check `mosio inspect` for overflow, especially on long words in 9:16.\n- `style.pacing` `calm | medium | brisk`: how fast words enter. Scene lengths do not change.\n- `style.case` `upper | as-typed`: capitals are CSS only; the HTML keeps your words.\n\n## Taste\n- One idea per line. Three to five words read in time; the template refuses more.\n- Stress one word per line, never two unrelated ones. The accent colour is the only emphasis.\n- Give the last beat `weight: long` so the final line holds still.\n- Keep headlines at 64 px or more (the defaults are 104 to 150 px).\n\n## After applying\nThe result is an ordinary Mosio project: edit words in place, change a brand token in `shared/tokens.css` and only the scenes that import it re-render.\n"
+    },
+    {
+      "path": "plan.md",
+      "role": "beats",
+      "content": "# Kinetic typography: beat plan\n\nLength 6 to 40 s (default 12). Roles: hook, fact, step, payoff, cta; 2 to 7 beats.\nTempo per beat (seconds): short 1.6, medium 2.4, long 3.2.\n\n## hook / payoff\n\n- scene: scenes/hook.html\n- technique: one word per line at display size, accent word and a bar that draws in\n- primitives: rise-fade, bar-draw\n- limits: {\"max_words\": 4}\n\n## fact / step\n\n- scene: scenes/line.html\n- technique: words flow left to right on wrapped lines with a running scene number\n- primitives: rise-fade\n- limits: {\"max_words\": 9}\n\n## cta\n\n- scene: scenes/cta.html\n- technique: centred words, accent pill that grows under the whole line\n- primitives: rise-fade, pill-grow\n- limits: {\"max_words\": 6}\n\n## Controls\n\n- Accent colour (`/style/brand/accent`): Recolours the accent word, bar and pill: --accent in shared/tokens.css, so every scene re-renders.\n- Type size (`/style/font_scale`): Scales all type: --type-scale in shared/tokens.css.\n- Pacing (`/style/pacing`): Speeds or slows each word's entrance: --pace in shared/tokens.css.\n- Line text (`/content/beats/0/text`): Edit the words of one beat directly in its scene file; only that scene re-renders.\n"
+    },
+    {
+      "path": "params.json",
+      "role": "params",
+      "content": "{\n  \"example\": {\n    \"content\": {\n      \"beats\": [\n        {\n          \"key\": \"type\",\n          \"role\": \"hook\",\n          \"text\": \"Kinetic type\"\n        },\n        {\n          \"key\": \"every\",\n          \"role\": \"fact\",\n          \"text\": \"Moves every word\"\n        },\n        {\n          \"key\": \"time\",\n          \"role\": \"fact\",\n          \"text\": \"In sync with time\"\n        },\n        {\n          \"key\": \"frame\",\n          \"role\": \"step\",\n          \"text\": \"Rendered frame by frame\"\n        },\n        {\n          \"key\": \"MP4\",\n          \"role\": \"cta\",\n          \"text\": \"Straight to MP4\",\n          \"weight\": \"long\"\n        }\n      ]\n    },\n    \"format\": {\n      \"duration_s\": 12,\n      \"ratio\": \"9:16\"\n    },\n    \"name\": \"kinetic-demo\",\n    \"style\": {\n      \"brand\": {\n        \"accent\": \"#f59e0b\",\n        \"bg\": \"#0f172a\",\n        \"main\": \"#38bdf8\",\n        \"text\": \"#f8fafc\",\n        \"text_on_accent\": \"#0f172a\"\n      },\n      \"case\": \"upper\",\n      \"font_scale\": 1,\n      \"pacing\": \"medium\"\n    }\n  },\n  \"schema\": {\n    \"additionalProperties\": false,\n    \"properties\": {\n      \"content\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"What the video says.\",\n        \"properties\": {\n          \"beats\": {\n            \"default\": [\n              {\n                \"key\": \"type\",\n                \"role\": \"hook\",\n                \"text\": \"Kinetic type\"\n              },\n              {\n                \"key\": \"Moves\",\n                \"role\": \"fact\",\n                \"text\": \"Moves every word\"\n              },\n              {\n                \"key\": \"time\",\n                \"role\": \"fact\",\n                \"text\": \"In sync with time\"\n              },\n              {\n                \"key\": \"frame\",\n                \"role\": \"step\",\n                \"text\": \"Rendered frame by frame\"\n              },\n              {\n                \"key\": \"MP4\",\n                \"role\": \"cta\",\n                \"text\": \"Straight to MP4\"\n              }\n            ],\n            \"description\": \"One entry per scene, in order. Each beat is a short line; every word enters on its own.\",\n            \"items\": {\n              \"additionalProperties\": false,\n              \"properties\": {\n                \"id\": {\n                  \"description\": \"Optional scene id (used in every data-mosio-id). Defaults to the role name; a repeated role gets -2, -3.\",\n                  \"pattern\": \"^[a-z][a-z0-9-]{0,23}$\",\n                  \"type\": \"string\"\n                },\n                \"key\": {\n                  \"description\": \"The word or words of the text to stress with the accent colour. Must occur in the text.\",\n                  \"maxLength\": 40,\n                  \"type\": \"string\"\n                },\n                \"role\": {\n                  \"description\": \"What this beat does in the story; picks the scene template.\",\n                  \"enum\": [\n                    \"hook\",\n                    \"fact\",\n                    \"step\",\n                    \"payoff\",\n                    \"cta\"\n                  ]\n                },\n                \"text\": {\n                  \"description\": \"The words on screen, written literally into the scene HTML.\",\n                  \"maxLength\": 60,\n                  \"minLength\": 1,\n                  \"type\": \"string\"\n                },\n                \"weight\": {\n                  \"default\": \"medium\",\n                  \"description\": \"Relative screen time of this beat.\",\n                  \"enum\": [\n                    \"short\",\n                    \"medium\",\n                    \"long\"\n                  ]\n                }\n              },\n              \"required\": [\n                \"role\",\n                \"text\"\n              ],\n              \"type\": \"object\"\n            },\n            \"maxItems\": 7,\n            \"minItems\": 2,\n            \"type\": \"array\"\n          }\n        },\n        \"type\": \"object\"\n      },\n      \"format\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Output size and length.\",\n        \"properties\": {\n          \"duration_s\": {\n            \"default\": 12,\n            \"description\": \"Total length in seconds after transitions. Beats share it by weight.\",\n            \"maximum\": 40,\n            \"minimum\": 6,\n            \"type\": \"number\"\n          },\n          \"ratio\": {\n            \"default\": \"9:16\",\n            \"description\": \"Aspect ratio: 9:16 vertical for social, 16:9 landscape.\",\n            \"enum\": [\n              \"9:16\",\n              \"16:9\"\n            ]\n          }\n        },\n        \"type\": \"object\"\n      },\n      \"name\": {\n        \"default\": \"kinetic-typography\",\n        \"description\": \"Project name written to mosio.json.\",\n        \"pattern\": \"^[a-z0-9][a-z0-9-]{1,39}$\",\n        \"type\": \"string\"\n      },\n      \"style\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Look: brand colours, type size and motion speed.\",\n        \"properties\": {\n          \"brand\": {\n            \"additionalProperties\": false,\n            \"default\": {},\n            \"description\": \"Brand colours. They are written to shared/tokens.css, so changing one re-renders every scene.\",\n            \"properties\": {\n              \"accent\": {\n                \"default\": \"#f59e0b\",\n                \"description\": \"Accent colour for the one thing that matters on screen: key word, winner bar, price (--accent).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"bg\": {\n                \"default\": \"#0f172a\",\n                \"description\": \"Background colour of every scene (--bg in shared/tokens.css).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"main\": {\n                \"default\": \"#38bdf8\",\n                \"description\": \"Main brand colour: large shapes and the key surface (--main).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"text\": {\n                \"default\": \"#f8fafc\",\n                \"description\": \"Text colour on the background (--text).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"text_on_accent\": {\n                \"default\": \"#0f172a\",\n                \"description\": \"Text colour used on top of the accent colour, for example on a button (--text-on-accent).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              }\n            },\n            \"type\": \"object\"\n          },\n          \"case\": {\n            \"default\": \"upper\",\n            \"description\": \"Show the text in capitals (CSS only; the HTML keeps the words as typed) or exactly as typed (--text-case).\",\n            \"enum\": [\n              \"upper\",\n              \"as-typed\"\n            ]\n          },\n          \"font_scale\": {\n            \"default\": 1,\n            \"description\": \"Multiplier on every type size (--type-scale). 1 is the designed size; check `mosio inspect` for overflow above 1.\",\n            \"maximum\": 1.25,\n            \"minimum\": 0.6,\n            \"type\": \"number\"\n          },\n          \"pacing\": {\n            \"default\": \"medium\",\n            \"description\": \"Speed of the motion inside each scene: calm slows entrances by about 30 percent, brisk speeds them by about 25 percent. Scene lengths do not change.\",\n            \"enum\": [\n              \"calm\",\n              \"medium\",\n              \"brisk\"\n            ]\n          }\n        },\n        \"type\": \"object\"\n      }\n    },\n    \"type\": \"object\"\n  }\n}\n"
+    },
+    {
+      "path": "recipe/recipe.json",
+      "role": "template",
+      "content": "{\n  \"schema\": \"mosio.recipe/1\",\n  \"id\": \"kinetic-typography\",\n  \"title\": \"Kinetic typography\",\n  \"description\": \"Short lines of big type where every word lands on its own beat, one scene per line, with one accent word per line. For hooks, quotes and slogans.\",\n  \"version\": \"0.1.0\",\n  \"tags\": [\n    \"typography\",\n    \"social\",\n    \"text\"\n  ],\n  \"license\": \"MIT\",\n  \"provenance\": {\n    \"authors\": [\n      \"Mosio\"\n    ],\n    \"sources\": [\n      {\n        \"kind\": \"own\",\n        \"name\": \"fixtures/w1-kinetic\",\n        \"path\": \"fixtures/w1-kinetic\",\n        \"what\": \"staggered word entrances on one baseline bar; re-authored as WAAPI/CSS scenes, one per line\"\n      }\n    ]\n  },\n  \"formats\": [\n    {\n      \"ratio\": \"9:16\",\n      \"width\": 1080,\n      \"height\": 1920,\n      \"fps\": 30,\n      \"vars\": {\n        \"fs_display\": 150,\n        \"fs_body\": 104,\n        \"margin\": 96\n      }\n    },\n    {\n      \"ratio\": \"16:9\",\n      \"width\": 1920,\n      \"height\": 1080,\n      \"fps\": 30,\n      \"vars\": {\n        \"fs_display\": 150,\n        \"fs_body\": 112,\n        \"margin\": 100\n      }\n    }\n  ],\n  \"duration_s\": {\n    \"min\": 6,\n    \"default\": 12,\n    \"max\": 40\n  },\n  \"beats\": {\n    \"roles\": [\n      \"hook\",\n      \"fact\",\n      \"step\",\n      \"payoff\",\n      \"cta\"\n    ],\n    \"min\": 2,\n    \"max\": 7,\n    \"tempo_s\": {\n      \"short\": 1.6,\n      \"medium\": 2.4,\n      \"long\": 3.2\n    },\n    \"ending_min_s\": 1.5\n  },\n  \"plan\": [\n    {\n      \"roles\": [\n        \"hook\",\n        \"payoff\"\n      ],\n      \"scene\": \"scenes/hook.html\",\n      \"technique\": \"one word per line at display size, accent word and a bar that draws in\",\n      \"primitives\": [\n        \"rise-fade\",\n        \"bar-draw\"\n      ],\n      \"limits\": {\n        \"max_words\": 4\n      }\n    },\n    {\n      \"roles\": [\n        \"fact\",\n        \"step\"\n      ],\n      \"scene\": \"scenes/line.html\",\n      \"technique\": \"words flow left to right on wrapped lines with a running scene number\",\n      \"primitives\": [\n        \"rise-fade\"\n      ],\n      \"limits\": {\n        \"max_words\": 9\n      }\n    },\n    {\n      \"roles\": [\n        \"cta\"\n      ],\n      \"scene\": \"scenes/cta.html\",\n      \"technique\": \"centred words, accent pill that grows under the whole line\",\n      \"primitives\": [\n        \"rise-fade\",\n        \"pill-grow\"\n      ],\n      \"limits\": {\n        \"max_words\": 6\n      }\n    }\n  ],\n  \"transitions\": {\n    \"default\": {\n      \"kind\": \"crossfade\",\n      \"frames\": 12\n    }\n  },\n  \"derive\": [\n    {\n      \"as\": \"pace\",\n      \"from\": \"/style/pacing\",\n      \"map\": {\n        \"calm\": 1.3,\n        \"medium\": 1,\n        \"brisk\": 0.75\n      }\n    },\n    {\n      \"as\": \"text_case\",\n      \"from\": \"/style/case\",\n      \"map\": {\n        \"upper\": \"uppercase\",\n        \"as-typed\": \"none\"\n      }\n    }\n  ],\n  \"controls\": [\n    {\n      \"param\": \"/style/brand/accent\",\n      \"label\": \"Accent colour\",\n      \"effect\": \"Recolours the accent word, bar and pill: --accent in shared/tokens.css, so every scene re-renders.\"\n    },\n    {\n      \"param\": \"/style/font_scale\",\n      \"label\": \"Type size\",\n      \"effect\": \"Scales all type: --type-scale in shared/tokens.css.\"\n    },\n    {\n      \"param\": \"/style/pacing\",\n      \"label\": \"Pacing\",\n      \"effect\": \"Speeds or slows each word's entrance: --pace in shared/tokens.css.\"\n    },\n    {\n      \"param\": \"/content/beats/0/text\",\n      \"label\": \"Line text\",\n      \"effect\": \"Edit the words of one beat directly in its scene file; only that scene re-renders.\"\n    }\n  ],\n  \"inputs\": {\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"properties\": {\n      \"name\": {\n        \"type\": \"string\",\n        \"pattern\": \"^[a-z0-9][a-z0-9-]{1,39}$\",\n        \"default\": \"kinetic-typography\",\n        \"description\": \"Project name written to mosio.json.\"\n      },\n      \"format\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Output size and length.\",\n        \"properties\": {\n          \"ratio\": {\n            \"enum\": [\n              \"9:16\",\n              \"16:9\"\n            ],\n            \"default\": \"9:16\",\n            \"description\": \"Aspect ratio: 9:16 vertical for social, 16:9 landscape.\"\n          },\n          \"duration_s\": {\n            \"type\": \"number\",\n            \"minimum\": 6,\n            \"maximum\": 40,\n            \"default\": 12,\n            \"description\": \"Total length in seconds after transitions. Beats share it by weight.\"\n          }\n        }\n      },\n      \"content\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"What the video says.\",\n        \"properties\": {\n          \"beats\": {\n            \"type\": \"array\",\n            \"minItems\": 2,\n            \"maxItems\": 7,\n            \"default\": [\n              {\n                \"role\": \"hook\",\n                \"text\": \"Kinetic type\",\n                \"key\": \"type\"\n              },\n              {\n                \"role\": \"fact\",\n                \"text\": \"Moves every word\",\n                \"key\": \"Moves\"\n              },\n              {\n                \"role\": \"fact\",\n                \"text\": \"In sync with time\",\n                \"key\": \"time\"\n              },\n              {\n                \"role\": \"step\",\n                \"text\": \"Rendered frame by frame\",\n                \"key\": \"frame\"\n              },\n              {\n                \"role\": \"cta\",\n                \"text\": \"Straight to MP4\",\n                \"key\": \"MP4\"\n              }\n            ],\n            \"description\": \"One entry per scene, in order. Each beat is a short line; every word enters on its own.\",\n            \"items\": {\n              \"type\": \"object\",\n              \"additionalProperties\": false,\n              \"required\": [\n                \"role\",\n                \"text\"\n              ],\n              \"properties\": {\n                \"id\": {\n                  \"type\": \"string\",\n                  \"pattern\": \"^[a-z][a-z0-9-]{0,23}$\",\n                  \"description\": \"Optional scene id (used in every data-mosio-id). Defaults to the role name; a repeated role gets -2, -3.\"\n                },\n                \"role\": {\n                  \"enum\": [\n                    \"hook\",\n                    \"fact\",\n                    \"step\",\n                    \"payoff\",\n                    \"cta\"\n                  ],\n                  \"description\": \"What this beat does in the story; picks the scene template.\"\n                },\n                \"text\": {\n                  \"type\": \"string\",\n                  \"minLength\": 1,\n                  \"maxLength\": 60,\n                  \"description\": \"The words on screen, written literally into the scene HTML.\"\n                },\n                \"key\": {\n                  \"type\": \"string\",\n                  \"maxLength\": 40,\n                  \"description\": \"The word or words of the text to stress with the accent colour. Must occur in the text.\"\n                },\n                \"weight\": {\n                  \"enum\": [\n                    \"short\",\n                    \"medium\",\n                    \"long\"\n                  ],\n                  \"default\": \"medium\",\n                  \"description\": \"Relative screen time of this beat.\"\n                }\n              }\n            }\n          }\n        }\n      },\n      \"style\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Look: brand colours, type size and motion speed.\",\n        \"properties\": {\n          \"brand\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"description\": \"Brand colours. They are written to shared/tokens.css, so changing one re-renders every scene.\",\n            \"default\": {},\n            \"properties\": {\n              \"bg\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Background colour of every scene (--bg in shared/tokens.css).\",\n                \"default\": \"#0f172a\"\n              },\n              \"main\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Main brand colour: large shapes and the key surface (--main).\",\n                \"default\": \"#38bdf8\"\n              },\n              \"accent\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Accent colour for the one thing that matters on screen: key word, winner bar, price (--accent).\",\n                \"default\": \"#f59e0b\"\n              },\n              \"text\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Text colour on the background (--text).\",\n                \"default\": \"#f8fafc\"\n              },\n              \"text_on_accent\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Text colour used on top of the accent colour, for example on a button (--text-on-accent).\",\n                \"default\": \"#0f172a\"\n              }\n            }\n          },\n          \"font_scale\": {\n            \"type\": \"number\",\n            \"minimum\": 0.6,\n            \"maximum\": 1.25,\n            \"default\": 1,\n            \"description\": \"Multiplier on every type size (--type-scale). 1 is the designed size; check `mosio inspect` for overflow above 1.\"\n          },\n          \"pacing\": {\n            \"enum\": [\n              \"calm\",\n              \"medium\",\n              \"brisk\"\n            ],\n            \"default\": \"medium\",\n            \"description\": \"Speed of the motion inside each scene: calm slows entrances by about 30 percent, brisk speeds them by about 25 percent. Scene lengths do not change.\"\n          },\n          \"case\": {\n            \"enum\": [\n              \"upper\",\n              \"as-typed\"\n            ],\n            \"default\": \"upper\",\n            \"description\": \"Show the text in capitals (CSS only; the HTML keeps the words as typed) or exactly as typed (--text-case).\"\n          }\n        }\n      }\n    }\n  },\n  \"files\": {\n    \"scenes\": [\n      \"scenes/hook.html\",\n      \"scenes/line.html\",\n      \"scenes/cta.html\"\n    ],\n    \"shared\": [\n      \"shared/tokens.css\",\n      \"shared/base.css\"\n    ],\n    \"fonts\": [\n      \"Inter-Regular.otf\",\n      \"Inter-Bold.otf\",\n      \"Inter-ExtraBold.otf\"\n    ]\n  },\n  \"example\": {\n    \"project\": \"example/\",\n    \"params\": \"example.params.json\"\n  },\n  \"engine\": {\n    \"libraries\": []\n  },\n  \"requires\": [],\n  \"checks\": {\n    \"min_text_px\": 64,\n    \"max_words_on_screen\": 9,\n    \"max_font_families\": 1\n  }\n}\n"
+    },
+    {
+      "path": "recipe/scenes/cta.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: calc(0.45 * var(--fs-body) * var(--type-scale)); text-align: center; }\n    .line { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.12em 0.3em; font-size: calc(var(--fs-body) * var(--type-scale)); text-transform: var(--text-case); }\n    .w { display: inline-block; opacity: 0; white-space: nowrap;\n         animation: word-in calc(0.55s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.2s + var(--i) * 0.2s * var(--pace)) both; }\n    .pill { height: 0.2em; width: 0; font-size: calc(var(--fs-body) * var(--type-scale)); border-radius: 999px; background: var(--accent);\n            animation: grow calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.9s * var(--pace)) both; }\n    @keyframes grow { from { width: 0; } to { width: 3.2em; } }\n    @keyframes word-in { from { opacity: 0; transform: translateY(0.45em); } to { opacity: 1; transform: none; } }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"copy\">\n      <h2 class=\"line\" data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"w{{#if accent}} acc{{/if}}\" style=\"--i:{{i}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span>{{/each}}</h2>\n      <div class=\"pill\" data-mosio-id=\"{{beat.id}}/pill\"></div>\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/scenes/hook.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: calc(0.22 * var(--fs-display) * var(--type-scale)); }\n    .bar { width: 0; height: 12px; border-radius: 6px; background: var(--main);\n           animation: draw calc(0.9s * var(--pace)) cubic-bezier(.2,.8,.2,1) .1s both; }\n    .stack { display: flex; flex-direction: column; align-items: flex-start; gap: 0.04em; font-size: calc(var(--fs-display) * var(--type-scale)); text-transform: var(--text-case); }\n    .w { display: inline-block; opacity: 0; white-space: nowrap;\n         animation: word-in calc(0.6s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.3s + var(--i) * 0.22s * var(--pace)) both; }\n    @keyframes draw { from { width: 0; } to { width: 55%; } }\n    @keyframes word-in { from { opacity: 0; transform: translateY(0.5em) scale(0.8); } to { opacity: 1; transform: none; } }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"copy\">\n      <div class=\"bar\" data-mosio-id=\"{{beat.id}}/bar\"></div>\n      <h1 class=\"stack\" data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"w{{#if accent}} acc{{/if}}\" style=\"--i:{{i}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span>{{/each}}</h1>\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/scenes/line.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; gap: calc(0.5 * var(--fs-body) * var(--type-scale)); }\n    .no { font-size: calc(0.5 * var(--fs-body) * var(--type-scale)); font-weight: 700; letter-spacing: 0.2em; color: var(--text-dim);\n          animation: word-in calc(0.5s * var(--pace)) cubic-bezier(.2,.8,.2,1) .1s both; }\n    .line { display: flex; flex-wrap: wrap; gap: 0.12em 0.3em; font-size: calc(var(--fs-body) * var(--type-scale)); text-transform: var(--text-case); }\n    .w { display: inline-block; opacity: 0; white-space: nowrap;\n         animation: word-in calc(0.55s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.25s + var(--i) * 0.2s * var(--pace)) both; }\n    .rule { height: 10px; width: 0; border-radius: 5px; background: var(--main);\n            animation: draw calc(0.9s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.4s * var(--pace)) both; }\n    @keyframes draw { from { width: 0; } to { width: 38%; } }\n    @keyframes word-in { from { opacity: 0; transform: translateY(0.45em); } to { opacity: 1; transform: none; } }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"copy\">\n      <div class=\"no\" data-mosio-id=\"{{beat.id}}/no\">{{beat.number}}</div>\n      <h2 class=\"line\" data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"w{{#if accent}} acc{{/if}}\" style=\"--i:{{i}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span>{{/each}}</h2>\n      <div class=\"rule\" data-mosio-id=\"{{beat.id}}/rule\"></div>\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/shared/base.css",
+      "role": "template",
+      "content": "/* Fixed foundation of the recipe: fonts, reset and the scene frame. Brand values are in tokens.css, not here. */\n@font-face { font-family: \"Inter\"; font-weight: 400; src: url(\"/assets/fonts/Inter-Regular.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 700; src: url(\"/assets/fonts/Inter-Bold.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 800; src: url(\"/assets/fonts/Inter-ExtraBold.otf\") format(\"opentype\"); }\n* { margin: 0; padding: 0; box-sizing: border-box; }\nhtml, body { width: var(--w); height: var(--h); overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font-body); }\n.scene { position: absolute; inset: 0; overflow: hidden; }\nh1, h2 { font-family: var(--font-display); font-weight: 800; line-height: 1.04; letter-spacing: -0.02em; }\n.acc { color: var(--accent); }\n"
+    },
+    {
+      "path": "recipe/shared/tokens.css",
+      "role": "template",
+      "content": "/* Brand and layout tokens for every scene (recipe kinetic-typography). Edit values here: every scene that imports this file\n   re-renders, which is correct, because they all depend on it. */\n:root {\n  --bg: {{brand.bg}};\n  --main: {{brand.main}};\n  --accent: {{brand.accent}};\n  --text: {{brand.text}};\n  --text-on-accent: {{brand.text_on_accent}};\n  --surface: color-mix(in srgb, var(--text) 8%, var(--bg));\n  --text-dim: color-mix(in srgb, var(--text) 68%, var(--bg));\n  --font-display: \"Inter\", sans-serif;\n  --font-body: \"Inter\", sans-serif;\n  --w: {{format.width}}px;\n  --h: {{format.height}}px;\n  --type-scale: {{style.font_scale}};\n  --pace: {{derived.pace}};\n  --fs-display: {{format.vars.fs_display}}px;\n  --fs-body: {{format.vars.fs_body}}px;\n  --margin: {{format.vars.margin}}px;\n  --text-case: {{derived.text_case}};\n}\n"
+    },
+    {
+      "path": "example/mosio.json",
+      "role": "example",
+      "content": "{\n  \"assets\": [],\n  \"audio\": [],\n  \"background\": \"#0f172a\",\n  \"description\": \"Kinetic typography (recipe kinetic-typography 0.1.0), 9:16, 12 s.\",\n  \"fps\": 30,\n  \"height\": 1920,\n  \"libraries\": [],\n  \"mosio\": 1,\n  \"name\": \"kinetic-demo\",\n  \"scenes\": [\n    {\n      \"frames\": 76,\n      \"id\": \"hook\",\n      \"src\": \"scenes/01-hook.html\"\n    },\n    {\n      \"frames\": 76,\n      \"id\": \"fact\",\n      \"src\": \"scenes/02-fact.html\"\n    },\n    {\n      \"frames\": 76,\n      \"id\": \"fact-2\",\n      \"src\": \"scenes/03-fact-2.html\"\n    },\n    {\n      \"frames\": 76,\n      \"id\": \"step\",\n      \"src\": \"scenes/04-step.html\"\n    },\n    {\n      \"frames\": 104,\n      \"id\": \"cta\",\n      \"src\": \"scenes/05-cta.html\"\n    }\n  ],\n  \"seed\": 1,\n  \"shared\": [\n    \"shared/tokens.css\",\n    \"shared/base.css\"\n  ],\n  \"transitions\": [\n    {\n      \"frames\": 12,\n      \"from\": \"hook\",\n      \"kind\": \"crossfade\",\n      \"to\": \"fact\"\n    },\n    {\n      \"frames\": 12,\n      \"from\": \"fact\",\n      \"kind\": \"crossfade\",\n      \"to\": \"fact-2\"\n    },\n    {\n      \"frames\": 12,\n      \"from\": \"fact-2\",\n      \"kind\": \"crossfade\",\n      \"to\": \"step\"\n    },\n    {\n      \"frames\": 12,\n      \"from\": \"step\",\n      \"kind\": \"crossfade\",\n      \"to\": \"cta\"\n    }\n  ],\n  \"width\": 1080\n}\n"
+    },
+    {
+      "path": "example/scenes/01-hook.html",
+      "role": "example",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"9:16\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: calc(0.22 * var(--fs-display) * var(--type-scale)); }\n    .bar { width: 0; height: 12px; border-radius: 6px; background: var(--main);\n           animation: draw calc(0.9s * var(--pace)) cubic-bezier(.2,.8,.2,1) .1s both; }\n    .stack { display: flex; flex-direction: column; align-items: flex-start; gap: 0.04em; font-size: calc(var(--fs-display) * var(--type-scale)); text-transform: var(--text-case); }\n    .w { display: inline-block; opacity: 0; white-space: nowrap;\n         animation: word-in calc(0.6s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.3s + var(--i) * 0.22s * var(--pace)) both; }\n    @keyframes draw { from { width: 0; } to { width: 55%; } }\n    @keyframes word-in { from { opacity: 0; transform: translateY(0.5em) scale(0.8); } to { opacity: 1; transform: none; } }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"hook/scene\">\n    <div class=\"copy\">\n      <div class=\"bar\" data-mosio-id=\"hook/bar\"></div>\n      <h1 class=\"stack\" data-mosio-id=\"hook/text\"><span class=\"w\" style=\"--i:0\" data-mosio-id=\"hook/w0\">Kinetic</span><span class=\"w acc\" style=\"--i:1\" data-mosio-id=\"hook/w1\">type</span></h1>\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "example/scenes/02-fact.html",
+      "role": "example",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"9:16\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; gap: calc(0.5 * var(--fs-body) * var(--type-scale)); }\n    .no { font-size: calc(0.5 * var(--fs-body) * var(--type-scale)); font-weight: 700; letter-spacing: 0.2em; color: var(--text-dim);\n          animation: word-in calc(0.5s * var(--pace)) cubic-bezier(.2,.8,.2,1) .1s both; }\n    .line { display: flex; flex-wrap: wrap; gap: 0.12em 0.3em; font-size: calc(var(--fs-body) * var(--type-scale)); text-transform: var(--text-case); }\n    .w { display: inline-block; opacity: 0; white-space: nowrap;\n         animation: word-in calc(0.55s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.25s + var(--i) * 0.2s * var(--pace)) both; }\n    .rule { height: 10px; width: 0; border-radius: 5px; background: var(--main);\n            animation: draw calc(0.9s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.4s * var(--pace)) both; }\n    @keyframes draw { from { width: 0; } to { width: 38%; } }\n    @keyframes word-in { from { opacity: 0; transform: translateY(0.45em); } to { opacity: 1; transform: none; } }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"fact/scene\">\n    <div class=\"copy\">\n      <div class=\"no\" data-mosio-id=\"fact/no\">2</div>\n      <h2 class=\"line\" data-mosio-id=\"fact/text\"><span class=\"w\" style=\"--i:0\" data-mosio-id=\"fact/w0\">Moves</span><span class=\"w acc\" style=\"--i:1\" data-mosio-id=\"fact/w1\">every</span><span class=\"w\" style=\"--i:2\" data-mosio-id=\"fact/w2\">word</span></h2>\n      <div class=\"rule\" data-mosio-id=\"fact/rule\"></div>\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "example/scenes/03-fact-2.html",
+      "role": "example",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"9:16\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; gap: calc(0.5 * var(--fs-body) * var(--type-scale)); }\n    .no { font-size: calc(0.5 * var(--fs-body) * var(--type-scale)); font-weight: 700; letter-spacing: 0.2em; color: var(--text-dim);\n          animation: word-in calc(0.5s * var(--pace)) cubic-bezier(.2,.8,.2,1) .1s both; }\n    .line { display: flex; flex-wrap: wrap; gap: 0.12em 0.3em; font-size: calc(var(--fs-body) * var(--type-scale)); text-transform: var(--text-case); }\n    .w { display: inline-block; opacity: 0; white-space: nowrap;\n         animation: word-in calc(0.55s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.25s + var(--i) * 0.2s * var(--pace)) both; }\n    .rule { height: 10px; width: 0; border-radius: 5px; background: var(--main);\n            animation: draw calc(0.9s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.4s * var(--pace)) both; }\n    @keyframes draw { from { width: 0; } to { width: 38%; } }\n    @keyframes word-in { from { opacity: 0; transform: translateY(0.45em); } to { opacity: 1; transform: none; } }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"fact-2/scene\">\n    <div class=\"copy\">\n      <div class=\"no\" data-mosio-id=\"fact-2/no\">3</div>\n      <h2 class=\"line\" data-mosio-id=\"fact-2/text\"><span class=\"w\" style=\"--i:0\" data-mosio-id=\"fact-2/w0\">In</span><span class=\"w\" style=\"--i:1\" data-mosio-id=\"fact-2/w1\">sync</span><span class=\"w\" style=\"--i:2\" data-mosio-id=\"fact-2/w2\">with</span><span class=\"w acc\" style=\"--i:3\" data-mosio-id=\"fact-2/w3\">time</span></h2>\n      <div class=\"rule\" data-mosio-id=\"fact-2/rule\"></div>\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "example/scenes/04-step.html",
+      "role": "example",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"9:16\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; gap: calc(0.5 * var(--fs-body) * var(--type-scale)); }\n    .no { font-size: calc(0.5 * var(--fs-body) * var(--type-scale)); font-weight: 700; letter-spacing: 0.2em; color: var(--text-dim);\n          animation: word-in calc(0.5s * var(--pace)) cubic-bezier(.2,.8,.2,1) .1s both; }\n    .line { display: flex; flex-wrap: wrap; gap: 0.12em 0.3em; font-size: calc(var(--fs-body) * var(--type-scale)); text-transform: var(--text-case); }\n    .w { display: inline-block; opacity: 0; white-space: nowrap;\n         animation: word-in calc(0.55s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.25s + var(--i) * 0.2s * var(--pace)) both; }\n    .rule { height: 10px; width: 0; border-radius: 5px; background: var(--main);\n            animation: draw calc(0.9s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.4s * var(--pace)) both; }\n    @keyframes draw { from { width: 0; } to { width: 38%; } }\n    @keyframes word-in { from { opacity: 0; transform: translateY(0.45em); } to { opacity: 1; transform: none; } }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"step/scene\">\n    <div class=\"copy\">\n      <div class=\"no\" data-mosio-id=\"step/no\">4</div>\n      <h2 class=\"line\" data-mosio-id=\"step/text\"><span class=\"w\" style=\"--i:0\" data-mosio-id=\"step/w0\">Rendered</span><span class=\"w acc\" style=\"--i:1\" data-mosio-id=\"step/w1\">frame</span><span class=\"w\" style=\"--i:2\" data-mosio-id=\"step/w2\">by</span><span class=\"w acc\" style=\"--i:3\" data-mosio-id=\"step/w3\">frame</span></h2>\n      <div class=\"rule\" data-mosio-id=\"step/rule\"></div>\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "example/scenes/05-cta.html",
+      "role": "example",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"9:16\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: calc(0.45 * var(--fs-body) * var(--type-scale)); text-align: center; }\n    .line { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.12em 0.3em; font-size: calc(var(--fs-body) * var(--type-scale)); text-transform: var(--text-case); }\n    .w { display: inline-block; opacity: 0; white-space: nowrap;\n         animation: word-in calc(0.55s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.2s + var(--i) * 0.2s * var(--pace)) both; }\n    .pill { height: 0.2em; width: 0; font-size: calc(var(--fs-body) * var(--type-scale)); border-radius: 999px; background: var(--accent);\n            animation: grow calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.9s * var(--pace)) both; }\n    @keyframes grow { from { width: 0; } to { width: 3.2em; } }\n    @keyframes word-in { from { opacity: 0; transform: translateY(0.45em); } to { opacity: 1; transform: none; } }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"cta/scene\">\n    <div class=\"copy\">\n      <h2 class=\"line\" data-mosio-id=\"cta/text\"><span class=\"w\" style=\"--i:0\" data-mosio-id=\"cta/w0\">Straight</span><span class=\"w\" style=\"--i:1\" data-mosio-id=\"cta/w1\">to</span><span class=\"w acc\" style=\"--i:2\" data-mosio-id=\"cta/w2\">MP4</span></h2>\n      <div class=\"pill\" data-mosio-id=\"cta/pill\"></div>\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "example/shared/base.css",
+      "role": "example",
+      "content": "/* Fixed foundation of the recipe: fonts, reset and the scene frame. Brand values are in tokens.css, not here. */\n@font-face { font-family: \"Inter\"; font-weight: 400; src: url(\"/assets/fonts/Inter-Regular.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 700; src: url(\"/assets/fonts/Inter-Bold.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 800; src: url(\"/assets/fonts/Inter-ExtraBold.otf\") format(\"opentype\"); }\n* { margin: 0; padding: 0; box-sizing: border-box; }\nhtml, body { width: var(--w); height: var(--h); overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font-body); }\n.scene { position: absolute; inset: 0; overflow: hidden; }\nh1, h2 { font-family: var(--font-display); font-weight: 800; line-height: 1.04; letter-spacing: -0.02em; }\n.acc { color: var(--accent); }\n"
+    },
+    {
+      "path": "example/shared/tokens.css",
+      "role": "example",
+      "content": "/* Brand and layout tokens for every scene (recipe kinetic-typography). Edit values here: every scene that imports this file\n   re-renders, which is correct, because they all depend on it. */\n:root {\n  --bg: #0f172a;\n  --main: #38bdf8;\n  --accent: #f59e0b;\n  --text: #f8fafc;\n  --text-on-accent: #0f172a;\n  --surface: color-mix(in srgb, var(--text) 8%, var(--bg));\n  --text-dim: color-mix(in srgb, var(--text) 68%, var(--bg));\n  --font-display: \"Inter\", sans-serif;\n  --font-body: \"Inter\", sans-serif;\n  --w: 1080px;\n  --h: 1920px;\n  --type-scale: 1;\n  --pace: 1;\n  --fs-display: 150px;\n  --fs-body: 104px;\n  --margin: 96px;\n  --text-case: uppercase;\n}\n"
+    }
+  ],
+  "sha256": "2c087379327f9c06a46cce8ccbc651cdaa0014734c81624ea33d30c854296f30"
+}

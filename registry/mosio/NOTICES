@@ -1,22 +1,394 @@
 # Notices
 
-These recipes adapt MIT-licensed upstream style material. Each upstream is credited below.
+These recipes adapt MIT or Apache-2.0 licensed upstream style material. Each upstream is credited below.
+
+## anatomi-iso
+
+Anatomy (isometric figure skill)
+https://github.com/wheresryan22/anatomy
+commit 1482e8469b0a9e0d8cc18ea2740a01423d29ae80, `SKILL.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## angka-capaian
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## archive-lighttable
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/archive-lighttable/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rebuilt in 2D (prints and negatives drawn once on canvas, a CSS and SVG loupe, nearness parallax as layers) instead of live 3D shaders, one the timeline timeline, silent, brand tokens, vendor fonts, drawn archive objects allowed beside the user's own scans.
+
+## art-deco
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/art-deco/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline in SVG and CSS instead of a Canvas engine, silent, brand tokens (gold as the accent, the protagonist as the main colour, paper and ink fixed), vendor fonts, measurements and native moves taken from the reference film, named references and sound dropped.
+
+## ascii-crt
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/ascii-crt/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: the demo's glyph ramp, Earth-from-the-Moon picture, fall, zoom and CRT parameters ported to 2D text layers and gradients on one the timeline timeline instead of a Canvas and live 3D render(t), silent, brand tokens, vendor fonts, own content and continent outlines, performance rework for live preview.
+
+## empty-hallway-tape
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/backrooms/STYLE.md`
+License: MIT. Copyright LemoLab.
+Changes by Mosio: the demo's layout, lights, lighting and fog, camera tracks, flicker and auto-gain curves, caption metrics and OSD font ported to one the timeline timeline with Canvas 2D views instead of live 3D, silent, brand tokens, vendor fonts, Indonesian content.
+
+## bauhaus-geometry
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/bauhaus-geometry`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline with clip-path wipes and iris, silent, brand tokens (red and blue from the brand, yellow fixed), vendor fonts instead of Noto Sans SC, Archivo and Space Mono, grain dropped, the figure's ink changing at the circle edge, a block that stays as a button.
+
+## benchmark-hud
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/benchmark-hud`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline without the kit runtime, silent, brand tokens (signal cyan = main, lock amber = accent), vendor fonts (Noto Sans, IBM Plex Mono, Space Grotesk), gauge glow as strokes, Indonesian content.
 
 ## blueprint
 
 lemo-opuscar film styles
 https://github.com/lemomo-ai/lemo-opuscar
 commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/blueprint/STYLE.md`
-License: MIT. Copyright the upstream authors.
-Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+License: MIT. Copyright LemoLab.
+Changes by Mosio: rewritten for one the timeline timeline, 2D SVG/CSS layers and a canvas-painted sheet instead of live 3D, silent, brand tokens, vendor fonts (Patrick Hand, Inter, Caveat), a desk lamp and Indonesian notes instead of the original story.
 
-## paper-popup
+## brick-toy
 
 lemo-opuscar film styles
 https://github.com/lemomo-ai/lemo-opuscar
-commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/paper-popup/STYLE.md`
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/brick-toy/STYLE.md`
+License: MIT. Copyright LemoLab.
+Changes by Mosio: a 3D engine scene rebuilt as painted 2D canvases with the same palette, rig, physics, eases and timings on one the timeline timeline; silent; brand tokens; vendor fonts; own content.
+
+## briefing-board
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/briefing-board/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline and a 2D camera over one board, silent, brand tokens, vendor fonts (Patrick Hand for the board's handwriting), photographs painted on a canvas instead of matted photos, our own example content.
+
+## caption-news
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/caption-news/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline and silent renders, Indonesian captions with a second line instead of a translation, brand tokens, vendor fonts (Inter), footage from the user's media or painted stand-ins, sound, voice, subtitle files and the engine dropped.
+
+## cel-anime-80s
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/cel-anime-80s/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, a roller-skater instead of a motorbike rider, 2D canvas and CSS 3D instead of live 3D (bloom as glows, CRT as CSS), plates and characters painted once.
+
+## chat-testimoni
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## city-symphony
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/city-symphony/STYLE.md`
+License: MIT. Copyright 2026 LemoLab.
+Changes by Mosio: painted 2D plates instead of real footage, one the timeline timeline on a 96 BPM grid, silent, brand tokens, vendor fonts, Indonesian on-screen text.
+
+## clay-serif
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/clay-serif`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts (Libre Baskerville, Playfair Display, Noto Sans, IBM Plex Mono) instead of Noto Serif SC, Fraunces, Noto Sans SC and Plex Mono Medium, grain and per-glyph blur dropped, the figure page used as the call to action.
+
+## clean-os
+
+ghost-editor (Clean OS)
+https://github.com/kurbaitaev/ghost-editor
+commit ce172726c36293722b08eb57b5b307d4f06389e8, `recipes/clean-os/SYSTEM.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rebuilt as one the timeline timeline in a single HTML file with brand tokens and vendor fonts (Caveat for the pen script); generic system screens without any real OS styling; a painted stand-in for the speaker's footage; Indonesian content; take selection, face scans, denoising, stock inserts and the sound plan dropped.
+
+## countdown
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/countdown/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline in the brand token contract, silent (sound palette and mix dropped), vendor fonts, a one-language Indonesian transcript, cells holding the user's own footage (Canvas stand-ins in the example), source-finding and engine notes dropped.
+
+## crayon-book
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/crayon-book/STYLE.md`
+License: MIT. Copyright LemoLab.
+Changes by Mosio: rebuilt in 2D without live 3D (wax adhesion, emboss and wash resist painted once per pixel into day and night images, bands revealed by clip paths, boil as swapped sprites), one the timeline timeline, silent, brand tokens, vendor fonts (Patrick Hand, Caveat), a kite festival story in Indonesian.
+
+## dark-stage
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/dark-keynote/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline in 2D layers (no canvas engine), silent (sound palette and voice timing removed), brand tokens, vendor fonts (Inter, IBM Plex Mono), and the freeze, snap grid and put-away worked out as a full 15-second film.
+
+## dasbor-iklan
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## data-journal
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/data-journal`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline with timings measured from the reference film, silent, brand tokens, vendor Latin fonts instead of CJK, Indonesian number format.
+
+## data-physical
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/data-physical/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, 2D perspective planes instead of live 3D.
+
+## dataviz
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/dataviz/STYLE.md`
+License: MIT. Copyright 2026 LemoLab.
+Changes by Mosio: rewritten for one the timeline timeline with world-space SVG instead of a per-frame canvas, silent (no sonification, foley or voice), brand tokens instead of fixed colours, vendor fonts (Libre Baskerville for Newsreader), new Indonesian content and an end card in the empty next cell.
+
+## dev-console
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/dev-console`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens (success green and selection blue become `--utama` and `--aksen`), vendor fonts (Inter and IBM Plex Mono instead of Noto Sans SC and JetBrains Mono), no animated blur.
+
+## dok-kinetik
+
+Ghost editor recipes: Kinetic doc
+https://github.com/kurbaitaev/ghost-editor
+commit ce172726c36293722b08eb57b5b307d4f06389e8, `recipes/kinetic-doc/house.json`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a Mosio recipe with the brand token contract (the red as `--utama`, the grey page and warm paper as `--latar`/`--latar-2`), Mosio's vendor fonts (Oswald, Inter, Playfair Display, IBM Plex Mono in place of JetBrains Mono), Indonesian example content about a made-up family coffee stall, painted stand-ins for the speaker and the archive pictures, and the face tracker, picture generators and builder replaced by the user's own media and `inspect_media`.
+
+## editorial-paper
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/editorial-paper`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts (Libre Baskerville, Cormorant Garamond, Noto Sans, IBM Plex Mono) instead of Noto Serif SC, Instrument Serif, Noto Sans SC, Plex Mono and LXGW WenKai, texture moved by transform steps instead of background position, highlighted words re-inked for any brand, the figure page used as the payoff.
+
+## engraving
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/engraving/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline with an incremental Canvas 2D ink layer ported from the demo's burin engine, silent (no sound palette or voice timing), brand tokens, vendor fonts instead of Bodoni Moda and Pinyon Script, a new subject and Indonesian text.
+
+## etalase-hp
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## explainer-isometrik
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## flash-sale
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## frosted-aurora
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/frosted-aurora`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens with pools mixed from the brand, vendor fonts instead of Noto Sans SC and JetBrains Mono, soft gradients and a dim frost layer instead of live blur and backdrop blur, the 1.03 camera push carried by the pools' breathing, the tag raised above the vertical safe zone.
+
+## game-show
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/game-show/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent (no score, shouts or voices), brand tokens instead of fixed sets, vendor fonts (Fredoka, Poppins), our own Indonesian content and cast.
+
+## glass-product
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/glass-product/STYLE.md`
+License: MIT. Copyright LemoLab.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts (Inter in place of an ultra-thin grotesk), Canvas 2D views drawn once instead of live 3D transmission, a frosted slab without live blur, new fictional object and content.
+
+## halaman-produk
+
+Ghost editor recipes: Product page
+https://github.com/kurbaitaev/ghost-editor
+commit ce172726c36293722b08eb57b5b307d4f06389e8, `recipes/product-page/house.json`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a Mosio recipe with the brand token contract (the named thing's colour as `--utama`, pages and UI grey as `--latar`/`--latar-2`), Inter 800 and Playfair Display Italic 400 from Mosio's vendor fonts in place of Inter Tight and the 600 italic, Indonesian example content about a made-up app, a painted stand-in for the footage and the cut-out, and the face tracker, matte and screenshot builders replaced by `make_cutout`, `inspect_media` and the user's own media.
+
+## halftone-dossier
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/halftone-dossier/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts; halftone, paper and wipe drawn once into images; line boil and dust grain dropped for performance.
+
+## pixel-diorama
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/hd-2d/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, 2D layers and Canvas-drawn pixel sprites instead of a 3D engine.
+
+## hologram-hud
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/hologram-hud/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent (no music, voice or subtitle timing), brand tokens, vendor fonts, the wireframe projected once and painted into images with the camera as a 2D zoom, a new subject and Indonesian text.
+
+## impasto
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/impasto/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one paused the timeline timeline, silent, brand tokens, vendor fonts, live 3D engine replaced by Canvas 2D plates painted once and moved as images.
+
+## ink-wash
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/ink-wash/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, a 2D brush model painted once into sliced images instead of the live 3D compositor.
+
+## instrument-panel
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/instrument-panel`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts (Noto Sans, IBM Plex Mono), dot-matrix figures drawn in script instead of a dot font, a final pressed contact key.
+
+## iso-infographic
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/iso-infographic/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline in SVG, silent, brand tokens, vendor fonts, no Canvas engine or voice/subtitle timing.
+
+## isometric-stack
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/isometric-stack`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline without the kit runtime, slabs drawn as 2D isometric SVG instead of CSS 3D, the soft count without a blur filter, silent, brand tokens, vendor fonts (Inter, Space Grotesk, IBM Plex Mono for MiSans), a slab-shaped call-to-action button and closing mini stack added.
+
+## jendela-ilmu
+
+talking-head-video
+https://github.com/Vibetool/talking-head-video
+commit 5b46d7924ac18a6e1d1aead9be7b7c27d235153c, `assets/remotion/src/theme.tsx`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rebuilt from a component video framework components and an a video tool composite into one the timeline timeline in HTML; brand tokens; vendor fonts (Inter with a synthetic slant for the title face, Oswald for the condensed numbers, Noto Sans for subtitles) instead of the bundled CJK faces; Indonesian content; a painted stand-in for the footage; emoji icons and the other two card styles left out.
+
+## kanvas-tanpa-putus
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## kata-latar
+
+claude-video-effects
+https://github.com/Vibha-Ramprakash/claude-video-effects
+commit a6c05c5acfadbc6730b3a6dae0fde7b886eb2207, `scripts/fx.py`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rebuilt from per-frame Python image compositing into one the timeline timeline with HTML, SVG and CSS; brand tokens; vendor fonts (Inter, Playfair Display); a painted stand-in for the footage and `make_cutout` for the person mask; Indonesian pills and card; generic card with no app styling.
+
+## kata-meletup
+
+claude-shorts caption presets (Bounce)
+https://github.com/AgriciDaniel/claude-shorts
+commit a369fad9d84287edbb8fa3ab515f268e770f683b, `remotion/src/components/BounceCaptions.tsx`
 License: MIT. Copyright the upstream authors.
 Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## kata-sorot
+
+claude-shorts caption presets (Bold)
+https://github.com/AgriciDaniel/claude-shorts
+commit a369fad9d84287edbb8fa3ab515f268e770f683b, `remotion/src/components/BoldCaptions.tsx`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## kepala-bicara-split
+
+talking-head-editor
+https://github.com/griffinwooldridge/talking-head-editor
+commit 9382aa31bd66a5c6b6a06a761b748cc513149647, `mg/kit/cine.css`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## kertas-taktil
+
+ghost-editor (Tactile paper)
+https://github.com/kurbaitaev/ghost-editor
+commit ce172726c36293722b08eb57b5b307d4f06389e8, `recipes/tactile-paper/house.json`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: the live 3D cylinder page fold rebuilt in 2D (clip-path and a shaded flap), the zoom blur faked with page copies, one the timeline timeline in a single HTML file with brand tokens and vendor fonts (Inter for the grotesque, Libre Baskerville and Playfair Display for print, IBM Plex Mono for JetBrains Mono); a painted stand-in for the speaker's footage; Indonesian content; the props generator, face tracking and the sound plan dropped.
+
+## ketik-jadi-produk
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## kinetic-type
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## kino-montage
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/kino-montage/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one paused the timeline timeline, silent, brand tokens, vendor fonts (Oswald, Space Grotesk), stand-in photos painted in Canvas 2D instead of footage, and the demo's formats reduced to title package, map iris, vertical title, silence and result.
 
 ## kolase-arsip
 
@@ -26,29 +398,597 @@ commit 10511e5af86fc47756ea89803b397422e2d89284, `style-library/01-vox-explainer
 License: MIT. Copyright the upstream authors.
 Changes by Mosio: rewritten as a style guide and beat plan with an original example.
 
+## kolase-merah
+
+claude-video-effects red-collage
+https://github.com/Vibha-Ramprakash/claude-video-effects
+commit a6c05c5acfadbc6730b3a6dae0fde7b886eb2207, `scripts/fx.py`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rebuilt from per-frame image compositing to SVG/CSS layers on one the timeline timeline, the segmentation replaced by Mosio's `make_cutout`, brand tokens, vendor fonts (Inter 800, IBM Plex Mono instead of Space Mono), painted stand-in room and person, four beats with Indonesian lines and jump-cut framing.
+
+## komik-hitam
+
+chengfeng-videocut-skills, comic SVG motion style (Apache-2.0; NOTICE: Copyright Agentchengfeng, see the repository's NOTICE.md)
+https://github.com/Agentchengfeng/chengfeng-videocut-skills
+commit a33b43e08c34fa8beeb5e78498e852f4e80975a5, `plugins/chengfeng-videocut/skills/chengfeng-visual/animation-styles/ian-xiaohei-svg-motion/SKILL.md`
+License: Apache-2.0. Copyright the upstream authors.
+Licensed under the Apache License, Version 2.0 (https://www.apache.org/licenses/LICENSE-2.0); the upstream NOTICE is kept above. Files changed by Mosio.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## layout-berubah
+
+video-agent-skill (reel-editor)
+https://github.com/sunithvs/video-agent-skill
+commit 6ccc8f2fdbd177a3306377e866c8724a512bffcb, `plugins/video-editor/skills/reel-editor/assets/project/reel/engine.js`
+License: Apache-2.0. Copyright the upstream authors.
+Licensed under the Apache License, Version 2.0 (https://www.apache.org/licenses/LICENSE-2.0); the upstream NOTICE is kept above. Files changed by Mosio.
+Changes by Mosio: rebuilt from a per-frame spring engine and a JPEG sequence into one the timeline timeline in HTML with the springs approximated by eases; brand tokens; vendor fonts (Archivo Black, Inter, IBM Plex Mono for Archivo, Inter and Geist Mono); the cartoon mascot, sound cues, emoji and editor-kit passes left out; a painted stand-in for the footage and the b-roll; Indonesian content; a 16:9 layout set added.
+
+## lidar-survey
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/lidar-survey/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, layers painted once with a 2D canvas projection instead of live 3D, and an invented terraced hillside instead of the source's survey data.
+
+## living-screencast
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/living-screencast/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one paused the timeline timeline, silent, brand tokens, vendor fonts, a made-up product instead of the source's, mascot redrawn as an original pixel sprite with the same grid logic.
+
+## lowpoly-island
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/lowpoly-island/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rebuilt in 2D (flat-shaded SVG polygons in an orthographic projection, layered haze and shallows instead of a 3D engine, post-processing and live 3D), one the timeline timeline, silent, brand tokens, vendor fonts, titles in the sky band.
+
+## maths-plane
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/manim-morph`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens (focus = main colour, input = accent, output green fixed), bundled Libre Baskerville, Playfair italic and IBM Plex Mono instead of the CJK and maths faces, new Indonesian example content, transform move written for core the timeline.
+
+## maskot-piksel
+
+lemo-mod style mods
+https://github.com/lemomo-ai/lemo-mod
+commit 59f002927f1834ce48ebb1c4a66f85686daf8157, `plugins/lemo-core/styles`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## menu-board
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## rapid-minigames
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/microgame/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, 2D SVG/CSS instead of live 3D, sound and voice sections dropped, two of the source's media (terminal and two-ink) and the home stage shown in the example.
+
 ## microscope
 
 lemo-opuscar film styles
 https://github.com/lemomo-ai/lemo-opuscar
 commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/microscope/STYLE.md`
 License: MIT. Copyright the upstream authors.
-Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, procedural stand-in plates instead of whole-slide scans, no voice or sound.
 
-## dataviz
-
-lemo-opuscar film styles
-https://github.com/lemomo-ai/lemo-opuscar
-commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/dataviz/STYLE.md`
-License: MIT. Copyright the upstream authors.
-Changes by Mosio: rewritten as a style guide and beat plan with an original example.
-
-## ink-wash
+## midcentury-toon
 
 lemo-opuscar film styles
 https://github.com/lemomo-ai/lemo-opuscar
-commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/ink-wash/STYLE.md`
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/midcentury-toon/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline with SVG cels and a CSS-variable register jitter on twos, silent (no sound palette or voice timing), brand tokens, vendor fonts (Archivo Black, Poppins, Caveat instead of Oleo Script, Alfa Slab One and Jost), a new subject and Indonesian text.
+
+## news-package
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/news-package/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline in HTML/CSS/SVG at 1920×1080, silent, brand tokens and vendor fonts (Oswald, Inter, IBM Plex Mono), Indonesian bulletin content, a painted stand-in shot in place of the source's generated plates.
+
+## newsreel
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/newsreel/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one paused the timeline timeline, silent, brand tokens, vendor fonts, ident, spinning paper, projector layer and map ported to DOM and SVG, Indonesian content.
+
+## one-line
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/one-line/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline drawing a canvas ink layer, silent, brand tokens, vendor fonts, no hand shadows, a compact generated path instead of the source's drawing.
+
+## orbit-kartu
+
+claude-editing-skills orbit-reel
+https://github.com/artemnovitckii/claude-editing-skills
+commit beff6b868a8c1bdfad8661bd8a298497e75568a3, `skills/orbit-reel/template.html`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: the CSS 3D scene rebuilt as a computed 2D projection on one the timeline timeline, the segmentation model replaced by Mosio's `make_cutout`, brand tokens, vendor fonts (Inter), painted stand-in room, person and photos, Indonesian titles, four beats with title changes.
+
+## panel-breakout
+
+claude-editing-skills explainer
+https://github.com/artemnovitckii/claude-editing-skills
+commit beff6b868a8c1bdfad8661bd8a298497e75568a3, `skills/explainer/build.py`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: several beats in one the timeline timeline, brand tokens with a dark card that inverts the page, Playfair Display italic for the serif accent, Indonesian captions, a painted stand-in for the speaker with a separate person layer standing in for the cutout, the matting model replaced by Mosio's own cutout, a 16:9 layout.
+
+## paper-figure
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/paper-figure`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts (Libre Baskerville, Cormorant Garamond italic, IBM Plex Mono) instead of Noto Serif SC, CMU Serif and Plex Mono Medium, per-glyph blur dropped, decimal comma.
+
+## paper-lantern
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/paper-lantern/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as one silent the timeline timeline, 2D images instead of a 3D engine lighting, brand tokens, vendor fonts, Latin type instead of Chinese brush type.
+
+## paper-popup
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/paper-popup/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline in 2D (no a 3D engine, no depth of field), silent, brand tokens, vendor fonts, paper finish and drawing helpers ported from the source's Canvas2D code.
+
+## papercut-red
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/papercut-red/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, SVG masks instead of canvas, no characters.
+
+## particle-field
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/particle-field`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts (Inter, Space Grotesk and IBM Plex Mono in place of Noto Sans SC and JetBrains Mono), dust as two drifting SVG layers instead of one tween per mote, the slow push on the dust field instead of the scenes, gradient halos and a painted haze instead of animated shadows and blur, the tag raised into the safe zone.
+
+## peluncuran-aplikasi
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## pesan-kilat
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## pictogram-motion
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/pictogram-motion/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, SVG figures and a once-painted pattern, shorter and with the source's engine and sound sections dropped.
+
+## pixel-rpg
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/pixel-rpg/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as one paused the timeline timeline with images painted once from a seeded PRNG, silent, brand tokens, vendor font, DOM windows instead of a framebuffer UI, no colour-depth collapse.
+
+## podcast-blur-fit
+
+video-to-shorts-skill (fit framing, captions, hook)
+https://github.com/social-media-skills/video-to-shorts-skill
+commit 2e20fb008b584f3927798f36f580401d75318600, `skills/video-to-shorts-skill/scripts/make_shorts.py`
 License: MIT. Copyright the upstream authors.
 Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## podcast-kertas
+
+ghost-editor (RESULT, Face RESULT mode)
+https://github.com/kurbaitaev/ghost-editor
+commit ce172726c36293722b08eb57b5b307d4f06389e8, `recipes/result-podcast/faceresult.py`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rebuilt as one the timeline timeline in a single HTML file with brand tokens and vendor fonts (Inter for Inter Tight, IBM Plex Mono for JetBrains Mono); a painted stand-in for the speaker's footage; Indonesian content; face tracking, take selection, light leaks, AI stills and the sound bed dropped; placement rules written for the assistant instead of a build that refuses.
+
+## poster-kinetic
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/poster-kinetic`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one seek-safe the timeline timeline (drop letters, echoes, recolour, odometer, slam, slats, punch rebuilt by hand), silent, brand tokens with a paper ground inverted from the text colour, vendor fonts (slanted Archivo Black for the CJK display face), Indonesian example.
+
+## product-hero
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## recap-panggung
+
+video-recap-skills
+https://github.com/zenstory-ai/video-recap-skills
+commit 36bd3ee860c9e17d09c5c2c713adde30162fdaed, `skills/video-recap/references/packaging.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## two-ink-print
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/risograph/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, 2D multiply layers and SVG halftone patterns instead of live 3D.
+
+## rubber-hose
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/rubber-hose/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline with SVG hero, set and gate, sound and voice dropped, brand tokens, vendor fonts (Fredoka, IM Fell English, Poppins).
+
+## sampul-majalah
+
+claude-video-effects cover-star
+https://github.com/Vibha-Ramprakash/claude-video-effects
+commit a6c05c5acfadbc6730b3a6dae0fde7b886eb2207, `scripts/fx.py`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rebuilt from per-frame image compositing to SVG/CSS layers on one the timeline timeline, the segmentation replaced by Mosio's `make_cutout`, brand tokens, vendor fonts (Archivo Black, Playfair Display italic instead of Instrument Serif, IBM Plex Mono instead of Space Mono), a made-up masthead, painted stand-in room and person, four beats of Indonesian cover lines with jump-cut framing.
+
+## satellite-briefing
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/satellite-briefing/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens and vendor fonts, 2D plates painted procedurally instead of live 3D over real imagery.
+
+## scifi-toon
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/scifi-toon/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one paused the timeline timeline with three precomputed boil drawings, silent, brand tokens, vendor fonts, SVG instead of Canvas.
+
+## shadow-puppet
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/shadow-puppet/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline with multiply-blended 2D canvases instead of live 3D, silent, brand tokens, vendor fonts, a folk-tale subject.
+
+## silent-film
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/silent-film/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline in 2D (the source's live 3D redraw and print pass replaced by drawn-once Canvas 2D forms and CSS print layers), silent (no sound palette), brand tokens, vendor fonts instead of Playfair SC and Old Standard TT, a new subject and Indonesian text.
+
+## silkscreen-poster
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/silkscreen-poster/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one paused the timeline timeline with SVG ink layers and CSS clip-path pulls instead of Canvas2D, silent, brand tokens, vendor fonts, Indonesian example content.
+
+## split-step
+
+claude-editing-skills split-screen
+https://github.com/artemnovitckii/claude-editing-skills
+commit beff6b868a8c1bdfad8661bd8a298497e75568a3, `skills/split-screen/build.py`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: several numbered beats in one the timeline timeline instead of one step per clip, brand tokens, Indonesian captions, a painted stand-in for the speaker and the images, a screenshot and a closing class card in the window, a 16:9 layout.
+
+## spy-titles
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/spy-titles/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, SVG instead of canvas.
+
+## stained-glass
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/stained-glass/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens and vendor fonts, 2D images instead of the live 3D compositor, light done with a sliding dim layer.
+
+## step-deck
+
+Ghost editor recipes: Step Deck
+https://github.com/kurbaitaev/ghost-editor
+commit ce172726c36293722b08eb57b5b307d4f06389e8, `recipes/step-deck/house.json`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a Mosio recipe with the brand token contract (navy, page, cream and blue fields mapped to brand tokens), vendor fonts in place of Inter Tight, Montserrat and the substituted serif, Indonesian example content, a painted stand-in for the footage and the cut-out, and the matte and still generators replaced by `make_cutout` and the user's own media.
+
+## stickman-garis
+
+stickman-video-director (B1 Minimal Line Art)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/b1-minimal-handdrawn.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-hangat
+
+stickman-video-director (A4 Cozy Storytelling)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/cozy-storytelling.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-klasik
+
+stickman-video-director (Style 1 Classic Minimalist)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/style-catalog.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-noir
+
+stickman-video-director (A6 Amber Noir)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/amber-noir.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-presenter
+
+stickman-video-director (B5 Character Explainer)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/b5-character-explainer.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-purba
+
+stickman-video-director (A3 Prehistoric Hand-Drawn / Dark Comedy)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/prehistoric-dark-comedy.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-sejarah
+
+stickman-video-director (A5 Historical Cartoon)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/historical-cartoon.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-sinematik
+
+stickman-video-director (Style 2B Cinematic Story)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/style-catalog.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-studio
+
+stickman-video-director (Style 2A Modern Studio Tech)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/style-catalog.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-survival
+
+stickman-video-director (B4 Survival Thriller)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/b4-survival-storytelling.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-tv
+
+stickman-video-director (B3 Retro TV)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/b3-television.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stickman-warna
+
+stickman-video-director (B2 Colorful Hand-Drawn)
+https://github.com/kaomei/stickman-video-director
+commit 7af3957dff97914b2d762fb248ee2427d7fca72c, `skills/directing-stickman-videos/references/b2-colorful-handdrawn.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## stiker-ceria
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## studio-tenang
+
+claude-youtube-editor house style (brand.md)
+https://github.com/hassancs91/claude-youtube-editor
+commit d490d718a1204114d562919229c772cc787c2fca, `brand.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## subtitle-sinema
+
+video-recap-skills
+https://github.com/zenstory-ai/video-recap-skills
+commit 36bd3ee860c9e17d09c5c2c713adde30162fdaed, `skills/video-recap/references/packaging.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as a style guide and beat plan with an original example.
+
+## swiss-grid
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/swiss-grid`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline core timeline with the snap curve built in script, silent, brand tokens, vendor fonts (Inter, Archivo Black, IBM Plex Mono) in place of the CJK faces with Latin sizes, three-dot palette, and a signal-colour contact block for the ending.
+
+## swiss-motion
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/swiss-motion/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline at 30 fps with the precise ease as a core ease function, silent (sound palette, voice and subtitle timing dropped), brand tokens, vendor fonts (Archivo Black and Inter for the single neo-grotesque), layout numbers measured from the reference film.
+
+## teardown
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/teardown/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: 2D layered SVG instead of a 3D engine, one paused the timeline timeline, silent, brand tokens, vendor fonts, a rice cooker drawn from published sizes instead of CAD and PCB files.
+
+## play-diagram
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/telestrator/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten as one paused the timeline timeline, silent, brand tokens, vendor fonts, Canvas marker engine rebuilt as SVG, painted stand-in footage with a note to use the user's own, Indonesian content.
+
+## tier-list
+
+claude-editing-skills ranking-list
+https://github.com/artemnovitckii/claude-editing-skills
+commit beff6b868a8c1bdfad8661bd8a298497e75568a3, `skills/ranking-list/build.py`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: three beats in one the timeline timeline, brand tokens (title and names lifted for readability on footage), Indonesian captions and items, line-icon cards instead of logos, a painted stand-in for the speaker, a 16:9 layout.
+
+## tilt-shift
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/tilt-shift/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline in 2D (three pre-blurred layers and masks instead of the live 3D depth-of-field post pass), silent, brand tokens, vendor fonts, painted stand-in miniature.
+
+## ui-sinematik
+
+dzhng skills: cinematic-shot
+https://github.com/dzhng/skills
+commit 27c5ab2f6960bc94e9998fd9bd62f57020f1f447, `skills/graphics/cinematic-shot`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: one HTML file with a the timeline timeline instead of any renderer; depth of field built from three statically blurred copies under depth-aligned gradient masks instead of per-pixel blur; the stipple reveal and blur-in appear simplified to fades; motion blur and grain dropped; the wide shot flat-on; two image layers instead of per-pixel focus, sized to the light pool, for a phone preview at 55 fps; compressed to 17 s with story roles; brand tokens and an Indonesian made-up app; a quiet contact line added to the logo; a vertical layout.
+
+## ukiyoe
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/ukiyoe/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, a salt-farm story in place of the source's paddy walk, handscroll reduced to three pictures.
+
+## urban-sketch
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/urban-sketch/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline in 2D, silent, brand tokens, vendor font (Caveat), pen and wash drawn as SVG/CSS with foliage and paper painted once, new content.
+
+## visual-investigation
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/visual-investigation/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens and vendor fonts, painted stand-in footage replaced by the user's media, Canvas film engine reduced to HTML panels with a single grain overlay.
+
+## visual-story
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## warm-notebook
+
+creator-style-kit
+https://github.com/threeaus/creator-style-kit
+commit 6aeb1ba22913dbc75b3dea0f9e131cfa78422504, `styles/warm-notebook`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts (Oswald, Patrick Hand, IBM Plex Mono instead of the source's Chinese faces), Indonesian example content, fixed sticker tilts and a width-locked counter.
+
+## watercolor
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/watercolor/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline with canvases painted once from a seeded PRNG and revealed by clip-path, silent, brand tokens, vendor fonts (Cormorant Garamond, IBM Plex Mono), a journal's chapter and measure layer, Indonesian content.
+
+## white-model
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/white-model/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one the timeline timeline, silent, brand tokens, vendor fonts, 2D oblique projection instead of live 3D, shorter layer set.
+
+## whiteboard
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/whiteboard/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one paused the timeline timeline with SVG stroke reveal instead of canvas, silent, brand tokens, vendor fonts, a compact stroke font subset, shorter 15 s story.
+
+Handwriting glyphs: subset of EMS Tech by Sheldon B. Michaels (derived from Architects Daughter by Kimberly Geswein), SIL Open Font License 1.1, https://openfontlicense.org
+
+## woodcut
+
+lemo-opuscar film styles
+https://github.com/lemomo-ai/lemo-opuscar
+commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df, `styles/woodcut/STYLE.md`
+License: MIT. Copyright the upstream authors.
+Changes by Mosio: rewritten for one paused the timeline timeline, silent, brand tokens and vendor fonts, 2D canvas instead of the live 3D print shader, knife and hatch engines ported and shortened.
+
+## kinetic-typography
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## data-infographic
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## product-ad
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## talking-head
+
+Original Mosio recipe. License: MIT. Copyright Mosio.
+
+## Fonts
+
+The examples embed open fonts (SIL Open Font License 1.1 or Apache-2.0): Inter, Poppins, IBM Plex Mono, Space Grotesk, Playfair Display, Archivo Black, Caveat, Oswald, Noto Sans, Cormorant Garamond, Fredoka, Patrick Hand, Libre Baskerville, VT323, IM Fell English, Limelight, Bebas Neue, Special Elite, Press Start 2P, Permanent Marker, Montserrat, Bangers, Instrument Serif, Archivo and Fraunces. Copyright their authors.
 
 ## MIT License terms
 

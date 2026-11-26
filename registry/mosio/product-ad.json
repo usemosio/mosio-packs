@@ -1,0 +1,430 @@
+{
+  "name": "product-ad",
+  "type": "mosio:recipe",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Mosio",
+  "source": {
+    "repo": "mosio recipes",
+    "commit": "fa390cbb6de8d4c73df625a7c91fd12e1292ea50",
+    "path": "recipes/product-ad"
+  },
+  "params": {
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{1,39}$",
+          "default": "product-ad",
+          "description": "Project name written to mosio.json."
+        },
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "Output size and length.",
+          "properties": {
+            "ratio": {
+              "enum": [
+                "9:16",
+                "16:9"
+              ],
+              "default": "9:16",
+              "description": "Aspect ratio: 9:16 vertical for social, 16:9 landscape."
+            },
+            "duration_s": {
+              "type": "number",
+              "minimum": 8,
+              "maximum": 45,
+              "default": 15,
+              "description": "Total length in seconds after transitions. Beats share it by weight."
+            }
+          }
+        },
+        "content": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "What the ad says.",
+          "properties": {
+            "beats": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 5,
+              "default": [
+                {
+                  "role": "hook",
+                  "text": "Faster videos, zero waiting.",
+                  "key": "zero waiting.",
+                  "kicker": "New this season",
+                  "price": "Rp 49k"
+                },
+                {
+                  "role": "reveal",
+                  "text": "Three sizes. One price.",
+                  "items": [
+                    {
+                      "label": "Mini"
+                    },
+                    {
+                      "label": "Classic"
+                    },
+                    {
+                      "label": "Max"
+                    }
+                  ]
+                },
+                {
+                  "role": "fact",
+                  "text": "Why teams switch",
+                  "items": [
+                    {
+                      "label": "Edit one word, re-render one scene"
+                    },
+                    {
+                      "label": "Every frame checked"
+                    },
+                    {
+                      "label": "Roll back any change"
+                    }
+                  ]
+                },
+                {
+                  "role": "cta",
+                  "text": "Start rendering today",
+                  "button": "Try it free"
+                }
+              ],
+              "description": "One entry per scene, in order: usually hook, reveal, fact, cta.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "role",
+                  "text"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,23}$",
+                    "description": "Optional scene id (used in every data-mosio-id). Defaults to the role name; a repeated role gets -2, -3."
+                  },
+                  "role": {
+                    "enum": [
+                      "hook",
+                      "reveal",
+                      "fact",
+                      "cta"
+                    ],
+                    "description": "What this beat does in the story; picks the scene template."
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "The words on screen, written literally into the scene HTML."
+                  },
+                  "key": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "description": "The word or words of the text to stress with the accent colour. Must occur in the text."
+                  },
+                  "weight": {
+                    "enum": [
+                      "short",
+                      "medium",
+                      "long"
+                    ],
+                    "default": "medium",
+                    "description": "Relative screen time of this beat."
+                  },
+                  "kicker": {
+                    "type": "string",
+                    "maxLength": 28,
+                    "default": "",
+                    "description": "Hook only: the small label above the headline, for example New this season."
+                  },
+                  "price": {
+                    "type": "string",
+                    "maxLength": 16,
+                    "default": "",
+                    "description": "Hook only: the price line shown in the accent colour. Leave empty for no price."
+                  },
+                  "items": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 3,
+                    "description": "Reveal: the product variants, 1 to 3 cards. Fact: the feature lines (label only), 2 to 3 of them.",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "label"
+                      ],
+                      "properties": {
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 40,
+                          "description": "Card name (reveal) or feature line (fact). The reveal template allows 14 characters, the fact template 40."
+                        },
+                        "image": {
+                          "type": "string",
+                          "description": "Optional path to a PNG or JPEG of the variant, relative to the params file. Without it the card shows a drawn tile in the brand colours."
+                        }
+                      }
+                    }
+                  },
+                  "button": {
+                    "type": "string",
+                    "maxLength": 24,
+                    "default": "",
+                    "description": "CTA only: the text on the button."
+                  }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "role": {
+                          "enum": [
+                            "reveal",
+                            "fact"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "role"
+                      ]
+                    },
+                    "then": {
+                      "required": [
+                        "items"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "style": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "Look: brand colours, type size and motion speed.",
+          "properties": {
+            "brand": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "Brand colours. They are written to shared/tokens.css, so changing one re-renders every scene.",
+              "default": {},
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Background colour of every scene (--bg in shared/tokens.css).",
+                  "default": "#0b1020"
+                },
+                "main": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Main brand colour: large shapes and the key surface (--main).",
+                  "default": "#1e293b"
+                },
+                "accent": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Accent colour for the one thing that matters on screen: key word, winner bar, price (--accent).",
+                  "default": "#f59e0b"
+                },
+                "text": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Text colour on the background (--text).",
+                  "default": "#f8fafc"
+                },
+                "text_on_accent": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Text colour used on top of the accent colour, for example on a button (--text-on-accent).",
+                  "default": "#111111"
+                }
+              }
+            },
+            "font_scale": {
+              "type": "number",
+              "minimum": 0.8,
+              "maximum": 1.2,
+              "default": 1,
+              "description": "Multiplier on every type size (--type-scale). 1 is the designed size; check `mosio inspect` for overflow above 1."
+            },
+            "pacing": {
+              "enum": [
+                "calm",
+                "medium",
+                "brisk"
+              ],
+              "default": "medium",
+              "description": "Speed of the motion inside each scene: calm slows entrances by about 30 percent, brisk speeds them by about 25 percent. Scene lengths do not change."
+            }
+          }
+        }
+      }
+    },
+    "example": {
+      "name": "product-ad-demo",
+      "format": {
+        "ratio": "16:9",
+        "duration_s": 15
+      },
+      "content": {
+        "beats": [
+          {
+            "role": "hook",
+            "text": "Faster videos, zero waiting.",
+            "key": "zero waiting.",
+            "kicker": "New this season",
+            "price": "Rp 49k"
+          },
+          {
+            "role": "reveal",
+            "text": "Three sizes. One price.",
+            "items": [
+              {
+                "label": "Mini"
+              },
+              {
+                "label": "Classic"
+              },
+              {
+                "label": "Max"
+              }
+            ]
+          },
+          {
+            "role": "fact",
+            "text": "Why teams switch",
+            "items": [
+              {
+                "label": "Edit one word, re-render one scene"
+              },
+              {
+                "label": "Every frame checked"
+              },
+              {
+                "label": "Roll back any change"
+              }
+            ]
+          },
+          {
+            "role": "cta",
+            "text": "Start rendering today",
+            "button": "Try it free"
+          }
+        ]
+      },
+      "style": {
+        "brand": {
+          "bg": "#0b1020",
+          "main": "#1e293b",
+          "accent": "#f59e0b",
+          "text": "#f8fafc",
+          "text_on_accent": "#111111"
+        },
+        "font_scale": 1,
+        "pacing": "medium"
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "RECIPE.md",
+      "role": "instructions",
+      "content": "# product-ad\n\nA four-beat product spot: hook with price, product reveal on cards, three proof features, call to action that holds still. No photo assets are needed: cards show drawn tiles in the brand colours, or your own images.\n\nSource: `fixtures/w3-promo` (hook, product cards, feature list and call-to-action scenes), re-authored with brand tokens and without its image and video assets.\n\n## Beats\n| role | template | looks like | limit |\n|---|---|---|---|\n| `hook` | `scenes/hook.html` | kicker, headline, price pops and settles | 8 words; `kicker`, `price` optional |\n| `reveal` | `scenes/reveal.html` | 1 to 3 cards fly up in turn, slow push-in on each | 6 words; labels at most 14 characters |\n| `fact` | `scenes/features.html` | 2 to 3 numbered feature rows slide in | 6 words; feature lines at most 40 characters |\n| `cta` | `scenes/cta.html` | title, then an accent pill button, then stillness | 6 words; `button` optional |\n\nCards may carry `image` (a path relative to the params file). The applier copies it into `assets/img/` and declares it. 3 to 5 beats, 8 to 45 s.\n\n## The controls worth changing first\n- `style.brand.accent`: price, kicker, button, highlighted words.\n- `content.beats[0].price` and `.kicker`: the offer. A direct edit re-renders only the hook.\n- `style.pacing` and `style.font_scale`: motion speed and type size.\n\n## Taste\n- One offer per ad. Price once, in the hook, and the button text says the action.\n- The last beat should hold still for 2 seconds or more: give the others `short` weights if time is tight.\n- Three features is plenty; the third should be the one that closes.\n- Use real product images when you have them (`items[].image`); the drawn tiles are placeholders.\n\n## After applying\nThe result is an ordinary Mosio project: edit words in place, change a brand token in `shared/tokens.css` and only the scenes that import it re-render.\n"
+    },
+    {
+      "path": "plan.md",
+      "role": "beats",
+      "content": "# Product advertisement: beat plan\n\nLength 8 to 45 s (default 15). Roles: hook, reveal, fact, cta; 3 to 5 beats.\nTempo per beat (seconds): short 2, medium 3, long 4.\n\n## hook\n\n- scene: scenes/hook.html\n- technique: kicker, headline and price rise in sequence; the price pops and pulses\n- primitives: rise-fade, pop\n- limits: {\"max_words\": 8}\n\n## reveal\n\n- scene: scenes/reveal.html\n- technique: 1 to 3 cards fly up one after another with a slow push-in on each picture or tile\n- primitives: rise-fade, push-in\n- limits: {\"item_label_max\": 14, \"items_max\": 3, \"items_min\": 1, \"max_words\": 6}\n\n## fact\n\n- scene: scenes/features.html\n- technique: numbered feature rows slide in with a stagger\n- primitives: slide-in\n- limits: {\"item_label_max\": 40, \"items_max\": 3, \"items_min\": 2, \"max_words\": 6}\n\n## cta\n\n- scene: scenes/cta.html\n- technique: title then a pill button in the accent colour, then everything holds still\n- primitives: rise-fade\n- limits: {\"max_words\": 6}\n\n## Controls\n\n- Accent colour (`/style/brand/accent`): Recolours the price, kicker, button and highlight: --accent in shared/tokens.css.\n- Price line (`/content/beats/0/price`): Edit the price directly in the hook scene; only that scene re-renders.\n- Pacing (`/style/pacing`): Speeds or slows every entrance: --pace in shared/tokens.css.\n- Type size (`/style/font_scale`): Scales all type: --type-scale in shared/tokens.css.\n"
+    },
+    {
+      "path": "params.json",
+      "role": "params",
+      "content": "{\n  \"example\": {\n    \"content\": {\n      \"beats\": [\n        {\n          \"key\": \"zero waiting.\",\n          \"kicker\": \"New this season\",\n          \"price\": \"Rp 49k\",\n          \"role\": \"hook\",\n          \"text\": \"Faster videos, zero waiting.\"\n        },\n        {\n          \"items\": [\n            {\n              \"label\": \"Mini\"\n            },\n            {\n              \"label\": \"Classic\"\n            },\n            {\n              \"label\": \"Max\"\n            }\n          ],\n          \"role\": \"reveal\",\n          \"text\": \"Three sizes. One price.\"\n        },\n        {\n          \"items\": [\n            {\n              \"label\": \"Edit one word, re-render one scene\"\n            },\n            {\n              \"label\": \"Every frame checked\"\n            },\n            {\n              \"label\": \"Roll back any change\"\n            }\n          ],\n          \"role\": \"fact\",\n          \"text\": \"Why teams switch\"\n        },\n        {\n          \"button\": \"Try it free\",\n          \"role\": \"cta\",\n          \"text\": \"Start rendering today\"\n        }\n      ]\n    },\n    \"format\": {\n      \"duration_s\": 15,\n      \"ratio\": \"16:9\"\n    },\n    \"name\": \"product-ad-demo\",\n    \"style\": {\n      \"brand\": {\n        \"accent\": \"#f59e0b\",\n        \"bg\": \"#0b1020\",\n        \"main\": \"#1e293b\",\n        \"text\": \"#f8fafc\",\n        \"text_on_accent\": \"#111111\"\n      },\n      \"font_scale\": 1,\n      \"pacing\": \"medium\"\n    }\n  },\n  \"schema\": {\n    \"additionalProperties\": false,\n    \"properties\": {\n      \"content\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"What the ad says.\",\n        \"properties\": {\n          \"beats\": {\n            \"default\": [\n              {\n                \"key\": \"zero waiting.\",\n                \"kicker\": \"New this season\",\n                \"price\": \"Rp 49k\",\n                \"role\": \"hook\",\n                \"text\": \"Faster videos, zero waiting.\"\n              },\n              {\n                \"items\": [\n                  {\n                    \"label\": \"Mini\"\n                  },\n                  {\n                    \"label\": \"Classic\"\n                  },\n                  {\n                    \"label\": \"Max\"\n                  }\n                ],\n                \"role\": \"reveal\",\n                \"text\": \"Three sizes. One price.\"\n              },\n              {\n                \"items\": [\n                  {\n                    \"label\": \"Edit one word, re-render one scene\"\n                  },\n                  {\n                    \"label\": \"Every frame checked\"\n                  },\n                  {\n                    \"label\": \"Roll back any change\"\n                  }\n                ],\n                \"role\": \"fact\",\n                \"text\": \"Why teams switch\"\n              },\n              {\n                \"button\": \"Try it free\",\n                \"role\": \"cta\",\n                \"text\": \"Start rendering today\"\n              }\n            ],\n            \"description\": \"One entry per scene, in order: usually hook, reveal, fact, cta.\",\n            \"items\": {\n              \"additionalProperties\": false,\n              \"allOf\": [\n                {\n                  \"if\": {\n                    \"properties\": {\n                      \"role\": {\n                        \"enum\": [\n                          \"reveal\",\n                          \"fact\"\n                        ]\n                      }\n                    },\n                    \"required\": [\n                      \"role\"\n                    ]\n                  },\n                  \"then\": {\n                    \"required\": [\n                      \"items\"\n                    ]\n                  }\n                }\n              ],\n              \"properties\": {\n                \"button\": {\n                  \"default\": \"\",\n                  \"description\": \"CTA only: the text on the button.\",\n                  \"maxLength\": 24,\n                  \"type\": \"string\"\n                },\n                \"id\": {\n                  \"description\": \"Optional scene id (used in every data-mosio-id). Defaults to the role name; a repeated role gets -2, -3.\",\n                  \"pattern\": \"^[a-z][a-z0-9-]{0,23}$\",\n                  \"type\": \"string\"\n                },\n                \"items\": {\n                  \"description\": \"Reveal: the product variants, 1 to 3 cards. Fact: the feature lines (label only), 2 to 3 of them.\",\n                  \"items\": {\n                    \"additionalProperties\": false,\n                    \"properties\": {\n                      \"image\": {\n                        \"description\": \"Optional path to a PNG or JPEG of the variant, relative to the params file. Without it the card shows a drawn tile in the brand colours.\",\n                        \"type\": \"string\"\n                      },\n                      \"label\": {\n                        \"description\": \"Card name (reveal) or feature line (fact). The reveal template allows 14 characters, the fact template 40.\",\n                        \"maxLength\": 40,\n                        \"minLength\": 1,\n                        \"type\": \"string\"\n                      }\n                    },\n                    \"required\": [\n                      \"label\"\n                    ],\n                    \"type\": \"object\"\n                  },\n                  \"maxItems\": 3,\n                  \"minItems\": 1,\n                  \"type\": \"array\"\n                },\n                \"key\": {\n                  \"description\": \"The word or words of the text to stress with the accent colour. Must occur in the text.\",\n                  \"maxLength\": 40,\n                  \"type\": \"string\"\n                },\n                \"kicker\": {\n                  \"default\": \"\",\n                  \"description\": \"Hook only: the small label above the headline, for example New this season.\",\n                  \"maxLength\": 28,\n                  \"type\": \"string\"\n                },\n                \"price\": {\n                  \"default\": \"\",\n                  \"description\": \"Hook only: the price line shown in the accent colour. Leave empty for no price.\",\n                  \"maxLength\": 16,\n                  \"type\": \"string\"\n                },\n                \"role\": {\n                  \"description\": \"What this beat does in the story; picks the scene template.\",\n                  \"enum\": [\n                    \"hook\",\n                    \"reveal\",\n                    \"fact\",\n                    \"cta\"\n                  ]\n                },\n                \"text\": {\n                  \"description\": \"The words on screen, written literally into the scene HTML.\",\n                  \"maxLength\": 60,\n                  \"minLength\": 1,\n                  \"type\": \"string\"\n                },\n                \"weight\": {\n                  \"default\": \"medium\",\n                  \"description\": \"Relative screen time of this beat.\",\n                  \"enum\": [\n                    \"short\",\n                    \"medium\",\n                    \"long\"\n                  ]\n                }\n              },\n              \"required\": [\n                \"role\",\n                \"text\"\n              ],\n              \"type\": \"object\"\n            },\n            \"maxItems\": 5,\n            \"minItems\": 3,\n            \"type\": \"array\"\n          }\n        },\n        \"type\": \"object\"\n      },\n      \"format\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Output size and length.\",\n        \"properties\": {\n          \"duration_s\": {\n            \"default\": 15,\n            \"description\": \"Total length in seconds after transitions. Beats share it by weight.\",\n            \"maximum\": 45,\n            \"minimum\": 8,\n            \"type\": \"number\"\n          },\n          \"ratio\": {\n            \"default\": \"9:16\",\n            \"description\": \"Aspect ratio: 9:16 vertical for social, 16:9 landscape.\",\n            \"enum\": [\n              \"9:16\",\n              \"16:9\"\n            ]\n          }\n        },\n        \"type\": \"object\"\n      },\n      \"name\": {\n        \"default\": \"product-ad\",\n        \"description\": \"Project name written to mosio.json.\",\n        \"pattern\": \"^[a-z0-9][a-z0-9-]{1,39}$\",\n        \"type\": \"string\"\n      },\n      \"style\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Look: brand colours, type size and motion speed.\",\n        \"properties\": {\n          \"brand\": {\n            \"additionalProperties\": false,\n            \"default\": {},\n            \"description\": \"Brand colours. They are written to shared/tokens.css, so changing one re-renders every scene.\",\n            \"properties\": {\n              \"accent\": {\n                \"default\": \"#f59e0b\",\n                \"description\": \"Accent colour for the one thing that matters on screen: key word, winner bar, price (--accent).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"bg\": {\n                \"default\": \"#0b1020\",\n                \"description\": \"Background colour of every scene (--bg in shared/tokens.css).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"main\": {\n                \"default\": \"#1e293b\",\n                \"description\": \"Main brand colour: large shapes and the key surface (--main).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"text\": {\n                \"default\": \"#f8fafc\",\n                \"description\": \"Text colour on the background (--text).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"text_on_accent\": {\n                \"default\": \"#111111\",\n                \"description\": \"Text colour used on top of the accent colour, for example on a button (--text-on-accent).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              }\n            },\n            \"type\": \"object\"\n          },\n          \"font_scale\": {\n            \"default\": 1,\n            \"description\": \"Multiplier on every type size (--type-scale). 1 is the designed size; check `mosio inspect` for overflow above 1.\",\n            \"maximum\": 1.2,\n            \"minimum\": 0.8,\n            \"type\": \"number\"\n          },\n          \"pacing\": {\n            \"default\": \"medium\",\n            \"description\": \"Speed of the motion inside each scene: calm slows entrances by about 30 percent, brisk speeds them by about 25 percent. Scene lengths do not change.\",\n            \"enum\": [\n              \"calm\",\n              \"medium\",\n              \"brisk\"\n            ]\n          }\n        },\n        \"type\": \"object\"\n      }\n    },\n    \"type\": \"object\"\n  }\n}\n"
+    },
+    {
+      "path": "recipe/recipe.json",
+      "role": "template",
+      "content": "{\n  \"schema\": \"mosio.recipe/1\",\n  \"id\": \"product-ad\",\n  \"title\": \"Product advertisement\",\n  \"description\": \"A four-beat product spot: hook with price, product reveal on cards, three proof features, and a call-to-action button that holds still.\",\n  \"version\": \"0.1.0\",\n  \"tags\": [\n    \"ad\",\n    \"product\",\n    \"promo\"\n  ],\n  \"license\": \"MIT\",\n  \"provenance\": {\n    \"authors\": [\n      \"Mosio\"\n    ],\n    \"sources\": [\n      {\n        \"kind\": \"own\",\n        \"name\": \"fixtures/w3-promo\",\n        \"path\": \"fixtures/w3-promo\",\n        \"what\": \"hook, product cards, feature list and call-to-action scenes; re-authored with tokens and no photo assets\"\n      }\n    ]\n  },\n  \"formats\": [\n    {\n      \"ratio\": \"9:16\",\n      \"width\": 1080,\n      \"height\": 1920,\n      \"fps\": 30,\n      \"vars\": {\n        \"fs_display\": 128,\n        \"fs_body\": 58,\n        \"fs_price\": 104,\n        \"margin\": 96\n      }\n    },\n    {\n      \"ratio\": \"16:9\",\n      \"width\": 1920,\n      \"height\": 1080,\n      \"fps\": 30,\n      \"vars\": {\n        \"fs_display\": 120,\n        \"fs_body\": 46,\n        \"fs_price\": 96,\n        \"margin\": 140\n      }\n    }\n  ],\n  \"duration_s\": {\n    \"min\": 8,\n    \"default\": 15,\n    \"max\": 45\n  },\n  \"beats\": {\n    \"roles\": [\n      \"hook\",\n      \"reveal\",\n      \"fact\",\n      \"cta\"\n    ],\n    \"min\": 3,\n    \"max\": 5,\n    \"tempo_s\": {\n      \"short\": 2,\n      \"medium\": 3,\n      \"long\": 4\n    },\n    \"ending_min_s\": 2\n  },\n  \"plan\": [\n    {\n      \"roles\": [\n        \"hook\"\n      ],\n      \"scene\": \"scenes/hook.html\",\n      \"technique\": \"kicker, headline and price rise in sequence; the price pops and pulses\",\n      \"primitives\": [\n        \"rise-fade\",\n        \"pop\"\n      ],\n      \"limits\": {\n        \"max_words\": 8\n      }\n    },\n    {\n      \"roles\": [\n        \"reveal\"\n      ],\n      \"scene\": \"scenes/reveal.html\",\n      \"technique\": \"1 to 3 cards fly up one after another with a slow push-in on each picture or tile\",\n      \"primitives\": [\n        \"rise-fade\",\n        \"push-in\"\n      ],\n      \"limits\": {\n        \"max_words\": 6,\n        \"items_min\": 1,\n        \"items_max\": 3,\n        \"item_label_max\": 14\n      }\n    },\n    {\n      \"roles\": [\n        \"fact\"\n      ],\n      \"scene\": \"scenes/features.html\",\n      \"technique\": \"numbered feature rows slide in with a stagger\",\n      \"primitives\": [\n        \"slide-in\"\n      ],\n      \"limits\": {\n        \"max_words\": 6,\n        \"items_min\": 2,\n        \"items_max\": 3,\n        \"item_label_max\": 40\n      }\n    },\n    {\n      \"roles\": [\n        \"cta\"\n      ],\n      \"scene\": \"scenes/cta.html\",\n      \"technique\": \"title then a pill button in the accent colour, then everything holds still\",\n      \"primitives\": [\n        \"rise-fade\"\n      ],\n      \"limits\": {\n        \"max_words\": 6\n      }\n    }\n  ],\n  \"transitions\": {\n    \"default\": {\n      \"kind\": \"crossfade\",\n      \"frames\": 15\n    }\n  },\n  \"derive\": [\n    {\n      \"as\": \"pace\",\n      \"from\": \"/style/pacing\",\n      \"map\": {\n        \"calm\": 1.3,\n        \"medium\": 1,\n        \"brisk\": 0.75\n      }\n    }\n  ],\n  \"controls\": [\n    {\n      \"param\": \"/style/brand/accent\",\n      \"label\": \"Accent colour\",\n      \"effect\": \"Recolours the price, kicker, button and highlight: --accent in shared/tokens.css.\"\n    },\n    {\n      \"param\": \"/content/beats/0/price\",\n      \"label\": \"Price line\",\n      \"effect\": \"Edit the price directly in the hook scene; only that scene re-renders.\"\n    },\n    {\n      \"param\": \"/style/pacing\",\n      \"label\": \"Pacing\",\n      \"effect\": \"Speeds or slows every entrance: --pace in shared/tokens.css.\"\n    },\n    {\n      \"param\": \"/style/font_scale\",\n      \"label\": \"Type size\",\n      \"effect\": \"Scales all type: --type-scale in shared/tokens.css.\"\n    }\n  ],\n  \"inputs\": {\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"properties\": {\n      \"name\": {\n        \"type\": \"string\",\n        \"pattern\": \"^[a-z0-9][a-z0-9-]{1,39}$\",\n        \"default\": \"product-ad\",\n        \"description\": \"Project name written to mosio.json.\"\n      },\n      \"format\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Output size and length.\",\n        \"properties\": {\n          \"ratio\": {\n            \"enum\": [\n              \"9:16\",\n              \"16:9\"\n            ],\n            \"default\": \"9:16\",\n            \"description\": \"Aspect ratio: 9:16 vertical for social, 16:9 landscape.\"\n          },\n          \"duration_s\": {\n            \"type\": \"number\",\n            \"minimum\": 8,\n            \"maximum\": 45,\n            \"default\": 15,\n            \"description\": \"Total length in seconds after transitions. Beats share it by weight.\"\n          }\n        }\n      },\n      \"content\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"What the ad says.\",\n        \"properties\": {\n          \"beats\": {\n            \"type\": \"array\",\n            \"minItems\": 3,\n            \"maxItems\": 5,\n            \"default\": [\n              {\n                \"role\": \"hook\",\n                \"text\": \"Faster videos, zero waiting.\",\n                \"key\": \"zero waiting.\",\n                \"kicker\": \"New this season\",\n                \"price\": \"Rp 49k\"\n              },\n              {\n                \"role\": \"reveal\",\n                \"text\": \"Three sizes. One price.\",\n                \"items\": [\n                  {\n                    \"label\": \"Mini\"\n                  },\n                  {\n                    \"label\": \"Classic\"\n                  },\n                  {\n                    \"label\": \"Max\"\n                  }\n                ]\n              },\n              {\n                \"role\": \"fact\",\n                \"text\": \"Why teams switch\",\n                \"items\": [\n                  {\n                    \"label\": \"Edit one word, re-render one scene\"\n                  },\n                  {\n                    \"label\": \"Every frame checked\"\n                  },\n                  {\n                    \"label\": \"Roll back any change\"\n                  }\n                ]\n              },\n              {\n                \"role\": \"cta\",\n                \"text\": \"Start rendering today\",\n                \"button\": \"Try it free\"\n              }\n            ],\n            \"description\": \"One entry per scene, in order: usually hook, reveal, fact, cta.\",\n            \"items\": {\n              \"type\": \"object\",\n              \"additionalProperties\": false,\n              \"required\": [\n                \"role\",\n                \"text\"\n              ],\n              \"properties\": {\n                \"id\": {\n                  \"type\": \"string\",\n                  \"pattern\": \"^[a-z][a-z0-9-]{0,23}$\",\n                  \"description\": \"Optional scene id (used in every data-mosio-id). Defaults to the role name; a repeated role gets -2, -3.\"\n                },\n                \"role\": {\n                  \"enum\": [\n                    \"hook\",\n                    \"reveal\",\n                    \"fact\",\n                    \"cta\"\n                  ],\n                  \"description\": \"What this beat does in the story; picks the scene template.\"\n                },\n                \"text\": {\n                  \"type\": \"string\",\n                  \"minLength\": 1,\n                  \"maxLength\": 60,\n                  \"description\": \"The words on screen, written literally into the scene HTML.\"\n                },\n                \"key\": {\n                  \"type\": \"string\",\n                  \"maxLength\": 40,\n                  \"description\": \"The word or words of the text to stress with the accent colour. Must occur in the text.\"\n                },\n                \"weight\": {\n                  \"enum\": [\n                    \"short\",\n                    \"medium\",\n                    \"long\"\n                  ],\n                  \"default\": \"medium\",\n                  \"description\": \"Relative screen time of this beat.\"\n                },\n                \"kicker\": {\n                  \"type\": \"string\",\n                  \"maxLength\": 28,\n                  \"default\": \"\",\n                  \"description\": \"Hook only: the small label above the headline, for example New this season.\"\n                },\n                \"price\": {\n                  \"type\": \"string\",\n                  \"maxLength\": 16,\n                  \"default\": \"\",\n                  \"description\": \"Hook only: the price line shown in the accent colour. Leave empty for no price.\"\n                },\n                \"items\": {\n                  \"type\": \"array\",\n                  \"minItems\": 1,\n                  \"maxItems\": 3,\n                  \"description\": \"Reveal: the product variants, 1 to 3 cards. Fact: the feature lines (label only), 2 to 3 of them.\",\n                  \"items\": {\n                    \"type\": \"object\",\n                    \"additionalProperties\": false,\n                    \"required\": [\n                      \"label\"\n                    ],\n                    \"properties\": {\n                      \"label\": {\n                        \"type\": \"string\",\n                        \"minLength\": 1,\n                        \"maxLength\": 40,\n                        \"description\": \"Card name (reveal) or feature line (fact). The reveal template allows 14 characters, the fact template 40.\"\n                      },\n                      \"image\": {\n                        \"type\": \"string\",\n                        \"description\": \"Optional path to a PNG or JPEG of the variant, relative to the params file. Without it the card shows a drawn tile in the brand colours.\"\n                      }\n                    }\n                  }\n                },\n                \"button\": {\n                  \"type\": \"string\",\n                  \"maxLength\": 24,\n                  \"default\": \"\",\n                  \"description\": \"CTA only: the text on the button.\"\n                }\n              },\n              \"allOf\": [\n                {\n                  \"if\": {\n                    \"properties\": {\n                      \"role\": {\n                        \"enum\": [\n                          \"reveal\",\n                          \"fact\"\n                        ]\n                      }\n                    },\n                    \"required\": [\n                      \"role\"\n                    ]\n                  },\n                  \"then\": {\n                    \"required\": [\n                      \"items\"\n                    ]\n                  }\n                }\n              ]\n            }\n          }\n        }\n      },\n      \"style\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Look: brand colours, type size and motion speed.\",\n        \"properties\": {\n          \"brand\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"description\": \"Brand colours. They are written to shared/tokens.css, so changing one re-renders every scene.\",\n            \"default\": {},\n            \"properties\": {\n              \"bg\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Background colour of every scene (--bg in shared/tokens.css).\",\n                \"default\": \"#0b1020\"\n              },\n              \"main\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Main brand colour: large shapes and the key surface (--main).\",\n                \"default\": \"#1e293b\"\n              },\n              \"accent\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Accent colour for the one thing that matters on screen: key word, winner bar, price (--accent).\",\n                \"default\": \"#f59e0b\"\n              },\n              \"text\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Text colour on the background (--text).\",\n                \"default\": \"#f8fafc\"\n              },\n              \"text_on_accent\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Text colour used on top of the accent colour, for example on a button (--text-on-accent).\",\n                \"default\": \"#111111\"\n              }\n            }\n          },\n          \"font_scale\": {\n            \"type\": \"number\",\n            \"minimum\": 0.8,\n            \"maximum\": 1.2,\n            \"default\": 1,\n            \"description\": \"Multiplier on every type size (--type-scale). 1 is the designed size; check `mosio inspect` for overflow above 1.\"\n          },\n          \"pacing\": {\n            \"enum\": [\n              \"calm\",\n              \"medium\",\n              \"brisk\"\n            ],\n            \"default\": \"medium\",\n            \"description\": \"Speed of the motion inside each scene: calm slows entrances by about 30 percent, brisk speeds them by about 25 percent. Scene lengths do not change.\"\n          }\n        }\n      }\n    }\n  },\n  \"files\": {\n    \"scenes\": [\n      \"scenes/hook.html\",\n      \"scenes/reveal.html\",\n      \"scenes/features.html\",\n      \"scenes/cta.html\"\n    ],\n    \"shared\": [\n      \"shared/tokens.css\",\n      \"shared/base.css\"\n    ],\n    \"fonts\": [\n      \"Inter-Regular.otf\",\n      \"Inter-Bold.otf\",\n      \"Inter-ExtraBold.otf\"\n    ]\n  },\n  \"example\": {\n    \"project\": \"example/\",\n    \"params\": \"example.params.json\"\n  },\n  \"engine\": {\n    \"libraries\": []\n  },\n  \"requires\": [],\n  \"checks\": {\n    \"min_text_px\": 46,\n    \"max_words_on_screen\": 10,\n    \"max_font_families\": 1\n  }\n}\n"
+    },
+    {
+      "path": "recipe/scenes/cta.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .bg { position: absolute; inset: -60px; animation: drift 14s linear both;\n          background: radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 55%),\n                      radial-gradient(circle at 5% 95%, color-mix(in srgb, var(--main) 90%, transparent), transparent 62%); }\n    @keyframes drift { from { transform: scale(1.1) translateX(0); } to { transform: scale(1) translateX(-40px); } }\n    @keyframes rise { from { opacity: 0; transform: translateY(0.5em); } to { opacity: 1; transform: none; } }\n    @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: calc(0.5 * var(--fs-display) * var(--type-scale)); }\n    h1 { font-size: calc(var(--fs-display) * var(--type-scale) * 0.85); opacity: 0;\n         animation: rise calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.3s * var(--pace)) both; }\n    .btn { padding: 0.5em 1.8em; border-radius: 999px; background: var(--accent); color: var(--text-on-accent); font-size: calc(var(--fs-body) * var(--type-scale) * 1.1); font-weight: 800; opacity: 0;\n           animation: rise calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.9s * var(--pace)) both; }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"bg\" data-mosio-id=\"{{beat.id}}/bg\"></div>\n    <div class=\"copy\">\n      <h1 data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"{{#if accent}}acc{{/if}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span> {{/each}}</h1>\n      {{#if beat.button}}<div class=\"btn\" data-mosio-id=\"{{beat.id}}/button\">{{beat.button}}</div>{{/if}}\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/scenes/features.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .bg { position: absolute; inset: -60px; animation: drift 14s linear both;\n          background: radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 55%),\n                      radial-gradient(circle at 5% 95%, color-mix(in srgb, var(--main) 90%, transparent), transparent 62%); }\n    @keyframes drift { from { transform: scale(1.1) translateX(0); } to { transform: scale(1) translateX(-40px); } }\n    @keyframes rise { from { opacity: 0; transform: translateY(0.5em); } to { opacity: 1; transform: none; } }\n    @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }\n    h2 { position: absolute; left: var(--margin); right: var(--margin); top: var(--margin); font-size: calc(var(--fs-display) * var(--type-scale) * 0.62); opacity: 0;\n         animation: rise calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.2s * var(--pace)) both; }\n    .list { position: absolute; left: var(--margin); right: var(--margin); bottom: var(--margin); display: flex; flex-direction: column; gap: 32px; }\n    .feat { display: flex; align-items: center; gap: 0.7em; padding: 0.55em 0.9em; font-size: calc(var(--fs-body) * var(--type-scale)); font-weight: 700;\n            background: var(--surface); border: 2px solid color-mix(in srgb, var(--text) 10%, transparent); border-radius: 24px; opacity: 0;\n            animation: slide calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.7s * var(--pace) + var(--i) * 0.35s * var(--pace)) both; }\n    .feat b { font-size: 1.3em; color: var(--accent); min-width: 1.6em; }\n    @keyframes slide { from { opacity: 0; transform: translateX(-3em); } to { opacity: 1; transform: none; } }\n    html[data-ratio=\"9:16\"] .list { top: calc(var(--margin) + 300px); justify-content: center; }\n    html[data-ratio=\"16:9\"] .list { top: calc(var(--margin) + 190px); justify-content: center; }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"bg\" data-mosio-id=\"{{beat.id}}/bg\"></div>\n    <h2 data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"{{#if accent}}acc{{/if}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span> {{/each}}</h2>\n    <div class=\"list\" data-mosio-id=\"{{beat.id}}/list\">\n      {{#each beat.items}}<div class=\"feat\" style=\"--i:{{@index}}\" data-mosio-id=\"{{beat.id}}/f{{@number}}\"><b data-mosio-id=\"{{beat.id}}/n{{@number}}\">0{{@number}}</b><span data-mosio-id=\"{{beat.id}}/t{{@number}}\">{{label}}</span></div>\n      {{/each}}\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/scenes/hook.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .bg { position: absolute; inset: -60px; animation: drift 14s linear both;\n          background: radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 55%),\n                      radial-gradient(circle at 5% 95%, color-mix(in srgb, var(--main) 90%, transparent), transparent 62%); }\n    @keyframes drift { from { transform: scale(1.1) translateX(0); } to { transform: scale(1) translateX(-40px); } }\n    @keyframes rise { from { opacity: 0; transform: translateY(0.5em); } to { opacity: 1; transform: none; } }\n    @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: calc(0.3 * var(--fs-display) * var(--type-scale)); }\n    .kicker { font-size: calc(var(--fs-body) * var(--type-scale) * 0.72); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);\n              opacity: 0; animation: rise calc(0.7s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.3s * var(--pace)) both; }\n    h1 { font-size: calc(var(--fs-display) * var(--type-scale)); opacity: 0; max-width: 100%;\n         animation: rise calc(0.9s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.6s * var(--pace)) both; }\n    .price { font-size: calc(var(--fs-price) * var(--type-scale)); font-weight: 800; color: var(--accent); opacity: 0; transform-origin: left center;\n             animation: pop calc(0.6s * var(--pace)) cubic-bezier(.3,1.6,.5,1) calc(1.6s * var(--pace)) both; }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"bg\" data-mosio-id=\"{{beat.id}}/bg\"></div>\n    <div class=\"copy\">\n      {{#if beat.kicker}}<div class=\"kicker\" data-mosio-id=\"{{beat.id}}/kicker\">{{beat.kicker}}</div>{{/if}}\n      <h1 data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"{{#if accent}}acc{{/if}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span> {{/each}}</h1>\n      {{#if beat.price}}<div class=\"price\" data-mosio-id=\"{{beat.id}}/price\">{{beat.price}}</div>{{/if}}\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/scenes/reveal.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .bg { position: absolute; inset: -60px; animation: drift 14s linear both;\n          background: radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 55%),\n                      radial-gradient(circle at 5% 95%, color-mix(in srgb, var(--main) 90%, transparent), transparent 62%); }\n    @keyframes drift { from { transform: scale(1.1) translateX(0); } to { transform: scale(1) translateX(-40px); } }\n    @keyframes rise { from { opacity: 0; transform: translateY(0.5em); } to { opacity: 1; transform: none; } }\n    @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }\n    h2 { position: absolute; left: var(--margin); right: var(--margin); top: var(--margin); font-size: calc(var(--fs-display) * var(--type-scale) * 0.62); opacity: 0;\n         animation: rise calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.2s * var(--pace)) both; }\n    .row { position: absolute; left: var(--margin); right: var(--margin); bottom: var(--margin); display: flex; gap: 48px; }\n    .card { border-radius: 28px; overflow: hidden; background: var(--surface); box-shadow: 0 30px 80px rgba(0,0,0,.45); opacity: 0;\n            animation: rise calc(0.9s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.7s * var(--pace) + var(--i) * 0.25s * var(--pace)) both; }\n    .tile, .card img { display: block; object-fit: cover; }\n    .tile { position: relative; overflow: hidden; background: linear-gradient(135deg, var(--accent), var(--main)); animation: push 8s linear both; }\n    .tile::after { content: \"\"; position: absolute; width: 60%; aspect-ratio: 1; left: 20%; top: 20%; border-radius: 50%; background: color-mix(in srgb, var(--text) 18%, transparent); }\n    .card:nth-child(2) .tile { background: linear-gradient(200deg, var(--main), var(--accent)); }\n    .card:nth-child(3) .tile { background: linear-gradient(315deg, var(--accent), var(--bg)); }\n    .card img { animation: push 8s linear both; }\n    .name { font-size: calc(var(--fs-body) * var(--type-scale)); font-weight: 700; padding: 0.5em 0.7em; }\n    @keyframes push { from { transform: scale(1.15); } to { transform: scale(1); } }\n    html[data-ratio=\"9:16\"] .row { flex-direction: column; top: calc(var(--margin) + 300px); justify-content: center; gap: 36px; }\n    html[data-ratio=\"9:16\"] .card { display: flex; align-items: center; height: 380px; }\n    html[data-ratio=\"9:16\"] .tile, html[data-ratio=\"9:16\"] .card img { width: 380px; height: 380px; flex: none; }\n    html[data-ratio=\"16:9\"] .row { top: calc(var(--margin) + 190px); }\n    html[data-ratio=\"16:9\"] .card { flex: 1; min-width: 0; display: flex; flex-direction: column; }\n    html[data-ratio=\"16:9\"] .tile, html[data-ratio=\"16:9\"] .card img { width: 100%; flex: 1; min-height: 0; }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"bg\" data-mosio-id=\"{{beat.id}}/bg\"></div>\n    <h2 data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"{{#if accent}}acc{{/if}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span> {{/each}}</h2>\n    <div class=\"row\" data-mosio-id=\"{{beat.id}}/row\">\n      {{#each beat.items}}<div class=\"card\" style=\"--i:{{@index}}\" data-mosio-id=\"{{beat.id}}/card{{@index}}\">{{#if image_url}}<img src=\"{{image_url}}\" alt=\"\" data-mosio-id=\"{{beat.id}}/img{{@index}}\">{{/if}}{{#unless image_url}}<div class=\"tile\" data-mosio-id=\"{{beat.id}}/tile{{@index}}\"></div>{{/unless}}<div class=\"name\" data-mosio-id=\"{{beat.id}}/name{{@index}}\">{{label}}</div></div>\n      {{/each}}\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/shared/base.css",
+      "role": "template",
+      "content": "/* Fixed foundation of the recipe: fonts, reset and the scene frame. Brand values are in tokens.css, not here. */\n@font-face { font-family: \"Inter\"; font-weight: 400; src: url(\"/assets/fonts/Inter-Regular.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 700; src: url(\"/assets/fonts/Inter-Bold.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 800; src: url(\"/assets/fonts/Inter-ExtraBold.otf\") format(\"opentype\"); }\n* { margin: 0; padding: 0; box-sizing: border-box; }\nhtml, body { width: var(--w); height: var(--h); overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font-body); }\n.scene { position: absolute; inset: 0; overflow: hidden; }\nh1, h2 { font-family: var(--font-display); font-weight: 800; line-height: 1.04; letter-spacing: -0.02em; }\n.acc { color: var(--accent); }\n"
+    },
+    {
+      "path": "recipe/shared/tokens.css",
+      "role": "template",
+      "content": "/* Brand and layout tokens for every scene (recipe product-ad). Edit values here: every scene that imports this file\n   re-renders, which is correct, because they all depend on it. */\n:root {\n  --bg: {{brand.bg}};\n  --main: {{brand.main}};\n  --accent: {{brand.accent}};\n  --text: {{brand.text}};\n  --text-on-accent: {{brand.text_on_accent}};\n  --surface: color-mix(in srgb, var(--text) 8%, var(--bg));\n  --text-dim: color-mix(in srgb, var(--text) 68%, var(--bg));\n  --font-display: \"Inter\", sans-serif;\n  --font-body: \"Inter\", sans-serif;\n  --w: {{format.width}}px;\n  --h: {{format.height}}px;\n  --type-scale: {{style.font_scale}};\n  --pace: {{derived.pace}};\n  --fs-display: {{format.vars.fs_display}}px;\n  --fs-body: {{format.vars.fs_body}}px;\n  --fs-price: {{format.vars.fs_price}}px;\n  --margin: {{format.vars.margin}}px;\n}\n"
+    },
+    {
+      "path": "example/mosio.json",
+      "role": "example",
+      "content": "{\n  \"assets\": [],\n  \"audio\": [],\n  \"background\": \"#0b1020\",\n  \"description\": \"Product advertisement (recipe product-ad 0.1.0), 16:9, 15 s.\",\n  \"fps\": 30,\n  \"height\": 1080,\n  \"libraries\": [],\n  \"mosio\": 1,\n  \"name\": \"product-ad-demo\",\n  \"scenes\": [\n    {\n      \"frames\": 123,\n      \"id\": \"hook\",\n      \"src\": \"scenes/01-hook.html\"\n    },\n    {\n      \"frames\": 123,\n      \"id\": \"reveal\",\n      \"src\": \"scenes/02-reveal.html\"\n    },\n    {\n      \"frames\": 123,\n      \"id\": \"fact\",\n      \"src\": \"scenes/03-fact.html\"\n    },\n    {\n      \"frames\": 126,\n      \"id\": \"cta\",\n      \"src\": \"scenes/04-cta.html\"\n    }\n  ],\n  \"seed\": 1,\n  \"shared\": [\n    \"shared/tokens.css\",\n    \"shared/base.css\"\n  ],\n  \"transitions\": [\n    {\n      \"frames\": 15,\n      \"from\": \"hook\",\n      \"kind\": \"crossfade\",\n      \"to\": \"reveal\"\n    },\n    {\n      \"frames\": 15,\n      \"from\": \"reveal\",\n      \"kind\": \"crossfade\",\n      \"to\": \"fact\"\n    },\n    {\n      \"frames\": 15,\n      \"from\": \"fact\",\n      \"kind\": \"crossfade\",\n      \"to\": \"cta\"\n    }\n  ],\n  \"width\": 1920\n}\n"
+    },
+    {
+      "path": "example/scenes/01-hook.html",
+      "role": "example",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"16:9\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .bg { position: absolute; inset: -60px; animation: drift 14s linear both;\n          background: radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 55%),\n                      radial-gradient(circle at 5% 95%, color-mix(in srgb, var(--main) 90%, transparent), transparent 62%); }\n    @keyframes drift { from { transform: scale(1.1) translateX(0); } to { transform: scale(1) translateX(-40px); } }\n    @keyframes rise { from { opacity: 0; transform: translateY(0.5em); } to { opacity: 1; transform: none; } }\n    @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: calc(0.3 * var(--fs-display) * var(--type-scale)); }\n    .kicker { font-size: calc(var(--fs-body) * var(--type-scale) * 0.72); font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);\n              opacity: 0; animation: rise calc(0.7s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.3s * var(--pace)) both; }\n    h1 { font-size: calc(var(--fs-display) * var(--type-scale)); opacity: 0; max-width: 100%;\n         animation: rise calc(0.9s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.6s * var(--pace)) both; }\n    .price { font-size: calc(var(--fs-price) * var(--type-scale)); font-weight: 800; color: var(--accent); opacity: 0; transform-origin: left center;\n             animation: pop calc(0.6s * var(--pace)) cubic-bezier(.3,1.6,.5,1) calc(1.6s * var(--pace)) both; }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"hook/scene\">\n    <div class=\"bg\" data-mosio-id=\"hook/bg\"></div>\n    <div class=\"copy\">\n      <div class=\"kicker\" data-mosio-id=\"hook/kicker\">New this season</div>\n      <h1 data-mosio-id=\"hook/text\"><span class=\"\" data-mosio-id=\"hook/w0\">Faster</span> <span class=\"\" data-mosio-id=\"hook/w1\">videos,</span> <span class=\"acc\" data-mosio-id=\"hook/w2\">zero</span> <span class=\"acc\" data-mosio-id=\"hook/w3\">waiting.</span> </h1>\n      <div class=\"price\" data-mosio-id=\"hook/price\">Rp 49k</div>\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "example/scenes/02-reveal.html",
+      "role": "example",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"16:9\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .bg { position: absolute; inset: -60px; animation: drift 14s linear both;\n          background: radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 55%),\n                      radial-gradient(circle at 5% 95%, color-mix(in srgb, var(--main) 90%, transparent), transparent 62%); }\n    @keyframes drift { from { transform: scale(1.1) translateX(0); } to { transform: scale(1) translateX(-40px); } }\n    @keyframes rise { from { opacity: 0; transform: translateY(0.5em); } to { opacity: 1; transform: none; } }\n    @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }\n    h2 { position: absolute; left: var(--margin); right: var(--margin); top: var(--margin); font-size: calc(var(--fs-display) * var(--type-scale) * 0.62); opacity: 0;\n         animation: rise calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.2s * var(--pace)) both; }\n    .row { position: absolute; left: var(--margin); right: var(--margin); bottom: var(--margin); display: flex; gap: 48px; }\n    .card { border-radius: 28px; overflow: hidden; background: var(--surface); box-shadow: 0 30px 80px rgba(0,0,0,.45); opacity: 0;\n            animation: rise calc(0.9s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.7s * var(--pace) + var(--i) * 0.25s * var(--pace)) both; }\n    .tile, .card img { display: block; object-fit: cover; }\n    .tile { position: relative; overflow: hidden; background: linear-gradient(135deg, var(--accent), var(--main)); animation: push 8s linear both; }\n    .tile::after { content: \"\"; position: absolute; width: 60%; aspect-ratio: 1; left: 20%; top: 20%; border-radius: 50%; background: color-mix(in srgb, var(--text) 18%, transparent); }\n    .card:nth-child(2) .tile { background: linear-gradient(200deg, var(--main), var(--accent)); }\n    .card:nth-child(3) .tile { background: linear-gradient(315deg, var(--accent), var(--bg)); }\n    .card img { animation: push 8s linear both; }\n    .name { font-size: calc(var(--fs-body) * var(--type-scale)); font-weight: 700; padding: 0.5em 0.7em; }\n    @keyframes push { from { transform: scale(1.15); } to { transform: scale(1); } }\n    html[data-ratio=\"9:16\"] .row { flex-direction: column; top: calc(var(--margin) + 300px); justify-content: center; gap: 36px; }\n    html[data-ratio=\"9:16\"] .card { display: flex; align-items: center; height: 380px; }\n    html[data-ratio=\"9:16\"] .tile, html[data-ratio=\"9:16\"] .card img { width: 380px; height: 380px; flex: none; }\n    html[data-ratio=\"16:9\"] .row { top: calc(var(--margin) + 190px); }\n    html[data-ratio=\"16:9\"] .card { flex: 1; min-width: 0; display: flex; flex-direction: column; }\n    html[data-ratio=\"16:9\"] .tile, html[data-ratio=\"16:9\"] .card img { width: 100%; flex: 1; min-height: 0; }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"reveal/scene\">\n    <div class=\"bg\" data-mosio-id=\"reveal/bg\"></div>\n    <h2 data-mosio-id=\"reveal/text\"><span class=\"\" data-mosio-id=\"reveal/w0\">Three</span> <span class=\"\" data-mosio-id=\"reveal/w1\">sizes.</span> <span class=\"\" data-mosio-id=\"reveal/w2\">One</span> <span class=\"\" data-mosio-id=\"reveal/w3\">price.</span> </h2>\n    <div class=\"row\" data-mosio-id=\"reveal/row\">\n      <div class=\"card\" style=\"--i:0\" data-mosio-id=\"reveal/card0\"><div class=\"tile\" data-mosio-id=\"reveal/tile0\"></div><div class=\"name\" data-mosio-id=\"reveal/name0\">Mini</div></div>\n      <div class=\"card\" style=\"--i:1\" data-mosio-id=\"reveal/card1\"><div class=\"tile\" data-mosio-id=\"reveal/tile1\"></div><div class=\"name\" data-mosio-id=\"reveal/name1\">Classic</div></div>\n      <div class=\"card\" style=\"--i:2\" data-mosio-id=\"reveal/card2\"><div class=\"tile\" data-mosio-id=\"reveal/tile2\"></div><div class=\"name\" data-mosio-id=\"reveal/name2\">Max</div></div>\n      \n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "example/scenes/03-fact.html",
+      "role": "example",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"16:9\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .bg { position: absolute; inset: -60px; animation: drift 14s linear both;\n          background: radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 55%),\n                      radial-gradient(circle at 5% 95%, color-mix(in srgb, var(--main) 90%, transparent), transparent 62%); }\n    @keyframes drift { from { transform: scale(1.1) translateX(0); } to { transform: scale(1) translateX(-40px); } }\n    @keyframes rise { from { opacity: 0; transform: translateY(0.5em); } to { opacity: 1; transform: none; } }\n    @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }\n    h2 { position: absolute; left: var(--margin); right: var(--margin); top: var(--margin); font-size: calc(var(--fs-display) * var(--type-scale) * 0.62); opacity: 0;\n         animation: rise calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.2s * var(--pace)) both; }\n    .list { position: absolute; left: var(--margin); right: var(--margin); bottom: var(--margin); display: flex; flex-direction: column; gap: 32px; }\n    .feat { display: flex; align-items: center; gap: 0.7em; padding: 0.55em 0.9em; font-size: calc(var(--fs-body) * var(--type-scale)); font-weight: 700;\n            background: var(--surface); border: 2px solid color-mix(in srgb, var(--text) 10%, transparent); border-radius: 24px; opacity: 0;\n            animation: slide calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.7s * var(--pace) + var(--i) * 0.35s * var(--pace)) both; }\n    .feat b { font-size: 1.3em; color: var(--accent); min-width: 1.6em; }\n    @keyframes slide { from { opacity: 0; transform: translateX(-3em); } to { opacity: 1; transform: none; } }\n    html[data-ratio=\"9:16\"] .list { top: calc(var(--margin) + 300px); justify-content: center; }\n    html[data-ratio=\"16:9\"] .list { top: calc(var(--margin) + 190px); justify-content: center; }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"fact/scene\">\n    <div class=\"bg\" data-mosio-id=\"fact/bg\"></div>\n    <h2 data-mosio-id=\"fact/text\"><span class=\"\" data-mosio-id=\"fact/w0\">Why</span> <span class=\"\" data-mosio-id=\"fact/w1\">teams</span> <span class=\"\" data-mosio-id=\"fact/w2\">switch</span> </h2>\n    <div class=\"list\" data-mosio-id=\"fact/list\">\n      <div class=\"feat\" style=\"--i:0\" data-mosio-id=\"fact/f1\"><b data-mosio-id=\"fact/n1\">01</b><span data-mosio-id=\"fact/t1\">Edit one word, re-render one scene</span></div>\n      <div class=\"feat\" style=\"--i:1\" data-mosio-id=\"fact/f2\"><b data-mosio-id=\"fact/n2\">02</b><span data-mosio-id=\"fact/t2\">Every frame checked</span></div>\n      <div class=\"feat\" style=\"--i:2\" data-mosio-id=\"fact/f3\"><b data-mosio-id=\"fact/n3\">03</b><span data-mosio-id=\"fact/t3\">Roll back any change</span></div>\n      \n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "example/scenes/04-cta.html",
+      "role": "example",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"16:9\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <style>\n    .bg { position: absolute; inset: -60px; animation: drift 14s linear both;\n          background: radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--accent) 38%, transparent), transparent 55%),\n                      radial-gradient(circle at 5% 95%, color-mix(in srgb, var(--main) 90%, transparent), transparent 62%); }\n    @keyframes drift { from { transform: scale(1.1) translateX(0); } to { transform: scale(1) translateX(-40px); } }\n    @keyframes rise { from { opacity: 0; transform: translateY(0.5em); } to { opacity: 1; transform: none; } }\n    @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: scale(1); } }\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: calc(0.5 * var(--fs-display) * var(--type-scale)); }\n    h1 { font-size: calc(var(--fs-display) * var(--type-scale) * 0.85); opacity: 0;\n         animation: rise calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.3s * var(--pace)) both; }\n    .btn { padding: 0.5em 1.8em; border-radius: 999px; background: var(--accent); color: var(--text-on-accent); font-size: calc(var(--fs-body) * var(--type-scale) * 1.1); font-weight: 800; opacity: 0;\n           animation: rise calc(0.8s * var(--pace)) cubic-bezier(.2,.8,.2,1) calc(0.9s * var(--pace)) both; }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"cta/scene\">\n    <div class=\"bg\" data-mosio-id=\"cta/bg\"></div>\n    <div class=\"copy\">\n      <h1 data-mosio-id=\"cta/text\"><span class=\"\" data-mosio-id=\"cta/w0\">Start</span> <span class=\"\" data-mosio-id=\"cta/w1\">rendering</span> <span class=\"\" data-mosio-id=\"cta/w2\">today</span> </h1>\n      <div class=\"btn\" data-mosio-id=\"cta/button\">Try it free</div>\n    </div>\n  </div>\n</body>\n</html>\n"
+    },
+    {
+      "path": "example/shared/base.css",
+      "role": "example",
+      "content": "/* Fixed foundation of the recipe: fonts, reset and the scene frame. Brand values are in tokens.css, not here. */\n@font-face { font-family: \"Inter\"; font-weight: 400; src: url(\"/assets/fonts/Inter-Regular.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 700; src: url(\"/assets/fonts/Inter-Bold.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 800; src: url(\"/assets/fonts/Inter-ExtraBold.otf\") format(\"opentype\"); }\n* { margin: 0; padding: 0; box-sizing: border-box; }\nhtml, body { width: var(--w); height: var(--h); overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font-body); }\n.scene { position: absolute; inset: 0; overflow: hidden; }\nh1, h2 { font-family: var(--font-display); font-weight: 800; line-height: 1.04; letter-spacing: -0.02em; }\n.acc { color: var(--accent); }\n"
+    },
+    {
+      "path": "example/shared/tokens.css",
+      "role": "example",
+      "content": "/* Brand and layout tokens for every scene (recipe product-ad). Edit values here: every scene that imports this file\n   re-renders, which is correct, because they all depend on it. */\n:root {\n  --bg: #0b1020;\n  --main: #1e293b;\n  --accent: #f59e0b;\n  --text: #f8fafc;\n  --text-on-accent: #111111;\n  --surface: color-mix(in srgb, var(--text) 8%, var(--bg));\n  --text-dim: color-mix(in srgb, var(--text) 68%, var(--bg));\n  --font-display: \"Inter\", sans-serif;\n  --font-body: \"Inter\", sans-serif;\n  --w: 1920px;\n  --h: 1080px;\n  --type-scale: 1;\n  --pace: 1;\n  --fs-display: 120px;\n  --fs-body: 46px;\n  --fs-price: 96px;\n  --margin: 140px;\n}\n"
+    }
+  ],
+  "sha256": "9ad65c9714e9bd345181f0087813e42836dcca20e3dc9c9418888a4b199f73b0"
+}

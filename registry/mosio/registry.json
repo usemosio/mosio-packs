@@ -4,6 +4,113 @@
   "homepage": "https://mosio.me",
   "items": [
     {
+      "name": "anatomi-iso",
+      "type": "mosio:recipe",
+      "title": "Isometric anatomy",
+      "description": "A precise isometric drawing of one real machine on near-white paper, with thin ink lines, a live readout and an exploded view. Good for explainers and how-tos.",
+      "tags": [
+        "edukasi",
+        "ilustrasi",
+        "teknologi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "angka-capaian",
+      "type": "mosio:recipe",
+      "title": "Numbers and charts",
+      "description": "A big number counts up, bars grow and a percent ring fills. Good for business milestones, channel stats and data-led lessons.",
+      "tags": [
+        "data",
+        "konten",
+        "edukasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "archive-lighttable",
+      "type": "mosio:recipe",
+      "title": "Archive light table",
+      "description": "Glass plates on a light table: a loupe lands, the negative turns positive and the camera dives into a catalogued photo. Good for histories, classes and family stories.",
+      "tags": [
+        "cerita",
+        "edukasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "art-deco",
+      "type": "mosio:recipe",
+      "title": "Art deco",
+      "description": "Gold lines on deep black, a title panel opening from the centre, marquee bulbs lighting in turn, doors as transitions. Good for events, launches, classes and stories.",
+      "tags": [
+        "promo",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "ascii-crt",
+      "type": "mosio:recipe",
+      "title": "ASCII CRT",
+      "description": "Pictures made of real letters on a monospace grid, glowing amber on a tube screen; a typed line collapses into an image. Good for tech classes, creators and teasers.",
+      "tags": [
+        "teknologi",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "bauhaus-geometry",
+      "type": "mosio:recipe",
+      "title": "Bauhaus",
+      "description": "Cream paper in red, yellow, blue and black; circles, squares and triangles as numbers, colour blocks revealing text. Good for classes, creator series and shop tips.",
+      "tags": [
+        "edukasi",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "benchmark-hud",
+      "type": "mosio:recipe",
+      "title": "Scoreboard",
+      "description": "A dark stage, hairlines, scanned-in text, brackets locking onto a value and a 270° gauge. Good for test results, report cards, creator rankings and business reports.",
+      "tags": [
+        "data",
+        "teknologi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
       "name": "blueprint",
       "type": "mosio:recipe",
       "title": "Blueprint",
@@ -19,14 +126,710 @@
       "version": "1.0.0"
     },
     {
-      "name": "paper-popup",
+      "name": "brick-toy",
       "type": "mosio:recipe",
-      "title": "Pop-up book",
-      "description": "A pop-up book as a stage: white-edged paper characters, sets rising from the page, hanging signs and typed speech bubbles. Good for kids' stories, classes and places.",
+      "title": "Toy bricks",
+      "description": "Toy bricks on a real desk, shot macro: a brick robot poses in stop-motion and a tower falls and is rebuilt. Good for kids' classes, creators, shops and stories.",
       "tags": [
         "cerita",
-        "ilustrasi",
+        "konten",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "briefing-board",
+      "type": "mosio:recipe",
+      "title": "Briefing board",
+      "description": "A real whiteboard with blue marker lines, counted magnets, a cut-out photo and a red stamp; the camera follows the lines. Good for businesses, teachers and stories.",
+      "tags": [
+        "edukasi",
+        "data"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "caption-news",
+      "type": "mosio:recipe",
+      "title": "Big-caption news",
+      "description": "Huge captions slammed over footage, a keyword on a yellow block, rolling numbers, source tags and a freeze frame. Good for news, fact-checks, classes and creators.",
+      "tags": [
+        "berita",
         "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "cel-anime-80s",
+      "type": "mosio:recipe",
+      "title": "80s anime",
+      "description": "1980s cel anime: flat-coloured characters over a painted neon city, a chrome title and tape subtitles. Good for channel openers, class promos, night events and nostalgia.",
+      "tags": [
+        "ilustrasi",
+        "retro",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "chat-testimoni",
+      "type": "mosio:recipe",
+      "title": "Chat testimonial",
+      "description": "A message typed letter by letter in a chat bubble, a reply, then stars and a call to action. Good for customer reviews, viewer comments and student messages.",
+      "tags": [
+        "konten",
+        "promo",
+        "cerita"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "city-symphony",
+      "type": "mosio:recipe",
+      "title": "City symphony",
+      "description": "A city time-lapse cut to the beat: traffic as rivers of light, crowds as trails, one brake, a hard cut to black. Good for communities, places, classes and stories.",
+      "tags": [
+        "konten",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "clay-serif",
+      "type": "mosio:recipe",
+      "title": "Warm book",
+      "description": "An ivory book page with one clay accent, calm serif type, hand-drawn underlines and slow fades. Good for classes, creator opinions, small studios and short stories.",
+      "tags": [
+        "konten",
+        "edukasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "clean-os",
+      "type": "mosio:recipe",
+      "title": "Clean screen",
+      "description": "A speaker alternating with a white phone screen: small words from blur, notifications, ticks, a red selection box and pen writing. Good for creators and classes.",
+      "tags": [
+        "konten",
+        "edukasi",
+        "teknologi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "countdown",
+      "type": "mosio:recipe",
+      "title": "Countdown screen",
+      "description": "A T-minus clock ticks as the screen splits into more cells toward zero, then merges into one shot. Good for launches, shop openings, creator premieres and graduations.",
+      "tags": [
+        "berita",
+        "promo"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "crayon-book",
+      "type": "mosio:recipe",
+      "title": "Crayon book",
+      "description": "A storybook page drawn in crayon on textured paper, then a watercolour wash brings night and reveals stars. Good for events, kids' classes, creators and fairy tales.",
+      "tags": [
+        "ilustrasi",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "dark-stage",
+      "type": "mosio:recipe",
+      "title": "Dark stage talk",
+      "description": "A near-black stage and accent cursor; notifications, files and photos pile up as the camera pulls back, then snap into place. Good for apps, digital services and classes.",
+      "tags": [
+        "teknologi",
+        "promo"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "dasbor-iklan",
+      "type": "mosio:recipe",
+      "title": "Metrics dashboard",
+      "description": "A dark dashboard: a metric drops in red, cards pop in, then numbers count up and a chart line draws. Good for ad services, creator channel reports and data classes.",
+      "tags": [
+        "data",
+        "teknologi",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "data-infographic",
+      "type": "mosio:recipe",
+      "title": "Data infographic",
+      "description": "A headline, one big figure that counts up and a bar chart that grows from one baseline, drawn with plain HTML so every number stays editable text.",
+      "tags": [
+        "data",
+        "charts",
+        "education"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "0.1.0",
+      "params": true
+    },
+    {
+      "name": "data-journal",
+      "type": "mosio:recipe",
+      "title": "Data journal",
+      "description": "Salmon paper, serif headlines, directly labelled bars, a big counting number and a source line. Good for test results, price comparisons, channel reports and classes.",
+      "tags": [
+        "data",
+        "berita"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "data-physical",
+      "type": "mosio:recipe",
+      "title": "Data as objects",
+      "description": "Numbers become stacks of metal and acrylic plates on a wooden disc, lit like a studio shoot, the camera gliding past them. Good for reports, communities and creators.",
+      "tags": [
+        "data",
+        "edukasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "dataviz",
+      "type": "mosio:recipe",
+      "title": "Data story",
+      "description": "A chart drawn mark by mark with a red-blue pencil on cream paper, with handwritten notes. Good for business reports, classes, creators and data stories.",
+      "tags": [
+        "data",
+        "edukasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "dev-console",
+      "type": "mosio:recipe",
+      "title": "Terminal",
+      "description": "A dark terminal where text types out of random characters, with blue selections and green $ prompts. Good for tool tutorials, tech services, coding classes and dev logs.",
+      "tags": [
+        "teknologi",
+        "edukasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "dok-kinetik",
+      "type": "mosio:recipe",
+      "title": "Kinetic documentary",
+      "description": "A black-and-white archive documentary with one red: words appear as spoken, photo prints, windows and instant photos. Good for business stories, history and essays.",
+      "tags": [
+        "cerita",
+        "edukasi",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "editorial-paper",
+      "type": "mosio:recipe",
+      "title": "Newsprint",
+      "description": "Textured cream paper, heavy serif type, one yellow highlighter, tilted index cards and red-stamped numbers. Good for business stories, documentaries, history and classes.",
+      "tags": [
+        "cerita",
+        "berita"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "empty-hallway-tape",
+      "type": "mosio:recipe",
+      "title": "Empty hallway tape",
+      "description": "1990s camcorder footage of an empty fluorescent hallway: PA rules, lights cutting out, a zoom into the dark end. Good for escape rooms, mysteries and horror creators.",
+      "tags": [
+        "cerita",
+        "konten",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "engraving",
+      "type": "mosio:recipe",
+      "title": "Copper engraving",
+      "description": "A burin cuts copper, the print peels away, a figure builds from hatching, then a magnifier and watercolour. Good for gardens, museums, science classes and heritage.",
+      "tags": [
+        "ilustrasi",
+        "edukasi",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "etalase-hp",
+      "type": "mosio:recipe",
+      "title": "Phone showcase",
+      "description": "One phone on a pastel backdrop: the camera moves into the screen, cards float out, notifications arrive and numbers rise. Good for online shops, apps and creators.",
+      "tags": [
+        "trending",
+        "produk",
+        "teknologi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "explainer-isometrik",
+      "type": "mosio:recipe",
+      "title": "Isometric explainer",
+      "description": "An isometric stage that changes each beat: the problem piles up, time runs out, then the solution lands. Widescreen; good for explainers, online classes and video sites.",
+      "tags": [
+        "edukasi",
+        "ilustrasi",
+        "teknologi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "flash-sale",
+      "type": "mosio:recipe",
+      "title": "Flash sale",
+      "description": "A bursting discount percent, two crossed moving ribbons and a clearly stamped deadline. Good for time-limited promos, creator merch drops or a class about to close.",
+      "tags": [
+        "promo",
+        "tipografi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "frosted-aurora",
+      "type": "mosio:recipe",
+      "title": "Frosted aurora",
+      "description": "A slow aurora on a dark background, text rising from blur, shimmering frosted glass cards and mist between scenes. Good for launches, online classes and creator channels.",
+      "tags": [
+        "promo",
+        "teknologi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "game-show",
+      "type": "mosio:recipe",
+      "title": "Game show",
+      "description": "Thick-outlined toy mascots on candy-coloured sets, every move on the beat, each round ending with a verdict word. Good for contests, events, creator recaps or classes.",
+      "tags": [
+        "konten",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "glass-product",
+      "type": "mosio:recipe",
+      "title": "Glass product",
+      "description": "A glass-and-metal object in a dark studio: light traces its edges, its parts fly apart, then close and glow. Good for launches, gadget reviews and science classes.",
+      "tags": [
+        "promo",
+        "teknologi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "halaman-produk",
+      "type": "mosio:recipe",
+      "title": "Product page",
+      "description": "A review laid out like a product page: the speaker steps out of a footage card, bold titles, thin line drawings and word pills. Good for app, tool and book reviews.",
+      "tags": [
+        "produk",
+        "konten",
+        "teknologi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "halftone-dossier",
+      "type": "mosio:recipe",
+      "title": "Case file",
+      "description": "A cream archive folder, halftone dots, off-register shadowed headlines and slamming stamps. Good for funny content, classes, shops and light stories.",
+      "tags": [
+        "konten",
+        "cerita",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "hologram-hud",
+      "type": "mosio:recipe",
+      "title": "Hologram HUD",
+      "description": "An object scanned into a glowing wireframe; a target box locks onto a part, a cover slides off and numbers roll. Good for product specs, engineering classes and gadgets.",
+      "tags": [
+        "teknologi",
+        "promo"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "impasto",
+      "type": "mosio:recipe",
+      "title": "Thick oil paint",
+      "description": "Palette-knife oil painting: a grey rainy world, one coloured object, then colour laid back in. Good for florists, art creators, painting classes or city stories.",
+      "tags": [
+        "ilustrasi",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "ink-wash",
+      "type": "mosio:recipe",
+      "title": "Ink wash",
+      "description": "Ink painting on rice paper: brushstrokes become bamboo and misty hills, a scroll of steps, empty paper, one red seal. Good for craftspeople, culture and art classes.",
+      "tags": [
+        "ilustrasi",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "instrument-panel",
+      "type": "mosio:recipe",
+      "title": "Instrument panel",
+      "description": "A grey panel like a device manual: dot-matrix LCD numbers, keys that press and light an LED, shutter wipes. Good for specs, service rates, tutorials and gadget reviews.",
+      "tags": [
+        "data",
+        "teknologi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "iso-infographic",
+      "type": "mosio:recipe",
+      "title": "Isometric infographic",
+      "description": "An isometric diorama of flat three-tone blocks, thin label pins, round insets and numbers built from icons. Good for service workflows, supply chains and class material.",
+      "tags": [
+        "edukasi",
+        "data"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "isometric-stack",
+      "type": "mosio:recipe",
+      "title": "Isometric stack",
+      "description": "A blue-grey isometric grid where slabs drop into a stack layer by layer, one main colour and a counting number. Good for classes, product explainers and tech creators.",
+      "tags": [
+        "edukasi",
+        "teknologi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "jendela-ilmu",
+      "type": "mosio:recipe",
+      "title": "Knowledge window",
+      "description": "A full face gives way to glowing dark cards as the speaker shrinks to a round avatar, with subtitles throughout. Good for teachers, educators, reviews and businesses.",
+      "tags": [
+        "edukasi",
+        "data",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "kanvas-tanpa-putus",
+      "type": "mosio:recipe",
+      "title": "Endless canvas",
+      "description": "One unbroken camera move over a dark canvas, following a glowing line from step to step. Good for service flows, tutorials and processes.",
+      "tags": [
+        "trending",
+        "edukasi",
+        "teknologi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "kata-latar",
+      "type": "mosio:recipe",
+      "title": "Word behind",
+      "description": "A soft lavender room, a giant word behind the speaker's head, a serif word struck out in red and a profile card. Good for creators, classes, shops and to-camera stories.",
+      "tags": [
+        "konten",
+        "tipografi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "kata-meletup",
+      "type": "mosio:recipe",
+      "title": "Popping words",
+      "description": "Comic captions of 1-2 words bounce over a talking head, each page a new neon colour, with a hook and progress bar. Good for reactions, challenges and entertainment.",
+      "tags": [
+        "konten",
+        "tipografi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "kata-sorot",
+      "type": "mosio:recipe",
+      "title": "Spotlight words",
+      "description": "Bold uppercase captions of 2-3 words over a talking head, the spoken word lit, a two-line hook on top and a progress bar. Good for creators, classes, tips and businesses.",
+      "tags": [
+        "konten",
+        "edukasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "kepala-bicara-split",
+      "type": "mosio:recipe",
+      "title": "Split talking head",
+      "description": "A talking head at 110% on a warm black stage, word-by-word captions and a split with springy window, chip and card panels. Good for creators, teachers and businesses.",
+      "tags": [
+        "konten",
+        "edukasi",
+        "teknologi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "kertas-taktil",
+      "type": "mosio:recipe",
+      "title": "Tactile paper",
+      "description": "Newspaper on maroon ground that unfolds and turns like pages, stepped stop-motion moves and a face behind the page. Good for stories, history and education.",
+      "tags": [
+        "cerita",
+        "edukasi",
+        "retro"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "ketik-jadi-produk",
+      "type": "mosio:recipe",
+      "title": "Typed into product",
+      "description": "A request is typed and sent, then answered by cards, a price and a running process, with a gentle push-in. Good for selling over chat, services and creators.",
+      "tags": [
+        "trending",
+        "promo",
+        "produk"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "kinetic-type",
+      "type": "mosio:recipe",
+      "title": "Kinetic type",
+      "description": "Big words take turns entering on a rhythm. Good for slogans, calls to action and announcements.",
+      "tags": [
+        "tipografi",
+        "promo",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "kinetic-typography",
+      "type": "mosio:recipe",
+      "title": "Kinetic typography",
+      "description": "Short lines of big type where every word lands on its own beat, one scene per line, with one accent word per line. For hooks, quotes and slogans.",
+      "tags": [
+        "typography",
+        "social",
+        "text"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "0.1.0",
+      "params": true
+    },
+    {
+      "name": "kino-montage",
+      "type": "mosio:recipe",
+      "title": "Constructivist montage",
+      "description": "Archive photos printed in two tones plus red, text on slanted bands, counting numbers and rhythmic cuts. Good for community work, business histories and milestones.",
+      "tags": [
+        "cerita",
+        "retro"
       ],
       "ratios": [
         "16:9",
@@ -51,6 +854,146 @@
       "version": "1.0.0"
     },
     {
+      "name": "kolase-merah",
+      "type": "mosio:recipe",
+      "title": "Red collage",
+      "description": "A black-and-white speaker, one giant glowing red word behind the head and three heavy lines slammed in below the face. Good for creators, coaches, classes and promos.",
+      "tags": [
+        "konten",
+        "tipografi",
+        "promo"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "komik-hitam",
+      "type": "mosio:recipe",
+      "title": "Black blob comic",
+      "description": "A hand-drawn comic on a white stage: a black dot-eyed worker carries, sorts and bridges one idea per scene. Good for explaining processes and tips.",
+      "tags": [
+        "edukasi",
+        "ilustrasi",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "layout-berubah",
+      "type": "mosio:recipe",
+      "title": "Shifting layout",
+      "description": "A face box that changes shape: zoom, split screen, a small card below. Dark grid, colour chips, red stamps, an old name struck out. Good for creators, shops and classes.",
+      "tags": [
+        "konten",
+        "teknologi",
+        "edukasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "lidar-survey",
+      "type": "mosio:recipe",
+      "title": "Point cloud scan",
+      "description": "A laser point cloud floats in the dark, the canopy lifts and points condense into a surface that gets measured. Good for archaeology classes, maps, property and science.",
+      "tags": [
+        "teknologi",
+        "data"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "living-screencast",
+      "type": "mosio:recipe",
+      "title": "Living screencast",
+      "description": "An interface redrawn like a screen recording: zooms to the cursor and a pixel mascot acting out the app. Good for app tutorials, creators and classes.",
+      "tags": [
+        "teknologi",
+        "edukasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "lowpoly-island",
+      "type": "mosio:recipe",
+      "title": "Low-poly island",
+      "description": "A small island of low-poly hex tiles rises from the sea; trees and houses bounce in and the edges fade into mist. Good for process flows, classes, creators and stories.",
+      "tags": [
+        "ilustrasi",
+        "edukasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "maskot-piksel",
+      "type": "mosio:recipe",
+      "title": "Pixel mascot",
+      "description": "Grid paper, icon tiles with moving pixel mascots, a big yellow card in pixel type and a terminal panel tagged T01. Good for new menus, apps and creators.",
+      "tags": [
+        "promo",
+        "teknologi",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "maths-plane",
+      "type": "mosio:recipe",
+      "title": "Maths plane",
+      "description": "A black grid, serif letters written stroke by stroke, a yellow box around the focus and colours with meaning. Good for classes, science channels, how-tos and puzzles.",
+      "tags": [
+        "edukasi",
+        "teknologi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "menu-board",
+      "type": "mosio:recipe",
+      "title": "Menu board",
+      "description": "Items and prices appear row by row like a cafe menu board, with a handwritten note. Good for food menus, service price lists or class schedules.",
+      "tags": [
+        "produk",
+        "promo",
+        "edukasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
       "name": "microscope",
       "type": "mosio:recipe",
       "title": "Microscope lens",
@@ -66,10 +1009,1006 @@
       "version": "1.0.0"
     },
     {
-      "name": "dataviz",
+      "name": "midcentury-toon",
       "type": "mosio:recipe",
-      "title": "Data story",
-      "description": "A chart drawn mark by mark with a red-blue pencil on cream paper, with handwritten notes. Good for business reports, classes, creators and data stories.",
+      "title": "50s cartoon",
+      "description": "A flat 1950s cartoon: colour printed off a broken ink line and a still presenter who moves only the hands. Good for home services, tutorials and classes.",
+      "tags": [
+        "edukasi",
+        "ilustrasi",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "news-package",
+      "type": "mosio:recipe",
+      "title": "TV news",
+      "description": "A TV news package: a channel plate becomes the corner logo, a rundown, a lower-third strap and a flip board of numbers. Good for community bulletins and local reports.",
+      "tags": [
+        "berita",
+        "data"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "newsreel",
+      "type": "mosio:recipe",
+      "title": "1920s newsreel",
+      "description": "A silver projector gate, searchlights, a newspaper spinning at the lens, place and date cards, a starred map. Good for business histories, anniversaries and local tales.",
+      "tags": [
+        "cerita",
+        "retro",
+        "berita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "one-line",
+      "type": "mosio:recipe",
+      "title": "One line",
+      "description": "One ink line never leaves the warm paper; the camera follows the pen and scenes morph without cuts. Good for personal stories, gifts and brands.",
+      "tags": [
+        "ilustrasi",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "orbit-kartu",
+      "type": "mosio:recipe",
+      "title": "Orbiting cards",
+      "description": "Photo cards circle the speaker, passing behind the head and across the chest, with a two-line title on top. Good for creators, classes, portfolios and businesses.",
+      "tags": [
+        "konten",
+        "edukasi",
+        "promo"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "panel-breakout",
+      "type": "mosio:recipe",
+      "title": "Head breakout panel",
+      "description": "The speaker sits in a rounded panel on a light backdrop, head breaking over its edge, with a before-and-after or list above. Good for explainers.",
+      "tags": [
+        "edukasi",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "paper-figure",
+      "type": "mosio:recipe",
+      "title": "Research paper",
+      "description": "A white paper page: calm serif, line numbers, a Figure 1 caption, thin blue boxes and exact counts. Good for research reviews, shop reports and classes.",
+      "tags": [
+        "edukasi",
+        "data"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "paper-lantern",
+      "type": "mosio:recipe",
+      "title": "Paper lantern",
+      "description": "Three carved paper light boxes lit from behind: a river of glowing boats, a cart interior with a window, a giant moon. Good for night stalls, events and stories.",
+      "tags": [
+        "ilustrasi",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "paper-popup",
+      "type": "mosio:recipe",
+      "title": "Pop-up book",
+      "description": "A pop-up book as a stage: white-edged paper characters, sets rising from the page, hanging signs and typed speech bubbles. Good for kids' stories, classes and places.",
+      "tags": [
+        "cerita",
+        "ilustrasi",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "papercut-red",
+      "type": "mosio:recipe",
+      "title": "Red papercut",
+      "description": "Red paper cut apart by scissors, a folded rosette opening, night windows glowing through the holes. Good for celebrations, crafts, tradition classes and folk tales.",
+      "tags": [
+        "ilustrasi",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "particle-field",
+      "type": "mosio:recipe",
+      "title": "Star particles",
+      "description": "Deep-space black with drifting dust, letters gathering from points of light and numbers made of particles. Good for chapter openers, science classes, night tours, quotes.",
+      "tags": [
+        "teknologi",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "peluncuran-aplikasi",
+      "type": "mosio:recipe",
+      "title": "App launch",
+      "description": "The problem is struck out, an app window slides in, a cursor clicks and a number rises. Good for app launches, creators' digital products and feature tutorials.",
+      "tags": [
+        "teknologi",
+        "produk",
+        "edukasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "pesan-kilat",
+      "type": "mosio:recipe",
+      "title": "Instant order",
+      "description": "A request is typed, the camera dives at the button, the result appears and quick proof cuts follow. Good for custom orders, services and \"you asked, I made it\" content.",
+      "tags": [
+        "trending",
+        "promo",
+        "teknologi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "pictogram-motion",
+      "type": "mosio:recipe",
+      "title": "Pictograms",
+      "description": "Fast rhythmic cards: a circle grid whose rows shift, faceless pictogram figures and bold bilingual titles. Good for service rules, classes and catalogues.",
+      "tags": [
+        "promo",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "pixel-diorama",
+      "type": "mosio:recipe",
+      "title": "Pixel diorama",
+      "description": "Pixel sprites in a lit miniature diorama, seen from above with tilt-shift focus; light and shadow lead. Good for history classes, stories and creator channels.",
+      "tags": [
+        "ilustrasi",
+        "cerita",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "pixel-rpg",
+      "type": "mosio:recipe",
+      "title": "Pixel RPG",
+      "description": "A 16-bit RPG screen: a dithered pixel world, typing dialogs, level-up stats and save slots. Good for running clubs, classes, 30-day challenges and stories.",
+      "tags": [
+        "retro",
+        "konten",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "play-diagram",
+      "type": "mosio:recipe",
+      "title": "Sports play diagram",
+      "description": "Footage plays, freezes on a white flash, then gets marked up: rings at the feet, ball arrows, red open space, a stopwatch. Good for coaches, technique classes and recaps.",
+      "tags": [
+        "edukasi",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "podcast-blur-fit",
+      "type": "mosio:recipe",
+      "title": "Blur-frame podcast",
+      "description": "A wide two-person podcast shot fitted to 9:16 over its own blurred copy, a white hook card and bold word-by-word captions. Good for podcasts, interviews and classes.",
+      "tags": [
+        "konten",
+        "edukasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "podcast-kertas",
+      "type": "mosio:recipe",
+      "title": "Paper podcast",
+      "description": "The speaker's face as it is, two-tier captions on a navy card, paper props, instant photos and handwriting beside the face. Good for podcasts, stories, creators and classes.",
+      "tags": [
+        "konten",
+        "cerita"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "poster-kinetic",
+      "type": "mosio:recipe",
+      "title": "Contrast poster",
+      "description": "The background colour changes through slats each cut, giant letters drop in and words slam left and right. Good for tournaments, class chapters, hooks and key numbers.",
+      "tags": [
+        "konten",
+        "promo"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "product-ad",
+      "type": "mosio:recipe",
+      "title": "Product advertisement",
+      "description": "A four-beat product spot: hook with price, product reveal on cards, three proof features, and a call-to-action button that holds still.",
+      "tags": [
+        "ad",
+        "product",
+        "promo"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "0.1.0",
+      "params": true
+    },
+    {
+      "name": "product-hero",
+      "type": "mosio:recipe",
+      "title": "Product hero",
+      "description": "One object stars under turning rays: it drops in, its name rises and its price counts up. Good for single-product sales, creator merch or a new book.",
+      "tags": [
+        "produk",
+        "promo"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "rapid-minigames",
+      "type": "mosio:recipe",
+      "title": "Rapid minigames",
+      "description": "Very short chained games: one command word, a few seconds, one action, a new art style each round, getting faster. Good for food stall promos, quizzes and fun content.",
+      "tags": [
+        "konten",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "recap-panggung",
+      "type": "mosio:recipe",
+      "title": "Stage recap",
+      "description": "16:9 footage in a gold-lined window over its blurred copy, a hook headline, name tag, data cards, quotes and glowing subtitles. Good for stories and recaps.",
+      "tags": [
+        "cerita",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "rubber-hose",
+      "type": "mosio:recipe",
+      "title": "1930s cartoon",
+      "description": "A hand-inked black-and-white cartoon: rubber-hose limbs, white gloves, pie eyes and scratched old film. Good for business mascots, kids' channels and funny stories.",
+      "tags": [
+        "retro",
+        "ilustrasi",
+        "promo"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "sampul-majalah",
+      "type": "mosio:recipe",
+      "title": "Magazine cover",
+      "description": "The speaker becomes a magazine cover: a giant masthead behind the head, an issue line, cover lines and a barcode. Good for businesses, creators, profiles and stories.",
+      "tags": [
+        "konten",
+        "promo",
+        "cerita"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "satellite-briefing",
+      "type": "mosio:recipe",
+      "title": "Satellite imagery",
+      "description": "Overhead imagery with thin white measuring lines and a reticle; a zoom from orbit, then dated images scanned in. Good for environmental projects, places and reports.",
+      "tags": [
+        "berita",
+        "data"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "scifi-toon",
+      "type": "mosio:recipe",
+      "title": "Sci-fi cartoon",
+      "description": "An adult TV cartoon with thick wobbling outlines, flat colour, big white eyes and a glowing portal. Good for comedy, clubs, kids' classes and tech brands.",
+      "tags": [
+        "konten",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "shadow-puppet",
+      "type": "mosio:recipe",
+      "title": "Shadow puppets",
+      "description": "Coloured leather puppets carved like lace on an oil-lit cloth screen, trembling on their rods. Good for children's tales, folk stories, culture and storytelling classes.",
+      "tags": [
+        "cerita",
+        "ilustrasi",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "silent-film",
+      "type": "mosio:recipe",
+      "title": "Silent film",
+      "description": "An engraved-style silent film in an old cinema: a flickering 4:3 picture between velvet curtains and title cards for dialogue. Good for comedy and everyday stories.",
+      "tags": [
+        "cerita",
+        "retro",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "silkscreen-poster",
+      "type": "mosio:recipe",
+      "title": "Screen-print poster",
+      "description": "A poster screen-printed on camera one ink at a time: flat colours, a banded sky and thin registration gaps. Good for community events, concerts and travel.",
+      "tags": [
+        "promo",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "split-step",
+      "type": "mosio:recipe",
+      "title": "Step split screen",
+      "description": "The top half has a step badge, a serif headline and an app window that moves with the speech, the speaker below, captions on the seam. Good for tutorials and classes.",
+      "tags": [
+        "edukasi",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "spy-titles",
+      "type": "mosio:recipe",
+      "title": "Spy film titles",
+      "description": "A 1960s spy title sequence in cut paper: running silhouettes, letters becoming sets, the title assembling. Good for event openers, teasers, launches and mysteries.",
+      "tags": [
+        "promo",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stained-glass",
+      "type": "mosio:recipe",
+      "title": "Stained glass",
+      "description": "A stained-glass window in a dark stone hall, lit only where the sun touches it; the story moves panel by panel. Good for heritage, crafts and quiet stories.",
+      "tags": [
+        "cerita",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "step-deck",
+      "type": "mosio:recipe",
+      "title": "Step deck",
+      "description": "Spoken words appear behind the head, with navy and white cards every 1-2 seconds and a giant italic number for each step. Good for tips, tutorials and classes.",
+      "tags": [
+        "edukasi",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-garis",
+      "type": "mosio:recipe",
+      "title": "Line stickman",
+      "description": "Pen-line stickmen on faint grid paper with big expressions, red and yellow hand-drawn props and handwritten titles. Good for education, tips and stories.",
+      "tags": [
+        "edukasi",
+        "ilustrasi",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-hangat",
+      "type": "mosio:recipe",
+      "title": "Warm stickman",
+      "description": "A white-bodied stickman in a colourful 2D cartoon world, a new place each scene, warm light. Good for stories, customer stories and daily content.",
+      "tags": [
+        "cerita",
+        "ilustrasi",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-klasik",
+      "type": "mosio:recipe",
+      "title": "Classic stickman",
+      "description": "Bold even-line stickmen on a plain white canvas, big block-letter titles and punchy red and blue props. Good for education, tips and stories.",
+      "tags": [
+        "edukasi",
+        "ilustrasi",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-noir",
+      "type": "mosio:recipe",
+      "title": "Noir stickman",
+      "description": "Hooded black-headed figures with cream eyes in a dark plum city, amber light from lamps and windows, big text lit word by word. Good for stories and promos.",
+      "tags": [
+        "cerita",
+        "ilustrasi",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-presenter",
+      "type": "mosio:recipe",
+      "title": "Stickman presenter",
+      "description": "A round-headed presenter narrates from the bottom right while stickmen act out slapstick on the left, captions with red keywords. Good for education and tips.",
+      "tags": [
+        "edukasi",
+        "konten",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-purba",
+      "type": "mosio:recipe",
+      "title": "Stone Age stickman",
+      "description": "Stone Age dark comedy: expressive white-headed stickmen in spotted hides, caves and earthy plains, a campfire. Good for funny ad stories and education.",
+      "tags": [
+        "cerita",
+        "ilustrasi",
+        "promo"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-sejarah",
+      "type": "mosio:recipe",
+      "title": "History stickman",
+      "description": "A history cartoon: short-necked white-headed stickmen with expressive faces, period costume and cel-shaded worlds. Good for business origin stories and history lessons.",
+      "tags": [
+        "cerita",
+        "edukasi",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-sinematik",
+      "type": "mosio:recipe",
+      "title": "Cinematic stickman",
+      "description": "A stickman in a red beanie and yellow shirt in full-colour worlds: valleys, canyons, peaks, filmic light and depth. Good for journey stories, motivation and promos.",
+      "tags": [
+        "cerita",
+        "ilustrasi",
+        "promo"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-studio",
+      "type": "mosio:recipe",
+      "title": "Studio stickman",
+      "description": "A stickman in a red beanie and yellow shirt in a bright white studio with a grid floor and glowing blue glass panels. Good for tech tutorials, work tips and classes.",
+      "tags": [
+        "teknologi",
+        "edukasi",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-survival",
+      "type": "mosio:recipe",
+      "title": "Survival stickman",
+      "description": "Colourful ink-outlined 2D illustration, round-headed figures in white gloves and tense nights. Good for preparedness tips, outdoor gear shops and stories.",
+      "tags": [
+        "cerita",
+        "edukasi",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-tv",
+      "type": "mosio:recipe",
+      "title": "TV stickman",
+      "description": "A dark background, plain-headed white-grey silhouettes, block titles, dotted lines, CCTV inserts, red strikes and signal glitches. Good for education and why-explainers.",
+      "tags": [
+        "edukasi",
+        "cerita",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stickman-warna",
+      "type": "mosio:recipe",
+      "title": "Coloured stickman",
+      "description": "Soft-coloured hand drawing on warm paper: a round-headed stickman, coloured rooms, handwritten titles and subtitles on an ivory label. Good for tips and education.",
+      "tags": [
+        "edukasi",
+        "ilustrasi",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "stiker-ceria",
+      "type": "mosio:recipe",
+      "title": "Cheerful stickers",
+      "description": "Flat bright colours, cards and price tags that pop like stickers, a cute mascot and a toggle that lights the screen. Good for service promos, new menus and creators.",
+      "tags": [
+        "trending",
+        "promo",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "studio-tenang",
+      "type": "mosio:recipe",
+      "title": "Calm studio",
+      "description": "A calm studio look: light paper, indigo accent and a violet-green gradient, soft rise-ins, a centred speaker and full-screen step cards. Good for tutorials and classes.",
+      "tags": [
+        "edukasi",
+        "konten",
+        "teknologi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "subtitle-sinema",
+      "type": "mosio:recipe",
+      "title": "Cinema subtitles",
+      "description": "Letterboxed footage, a calligraphic title seal, narration on ivory paper cards only while the narrator speaks, dialogue in white. Good for stories and recaps.",
+      "tags": [
+        "cerita",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "swiss-grid",
+      "type": "mosio:recipe",
+      "title": "Swiss grid",
+      "description": "Grey paper, black ink and one signal colour; text rises from the baseline, a knife underlines keywords and ink columns sweep. Good for classes, creators and services.",
+      "tags": [
+        "edukasi",
+        "data"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "swiss-motion",
+      "type": "mosio:recipe",
+      "title": "Swiss typography",
+      "description": "Swiss graphic design in motion: a modular grid, giant numbers, one signal colour and a page built rule by rule. Good for print shops, creator studios, classes and events.",
+      "tags": [
+        "promo",
+        "edukasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "talking-head",
+      "type": "mosio:recipe",
+      "title": "Talking head",
+      "description": "A speaker video edited from its transcript: pauses cut, landscape footage reframed to vertical, captions, a lower third, callouts and stats, B-roll and a ducked music bed, then an end card.",
+      "tags": [
+        "talking-head",
+        "footage",
+        "captions",
+        "social"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "0.1.0",
+      "params": true
+    },
+    {
+      "name": "teardown",
+      "type": "mosio:recipe",
+      "title": "Product teardown",
+      "description": "A product shot like a packshot, then taken apart: layers lift, each part named and numbered, the camera dives in, then it closes. Good for repairs, makers and classes.",
+      "tags": [
+        "promo",
+        "teknologi",
+        "edukasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "tier-list",
+      "type": "mosio:recipe",
+      "title": "Chest tier list",
+      "description": "An S to F tier table on the speaker's chest; each item pops up when named and drops into its tier on the verdict, under an orange title. Good for reviews and rankings.",
+      "tags": [
+        "konten",
+        "edukasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "tilt-shift",
+      "type": "mosio:recipe",
+      "title": "Miniature city",
+      "description": "A busy place seen from high up through a tilt-shift lens: a thin sharp band, model-paint colours and a jumpy time-lapse. Good for markets, events, harbours and shops.",
+      "tags": [
+        "konten",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "two-ink-print",
+      "type": "mosio:recipe",
+      "title": "Two-ink print",
+      "description": "Yellow, blue and pink inks overlapping on warm paper, halftone dots, off-register plates and a disc sun. Good for community events, small shops, zines and memoirs.",
+      "tags": [
+        "ilustrasi",
+        "promo",
+        "retro"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "ui-sinematik",
+      "type": "mosio:recipe",
+      "title": "Cinematic UI",
+      "description": "Your app filmed like a movie: steep close-ups floating in black, a razor-thin focus and a slow drifting camera, then one line and a still logo. Good for apps.",
+      "tags": [
+        "teknologi",
+        "promo",
+        "produk"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "ukiyoe",
+      "type": "mosio:recipe",
+      "title": "Ukiyo-e",
+      "description": "Japanese woodblock prints in motion: colour blocks slip then align, carved lines, graded skies and panning scrolls. Good for travel, culture and journey stories.",
+      "tags": [
+        "ilustrasi",
+        "retro",
+        "cerita"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "urban-sketch",
+      "type": "mosio:recipe",
+      "title": "Urban sketch",
+      "description": "A sketched street: sepia pen lines first, then watercolour flows in through wet masks as the camera drifts. Good for travel routes, cafes, classes and city stories.",
+      "tags": [
+        "ilustrasi",
+        "konten"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "visual-investigation",
+      "type": "mosio:recipe",
+      "title": "Visual investigation",
+      "description": "A cold investigation desk: grey footage, typed documents, messages on the clock, a red cursor on a graph and circled frames. Good for fact-checks and community stories.",
+      "tags": [
+        "berita",
+        "data"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "visual-story",
+      "type": "mosio:recipe",
+      "title": "Visual story",
+      "description": "One illustrated world with a moving camera, word-by-word text with a selection box and a counting number. Good for education, odd facts and short stories.",
+      "tags": [
+        "cerita",
+        "edukasi",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "warm-notebook",
+      "type": "mosio:recipe",
+      "title": "Notebook",
+      "description": "Dotted cream paper, slanted titles popping letter by letter, ink-edged sticker cards and red scribbles. Good for beginner tutorials, classes, creators and vlogs.",
+      "tags": [
+        "edukasi",
+        "konten"
+      ],
+      "ratios": [
+        "9:16",
+        "16:9"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "watercolor",
+      "type": "mosio:recipe",
+      "title": "Watercolour",
+      "description": "A journal page that paints itself: clear watercolour on cotton paper, a brick-red sun and serif notes. Good for travel, classes, nature stories and travel creators.",
+      "tags": [
+        "ilustrasi",
+        "edukasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "white-model",
+      "type": "mosio:recipe",
+      "title": "White model",
+      "description": "A white scale model of an area in a dark room; a projector paints data onto it as light, layer by layer. Good for property, space planning and regional data.",
       "tags": [
         "data",
         "edukasi"
@@ -81,13 +2020,29 @@
       "version": "1.0.0"
     },
     {
-      "name": "ink-wash",
+      "name": "whiteboard",
       "type": "mosio:recipe",
-      "title": "Ink wash",
-      "description": "Ink painting on rice paper: brushstrokes become bamboo and misty hills, a scroll of steps, empty paper, one red seal. Good for craftspeople, culture and art classes.",
+      "title": "Whiteboard",
+      "description": "An explainer written live on a glossy whiteboard: floating markers write stroke by stroke, magnets slide and the camera travels. Good for classes, co-ops and guides.",
+      "tags": [
+        "edukasi",
+        "ilustrasi"
+      ],
+      "ratios": [
+        "16:9",
+        "9:16"
+      ],
+      "version": "1.0.0"
+    },
+    {
+      "name": "woodcut",
+      "type": "mosio:recipe",
+      "title": "Woodcut",
+      "description": "A woodcut carved before your eyes: black is the wood, white is the knife's cut, one colour glowing in the cuts. Good for craft stories, legends and history posters.",
       "tags": [
         "ilustrasi",
-        "cerita"
+        "cerita",
+        "retro"
       ],
       "ratios": [
         "16:9",
@@ -2687,6 +4642,127 @@
       ],
       "version": "1.0.0",
       "license": "MIT"
+    },
+    {
+      "name": "font-bebas-neue",
+      "type": "mosio:font",
+      "title": "Bebas Neue",
+      "description": "Bebas Neue, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-caveat",
+      "type": "mosio:font",
+      "title": "Caveat",
+      "description": "Caveat, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-geist",
+      "type": "mosio:font",
+      "title": "Geist",
+      "description": "Geist, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-geist-mono",
+      "type": "mosio:font",
+      "title": "Geist Mono",
+      "description": "Geist Mono, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-inter",
+      "type": "mosio:font",
+      "title": "Inter",
+      "description": "Inter, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-jetbrains-mono",
+      "type": "mosio:font",
+      "title": "JetBrains Mono",
+      "description": "JetBrains Mono, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-manrope",
+      "type": "mosio:font",
+      "title": "Manrope",
+      "description": "Manrope, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-playfair-display",
+      "type": "mosio:font",
+      "title": "Playfair Display",
+      "description": "Playfair Display, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-poppins",
+      "type": "mosio:font",
+      "title": "Poppins",
+      "description": "Poppins, bundled as woff2 (5 files, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-space-grotesk",
+      "type": "mosio:font",
+      "title": "Space Grotesk",
+      "description": "Space Grotesk, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-space-mono",
+      "type": "mosio:font",
+      "title": "Space Mono",
+      "description": "Space Mono, bundled as woff2 (2 files, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
     },
     {
       "name": "font-weight-text",
@@ -15214,7 +17290,7 @@
       "license": "MIT"
     },
     {
-      "name": "two-ink-print",
+      "name": "two-ink-print-scene",
       "type": "mosio:scene",
       "title": "Two-Ink Print",
       "description": "Print a subject in two spot-colour inks, with the accent plate sliding in off-register and settling a hair out of alignment over grainy paper. A built-in geometric poster stands in for the subject; a host replaces the contents of both .rp-subject layers with its own picture.",
@@ -16249,127 +18325,6 @@
       ],
       "version": "1.0.0",
       "license": "MIT"
-    },
-    {
-      "name": "font-bebas-neue",
-      "type": "mosio:font",
-      "title": "Bebas Neue",
-      "description": "Bebas Neue, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
-    },
-    {
-      "name": "font-caveat",
-      "type": "mosio:font",
-      "title": "Caveat",
-      "description": "Caveat, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
-    },
-    {
-      "name": "font-geist",
-      "type": "mosio:font",
-      "title": "Geist",
-      "description": "Geist, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
-    },
-    {
-      "name": "font-geist-mono",
-      "type": "mosio:font",
-      "title": "Geist Mono",
-      "description": "Geist Mono, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
-    },
-    {
-      "name": "font-inter",
-      "type": "mosio:font",
-      "title": "Inter",
-      "description": "Inter, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
-    },
-    {
-      "name": "font-jetbrains-mono",
-      "type": "mosio:font",
-      "title": "JetBrains Mono",
-      "description": "JetBrains Mono, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
-    },
-    {
-      "name": "font-manrope",
-      "type": "mosio:font",
-      "title": "Manrope",
-      "description": "Manrope, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
-    },
-    {
-      "name": "font-playfair-display",
-      "type": "mosio:font",
-      "title": "Playfair Display",
-      "description": "Playfair Display, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
-    },
-    {
-      "name": "font-poppins",
-      "type": "mosio:font",
-      "title": "Poppins",
-      "description": "Poppins, bundled as woff2 (5 files, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
-    },
-    {
-      "name": "font-space-grotesk",
-      "type": "mosio:font",
-      "title": "Space Grotesk",
-      "description": "Space Grotesk, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
-    },
-    {
-      "name": "font-space-mono",
-      "type": "mosio:font",
-      "title": "Space Mono",
-      "description": "Space Mono, bundled as woff2 (2 files, OFL-1.1). Scenes that need it list it in registryDependencies.",
-      "tags": [
-        "font"
-      ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
     }
   ]
 }

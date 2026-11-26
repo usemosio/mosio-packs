@@ -1,8 +1,9 @@
 # registry/mosio
 
-Static Mosio registry: `registry.json` lists the items, `<name>.json` holds one item (types `mosio:recipe` and `mosio:scene`).
+Static Mosio registry: `registry.json` lists the items, `<name>.json` holds one item (types `mosio:recipe`, `mosio:scene`, `mosio:font`).
 Each item has `files[]` of `{path, role, content}`: `RECIPE.md` (art direction), `plan.md` (beat plan), and
-`example/` and `example-9x16/` (Mosio projects: `index.html` + `mosio.json`, fonts embedded).
+`example/` (a Mosio project: `index.html` + `mosio.json`, fonts embedded) plus `example-9x16/` or `example-16x9/` for the other ratio.
+The four engine recipes also carry `params.json` (the parameter form: JSON Schema plus an example) and `recipe/` (their templates).
 
 ## sha256
 
