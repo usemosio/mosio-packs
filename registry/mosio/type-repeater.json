@@ -1,0 +1,106 @@
+{
+ "name": "type-repeater",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/type-repeater/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Type Repeater\n\nA layer-animator style repeater on a word, where copies unfold into a tunnel, a spiral or a fan behind it, breathe, then fold back into the word.\n\nCategory: typography. Length: 3 s. WebGL: no.\n\nUse when:\n- One word should hit hard for a beat, with repetition giving it depth and energy around a still, readable center.\n- A motion-graphics flourish is wanted for a title card, a section break or a loop.\n- A single word needs a backdrop made from itself, in the word's color stepping to an accent.\n\nAvoid when:\n- The repeats should stack in a quiet vertical column above and below the word: use echo-stack.\n- The whole frame should fill with scrolling rows of the word: use type-wall.\n- The word should be carried by a spinning 3D band: use ring-text.\n\nVariables:\n- text (string): Text, default \"Repeat\"\n- mode (enum): Mode, default \"tunnel\"\n- color (color): Word color, default \"#111111\"\n- accent (color): Last copy, default \"#fafafa\"\n- copies (number, 2-24): Copies, default 12\n- font_size (number, 40-240): Font size, default 110\n- font_weight (number, 100-900): Weight, default 800\n- outline (boolean): Outline copies, default true\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Type Repeater\n\n  A layer-animator style repeater on a word, where copies unfold into a tunnel, a spiral or a fan behind it, breathe, then fold back into the word.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/type-repeater/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"type-repeater\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"One short word.\", \"default\": \"Repeat\"},\n    {\"id\": \"mode\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Mode\", \"description\": \"How the copies unfold.\", \"default\": \"tunnel\", \"options\": [{\"value\": \"tunnel\", \"label\": \"Tunnel\"}, {\"value\": \"spiral\", \"label\": \"Spiral\"}, {\"value\": \"fan\", \"label\": \"Fan\"}]},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Word color\", \"description\": \"Color of the front word.\", \"default\": \"#111111\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Last copy\", \"description\": \"Color the copies step toward.\", \"default\": \"#fafafa\"},\n    {\"id\": \"copies\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Copies\", \"description\": \"Number of copies including the word.\", \"default\": 12, \"min\": 2, \"max\": 24, \"step\": 1},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in reference pixels (720 high stage).\", \"default\": 110, \"min\": 40, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_weight\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Weight\", \"description\": \"Font weight, 100 to 900.\", \"default\": 800, \"min\": 100, \"max\": 900, \"step\": 100},\n    {\"id\": \"outline\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Outline copies\", \"description\": \"Draw the copies as outlines.\", \"default\": true},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Type Repeater</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .tr-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: Inter, system-ui, sans-serif; }\n        .tr-wrap { position: relative; }\n        .tr-copy { line-height: 1; white-space: pre; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"type-repeater\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"tr-clip\" class=\"tr-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <svg width=\"0\" height=\"0\" style=\"position:absolute\" aria-hidden=\"true\">\n            <defs>\n              <filter id=\"tr-outline\">\n                <feMorphology id=\"tr-erode\" in=\"SourceAlpha\" operator=\"erode\" radius=\"1.5\" result=\"inner\" />\n                <feComposite in=\"SourceGraphic\" in2=\"inner\" operator=\"out\" />\n              </filter>\n            </defs>\n          </svg>\n          <div id=\"tr-wrap\" class=\"tr-wrap\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            function fit(el, maxPx, size, ratio) {\n              // Shrink el's font size until its scrollWidth fits ratio of the frame width.\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * (ratio || 0.9));\n              if (el.scrollWidth > max) { size = Math.max(10, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            gsap.registerPlugin(CustomEase);\n            function ease(name, a, b, c, d) { return CustomEase.create(name, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\"); }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            var tl = gsap.timeline({ paused: true });\n            var TOTAL = parseFloat(root.dataset.duration || \"3\");\n            function ip(t, a, b, from, to, e) {\n              var p = b === a ? 1 : (t - a) / (b - a);\n              p = Math.min(1, Math.max(0, p));\n              if (e) p = e(p);\n              return from + (to - from) * p;\n            }\n            function hash01(seed) {\n              var h = 2166136261;\n              for (var i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              return ((h ^ (h >>> 16)) >>> 0) / 4294967296;\n            }\n            function hashRange(seed, lo, hi) { return lo + hash01(seed) * (hi - lo); }\n            // Snap a frame number down to a stop-motion pose.\n            function qf(frame, step) { return Math.floor(frame / step + 1e-6) * step; }\n            function kf(t, keys, vals, e) {\n              if (t <= keys[0]) return vals[0];\n              for (var i = 0; i < keys.length - 1; i++) if (t <= keys[i + 1]) return ip(t, keys[i], keys[i + 1], vals[i], vals[i + 1], e);\n              return vals[vals.length - 1];\n            }\n            // Per-frame drawing: a pure function of the timeline time, run from a tween's onUpdate.\n            function tick(draw) {\n              tl.to({}, { duration: TOTAL, ease: \"none\", onUpdate: function () { draw(tl.time()); } }, 0);\n              draw(0);\n            }\n            var cubOut = ease(\"cub-out\", 0.215, 0.61, 0.355, 1);\n            var cubIn = ease(\"cub-in\", 0.55, 0.055, 0.675, 0.19);\n            var cubInOut = ease(\"cub-io\", 0.645, 0.045, 0.355, 1);\n\n            var wrap = document.getElementById(\"tr-wrap\");\n            var text = str(vars.text, \"Repeat\"), mode = pick(vars.mode, [\"tunnel\", \"spiral\", \"fan\"], \"tunnel\");\n            var color = col(vars.color, \"#111111\"), accent = col(vars.accent, \"#fafafa\");\n            var count = Math.max(1, Math.round(num(vars.copies, 12, 2, 24))), weight = num(vars.font_weight, 800, 100, 900);\n            var outline = bool(vars.outline, true), speed = num(vars.speed, 1, 0.25, 4);\n            var unit = Math.min(root.clientWidth / 1280, root.clientHeight / 720);\n            var size = num(vars.font_size, 110, 40, 240) * unit;\n            document.getElementById(\"tr-erode\").setAttribute(\"radius\", 1.5 * unit);\n            var MODES = { fan: { rotate: 11, scale: 1, pivot: 2.6, sym: true }, spiral: { rotate: 12, scale: 1.1, pivot: 0, sym: false }, tunnel: { rotate: 0, scale: 1.2, pivot: 0, sym: false } };\n            var M = MODES[mode];\n            function rgb(c) {\n              var h = c.replace(\"#\", \"\");\n              if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n              var n = parseInt(h, 16);\n              return Number.isFinite(n) ? [(n >> 16) & 255, (n >> 8) & 255, n & 255] : [255, 255, 255];\n            }\n            var c0 = rgb(color), c1 = rgb(accent);\n            var copies = [];\n            for (var i = count - 1; i >= 0; i--) {\n              var d = document.createElement(\"div\");\n              d.className = \"tr-copy\"; d.textContent = text;\n              d.style.fontSize = size + \"px\"; d.style.fontWeight = weight; d.style.fontVariationSettings = '\"wght\" ' + weight;\n              d.style.position = i === 0 ? \"relative\" : \"absolute\";\n              if (i > 0) { d.style.inset = \"0\"; d.setAttribute(\"aria-hidden\", \"true\"); if (outline) d.style.filter = \"url(#tr-outline)\"; }\n              d.style.transformOrigin = \"50% calc(50% + \" + M.pivot + \"em)\";\n              wrap.appendChild(d); copies.push({ i: i, el: d });\n            }\n            var easeOutC = function (p) { return 1 - Math.pow(1 - p, 3); };\n            var unfoldEase = function (p) { var q = 1 - p; return 1 - q * q * (2.4 * q - 1.4); };\n            function spreadAt(t) {\n              if (t < 34) return ip(t, 10, 34, 0, 1, unfoldEase);\n              if (t < 70) return 1 + 0.06 * Math.sin(2 * Math.PI * ((t - 34) / 36));\n              return ip(t, 70, 90, 1, 0, cubInOut);\n            }\n            tick(function (tt) {\n              var t = tt * 30 * speed, spread = spreadAt(t), intro = ip(t, 0, 10, 0, 1, easeOutC);\n              wrap.style.opacity = intro; wrap.style.transform = \"scale(\" + (0.9 + 0.1 * intro) + \")\";\n              copies.forEach(function (c) {\n                var i = c.i, steps = M.sym ? Math.ceil(i / 2) : i, side = M.sym && i % 2 === 0 ? -1 : 1, reach = steps * spread;\n                var op = i === 0 ? 1 : (1 - (0.85 * i) / count) * Math.min(1, Math.max(0, spread * 4));\n                var tint = count > 1 ? i / (count - 1) : 0;\n                c.el.style.opacity = op > 0 ? op : 0;\n                c.el.style.color = \"rgb(\" + [0, 1, 2].map(function (k) { return Math.round(c0[k] + (c1[k] - c0[k]) * tint); }).join(\",\") + \")\";\n                c.el.style.transform = \"rotate(\" + (side * M.rotate * reach || 0) + \"deg) scale(\" + Math.pow(M.scale, reach) + \")\";\n              });\n            });\n            var total = parseFloat(root.dataset.duration || \"3\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"type-repeater\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "20cc7d3835f120cc6e6e84c0fad2cf77d4067362b5cb0172627f3f8f2e0eaee8",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#ff4d1a",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Repeat"
+  },
+  {
+   "id": "mode",
+   "type": "enum",
+   "role": "style",
+   "label": "Mode",
+   "default": "tunnel"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Word color",
+   "default": "#111111"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Last copy",
+   "default": "#fafafa"
+  },
+  {
+   "id": "copies",
+   "type": "number",
+   "role": "style",
+   "label": "Copies",
+   "default": 12,
+   "min": 2,
+   "max": 24
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 110,
+   "min": 40,
+   "max": 240
+  },
+  {
+   "id": "font_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Weight",
+   "default": 800,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "outline",
+   "type": "boolean",
+   "role": "style",
+   "label": "Outline copies",
+   "default": true
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

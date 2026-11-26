@@ -1,0 +1,108 @@
+{
+ "name": "shadow-sweep-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/shadow-sweep-text/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Shadow Sweep Text\n\nA rising line is uncovered and removed by two dense dark shadow sweeps.\n\nCategory: typography. Length: 1.234 s. WebGL: no.\n\nUse when:\n- A short statement should emerge through a dense shadow instead of fading or clipping into view.\n- The text rises on a subtle diagonal while the reveal travels across the line, then the shadow takes it away.\n\nAvoid when:\n- The text should stay visible after entering: use mask-reveal-up for a one-way reveal.\n- Each word needs its own entrance timing: use per-word-crossfade or centered-word-build.\n\nVariables:\n- text (string): Text, default \"are abandoned\"\n- font_size (number, 12-180): Font size, default 96\n- color (color): Color, default \"#aaa6b5\"\n- font_weight (enum): Font weight, default \"700\"\n- background_color (color): Background, default \"#030012\"\n- shadow_color (color): Shadow color, default \"#030012\"\n- shadow_softness (number, 0-280): Shadow softness, default 130\n- rise (number, 0-300): Rise, default 96\n- drift_left (number, 0-120): Drift left, default 16\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Shadow Sweep Text\n\n  A rising line is uncovered and removed by two dense dark shadow sweeps.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/shadow-sweep-text/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"shadow-sweep-text\"\n  data-composition-duration=\"1.234\"\n  data-composition-variables='[\n    { \"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Short statement revealed and removed by the shadow.\", \"default\": \"are abandoned\" },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 96, \"min\": 12, \"max\": 180, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#aaa6b5\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"900\", \"label\": \"Black\"}] },\n    { \"id\": \"background_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Color of the field behind the text.\", \"default\": \"#030012\" },\n    { \"id\": \"shadow_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Shadow color\", \"description\": \"Color of the sweeping shadow. Match it to the background.\", \"default\": \"#030012\" },\n    { \"id\": \"shadow_softness\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Shadow softness\", \"description\": \"Width of the soft edge in pixels.\", \"default\": 130, \"min\": 0, \"max\": 280, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"rise\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Rise\", \"description\": \"How far below its place the text starts.\", \"default\": 96, \"min\": 0, \"max\": 300, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"drift_left\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Drift left\", \"description\": \"How far right of its place the text starts.\", \"default\": 16, \"min\": 0, \"max\": 120, \"step\": 1, \"unit\": \"px\" }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Shadow Sweep Text</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #aaa6b5);\n          background: var(--bg, #030012);\n          font-family: Arial, Helvetica, sans-serif;\n          pointer-events: none;\n        }\n        .sst-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .sst-box { position: relative; display: inline-block; }\n        .sst-text { display: inline-block; line-height: 1; white-space: nowrap; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }\n        .sst-field { position: absolute; top: 50%; opacity: 0; pointer-events: none; transform: translate(-50%, -50%); }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"shadow-sweep-text\" data-duration=\"1.234\" data-fps=\"30\">\n        <div id=\"sst-clip\" class=\"sst-stage clip\" data-start=\"0\" data-duration=\"1.234\" data-track-index=\"0\">\n          <div id=\"sst-box\" class=\"sst-box\">\n            <span id=\"sst-text\" class=\"sst-text\"></span>\n            <div id=\"sst-field\" class=\"sst-field\"></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            gsap.registerPlugin(CustomEase);\n            function bz(id, a, b, c, d) {\n              return CustomEase.create(\"sst-\" + id, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\");\n            }\n            // interpolate(frame, [a, b], [from, to], { easing }) as a tween (frames at 30 fps).\n            function tw(tl, el, from, to, a, b, ease, keep) {\n              var t = Object.assign({}, to, { duration: (b - a) / 30, ease: ease || \"none\", immediateRender: !keep });\n              tl.fromTo(el, from, t, a / 30);\n            }\n            // Shrink an element's font size so it fits a fraction of the frame width.\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            var TOTAL = parseFloat(root.dataset.duration || \"1.234\");\n            function finish(tl) {\n              if (tl.duration() < TOTAL) tl.to({}, { duration: TOTAL - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"shadow-sweep-text\"] = tl;\n            }\n            var text = str(vars.text, \"are abandoned\");\n            var weight = pick(vars.font_weight, [\"400\", \"600\", \"700\", \"900\"], \"700\");\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            var bgColor = str(vars.background_color, \"#030012\");\n            root.style.setProperty(\"--bg\", bgColor);\n            // interpolate() with clamping, easing given as a function of progress.\n            function ip(f, a, b, from, to, ease) {\n              var p = b === a ? 1 : Math.min(1, Math.max(0, (f - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n\n            var shadow = str(vars.shadow_color, \"#030012\");\n            var soft = Math.max(num(vars.shadow_softness, 130, 0, 280), 0);\n            var rise = num(vars.rise, 96, 0, 300);\n            var drift = num(vars.drift_left, 16, 0, 120);\n            var box = document.getElementById(\"sst-box\");\n            var el = document.getElementById(\"sst-text\");\n            var field = document.getElementById(\"sst-field\");\n            el.textContent = text;\n            el.style.fontWeight = weight;\n            var size = fit(el, num(vars.font_size, 96, 12, 180), 0.8);\n            var fieldW = Math.max(soft * 3, 1);\n            var fieldH = Math.max(size * 2.6, soft * 1.8, 1);\n            field.style.width = fieldW + \"px\";\n            field.style.height = fieldH + \"px\";\n            field.style.background = \"radial-gradient(ellipse at center, \" + shadow + \" 0%, \" + shadow + \" 14%, transparent 72%)\";\n            field.style.filter = \"blur(\" + soft * 0.08 + \"px)\";\n\n            var LEN = 37, ENTER_END = 23, EXIT_START = 26, EXIT_END = LEN - 1;\n            var out = bz(\"travel\", 0.215, 0.61, 0.355, 1);\n            var P = { f: 0 };\n            function apply() {\n              var f = P.f;\n              var travel = ip(f, 0, LEN - 1, 0, 1, out);\n              box.style.transform = \"translate3d(\" + (-20 + drift * (1 - travel)) + \"px, \" + (9 + rise * (1 - travel)) + \"px, 0)\";\n              var entering = f < ENTER_END, exiting = f >= EXIT_START;\n              var sp = entering ? ip(f, -3, ENTER_END, 0, 1) : exiting ? ip(f, EXIT_START, EXIT_END, 0, 1) : null;\n              if (sp === null) {\n                el.style.webkitMaskImage = el.style.maskImage = \"none\";\n                field.style.opacity = 0;\n                return;\n              }\n              var edge = (sp * 2 - 1) * (soft / 2);\n              var start = \"calc(\" + sp * 100 + \"% + \" + (edge - soft / 2) + \"px)\";\n              var end = \"calc(\" + sp * 100 + \"% + \" + (edge + soft / 2) + \"px)\";\n              var mask = entering\n                ? \"linear-gradient(90deg, #000 0, #000 \" + start + \", transparent \" + end + \", transparent 100%)\"\n                : \"linear-gradient(90deg, transparent 0, transparent \" + start + \", #000 \" + end + \", #000 100%)\";\n              el.style.webkitMaskImage = el.style.maskImage = mask;\n              field.style.left = \"calc(\" + sp * 100 + \"% + \" + edge + \"px)\";\n              var fo = sp < 0.08 ? sp / 0.08 : sp < 0.82 ? 1 : Math.max(0, (1 - sp) / 0.18);\n              field.style.opacity = fo;\n            }\n            apply();\n            var tl = gsap.timeline({ paused: true });\n            tl.to(P, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: apply }, 0);\n            finish(tl);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "67ed94c949b6984d901b0dd642b7d64b6ba24fc951c1eaa596cf57e095870d31",
+ "duration": 1.234,
+ "webgl": false,
+ "demo_background": "#030012",
+ "demo_values": {
+  "font_size": 120
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "are abandoned"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 96,
+   "min": 12,
+   "max": 180
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#aaa6b5"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  },
+  {
+   "id": "background_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#030012"
+  },
+  {
+   "id": "shadow_color",
+   "type": "color",
+   "role": "style",
+   "label": "Shadow color",
+   "default": "#030012"
+  },
+  {
+   "id": "shadow_softness",
+   "type": "number",
+   "role": "style",
+   "label": "Shadow softness",
+   "default": 130,
+   "min": 0,
+   "max": 280
+  },
+  {
+   "id": "rise",
+   "type": "number",
+   "role": "motion",
+   "label": "Rise",
+   "default": 96,
+   "min": 0,
+   "max": 300
+  },
+  {
+   "id": "drift_left",
+   "type": "number",
+   "role": "motion",
+   "label": "Drift left",
+   "default": 16,
+   "min": 0,
+   "max": 120
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

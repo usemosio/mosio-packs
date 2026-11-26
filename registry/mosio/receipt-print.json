@@ -1,0 +1,151 @@
+{
+ "name": "receipt-print",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "stamp and stagger: a run of lines printing, then a stamp-and-punch landing"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Receipt Print\n\nA shop receipt prints out line by line from a printer slot (shop name, items with quantity and price, a dashed rule, the total) and a LUNAS stamp thunks onto it. Items, prices, shop name and total are variables.\n\nCategory: commerce. Length: 6 s. WebGL: no.\n\nUse when:\n- Showing what a customer bought and that it is paid, in a shop or order confirmation video.\n- A \"lunas\" or paid-in-full moment after a list of items.\n\nAvoid when:\n- A price list for display rather than a bill: use menu-price-board.\n- A single product price: use price-drop.\n- A multi-step checkout interface: use checkout-flow.\n\nVariables:\n- shop (string): Shop name, default \"Kopi Senja\"\n- address (string): Address line, default \"Jl. Melati No. 12, Bandung\"\n- meta (string): Receipt line, default \"Struk #0412 \\u00b7 14.32\"\n- items (string): Items, default \"Kopi susu|2|Rp14.000; Roti bakar|1|Rp12.000; Es teh|1|Rp5.000\"\n- total_label (string): Total label, default \"TOTAL\"\n- total (string): Total, default \"Rp45.000\"\n- footer (string): Footer, default \"Terima kasih, sampai jumpa lagi\"\n- stamp (string): Stamp, default \"LUNAS\"\n- print_seconds (number, 1-5): Print time, default 2.6\n- paper_color (color): Paper colour, default \"#fafaf9\"\n- mono_family (string): Receipt font, default \"Geist Mono\"\n- bg_color (color): Background, default \"#ffffff\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- main_color (color): Accent, default \"#2563eb\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Receipt Print\n\n  A shop receipt prints out line by line from a printer slot (shop name, items with quantity and price, a dashed rule, the total) and a LUNAS stamp thunks onto it. Items, prices, shop name and total are variables.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"receipt-print\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n  {\n    \"id\": \"shop\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Shop name\",\n    \"description\": \"Shop name printed at the top of the receipt.\",\n    \"default\": \"Kopi Senja\"\n  },\n  {\n    \"id\": \"address\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Address line\",\n    \"description\": \"Second line under the name.\",\n    \"default\": \"Jl. Melati No. 12, Bandung\"\n  },\n  {\n    \"id\": \"meta\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Receipt line\",\n    \"description\": \"Small line with the receipt number, cashier or time. Leave empty to hide it.\",\n    \"default\": \"Struk #0412 · 14.32\"\n  },\n  {\n    \"id\": \"items\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Items\",\n    \"description\": \"Items separated by semicolons, each as name|quantity|unit price. The line price is quantity times unit price.\",\n    \"default\": \"Kopi susu|2|Rp14.000; Roti bakar|1|Rp12.000; Es teh|1|Rp5.000\"\n  },\n  {\n    \"id\": \"total_label\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Total label\",\n    \"description\": \"Label of the total line.\",\n    \"default\": \"TOTAL\"\n  },\n  {\n    \"id\": \"total\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Total\",\n    \"description\": \"Total shown on the last line. Leave empty to add the item lines up.\",\n    \"default\": \"Rp45.000\"\n  },\n  {\n    \"id\": \"footer\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Footer\",\n    \"description\": \"Line under the total. Leave empty to hide it.\",\n    \"default\": \"Terima kasih, sampai jumpa lagi\"\n  },\n  {\n    \"id\": \"stamp\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Stamp\",\n    \"description\": \"Word stamped on the receipt at the end.\",\n    \"default\": \"LUNAS\"\n  },\n  {\n    \"id\": \"print_seconds\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Print time\",\n    \"description\": \"Seconds the receipt takes to print out.\",\n    \"default\": 2.6,\n    \"min\": 1,\n    \"max\": 5,\n    \"step\": 0.1\n  },\n  {\n    \"id\": \"paper_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Paper colour\",\n    \"description\": \"Receipt paper.\",\n    \"default\": \"#fafaf9\"\n  },\n  {\n    \"id\": \"mono_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Receipt font\",\n    \"description\": \"Monospace family for the receipt lines. Geist Mono is loaded by default.\",\n    \"default\": \"Geist Mono\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Main text and outlines.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Secondary text and hairlines.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent\",\n    \"description\": \"The LUNAS stamp: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Font family name. Geist is loaded by default; another family must be loaded by the host.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Receipt Print</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          color: var(--rp-text); font-family: var(--FAM, Geist), system-ui, sans-serif; background: var(--rp-bg);\n        }\n        #root * { box-sizing: border-box; }\n        .rp-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        .rp-wrap { position: absolute; left: 50%; top: 50%; width: calc(var(--u) * 640); display: flex; flex-direction: column; align-items: center; transform-origin: 50% 50%; }\n        .rp-slot { position: relative; z-index: 2; width: calc(var(--u) * 700); height: calc(var(--u) * 40); border-radius: calc(var(--u) * 20); background: var(--rp-text); }\n        .rp-slot::after { content: \"\"; position: absolute; left: calc(var(--u) * 28); right: calc(var(--u) * 28); bottom: calc(var(--u) * 11); height: calc(var(--u) * 6); border-radius: calc(var(--u) * 3); background: var(--rp-bg); opacity: 0.55; }\n        .rp-shadow { width: 100%; filter: drop-shadow(0 calc(var(--u) * 10) calc(var(--u) * 18) rgba(0, 0, 0, 0.12)); margin-top: calc(var(--u) * -14); }\n        .rp-win { width: 100%; overflow: hidden; }\n        .rp-paper { width: 100%; background: var(--rp-paper); padding: calc(var(--u) * 52) calc(var(--u) * 44) calc(var(--u) * 205); font-family: var(--rp-mono), ui-monospace, monospace; font-variant-numeric: tabular-nums; color: var(--rp-text); }\n        .rp-row { display: flex; align-items: baseline; justify-content: space-between; gap: calc(var(--u) * 20); font-size: calc(var(--u) * 31); line-height: 1.5; white-space: nowrap; }\n        .rp-row b { font-weight: 600; }\n        .rp-c { justify-content: center; text-align: center; }\n        .rp-shop { font-family: var(--FAM, Geist), system-ui, sans-serif; font-size: calc(var(--u) * 54); font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; }\n        .rp-sm { font-size: calc(var(--u) * 25); color: var(--rp-muted); }\n        .rp-rule { height: 0; border-top: calc(var(--u) * 3) dashed var(--rp-muted); margin: calc(var(--u) * 16) 0; opacity: 0.7; }\n        .rp-tot { font-size: calc(var(--u) * 44); font-weight: 600; margin-top: calc(var(--u) * 4); }\n        .rp-name { overflow: hidden; text-overflow: ellipsis; }\n        .rp-stamp { position: absolute; right: calc(var(--u) * 16); bottom: calc(var(--u) * 34); z-index: 3; padding: calc(var(--u) * 6) calc(var(--u) * 34); border: calc(var(--u) * 9) solid var(--rp-main); border-radius: calc(var(--u) * 14); color: var(--rp-main); font-size: calc(var(--u) * 92); font-weight: 700; letter-spacing: 0.04em; line-height: 1.1; transform: rotate(-12deg); mix-blend-mode: normal; font-family: var(--FAM, Geist), system-ui, sans-serif; background: rgba(255,255,255,0.0); }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"receipt-print\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"rp-clip\" class=\"rp-stage clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\">\n\n          <div class=\"rp-wrap\" id=\"rp-wrap\">\n            <div id=\"rp-inner\" style=\"width:100%;display:flex;flex-direction:column;align-items:center;position:relative\">\n              <div class=\"rp-slot\"></div>\n              <div class=\"rp-shadow\"><div class=\"rp-win\" id=\"rp-win\"><div class=\"rp-paper\" id=\"rp-paper\"></div></div></div>\n              <div class=\"rp-stamp\" id=\"rp-stamp\"></div>\n            </div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function svg(tag, attrs, parent) { var e = document.createElementNS(\"http://www.w3.org/2000/svg\", tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function rp(n) { return \"Rp\" + dots(n); }\n            function money(s) { var d = String(s).replace(/[^\\d]/g, \"\"); return d ? parseInt(d, 10) : 0; }\n            function list(s, d) { var a = String(str(s, d)).split(\";\").map(function (x) { return x.trim(); }).filter(Boolean); return a.length ? a : String(d).split(\";\").map(function (x) { return x.trim(); }); }\n            function mulberry(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function setColors(p, c) { for (var k in c) root.style.setProperty(\"--\" + p + \"-\" + k, colr(vars[k + \"_color\"], c[k])); }\n            var fam = str(vars.font_family, \"Geist\");\n            root.style.setProperty(\"--FAM\", /^[\\w\\s-]+$/.test(fam) ? '\"' + fam + '\"' : \"Geist\");\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n            setColors(\"rp\", { bg: \"#ffffff\", text: \"#0a0a0a\", muted: \"#737373\", main: \"#2563eb\", paper: \"#fafaf9\" });\n\n\n            var shop = str(vars.shop, \"Kopi Senja\");\n            var address = str(vars.address, \"Jl. Melati No. 12, Bandung\");\n            var meta = typeof vars.meta === \"string\" ? vars.meta.trim() : \"Struk #0412 · 14.32\";\n            var items = list(vars.items, \"Kopi susu|2|Rp14.000; Roti bakar|1|Rp12.000; Es teh|1|Rp5.000\").map(function (s) {\n              var a = s.split(\"|\"); var q = Math.max(1, Math.round(Number(a[1]) || 1));\n              return { name: (a[0] || \"\").trim(), q: q, unit: money(a[2] || \"0\") };\n            }).slice(0, 9);\n            var sum = items.reduce(function (t, i) { return t + i.q * i.unit; }, 0);\n            var totalTxt = str(vars.total, rp(sum));\n            var footer = typeof vars.footer === \"string\" ? vars.footer.trim() : \"Terima kasih, sampai jumpa lagi\";\n            root.style.setProperty(\"--rp-mono\", /^[\\w\\s-]+$/.test(str(vars.mono_family, \"Geist Mono\")) ? '\"' + str(vars.mono_family, \"Geist Mono\") + '\"' : '\"Geist Mono\"');\n            root.style.setProperty(\"--rp-paper\", colr(vars.paper_color, \"#fafaf9\"));\n\n            var paper = document.getElementById(\"rp-paper\");\n            var rows = [];\n            function row(cls, html, p) { var r = el(\"div\", \"rp-row \" + (cls || \"\"), paper, html); rows.push(r); return r; }\n            row(\"rp-c rp-shop\", esc(shop));\n            row(\"rp-c rp-sm\", esc(address));\n            if (meta) row(\"rp-c rp-sm\", esc(meta));\n            el(\"div\", \"rp-rule\", paper);\n            items.forEach(function (it) {\n              row(\"\", '<span class=\"rp-name\">' + it.q + \"× \" + esc(it.name) + \"</span><span>\" + rp(it.q * it.unit) + \"</span>\");\n            });\n            el(\"div\", \"rp-rule\", paper);\n            row(\"rp-tot\", \"<span>\" + esc(str(vars.total_label, \"TOTAL\")) + \"</span><span>\" + esc(totalTxt) + \"</span>\");\n            if (footer) { el(\"div\", \"\", paper).style.height = 14 * U + \"px\"; row(\"rp-c rp-sm\", esc(footer)); }\n\n            var N = rows.length + 2;\n            var teeth = 22, z = 16 * U, pts = [\"0 0\", \"100% 0\"];\n            for (var i = 0; i <= teeth; i++) pts.push((100 - i * 100 / teeth).toFixed(2) + \"% \" + (i % 2 === 0 ? \"calc(100% - \" + z + \"px)\" : \"100%\"));\n            paper.style.clipPath = \"polygon(\" + pts.join(\",\") + \")\";\n            var paperH = paper.offsetHeight;\n            document.getElementById(\"rp-win\").style.height = paperH + \"px\";\n            var stamp = document.getElementById(\"rp-stamp\");\n            stamp.textContent = str(vars.stamp, \"LUNAS\");\n\n            var wrap = document.getElementById(\"rp-wrap\");\n            var groupH = paperH + 26 * U;\n            var S = Math.min(1.7, (H * 0.86) / groupH, (W * 0.9) / (700 * U));\n            wrap.style.height = groupH + \"px\";\n            gsap.set(wrap, { xPercent: -50, yPercent: -50, scale: S });\n            var printT = num(vars.print_seconds, 2.6, 1, 5);\n\n            var tl = gsap.timeline({ paused: true });\n            var win = document.getElementById(\"rp-win\");\n            tl.fromTo(win, { height: 0 }, { height: paperH, duration: printT, ease: \"steps(\" + N + \")\" }, 0.35);\n            var t0 = 0.35 + printT + 0.55;\n            tl.fromTo(stamp, { scale: 2.6, opacity: 0, rotation: -12 }, { scale: 1, opacity: 1, rotation: -12, duration: 0.2, ease: \"power3.in\" }, t0);\n            tl.fromTo(\"#rp-inner\", { y: 0 }, { y: 7 * U, duration: 0.07, ease: \"power2.out\" }, t0 + 0.2);\n            tl.to(\"#rp-inner\", { y: 0, duration: 0.3, ease: \"back.out(2.4)\" }, t0 + 0.27);\n            tl.fromTo(stamp, { scale: 1 }, { scale: 1.04, duration: 0.08, ease: \"power2.out\" }, t0 + 0.2);\n            tl.to(stamp, { scale: 1, duration: 0.2, ease: \"power2.out\" }, t0 + 0.28);\n\n            var total = parseFloat(root.dataset.duration || \"6\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"receipt-print\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "f104ec056342dc19b3edab262e851eca61ea12ccbf2228f6b8ba503ca39d2597",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "shop",
+   "type": "string",
+   "role": "content",
+   "label": "Shop name",
+   "default": "Kopi Senja"
+  },
+  {
+   "id": "address",
+   "type": "string",
+   "role": "content",
+   "label": "Address line",
+   "default": "Jl. Melati No. 12, Bandung"
+  },
+  {
+   "id": "meta",
+   "type": "string",
+   "role": "content",
+   "label": "Receipt line",
+   "default": "Struk #0412 · 14.32"
+  },
+  {
+   "id": "items",
+   "type": "string",
+   "role": "content",
+   "label": "Items",
+   "default": "Kopi susu|2|Rp14.000; Roti bakar|1|Rp12.000; Es teh|1|Rp5.000"
+  },
+  {
+   "id": "total_label",
+   "type": "string",
+   "role": "content",
+   "label": "Total label",
+   "default": "TOTAL"
+  },
+  {
+   "id": "total",
+   "type": "string",
+   "role": "content",
+   "label": "Total",
+   "default": "Rp45.000"
+  },
+  {
+   "id": "footer",
+   "type": "string",
+   "role": "content",
+   "label": "Footer",
+   "default": "Terima kasih, sampai jumpa lagi"
+  },
+  {
+   "id": "stamp",
+   "type": "string",
+   "role": "content",
+   "label": "Stamp",
+   "default": "LUNAS"
+  },
+  {
+   "id": "print_seconds",
+   "type": "number",
+   "role": "motion",
+   "label": "Print time",
+   "default": 2.6,
+   "min": 1,
+   "max": 5
+  },
+  {
+   "id": "paper_color",
+   "type": "color",
+   "role": "style",
+   "label": "Paper colour",
+   "default": "#fafaf9"
+  },
+  {
+   "id": "mono_family",
+   "type": "string",
+   "role": "style",
+   "label": "Receipt font",
+   "default": "Geist Mono"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2563eb"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

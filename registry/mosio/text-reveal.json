@@ -1,0 +1,87 @@
+{
+ "name": "text-reveal",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Magic UI",
+ "source": {
+  "repo": "https://github.com/magicuidesign/magicui",
+  "path": "apps/www/registry/magicui/text-reveal.tsx",
+  "commit": "166367b4e31a27f166fd6c2b71d7be290fe0c1bc"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Text Reveal\n\nA paragraph in faint type that lights up word by word to full colour, like text being read aloud or scrolled into focus.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- A statement or manifesto should be read word by word at a steady pace.\n- A paragraph needs a progressive highlight from faint to solid.\n\nAvoid when:\n- Words should move or scale in: use per-word-rise or text-animate.\n- A single short headline: use a letter or word entrance instead.\n\nVariables:\n- text (string): Text, default \"This text lights up one word at a time as you read, until every word is clear.\"\n- font_size (number, 12-200): Font size, default 64\n- color (color): Colour, default \"#0a0a0a\"\n- dim (number, 0-1): Faint level, default 0.2\n- start (number, 0-3): Start, default 0.4\n- reveal_seconds (number, 0.5-20): Reveal time, default 3.8\n\nSource: https://github.com/magicuidesign/magicui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Text Reveal\n\n  A paragraph in faint type that lights up word by word to full colour, like text being read aloud or scrolled into focus.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/magicuidesign/magicui/blob/166367b4e31a27f166fd6c2b71d7be290fe0c1bc/apps/www/registry/magicui/text-reveal.tsx\n  Changes by usemosio/blocks: the source ties each word's opacity to the page scroll position; this block plays the same progress over time.\n\n  MIT License\n\n  Copyright (c) Magic UI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"text-reveal\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"The paragraph that lights up.\", \"default\": \"This text lights up one word at a time as you read, until every word is clear.\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. The paragraph wraps inside 86 % of the frame width.\", \"default\": 64, \"min\": 12, \"max\": 200, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Colour\", \"description\": \"Colour of the revealed words.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"dim\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Faint level\", \"description\": \"How visible unread words are, 0 to 1.\", \"default\": 0.2, \"min\": 0, \"max\": 1, \"step\": 0.05},\n    {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start\", \"description\": \"Seconds before the first word starts to light up.\", \"default\": 0.4, \"min\": 0, \"max\": 3, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"reveal_seconds\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Reveal time\", \"description\": \"Seconds from the first word starting to the last word finished. The source ties this to scrolling.\", \"default\": 3.8, \"min\": 0.5, \"max\": 20, \"step\": 0.1, \"unit\": \"s\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Text Reveal</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@600;700;800&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .trv-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .trv-para { width: 86%; display: flex; flex-wrap: wrap; justify-content: flex-start; font-family: var(--font-display, Geist, system-ui, sans-serif); font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; }\n        .trv-word { position: relative; margin: 0 0.3em 0.1em 0; white-space: pre; }\n        .trv-base { position: absolute; left: 0; top: 0; }\n        .trv-top { opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"text-reveal\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"trv-clip\" class=\"trv-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <p id=\"trv-para\" class=\"trv-para\"></p>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Shrink an element's font until it fits a share of the frame width.\n            function fit(el, size, share) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * share);\n              if (el.scrollWidth > max) {\n                size = Math.max(12, size * (max / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            // A seeded random generator, so every seek draws the same thing.\n            function mulberry32(a) {\n              return function () {\n                a |= 0; a = (a + 0x6d2b79f5) | 0;\n                var t = Math.imul(a ^ (a >>> 15), 1 | a);\n                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n            gsap.registerPlugin(CustomEase);\n            var TAG = \"trv\";\n            var bezN = 0;\n            function bez(x1, y1, x2, y2) {\n              return CustomEase.create(TAG + \"-\" + bezN++, \"M0,0 C\" + x1 + \",\" + y1 + \" \" + x2 + \",\" + y2 + \" 1,1\");\n            }\n            var tl = gsap.timeline({ paused: true });\n            function finish() {\n              var total = parseFloat(root.dataset.duration || \"5\");\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"text-reveal\"] = tl;\n            }\n\n            var para = document.getElementById(\"trv-para\");\n            var text = str(vars.text, \"This text lights up one word at a time as you read, until every word is clear.\");\n            var color = col(vars.color, \"#0a0a0a\");\n            var dim = num(vars.dim, 0.2, 0, 1);\n            var start = num(vars.start, 0.4, 0, 3);\n            var span = num(vars.reveal_seconds, 3.8, 0.5, 20);\n            para.style.color = color;\n            para.setAttribute(\"aria-label\", text);\n            var words = text.split(\" \").filter(Boolean);\n            var tops = words.map(function (w, i) {\n              var wrap = document.createElement(\"span\");\n              wrap.className = \"trv-word\";\n              wrap.setAttribute(\"aria-hidden\", \"true\");\n              var ghost = document.createElement(\"span\");\n              ghost.style.visibility = \"hidden\";\n              ghost.textContent = w;\n              var base = document.createElement(\"span\");\n              base.className = \"trv-base\";\n              base.style.opacity = dim;\n              base.textContent = w;\n              var top = document.createElement(\"span\");\n              top.className = \"trv-base trv-top\";\n              top.id = \"trv-top-\" + i;\n              top.textContent = w;\n              wrap.appendChild(ghost); wrap.appendChild(base); wrap.appendChild(top);\n              para.appendChild(wrap);\n              return top;\n            });\n            var size = num(vars.font_size, 64, 12, 200);\n            para.style.fontSize = size + \"px\";\n            // Shrink until the paragraph is no taller than 70 % of the frame.\n            var guard = 0;\n            while (para.offsetHeight > root.clientHeight * 0.7 && size > 12 && guard++ < 40) {\n              size *= 0.94; para.style.fontSize = size + \"px\";\n            }\n            // Source: word i goes 0 -> 1 across progress [i/n, (i+1)/n], linearly.\n            var n = words.length;\n            tops.forEach(function (el, i) {\n              tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: span / n, ease: \"none\", immediateRender: true }, start + (i / n) * span);\n            });\n\n            finish();\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "0b31834eac55b75e6e5e0503251cc30bd91c22402508393ec83af7522eb1e52a",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 96
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "This text lights up one word at a time as you read, until every word is clear."
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 64,
+   "min": 12,
+   "max": 200
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "dim",
+   "type": "number",
+   "role": "style",
+   "label": "Faint level",
+   "default": 0.2,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "start",
+   "type": "number",
+   "role": "motion",
+   "label": "Start",
+   "default": 0.4,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "reveal_seconds",
+   "type": "number",
+   "role": "motion",
+   "label": "Reveal time",
+   "default": 3.8,
+   "min": 0.5,
+   "max": 20
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://magicui.design"
+}

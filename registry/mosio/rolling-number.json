@@ -1,0 +1,80 @@
+{
+ "name": "rolling-number",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/rolling-number/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Rolling Number\n\nOdometer where every place rolls at its own speed, new places rising into view, settling exactly on the target value.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- Animating a large integer metric on a stats or milestone slide (revenue, signups, impressions).\n- Each digit place should animate independently so the viewer can read the number building up.\n- The from and to values are pure numbers with no currency symbol or unit.\n\nAvoid when:\n- The value has a prefix or suffix like $99 or 1.2M: use slot-machine-roll.\n- The change is small or decorative and wants a playful reel feel.\n- The value is a small integer or counts down: use number-wheel.\n\nVariables:\n- from (number, 0-999999999): From, default 0\n- to (number, 0-999999999): To, default 24813\n- font_size (number, 24-400): Font size, default 120\n- color (color): Color, default \"#171717\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Rolling Number\n\n  Odometer where every place rolls at its own speed, new places rising into view, settling exactly on the target value.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/rolling-number/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"rolling-number\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"from\", \"type\": \"number\", \"role\": \"content\", \"label\": \"From\", \"description\": \"Starting number.\", \"default\": 0, \"min\": 0, \"max\": 999999999, \"step\": 1},\n    {\"id\": \"to\", \"type\": \"number\", \"role\": \"content\", \"label\": \"To\", \"description\": \"Target number.\", \"default\": 24813, \"min\": 0, \"max\": 999999999, \"step\": 1},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Wide numbers shrink to fit the frame.\", \"default\": 120, \"min\": 24, \"max\": 400, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Digit color.\", \"default\": \"#171717\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier for the roll.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Rolling Number</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@800&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .rn-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .rn-row { display: flex; align-items: flex-start; font-family: var(--font-mono, \"JetBrains Mono\", ui-monospace, monospace); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; line-height: 1; }\n        .rn-col { display: inline-block; overflow: hidden; width: 0.62em; vertical-align: top; text-align: center; }\n        .rn-strip { display: flex; flex-direction: column; }\n        .rn-sep { display: inline-block; width: 0.34em; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"rolling-number\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"rn-clip\" class=\"rn-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <div id=\"rn-row\" class=\"rn-row\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            function fit(el, maxPx, size, ratio) {\n              // Shrink el's font size until its scrollWidth fits ratio of the frame width.\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * (ratio || 0.9));\n              if (el.scrollWidth > max) { size = Math.max(10, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            gsap.registerPlugin(CustomEase);\n            function ease(name, a, b, c, d) { return CustomEase.create(name, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\"); }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            var tl = gsap.timeline({ paused: true });\n            var TOTAL = parseFloat(root.dataset.duration || \"5\");\n            function ip(t, a, b, from, to, e) {\n              var p = b === a ? 1 : (t - a) / (b - a);\n              p = Math.min(1, Math.max(0, p));\n              if (e) p = e(p);\n              return from + (to - from) * p;\n            }\n            function hash01(seed) {\n              var h = 2166136261;\n              for (var i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              return ((h ^ (h >>> 16)) >>> 0) / 4294967296;\n            }\n            function hashRange(seed, lo, hi) { return lo + hash01(seed) * (hi - lo); }\n            // Snap a frame number down to a stop-motion pose.\n            function qf(frame, step) { return Math.floor(frame / step + 1e-6) * step; }\n            function kf(t, keys, vals, e) {\n              if (t <= keys[0]) return vals[0];\n              for (var i = 0; i < keys.length - 1; i++) if (t <= keys[i + 1]) return ip(t, keys[i], keys[i + 1], vals[i], vals[i + 1], e);\n              return vals[vals.length - 1];\n            }\n            // Per-frame drawing: a pure function of the timeline time, run from a tween's onUpdate.\n            function tick(draw) {\n              tl.to({}, { duration: TOTAL, ease: \"none\", onUpdate: function () { draw(tl.time()); } }, 0);\n              draw(0);\n            }\n            var cubOut = ease(\"cub-out\", 0.215, 0.61, 0.355, 1);\n            var cubIn = ease(\"cub-in\", 0.55, 0.055, 0.675, 0.19);\n            var cubInOut = ease(\"cub-io\", 0.645, 0.045, 0.355, 1);\n\n            var row = document.getElementById(\"rn-row\");\n            var start = Math.max(0, Math.round(num(vars.from, 0, 0, 999999999)));\n            var end = Math.max(0, Math.round(num(vars.to, 24813, 0, 999999999)));\n            var speed = num(vars.speed, 1, 0.25, 4);\n            var digits = String(Math.max(start, end));\n            var seps = Math.floor((digits.length - 1) / 3);\n            var size = num(vars.font_size, 120, 24, 400);\n            var em = digits.length * 0.62 + seps * 0.34;\n            size = Math.min(size, (root.clientWidth * 0.9) / em);\n            row.style.fontSize = size + \"px\";\n            row.style.color = col(vars.color, \"#171717\");\n            var cell = size * 1.1;\n            var places = [];\n            var nodes = [];\n            for (var place = 0; place < digits.length; place++) {\n              if (place > 0 && place % 3 === 0) {\n                var sp = document.createElement(\"span\");\n                sp.className = \"rn-sep\"; sp.style.height = cell + \"px\";\n                nodes.unshift(sp);\n              }\n              var colEl = document.createElement(\"span\");\n              colEl.className = \"rn-col\"; colEl.style.height = cell + \"px\";\n              var strip = document.createElement(\"span\");\n              strip.className = \"rn-strip\";\n              [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0].forEach(function (d) {\n                var c = document.createElement(\"span\");\n                c.textContent = d; c.style.height = cell + \"px\"; c.style.lineHeight = cell + \"px\";\n                strip.appendChild(c);\n              });\n              colEl.appendChild(strip);\n              nodes.unshift(colEl);\n              places.push({ place: place, col: colEl, strip: strip });\n            }\n            nodes.forEach(function (n) { row.appendChild(n); });\n            function wrap10(v) { return ((v % 10) + 10) % 10; }\n            function travelOf(pl) {\n              var pow = Math.pow(10, pl), up = end >= start, diff = Math.abs(end - start);\n              var sd = Math.floor(start / pow) % 10, fd = Math.floor(end / pow) % 10;\n              var turns = Math.floor(diff / (pow * 10));\n              var step = up ? (fd - sd + 10) % 10 : (sd - fd + 10) % 10;\n              var mag = turns * 10 + step;\n              return up ? mag : -mag;\n            }\n            var sinIO = function (p) { return 0.5 * (1 - Math.cos(Math.PI * p)); };\n            var out4 = function (p) { return 1 - Math.pow(1 - p, 4); };\n            tick(function (t) {\n              var f = t * 30;\n              var e = ip(f * speed, 0, TOTAL * 30 * 0.8, 0, 1, out4);\n              var current = start + e * (end - start);\n              places.forEach(function (p) {\n                var pow = Math.pow(10, p.place);\n                var pos = Math.floor(start / pow) % 10 + e * travelOf(p.place);\n                var reveal = p.place === 0 ? 1 : ip(current, pow * 0.4, pow, 0, 1, sinIO);\n                p.strip.style.transform = \"translateY(\" + (-wrap10(pos) * cell) + \"px)\";\n                p.col.style.opacity = reveal;\n                p.col.style.transform = \"translateY(\" + ((1 - reveal) * size * 0.32) + \"px)\";\n              });\n            });\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"rolling-number\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "109ab1021d076f4768cc013ae622cdebec3a1f770237df22239838b1c77cb782",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 240
+ },
+ "variables": [
+  {
+   "id": "from",
+   "type": "number",
+   "role": "content",
+   "label": "From",
+   "default": 0,
+   "min": 0,
+   "max": 999999999
+  },
+  {
+   "id": "to",
+   "type": "number",
+   "role": "content",
+   "label": "To",
+   "default": 24813,
+   "min": 0,
+   "max": 999999999
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 120,
+   "min": 24,
+   "max": 400
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

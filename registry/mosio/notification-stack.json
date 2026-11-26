@@ -1,0 +1,123 @@
+{
+ "name": "notification-stack",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/notification-cascade/notification-cascade.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Notification Stack\n\nFour notification banners land one after another and restack upward over a warm backdrop, then a dark end card with a two-line headline fades in.\n\nCategory: ui-blocks. Length: 14 s. WebGL: no.\n\nUse when:\n- A product moment needs a burst of 'it happened' notifications ending on a brand end card.\n- The scene is a vertical social spot.\n\nAvoid when:\n- You want a full chat or inbox: use chat-flow or chat-receipts-flow.\n- The banners should show a real app's name and look.\n\nVariables:\n- notif_title (string): Notification title, default \"New render\"\n- message_1 (string): Message 1, default \"Your video is ready.\"\n- message_2 (string): Message 2, default \"All checks passed.\"\n- message_3 (string): Message 3, default \"Export finished in 92s.\"\n- message_4 (string): Message 4, default \"Published to your page.\"\n- app_name (string): App name, default \"Studio\"\n- headline_top (string): End-card line 1, default \"ALL DONE\"\n- headline_accent (string): End-card line 2, default \"RIGHT ON TIME\"\n- footer_text (string): End-card footer, default \"example.com\"\n- accent (color): Accent, default \"#0a9c6b\"\n- end_accent (color): End-card accent, default \"#3ce6ac\"\n- backdrop_light (color): Backdrop, light, default \"#f3e3cd\"\n- backdrop_dark (color): Backdrop, dark, default \"#c99a68\"\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Notification Stack\n\n  Four notification banners land one after another and restack upward over a warm backdrop, then a dark end card with a two-line headline fades in.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/notification-cascade/notification-cascade.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License,\n  Version 2.0 (the \"License\"); you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless\n  required by applicable law or agreed to in writing, software distributed under the License is\n  distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express\n  or implied. See the License for the specific language governing permissions and limitations\n  under the License.\n\n  Changes by usemosio/blocks: renamed from notification-cascade and made generic (no phone-OS chrome, no brand logo or name: the icon, app credit and end-card mark are drawn, texts and colours are variables), the photographed desk backdrop is a drawn warm gradient, Inter and Playfair Display from Google Fonts, fills the host frame: the 1080x1920 banner stage is scaled so the stack and end card fill the frame's height or width and centred on them while the backdrop, scrim and fade fill the frame, the shared timeline is unchanged.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"notification-stack\"\n  data-composition-duration=\"14\"\n  data-composition-variables='[\n    {\"id\": \"notif_title\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Notification title\", \"description\": \"Bold first line on every banner.\", \"default\": \"New render\", \"maxLength\": 30},\n    {\"id\": \"message_1\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Message 1\", \"description\": \"Subtitle of the first banner to land.\", \"default\": \"Your video is ready.\", \"maxLength\": 40},\n    {\"id\": \"message_2\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Message 2\", \"description\": \"Subtitle of the second banner.\", \"default\": \"All checks passed.\", \"maxLength\": 40},\n    {\"id\": \"message_3\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Message 3\", \"description\": \"Subtitle of the third banner.\", \"default\": \"Export finished in 92s.\", \"maxLength\": 40},\n    {\"id\": \"message_4\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Message 4\", \"description\": \"Subtitle of the fourth banner.\", \"default\": \"Published to your page.\", \"maxLength\": 40},\n    {\"id\": \"app_name\", \"type\": \"string\", \"role\": \"content\", \"label\": \"App name\", \"description\": \"Credit in the corner of every banner.\", \"default\": \"Studio\", \"maxLength\": 24},\n    {\"id\": \"headline_top\", \"type\": \"string\", \"role\": \"content\", \"label\": \"End-card line 1\", \"description\": \"First line of the closing card.\", \"default\": \"ALL DONE\", \"maxLength\": 24},\n    {\"id\": \"headline_accent\", \"type\": \"string\", \"role\": \"content\", \"label\": \"End-card line 2\", \"description\": \"Accented second line of the closing card.\", \"default\": \"RIGHT ON TIME\", \"maxLength\": 24},\n    {\"id\": \"footer_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"End-card footer\", \"description\": \"Line under the end-card headline, such as a web address.\", \"default\": \"example.com\", \"maxLength\": 40},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Accent\", \"description\": \"Banner icon colour.\", \"default\": \"#0a9c6b\"},\n    {\"id\": \"end_accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"End-card accent\", \"description\": \"Accent line, mark and footer colour on the closing card.\", \"default\": \"#3ce6ac\"},\n    {\"id\": \"backdrop_light\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Backdrop, light\", \"description\": \"Light end of the warm backdrop.\", \"default\": \"#f3e3cd\"},\n    {\"id\": \"backdrop_dark\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Backdrop, dark\", \"description\": \"Dark end of the warm backdrop.\", \"default\": \"#c99a68\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Notification Stack</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@700&amp;display=block\" />\n      <style>\n        #root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: Inter, system-ui, sans-serif; background: #000; pointer-events: none;\n          --nc-glass: rgba(250, 246, 241, 0.94); --nc-ink-strong: #1c1c1e; --nc-ink: #464040; --nc-ink-faint: #5a5450; --nc-accent: #0a9c6b; --nc-end-accent: #3ce6ac; --nc-end-ink: #f7ece5; }\n        #nc-backdrop { position: absolute; inset: -6%; transform-origin: 50% 62%; }\n        #nc-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse 120% 90% at 50% 42%, rgba(0,0,0,0) 58%, rgba(50,25,8,0.22) 100%); }\n        #nc-stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; }\n        #nc-stack-inner { position: absolute; inset: 0; }\n        .nc-banner { position: absolute; left: 135px; top: 1260px; width: 810px; height: 176px; border-radius: 26px; background: var(--nc-glass); box-shadow: 0 10px 26px rgba(50,25,8,0.18); }\n        .nc-icon { position: absolute; left: 23px; top: 38px; width: 100px; height: 100px; border-radius: 24px; background: linear-gradient(180deg, color-mix(in srgb, var(--nc-accent), #fff 22%) 0%, var(--nc-accent) 100%); }\n        .nc-icon svg { position: absolute; left: 18px; top: 20px; }\n        .nc-title { position: absolute; left: 148px; top: 37px; font-size: 35px; font-weight: 700; color: var(--nc-ink-strong); letter-spacing: 0.25px; white-space: nowrap; }\n        .nc-subtitle { position: absolute; left: 148px; top: 85px; font-size: 33px; font-weight: 400; color: var(--nc-ink); letter-spacing: -0.5px; white-space: nowrap; }\n        .nc-now { position: absolute; right: 26px; top: 32px; font-size: 22px; color: var(--nc-ink-faint); letter-spacing: 1px; }\n        .nc-credit { position: absolute; right: 26px; bottom: 10px; font-size: 24px; font-style: italic; color: var(--nc-ink-faint); }\n        #nc-pill-row { position: absolute; left: 0; top: 1164px; width: 1080px; height: 72px; }\n        #nc-pill { position: absolute; left: 615px; width: 241px; height: 72px; border-radius: 36px; background: rgba(250,246,242,0.85); display: flex; align-items: center; padding-left: 20px; gap: 9px; font-size: 27px; font-weight: 500; color: #3f3a38; box-shadow: 0 8px 20px rgba(50,25,8,0.14); }\n        #nc-pill-x { position: absolute; left: 873px; width: 73px; height: 72px; border-radius: 50%; background: rgba(250,246,242,0.85); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(50,25,8,0.14); }\n        #nc-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, #14110e 0%, #221b13 100%); }\n        #nc-end { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; text-align: center; }\n        #nc-ec-top { position: absolute; left: 0; top: 662px; width: 1080px; font-family: \"Playfair Display\", Georgia, serif; font-weight: 700; font-size: 93px; letter-spacing: 4px; color: var(--nc-end-ink); text-shadow: 2.5px 3px 1px rgba(0,0,0,0.66); }\n        #nc-ec-accent { position: absolute; left: 0; top: 784px; width: 1080px; font-family: \"Playfair Display\", Georgia, serif; font-weight: 700; font-size: 67px; letter-spacing: 3px; color: var(--nc-end-accent); text-shadow: 2.5px 3px 1px rgba(0,0,0,0.64); }\n        #nc-ec-mark { position: absolute; left: 457px; top: 960px; width: 166px; height: 166px; }\n        #nc-ec-footer { position: absolute; left: 0; top: 1190px; width: 1080px; font-size: 35px; font-weight: 600; color: var(--nc-end-accent); }\n        #nc-black { position: absolute; inset: 0; background: #000; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"notification-stack\" data-duration=\"14\" data-fps=\"30\">\n        <div id=\"nc-clip\" class=\"clip\" data-start=\"0\" data-duration=\"14\" data-track-index=\"0\" style=\"position:absolute;inset:0\">\n          <div id=\"nc-backdrop\"></div>\n          <div id=\"nc-vignette\"></div>\n          <div id=\"nc-scrim\"></div>\n          <div id=\"nc-stage\">\n            <div id=\"nc-stack-inner\">\n              <div id=\"nc-pill-row\">\n                <div id=\"nc-pill\"><svg width=\"25\" height=\"25\" viewBox=\"0 0 26 26\" fill=\"none\"><path d=\"M4 8 L13 18 L22 8\" stroke=\"#3f3a38\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg><span>Show less</span></div>\n                <div id=\"nc-pill-x\"><svg width=\"34\" height=\"34\" viewBox=\"0 0 34 34\" fill=\"none\"><path d=\"M6 6 L28 28 M28 6 L6 28\" stroke=\"#4a4442\" stroke-width=\"4.2\" stroke-linecap=\"round\"/></svg></div>\n              </div>\n            </div>\n            <div id=\"nc-end\">\n              <div id=\"nc-ec-top\"></div>\n              <div id=\"nc-ec-accent\"></div>\n              <svg id=\"nc-ec-mark\" viewBox=\"0 0 100 100\"><rect x=\"4\" y=\"4\" width=\"92\" height=\"92\" rx=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"6\"/><path d=\"M40 30 L72 50 L40 70 Z\" fill=\"currentColor\"/></svg>\n              <div id=\"nc-ec-footer\"></div>\n            </div>\n          </div>\n          <div id=\"nc-black\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function str(v, f, max) { return typeof v === \"string\" && v.trim() ? v.trim().slice(0, max || 60) : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function $(id) { return document.getElementById(id); }\n            var accent = col(vars.accent, \"#0a9c6b\"), endAccent = col(vars.end_accent, \"#3ce6ac\");\n            root.style.setProperty(\"--nc-accent\", accent);\n            root.style.setProperty(\"--nc-end-accent\", endAccent);\n            $(\"nc-ec-mark\").style.color = endAccent;\n            var light = col(vars.backdrop_light, \"#f3e3cd\"), dark = col(vars.backdrop_dark, \"#c99a68\");\n            $(\"nc-backdrop\").style.background =\n              \"radial-gradient(ellipse 60% 30% at 28% 22%, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%),\" +\n              \"radial-gradient(ellipse 50% 24% at 78% 70%, rgba(80,45,20,0.28), rgba(80,45,20,0) 70%),\" +\n              \"linear-gradient(170deg, \" + light + \" 0%, \" + dark + \" 100%)\";\n            var DUR = 14;\n\n            var title = str(vars.notif_title, \"New render\", 30), credit = str(vars.app_name, \"Studio\", 24);\n            var msgs = [str(vars.message_1, \"Your video is ready.\", 40), str(vars.message_2, \"All checks passed.\", 40), str(vars.message_3, \"Export finished in 92s.\", 40), str(vars.message_4, \"Published to your page.\", 40)];\n            var ICON = '<svg width=\"64\" height=\"60\" viewBox=\"0 0 64 60\" fill=\"none\"><path d=\"M32 2 C15 2 2 13 2 27 c0 8 4.6 15 12 19.6 -0.7 3.6 -2.9 7.4 -6.4 10.2 5.8 -0.6 10.9 -2.8 14.6 -5.5 3.1 0.8 6.4 1.2 9.8 1.2 17 0 30 -11 30 -25.5 S49 2 32 2 Z\" fill=\"#fff\"/></svg>';\n            var inner = $(\"nc-stack-inner\");\n            msgs.forEach(function (m, i) {\n              var b = document.createElement(\"div\");\n              b.className = \"nc-banner\"; b.id = \"nc-banner-\" + (i + 1);\n              b.innerHTML = '<div class=\"nc-icon\">' + ICON + '</div><div class=\"nc-title\"></div><div class=\"nc-subtitle\"></div><div class=\"nc-now\">NOW</div><div class=\"nc-credit\"></div>';\n              b.querySelector(\".nc-title\").textContent = title;\n              b.querySelector(\".nc-subtitle\").textContent = m;\n              b.querySelector(\".nc-credit\").textContent = credit;\n              inner.appendChild(b);\n            });\n            $(\"nc-ec-top\").textContent = str(vars.headline_top, \"ALL DONE\", 24);\n            $(\"nc-ec-accent\").textContent = str(vars.headline_accent, \"RIGHT ON TIME\", 24);\n            $(\"nc-ec-footer\").textContent = str(vars.footer_text, \"example.com\", 40);\n\n            /* Fill the host: the 1080x1920 stage is scaled to fit and centred; the backdrop, scrim and fade fill the frame. */\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920;\n            var s = Math.min(W / 1080, (H * 0.92) / 920);\n            gsap.set(\"#nc-stage\", { scale: s, x: (W - 1080 * s) / 2, y: H / 2 - 980 * s });\n\n            var tl = gsap.timeline({ paused: true });\n            var PITCH = 214, ENTRY = [1.6033, 3.6033, 5.6033, 7.6033], FADE_D = 0.3333, RISE = 22, RESTACK_D = 1.0, EXIT_T = 9.2033, END_T = 9.9033, END_D = 0.5667;\n            var banners = [\"#nc-banner-1\", \"#nc-banner-2\", \"#nc-banner-3\", \"#nc-banner-4\"];\n            gsap.set(banners.concat([\"#nc-pill-row\", \"#nc-end\", \"#nc-scrim\"]), { autoAlpha: 0 });\n            tl.fromTo(\"#nc-black\", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.5, ease: \"none\" }, 0);\n            tl.fromTo(\"#nc-backdrop\", { scale: 1.0 }, { scale: 1.105, duration: 13.4667, ease: \"none\" }, 0.5333);\n            banners.forEach(function (sel, i) {\n              tl.fromTo(sel, { autoAlpha: 0 }, { autoAlpha: 1, duration: FADE_D, ease: \"none\" }, ENTRY[i]);\n              tl.fromTo(sel, { y: RISE }, { y: 0, duration: 0.9, ease: \"expo.out\" }, ENTRY[i]);\n            });\n            tl.fromTo(\"#nc-pill-row\", { autoAlpha: 0 }, { autoAlpha: 1, duration: FADE_D, ease: \"none\" }, ENTRY[0]);\n            tl.to([\"#nc-banner-1\", \"#nc-pill-row\"], { y: -PITCH, duration: RESTACK_D, ease: \"expo.out\" }, ENTRY[1]);\n            tl.to([\"#nc-banner-1\", \"#nc-pill-row\"], { y: -2 * PITCH, duration: RESTACK_D, ease: \"expo.out\" }, ENTRY[2]);\n            tl.to(\"#nc-banner-2\", { y: -PITCH, duration: RESTACK_D, ease: \"expo.out\" }, ENTRY[2]);\n            tl.to([\"#nc-banner-1\", \"#nc-pill-row\"], { y: -3 * PITCH, duration: RESTACK_D, ease: \"expo.out\" }, ENTRY[3]);\n            tl.to(\"#nc-banner-2\", { y: -2 * PITCH, duration: RESTACK_D, ease: \"expo.out\" }, ENTRY[3]);\n            tl.to(\"#nc-banner-3\", { y: -PITCH, duration: RESTACK_D, ease: \"expo.out\" }, ENTRY[3]);\n            tl.to(\"#nc-stack-inner\", { y: -560, duration: 0.5, ease: \"expo.out\" }, EXIT_T);\n            tl.to(\"#nc-stack-inner\", { autoAlpha: 0, duration: 0.37, ease: \"none\" }, EXIT_T);\n            tl.fromTo(\"#nc-scrim\", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2, ease: \"none\" }, END_T);\n            tl.fromTo(\"#nc-end\", { autoAlpha: 0 }, { autoAlpha: 1, duration: END_D, ease: \"none\" }, END_T);\n            tl.set({}, {}, DUR);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"notification-stack\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "660386b6194bcffdfe7031add35aaa8824cd89fb7d511fa62da61145e724179d",
+ "duration": 14,
+ "webgl": false,
+ "demo_background": "#000",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "notif_title",
+   "type": "string",
+   "role": "content",
+   "label": "Notification title",
+   "default": "New render"
+  },
+  {
+   "id": "message_1",
+   "type": "string",
+   "role": "content",
+   "label": "Message 1",
+   "default": "Your video is ready."
+  },
+  {
+   "id": "message_2",
+   "type": "string",
+   "role": "content",
+   "label": "Message 2",
+   "default": "All checks passed."
+  },
+  {
+   "id": "message_3",
+   "type": "string",
+   "role": "content",
+   "label": "Message 3",
+   "default": "Export finished in 92s."
+  },
+  {
+   "id": "message_4",
+   "type": "string",
+   "role": "content",
+   "label": "Message 4",
+   "default": "Published to your page."
+  },
+  {
+   "id": "app_name",
+   "type": "string",
+   "role": "content",
+   "label": "App name",
+   "default": "Studio"
+  },
+  {
+   "id": "headline_top",
+   "type": "string",
+   "role": "content",
+   "label": "End-card line 1",
+   "default": "ALL DONE"
+  },
+  {
+   "id": "headline_accent",
+   "type": "string",
+   "role": "content",
+   "label": "End-card line 2",
+   "default": "RIGHT ON TIME"
+  },
+  {
+   "id": "footer_text",
+   "type": "string",
+   "role": "content",
+   "label": "End-card footer",
+   "default": "example.com"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#0a9c6b"
+  },
+  {
+   "id": "end_accent",
+   "type": "color",
+   "role": "style",
+   "label": "End-card accent",
+   "default": "#3ce6ac"
+  },
+  {
+   "id": "backdrop_light",
+   "type": "color",
+   "role": "style",
+   "label": "Backdrop, light",
+   "default": "#f3e3cd"
+  },
+  {
+   "id": "backdrop_dark",
+   "type": "color",
+   "role": "style",
+   "label": "Backdrop, dark",
+   "default": "#c99a68"
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

@@ -1,0 +1,100 @@
+{
+ "name": "spiral-galaxy",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/spiral-galaxy/spiral-galaxy.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Spiral Galaxy\n\nA spiral galaxy of 20,000 additive stars: differential rotation winds the arms over time, the core glows warm and the rim fades to cold. Drawn with WebGL points over a dark backdrop with a soft rim-coloured halo.\n\nCategory: shaders. Length: 10 s. WebGL: yes.\n\nUse when:\n- A space or sci-fi backdrop that rotates slowly behind a title, in your own core and rim colours.\n- A calm looping hero for music, astronomy or \"everything in motion\" stories.\n\nAvoid when:\n- A clean product scene where a galaxy would distract.\n- The render budget is tight: 20,000 points per frame in software; lower the star count.\n\nVariables:\n- stars (number, 2000-40000): Star count, default 20000\n- arms (number, 2-8): Arm count, default 3\n- rate (number, 0-1.5): Rotation rate, default 0.25\n- glow (number, 0.2-4): Core brightness, default 1.9\n- size (number, 2-40): Star size, default 10\n- core (color): Core colour, default \"#f5f5f5\"\n- rim (color): Rim colour, default \"#1e3a8a\"\n- resolution (number, 0.25-1): Resolution, default 0.5\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Spiral Galaxy\n\n  A spiral galaxy of 20,000 additive stars: differential rotation winds the arms over time, the core glows warm and the rim fades to cold. Drawn with WebGL points over a dark backdrop with a soft rim-coloured halo.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/spiral-galaxy/spiral-galaxy.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: fills the host frame and keeps the whole disc in view on vertical frames; rewritten from three.js (not loaded) to raw WebGL2: the camera and projection matrices are computed in the file and the star shader is unchanged apart from GLSL ES 3.0 syntax; the canvas is drawn at the `resolution` variable and the clock comes from the timeline. The galaxy constants come from the three.js galaxy example (MIT), as noted upstream.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"spiral-galaxy\"\n  data-composition-duration=\"10\"\n  data-composition-variables='[{\"id\": \"stars\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Star count\", \"default\": 20000, \"min\": 2000, \"max\": 40000, \"step\": 1000},\n    {\"id\": \"arms\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Arm count\", \"default\": 3, \"min\": 2, \"max\": 8, \"step\": 1},\n    {\"id\": \"rate\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Rotation rate\", \"default\": 0.25, \"min\": 0, \"max\": 1.5, \"step\": 0.05, \"unit\": \"rad/s\"},\n    {\"id\": \"glow\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Core brightness\", \"default\": 1.9, \"min\": 0.2, \"max\": 4, \"step\": 0.1},\n    {\"id\": \"size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Star size\", \"description\": \"Star size in pixels on a 1080 px frame.\", \"default\": 10, \"min\": 2, \"max\": 40, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"core\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Core colour\", \"default\": \"#f5f5f5\"},\n    {\"id\": \"rim\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Rim colour\", \"default\": \"#1e3a8a\"},\n    {\"id\": \"resolution\", \"type\": \"number\", \"role\": \"quality\", \"label\": \"Resolution\", \"description\": \"Share of the frame size the stars are drawn at, then scaled up. Soft stars look the same at 0.5.\", \"default\": 0.5, \"min\": 0.25, \"max\": 1, \"step\": 0.05}]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Spiral Galaxy</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          background: #000;\n          pointer-events: none;\n        }\n        .spg-stage {\n          position: absolute;\n          inset: 0;\n        }\n        .spg-canvas {\n          position: absolute;\n          inset: 0;\n          width: 100%;\n          height: 100%;\n          display: block;\n        }\n        .spg-halo {\n          position: absolute;\n          inset: 0;\n          mix-blend-mode: screen;\n          opacity: 0.12;\n          background: radial-gradient(72% 46% at 50% 50%, var(--sg-rim, #1e3a8a) 0%, #000000 70%);\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"spiral-galaxy\" data-duration=\"10\" data-fps=\"30\">\n        <div id=\"spg-clip\" class=\"spg-stage clip\" data-start=\"0\" data-duration=\"10\" data-track-index=\"0\">\n          <canvas id=\"spg-canvas\" class=\"spg-canvas\"></canvas>\n          <div class=\"spg-halo\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var NAME = \"spiral-galaxy\";\n            var DUR = 10;\n            var root = document.getElementById(\"root\");\n            var canvas = document.getElementById(\"spg-canvas\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function clampNum(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function hex(value, fallback) {\n              var m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(value || \"\").trim());\n              if (!m) return fallback;\n              var h = m[1].length === 3 ? m[1].replace(/./g, \"$&$&\") : m[1];\n              return \"#\" + h.toLowerCase();\n            }\n            function rgb(value) {\n              var h = hex(value, \"#000000\").slice(1);\n              return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255];\n            }\n            var DEFS = [{\"id\": \"stars\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Star count\", \"default\": 20000, \"min\": 2000, \"max\": 40000, \"step\": 1000}, {\"id\": \"arms\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Arm count\", \"default\": 3, \"min\": 2, \"max\": 8, \"step\": 1}, {\"id\": \"rate\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Rotation rate\", \"default\": 0.25, \"min\": 0, \"max\": 1.5, \"step\": 0.05, \"unit\": \"rad/s\"}, {\"id\": \"glow\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Core brightness\", \"default\": 1.9, \"min\": 0.2, \"max\": 4, \"step\": 0.1}, {\"id\": \"size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Star size\", \"description\": \"Star size in pixels on a 1080 px frame.\", \"default\": 10, \"min\": 2, \"max\": 40, \"step\": 1, \"unit\": \"px\"}, {\"id\": \"core\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Core colour\", \"default\": \"#f5f5f5\"}, {\"id\": \"rim\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Rim colour\", \"default\": \"#1e3a8a\"}, {\"id\": \"resolution\", \"type\": \"number\", \"role\": \"quality\", \"label\": \"Resolution\", \"description\": \"Share of the frame size the stars are drawn at, then scaled up. Soft stars look the same at 0.5.\", \"default\": 0.5, \"min\": 0.25, \"max\": 1, \"step\": 0.05}];\n            var V = {};\n            DEFS.forEach(function (d) {\n              var raw = vars[d.id];\n              if (d.type === \"number\") V[d.id] = clampNum(raw, d.default, d.min, d.max);\n              else if (d.type === \"color\") V[d.id] = hex(raw, d.default);\n              else if (d.type === \"boolean\") V[d.id] = typeof raw === \"boolean\" ? raw : raw === \"true\" ? true : raw === \"false\" ? false : d.default;\n              else V[d.id] = typeof raw === \"string\" ? raw.trim() : d.default;\n            });\n\n            var W = Math.max(2, root.clientWidth);\n            var H = Math.max(2, root.clientHeight);\n            var cw = Math.max(2, Math.round(W * V.resolution));\n            var ch = Math.max(2, Math.round(H * V.resolution));\n            root.style.background = \"#03040a\";\n            canvas.width = cw;\n            canvas.height = ch;\n            var DISC_RADIUS = 5.0, RADIUS_POWER = 1.5, SPIN = 0.78, RANDOMNESS = 0.2, RANDOM_POWER = 3.0;\n            var TANGENT_SQUEEZE = 0.62, DISC_FLATNESS = 0.3, SEED = 20240817;\n            var STARS = Math.round(V.stars), ARMS = Math.round(V.arms);\n            function mulberry32(seed) {\n              return function () {\n                seed |= 0;\n                seed = (seed + 0x6d2b79f5) | 0;\n                var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);\n                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            // Per-star attributes, seeded once: every frame is computed from these plus the time.\n            var rng = mulberry32(SEED);\n            var attrs = new Float32Array(STARS * 6); // ratio, branch, jitter r, jitter t, jitter y, spark\n            function jitter() {\n              var magnitude = Math.pow(rng(), RANDOM_POWER) * RANDOMNESS * DISC_RADIUS;\n              return rng() < 0.5 ? -magnitude : magnitude;\n            }\n            for (var i = 0; i < STARS; i++) {\n              attrs[i * 6] = rng();\n              attrs[i * 6 + 1] = ((i % ARMS) / ARMS) * Math.PI * 2;\n              attrs[i * 6 + 2] = jitter();\n              attrs[i * 6 + 3] = jitter() * TANGENT_SQUEEZE;\n              attrs[i * 6 + 4] = jitter() * DISC_FLATNESS;\n              attrs[i * 6 + 5] = rng();\n            }\n            // Camera: three.js example framing (position 0, 2.9, 7.6, looking at the origin). The field of\n            // view keeps the wide frame's horizontal extent, so a vertical frame shows the whole disc.\n            var ASPECT = cw / ch;\n            var FOVY = 2 * Math.atan(Math.tan(22.5 * Math.PI / 180) * Math.max(1, (16 / 9) / ASPECT));\n            var EYE = [0, 2.9, 7.6];\n            function normalize(v) { var l = Math.hypot(v[0], v[1], v[2]); return [v[0] / l, v[1] / l, v[2] / l]; }\n            function cross(a, b) { return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]; }\n            function lookAtView(eye) {\n              var f = normalize([-eye[0], -eye[1], -eye[2]]);\n              var s = normalize(cross(f, [0, 1, 0]));\n              var up = cross(s, f);\n              return new Float32Array([\n                s[0], up[0], -f[0], 0,\n                s[1], up[1], -f[1], 0,\n                s[2], up[2], -f[2], 0,\n                -(s[0] * eye[0] + s[1] * eye[1] + s[2] * eye[2]),\n                -(up[0] * eye[0] + up[1] * eye[1] + up[2] * eye[2]),\n                f[0] * eye[0] + f[1] * eye[1] + f[2] * eye[2], 1\n              ]);\n            }\n            function perspective(fovy, aspect, near, far) {\n              var f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);\n              return new Float32Array([f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) * nf, -1, 0, 0, 2 * far * near * nf, 0]);\n            }\n            var CORE = rgb(V.core), RIM = rgb(V.rim);\n            root.style.setProperty(\"--sg-rim\", V.rim);\n            root.style.background = \"#03040a\";\n\n            var VERTEX = `#version 300 es\nprecision highp float;\nin float aRatio;\nin float aBranch;\nin float aJitterR;\nin float aJitterT;\nin float aJitterY;\nin float aSpark;\nuniform mat4 uView;\nuniform mat4 uProj;\nuniform float uScale;\nuniform float uTime;\nuniform float uRate;\nuniform float uSpin;\nuniform float uRadius;\nuniform float uPower;\nuniform float uSize;\nuniform float uRefDist;\nuniform float uGlow;\nuniform vec3 uCore;\nuniform vec3 uRim;\nout vec3 vColor;\nout float vBright;\nvoid main() {\n  float ratio = clamp(aRatio, 0.0, 1.0);\n  float omega = 1.0 - ratio;\n  float r = pow(ratio, uPower) * uRadius;\n  float theta = aBranch + uSpin * r + uRate * uTime * omega;\n  vec2 radial = vec2(cos(theta), sin(theta));\n  vec2 tangent = vec2(-radial.y, radial.x);\n  vec2 xz = radial * (r + aJitterR) + tangent * aJitterT;\n  vec4 mv = uView * vec4(xz.x, aJitterY, xz.y, 1.0);\n  gl_Position = uProj * mv;\n  gl_PointSize = uScale * uSize * (uRefDist / max(-mv.z, 0.001)) * (0.55 + 0.75 * aSpark);\n  vColor = mix(uCore, uRim, pow(ratio, uPower));\n  vBright = uGlow * (0.22 + 0.78 * exp(-ratio * 3.0));\n}`;\n            var FRAGMENT = `#version 300 es\nprecision highp float;\nout vec4 outColor;\nin vec3 vColor;\nin float vBright;\nvoid main() {\n  float d = length(gl_PointCoord - vec2(0.5));\n  float a = smoothstep(0.5, 0.0, d);\n  a = a * a;\n  outColor = vec4(vColor * vBright, a);\n}`;\n\n            var gl = canvas.getContext(\"webgl2\", { alpha: false, antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true });\n            function compile(type, source) {\n              var shader = gl.createShader(type);\n              gl.shaderSource(shader, source);\n              gl.compileShader(shader);\n              if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader) || \"shader compile failed\");\n              return shader;\n            }\n            var paint = null;\n            try {\n              if (!gl) throw new Error(\"WebGL2 is not available\");\n              var prog = gl.createProgram();\n              gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERTEX));\n              gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAGMENT));\n              gl.linkProgram(prog);\n              if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog) || \"link failed\");\n              gl.useProgram(prog);\n              var buf = gl.createBuffer();\n              gl.bindBuffer(gl.ARRAY_BUFFER, buf);\n              gl.bufferData(gl.ARRAY_BUFFER, attrs, gl.STATIC_DRAW);\n              [\"aRatio\", \"aBranch\", \"aJitterR\", \"aJitterT\", \"aJitterY\", \"aSpark\"].forEach(function (name, k) {\n                var loc = gl.getAttribLocation(prog, name);\n                gl.enableVertexAttribArray(loc);\n                gl.vertexAttribPointer(loc, 1, gl.FLOAT, false, 24, k * 4);\n              });\n              gl.viewport(0, 0, cw, ch);\n              gl.disable(gl.DEPTH_TEST);\n              gl.enable(gl.BLEND);\n              gl.blendFunc(gl.SRC_ALPHA, gl.ONE);\n              function u(name) { return gl.getUniformLocation(prog, name); }\n              gl.uniformMatrix4fv(u(\"uView\"), false, lookAtView(EYE));\n              gl.uniformMatrix4fv(u(\"uProj\"), false, perspective(FOVY, ASPECT, 0.1, 200));\n              gl.uniform1f(u(\"uScale\"), Math.min(cw / 1920, ch / 1080));\n              gl.uniform1f(u(\"uRate\"), V.rate);\n              gl.uniform1f(u(\"uSpin\"), SPIN);\n              gl.uniform1f(u(\"uRadius\"), DISC_RADIUS);\n              gl.uniform1f(u(\"uPower\"), RADIUS_POWER);\n              gl.uniform1f(u(\"uSize\"), V.size);\n              gl.uniform1f(u(\"uRefDist\"), Math.hypot(EYE[0], EYE[1], EYE[2]));\n              gl.uniform1f(u(\"uGlow\"), V.glow);\n              gl.uniform3f(u(\"uCore\"), CORE[0], CORE[1], CORE[2]);\n              gl.uniform3f(u(\"uRim\"), RIM[0], RIM[1], RIM[2]);\n              var timeLoc = u(\"uTime\");\n              paint = function (t) {\n                gl.uniform1f(timeLoc, t);\n                gl.clearColor(0.0118, 0.0157, 0.0392, 1);\n                gl.clear(gl.COLOR_BUFFER_BIT);\n                gl.drawArrays(gl.POINTS, 0, STARS);\n              };\n            } catch (err) {\n              canvas.style.display = \"none\";\n              if (window.console) console.warn(NAME + \":\", err.message);\n            }\n\n            var tl = gsap.timeline({ paused: true, onUpdate: function () { if (paint) paint(tl.time()); } });\n\n            // The block lasts DUR seconds even when nothing is tweened at the end.\n            tl.set({}, {}, DUR);\n            if (paint) paint(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[NAME] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "5c671f00b22b107fb0f9bb0c1161a4e18380d24c197310be7a038fc8e1aed69d",
+ "duration": 10,
+ "webgl": true,
+ "demo_background": "#03040a",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "stars",
+   "type": "number",
+   "role": "style",
+   "label": "Star count",
+   "default": 20000,
+   "min": 2000,
+   "max": 40000
+  },
+  {
+   "id": "arms",
+   "type": "number",
+   "role": "style",
+   "label": "Arm count",
+   "default": 3,
+   "min": 2,
+   "max": 8
+  },
+  {
+   "id": "rate",
+   "type": "number",
+   "role": "motion",
+   "label": "Rotation rate",
+   "default": 0.25,
+   "min": 0,
+   "max": 1.5
+  },
+  {
+   "id": "glow",
+   "type": "number",
+   "role": "style",
+   "label": "Core brightness",
+   "default": 1.9,
+   "min": 0.2,
+   "max": 4
+  },
+  {
+   "id": "size",
+   "type": "number",
+   "role": "style",
+   "label": "Star size",
+   "default": 10,
+   "min": 2,
+   "max": 40
+  },
+  {
+   "id": "core",
+   "type": "color",
+   "role": "style",
+   "label": "Core colour",
+   "default": "#f5f5f5"
+  },
+  {
+   "id": "rim",
+   "type": "color",
+   "role": "style",
+   "label": "Rim colour",
+   "default": "#1e3a8a"
+  },
+  {
+   "id": "resolution",
+   "type": "number",
+   "role": "quality",
+   "label": "Resolution",
+   "default": 0.5,
+   "min": 0.25,
+   "max": 1
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

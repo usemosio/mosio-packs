@@ -1,0 +1,91 @@
+{
+ "name": "aurora",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/aurora/aurora.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Aurora\n\nGreen and violet aurora curtains ripple across a night sky.\n\nCategory: shaders. Length: 5 s. WebGL: yes.\n\nUse when:\n- A night-sky or northern-lights backdrop behind a title, product shot or quote.\n- A calm, glowing background in two colors of your choosing.\n\nAvoid when:\n- You want a soft blended palette with no sky: use shader-mesh-gradient.\n- The render budget is tight: lower `resolution`; WebGL runs in software on CPU render machines.\n\nVariables:\n- color_a (color): Upper color, default \"#a533f8\"\n- color_b (color): Lower color, default \"#3dff9a\"\n- speed (number, 0-4): Speed, default 1\n- waviness (number, 0-2): Waviness, default 1\n- ray_density (number, 4-60): Ray detail, default 22\n- height (number, 0.3-2): Height, default 1\n- resolution (number, 0.25-1): Resolution, default 0.5\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Aurora\n\n  Green and violet aurora curtains ripple across a night sky.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/aurora/aurora.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: upstream mounts a WebGPU shader from the shaders.com library (MIT, a\n  1.4 MB bundled script). This block draws the same look with a small hand-written WebGL2 fragment\n  shader instead (no bundled files), fills whatever frame the host gives it, takes its colors and\n  settings from variables, draws at a reduced resolution (the `resolution` variable) and takes its\n  time from the timeline.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"aurora\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    { \"id\":\"color_a\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Upper color\",\"description\":\"Color of the curtains' upper reach.\",\"default\":\"#a533f8\" },\n    { \"id\":\"color_b\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Lower color\",\"description\":\"Color of the curtains' glowing lower edge.\",\"default\":\"#3dff9a\" },\n    { \"id\":\"speed\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Speed\",\"description\":\"How fast it moves. 0 holds still.\",\"default\":1,\"min\":0,\"max\":4,\"step\":0.05 },\n    { \"id\":\"waviness\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Waviness\",\"description\":\"How strongly the curtains ripple sideways.\",\"default\":1,\"min\":0,\"max\":2,\"step\":0.01 },\n    { \"id\":\"ray_density\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Ray detail\",\"description\":\"How many vertical rays run through the curtains.\",\"default\":22,\"min\":4,\"max\":60,\"step\":1 },\n    { \"id\":\"height\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Height\",\"description\":\"How tall the curtains reach.\",\"default\":1,\"min\":0.3,\"max\":2,\"step\":0.01 },\n    { \"id\":\"resolution\",\"type\":\"number\",\"role\":\"quality\",\"label\":\"Resolution\",\"description\":\"Share of the frame size the shader is drawn at, then scaled up. Lower renders faster; raise it if edges look soft.\",\"default\":0.5,\"min\":0.25,\"max\":1,\"step\":0.05 }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Aurora</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          background: var(--aur-fallback, #03050d);\n          pointer-events: none;\n        }\n        .aur-stage {\n          position: absolute;\n          inset: 0;\n        }\n        .aur-canvas {\n          position: absolute;\n          inset: 0;\n          width: 100%;\n          height: 100%;\n          display: block;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"aurora\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"aur-clip\" class=\"aur-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <canvas id=\"aur-canvas\" class=\"aur-canvas\"></canvas>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var canvas = document.getElementById(\"aur-canvas\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            var DEFAULTS = {\"color_a\":\"#a533f8\",\"color_b\":\"#3dff9a\",\"speed\":1,\"waviness\":1,\"ray_density\":22,\"height\":1,\"resolution\":0.5};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function parseColor(s, fallback) {\n              var m = /^#?([0-9a-f]{6}|[0-9a-f]{3})$/i.exec(String(s == null ? \"\" : s).trim());\n              if (!m) return fallback;\n              var h = m[1];\n              if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n              return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255];\n            }\n            var P = {};\n            P.color_a = parseColor(vars.color_a, parseColor(DEFAULTS.color_a));\n            P.color_b = parseColor(vars.color_b, parseColor(DEFAULTS.color_b));\n            P.speed = num(vars.speed, DEFAULTS.speed, 0, 4);\n            P.waviness = num(vars.waviness, DEFAULTS.waviness, 0, 2);\n            P.ray_density = num(vars.ray_density, DEFAULTS.ray_density, 4, 60);\n            P.height = num(vars.height, DEFAULTS.height, 0.3, 2);\n            P.resolution = num(vars.resolution, DEFAULTS.resolution, 0.25, 1);\n            function css(c) { return \"rgb(\" + Math.round(c[0] * 255) + \",\" + Math.round(c[1] * 255) + \",\" + Math.round(c[2] * 255) + \")\"; }\n            // Without WebGL the block still shows a plain backdrop.\n            root.style.setProperty(\"--aur-fallback\", css(P.color_a));\n\n            var VERTEX = [\n              \"#version 300 es\",\n              \"layout(location = 0) in vec2 a_position;\",\n              \"void main() { gl_Position = vec4(a_position, 0.0, 1.0); }\"\n            ].join(\"\\n\");\n\n            var FRAGMENT = [\n              \"#version 300 es\",\n              \"precision highp float;\",\n              \"uniform vec2 u_res; uniform float u_time;\",\n              \"out vec4 o;\",\n              \"float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}\",\n              \"float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1,0)),f.x),mix(h21(i+vec2(0,1)),h21(i+vec2(1,1)),f.x),f.y);}\",\n              \"float fbm(vec2 p){float a=.5,s=0.;for(int i=0;i<5;i++){s+=a*vn(p);p=p*2.03+vec2(17.1,9.2);a*=.5;}return s;}\",\n              \"vec3 pal(float x){return .5+.5*cos(6.28318*(x+vec3(0.,.33,.67)));}\",\n              \"uniform vec3 u_color_a,u_color_b; uniform float u_speed,u_waviness,u_ray_density,u_height;\",\n              \"void main(){\",\n              \"  vec2 uv=gl_FragCoord.xy/u_res; float t=u_time*u_speed;\",\n              \"  float x=(uv.x-.5)*3.0, y=uv.y;\",\n              \"  vec3 sky=mix(vec3(.004,.008,.025),vec3(.012,.03,.07),smoothstep(1.,.0,y));\",\n              \"  vec2 sp=gl_FragCoord.xy/u_res.y*60.; float st=h21(floor(sp)); \",\n              \"  float star=step(.985,st)*smoothstep(.35,.0,length(fract(sp)-.5))*(.5+.5*sin(t*1.5+st*80.))*smoothstep(.3,.8,y);\",\n              \"  vec3 acc=vec3(0.);\",\n              \"  for(int i=0;i<4;i++){\",\n              \"    float fi=float(i);\",\n              \"    float xs=x*(1.+.28*fi)+fi*5.3;\",\n              \"    float wave=u_waviness*(.16*sin(xs*1.5+t*.4+fi*1.7)+.09*sin(xs*3.1-t*.31+fi)+.07*(fbm(vec2(xs*.8,t*.12+fi*4.))-.5)*2.);\",\n              \"    float base=.30+.07*fi+wave;\",\n              \"    float dy=y-base;\",\n              \"    float rise=smoothstep(-.03,.03,dy);\",\n              \"    float fall=exp(-max(dy,0.)*(4.2/u_height));\",\n              \"    float rays=pow(.35+.65*vn(vec2(xs*u_ray_density,fi*9.+t*.35)),1.6);\",\n              \"    float rays2=.7+.3*vn(vec2(xs*u_ray_density*.37+3.,dy*3.-t*.4));\",\n              \"    float k=rise*fall*rays*rays2;\",\n              \"    vec3 c=mix(u_color_b,u_color_a,smoothstep(0.,.3*u_height,dy));\",\n              \"    c=mix(c,u_color_b*1.15,exp(-max(dy,0.)*22.)*.7);\",\n              \"    acc+=c*k*(.62-.08*fi);\",\n              \"  }\",\n              \"  vec3 col=sky+vec3(star)*.9+acc;\",\n              \"  col=1.-exp(-col*1.35);\",\n              \"  o=vec4(col,1.);\",\n              \"}\",\n            ].join(\"\\n\");\n\n            // The canvas is drawn at `resolution` × the frame size and stretched to fill it.\n            var width = Math.max(2, Math.round(root.clientWidth * P.resolution));\n            var height = Math.max(2, Math.round(root.clientHeight * P.resolution));\n            canvas.width = width;\n            canvas.height = height;\n            var gl = canvas.getContext(\"webgl2\", { antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true });\n\n            function compile(type, source) {\n              var s = gl.createShader(type);\n              gl.shaderSource(s, source);\n              gl.compileShader(s);\n              if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) || \"shader compile failed\");\n              return s;\n            }\n            var draw = function () {};\n            try {\n              if (!gl) throw new Error(\"WebGL2 is not available\");\n              var program = gl.createProgram();\n              gl.attachShader(program, compile(gl.VERTEX_SHADER, VERTEX));\n              gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAGMENT));\n              gl.linkProgram(program);\n              if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program) || \"link failed\");\n              gl.useProgram(program);\n              var buffer = gl.createBuffer();\n              gl.bindBuffer(gl.ARRAY_BUFFER, buffer);\n              gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);\n              gl.enableVertexAttribArray(0);\n              gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);\n              gl.viewport(0, 0, width, height);\n              function u(name) { return gl.getUniformLocation(program, name); }\n              gl.uniform2f(u(\"u_res\"), width, height);\n              gl.uniform3fv(u(\"u_color_a\"), P.color_a);\n              gl.uniform3fv(u(\"u_color_b\"), P.color_b);\n              gl.uniform1f(u(\"u_speed\"), P.speed);\n              gl.uniform1f(u(\"u_waviness\"), P.waviness);\n              gl.uniform1f(u(\"u_ray_density\"), P.ray_density);\n              gl.uniform1f(u(\"u_height\"), P.height);\n              var timeLoc = u(\"u_time\");\n              draw = function (frame) {\n                gl.uniform1f(timeLoc, frame / 30);\n                gl.drawArrays(gl.TRIANGLES, 0, 6);\n              };\n            } catch (err) {\n              canvas.style.display = \"none\";\n              if (window.console) console.warn(\"aurora:\", err.message);\n            }\n\n            var total = parseFloat(root.dataset.duration || \"5\");\n            var totalFrames = Math.round(total * 30);\n            var clock = { frame: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, {\n              frame: totalFrames,\n              duration: total,\n              ease: \"none\",\n              onUpdate: function () { draw(clock.frame); }\n            }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"aurora\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "2ce9761c8623a899816e66f87c673abcc139f2fd6f1b7878588c244a775e0a63",
+ "duration": 5,
+ "webgl": true,
+ "demo_background": "#03050d",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "color_a",
+   "type": "color",
+   "role": "style",
+   "label": "Upper color",
+   "default": "#a533f8"
+  },
+  {
+   "id": "color_b",
+   "type": "color",
+   "role": "style",
+   "label": "Lower color",
+   "default": "#3dff9a"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0,
+   "max": 4
+  },
+  {
+   "id": "waviness",
+   "type": "number",
+   "role": "style",
+   "label": "Waviness",
+   "default": 1,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "ray_density",
+   "type": "number",
+   "role": "style",
+   "label": "Ray detail",
+   "default": 22,
+   "min": 4,
+   "max": 60
+  },
+  {
+   "id": "height",
+   "type": "number",
+   "role": "style",
+   "label": "Height",
+   "default": 1,
+   "min": 0.3,
+   "max": 2
+  },
+  {
+   "id": "resolution",
+   "type": "number",
+   "role": "quality",
+   "label": "Resolution",
+   "default": 0.5,
+   "min": 0.25,
+   "max": 1
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

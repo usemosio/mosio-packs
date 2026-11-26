@@ -1,0 +1,118 @@
+{
+ "name": "store-location-pin",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "line-draw and a drop-and-bounce landing, then a card rising"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Store Location Pin\n\nAn abstract map (a light street grid drawn with SVG lines, no real geography) draws itself, a pin drops and settles with a small bounce, then an address card rises with the shop name, street and opening hours.\n\nCategory: commerce. Length: 5.5 s. WebGL: no.\n\nUse when:\n- Telling people where a shop is and when it is open.\n- A \"kunjungi kami\" closing moment of a shop promo.\n\nAvoid when:\n- A sign changing to open: use open-sign-flip.\n- A real, accurate map with routes: this map is decorative.\n\nVariables:\n- shop (string): Shop name, default \"Kopi Senja\"\n- street (string): Street, default \"Jl. Melati No. 12, Bandung\"\n- hours (string): Hours, default \"Buka 08.00\\u201321.00\"\n- seed (number, 1-999): Map seed, default 5\n- drop_at (number, 0.8-3): Pin drop time, default 1.5\n- map_color (color): Street colour, default \"#e4e4e7\"\n- bg_color (color): Background, default \"#ffffff\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- main_color (color): Accent, default \"#2563eb\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Store Location Pin\n\n  An abstract map (a light street grid drawn with SVG lines, no real geography) draws itself, a pin drops and settles with a small bounce, then an address card rises with the shop name, street and opening hours.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"store-location-pin\"\n  data-composition-duration=\"5.5\"\n  data-composition-variables='[\n  {\n    \"id\": \"shop\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Shop name\",\n    \"description\": \"Shop name on the address card.\",\n    \"default\": \"Kopi Senja\"\n  },\n  {\n    \"id\": \"street\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Street\",\n    \"description\": \"Address line on the card.\",\n    \"default\": \"Jl. Melati No. 12, Bandung\"\n  },\n  {\n    \"id\": \"hours\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Hours\",\n    \"description\": \"Opening hours line. Leave empty to hide it.\",\n    \"default\": \"Buka 08.00–21.00\"\n  },\n  {\n    \"id\": \"seed\",\n    \"type\": \"number\",\n    \"role\": \"content\",\n    \"label\": \"Map seed\",\n    \"description\": \"Changes the street layout.\",\n    \"default\": 5,\n    \"min\": 1,\n    \"max\": 999,\n    \"step\": 1\n  },\n  {\n    \"id\": \"drop_at\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Pin drop time\",\n    \"description\": \"Second the pin starts to fall.\",\n    \"default\": 1.5,\n    \"min\": 0.8,\n    \"max\": 3,\n    \"step\": 0.1\n  },\n  {\n    \"id\": \"map_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Street colour\",\n    \"description\": \"Colour of the streets.\",\n    \"default\": \"#e4e4e7\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Main text and outlines.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Secondary text and hairlines.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent\",\n    \"description\": \"The pin: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Font family name. Geist is loaded by default; another family must be loaded by the host.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Store Location Pin</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          color: var(--sl-text); font-family: var(--FAM, Geist), system-ui, sans-serif; background: var(--sl-bg);\n        }\n        #root * { box-sizing: border-box; }\n        .sl-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        .sl-map { position: absolute; inset: 0; width: 100%; height: 100%; }\n        .sl-pin { position: absolute; width: calc(var(--u) * 132); height: calc(var(--u) * 176); margin-left: calc(var(--u) * -66); margin-top: calc(var(--u) * -176); transform-origin: 50% 100%; z-index: 3; }\n        .sl-pin svg { width: 100%; height: 100%; display: block; overflow: visible; filter: drop-shadow(0 calc(var(--u) * 6) calc(var(--u) * 8) rgba(0,0,0,0.18)); }\n        .sl-shadow { position: absolute; width: calc(var(--u) * 84); height: calc(var(--u) * 26); margin: calc(var(--u) * -13) 0 0 calc(var(--u) * -42); border-radius: 50%; background: rgba(0,0,0,0.2); z-index: 2; }\n        .sl-ripple { opacity: 0; position: absolute; width: calc(var(--u) * 150); height: calc(var(--u) * 150); margin: calc(var(--u) * -75) 0 0 calc(var(--u) * -75); border-radius: 50%; border: calc(var(--u) * 4) solid var(--sl-main); z-index: 1; }\n        .sl-card { position: absolute; left: 50%; width: calc(var(--u) * 900); margin-left: calc(var(--u) * -450); padding: calc(var(--u) * 46) calc(var(--u) * 52); border-radius: calc(var(--u) * 44); background: #fff; border: calc(var(--u) * 2) solid rgba(10,10,10,0.09); box-shadow: 0 calc(var(--u) * 16) calc(var(--u) * 40) rgba(0,0,0,0.12); z-index: 4; }\n        .sl-shop { font-size: calc(var(--u) * 66); font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }\n        .sl-street { margin-top: calc(var(--u) * 12); font-size: calc(var(--u) * 38); font-weight: 500; color: var(--sl-muted); }\n        .sl-hrs { margin-top: calc(var(--u) * 26); padding-top: calc(var(--u) * 24); border-top: calc(var(--u) * 2) solid rgba(10,10,10,0.09); display: flex; align-items: center; gap: calc(var(--u) * 16); font-size: calc(var(--u) * 42); font-weight: 600; font-variant-numeric: tabular-nums; }\n        .sl-hrs svg { width: calc(var(--u) * 44); height: calc(var(--u) * 44); flex: none; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"store-location-pin\" data-duration=\"5.5\" data-fps=\"30\">\n        <div id=\"sl-clip\" class=\"sl-stage clip\" data-start=\"0\" data-duration=\"5.5\" data-track-index=\"0\">\n\n          <svg class=\"sl-map\" id=\"sl-map\"></svg>\n          <div class=\"sl-ripple\" id=\"sl-ripple\"></div>\n          <div class=\"sl-shadow\" id=\"sl-shadow\"></div>\n          <div class=\"sl-pin\" id=\"sl-pin\"></div>\n          <div class=\"sl-card\" id=\"sl-card\">\n            <div class=\"sl-shop\" id=\"sl-shop\"></div><div class=\"sl-street\" id=\"sl-street\"></div>\n            <div class=\"sl-hrs\" id=\"sl-hrs\"></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function svg(tag, attrs, parent) { var e = document.createElementNS(\"http://www.w3.org/2000/svg\", tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function rp(n) { return \"Rp\" + dots(n); }\n            function money(s) { var d = String(s).replace(/[^\\d]/g, \"\"); return d ? parseInt(d, 10) : 0; }\n            function list(s, d) { var a = String(str(s, d)).split(\";\").map(function (x) { return x.trim(); }).filter(Boolean); return a.length ? a : String(d).split(\";\").map(function (x) { return x.trim(); }); }\n            function mulberry(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function setColors(p, c) { for (var k in c) root.style.setProperty(\"--\" + p + \"-\" + k, colr(vars[k + \"_color\"], c[k])); }\n            var fam = str(vars.font_family, \"Geist\");\n            root.style.setProperty(\"--FAM\", /^[\\w\\s-]+$/.test(fam) ? '\"' + fam + '\"' : \"Geist\");\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n            setColors(\"sl\", { bg: \"#ffffff\", text: \"#0a0a0a\", muted: \"#737373\", main: \"#2563eb\", map: \"#e4e4e7\" });\n\n\n            var u = U;\n            var shop = str(vars.shop, \"Kopi Senja\"), street = str(vars.street, \"Jl. Melati No. 12, Bandung\");\n            var hours = typeof vars.hours === \"string\" ? vars.hours.trim() : \"Buka 08.00–21.00\";\n            var seed = Math.round(num(vars.seed, 5, 1, 999)), dropAt = num(vars.drop_at, 1.5, 0.8, 3);\n            root.style.setProperty(\"--sl-map\", colr(vars.map_color, \"#e4e4e7\"));\n            document.getElementById(\"sl-shop\").textContent = shop;\n            document.getElementById(\"sl-street\").textContent = street;\n            var hrs = document.getElementById(\"sl-hrs\");\n            if (hours) hrs.innerHTML = '<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"9\"></circle><path d=\"M12 7v5l3 2\"></path></svg><span></span>';\n            if (hours) hrs.lastChild.textContent = hours; else hrs.style.display = \"none\";\n\n            // Streets: a loose grid, rotated a little, with one diagonal avenue and a park block.\n            var map = document.getElementById(\"sl-map\");\n            map.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n            var rnd = mulberry(seed * 4099 + 3), big = Math.max(W, H) * 1.5;\n            var mc = colr(vars.map_color, \"#e4e4e7\");\n            var g = svg(\"g\", { transform: \"rotate(-14 \" + W / 2 + \" \" + H / 2 + \")\" }, map);\n            var lines = [];\n            function street_(x1, y1, x2, y2, w) { var l = svg(\"line\", { x1: x1, y1: y1, x2: x2, y2: y2, stroke: mc, \"stroke-width\": w, \"stroke-linecap\": \"round\", pathLength: 1 }, g); l.style.strokeDasharray = \"1\"; l.style.strokeDashoffset = \"0\"; lines.push(l); return l; }\n            var x0 = (W - big) / 2, y0 = (H - big) / 2;\n            svg(\"rect\", { x: W * 0.12, y: H * 0.5, width: 300 * u, height: 220 * u, rx: 28 * u, fill: mc, opacity: 0.45 }, g);\n            for (var y = y0 + rnd() * 120 * u, i = 0; y < y0 + big; i++) { street_(x0, y, x0 + big, y + (rnd() - 0.5) * 30 * u, (i % 4 === 1 ? 26 : 10) * u); y += (150 + rnd() * 120) * u; }\n            for (var x = x0 + rnd() * 120 * u, j = 0; x < x0 + big; j++) { street_(x, y0, x + (rnd() - 0.5) * 30 * u, y0 + big, (j % 4 === 2 ? 26 : 10) * u); x += (150 + rnd() * 120) * u; }\n            street_(x0, y0 + big * 0.7, x0 + big, y0 + big * 0.25, 22 * u);\n\n            // Pin.\n            var cx = W / 2, cy = H * (PORTRAIT ? 0.36 : 0.37);\n            var pin = document.getElementById(\"sl-pin\"), sh = document.getElementById(\"sl-shadow\"), rip = document.getElementById(\"sl-ripple\");\n            pin.style.left = cx + \"px\"; pin.style.top = cy + \"px\";\n            [sh, rip].forEach(function (e) { e.style.left = cx + \"px\"; e.style.top = cy + \"px\"; });\n            var psv = svg(\"svg\", { viewBox: \"0 0 132 176\" }, pin);\n            svg(\"path\", { d: \"M66 172 C66 172 8 106 8 64 C8 30 33 6 66 6 C99 6 124 30 124 64 C124 106 66 172 66 172 Z\", fill: colr(vars.main_color, \"#2563eb\") }, psv);\n            svg(\"circle\", { cx: 66, cy: 64, r: 22, fill: \"#fff\" }, psv);\n\n            var card = document.getElementById(\"sl-card\");\n            var cardH = card.offsetHeight;\n            card.style.top = (H - cardH - (PORTRAIT ? 150 : 60) * u) + \"px\";\n\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(g, { scale: 1.1, transformOrigin: \"50% 50%\" }, { scale: 1, duration: 3, ease: \"power2.out\" }, 0);\n            tl.fromTo(lines, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.9, ease: \"power2.out\", stagger: { each: 0.55 / lines.length, from: \"random\" } }, 0.1);\n            var drop = cy + 180 * u;\n            tl.fromTo(pin, { y: -drop, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, ease: \"power2.in\" }, dropAt);\n            tl.fromTo(sh, { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.42, ease: \"power2.in\" }, dropAt);\n            var hit = dropAt + 0.42;\n            tl.fromTo(pin, { scaleY: 1, scaleX: 1 }, { scaleY: 0.86, scaleX: 1.1, duration: 0.07, ease: \"power2.out\" }, hit);\n            tl.to(pin, { scaleY: 1, scaleX: 1, y: -38 * u, duration: 0.2, ease: \"power2.out\" }, hit + 0.07);\n            tl.to(pin, { y: 0, duration: 0.2, ease: \"power2.in\" }, hit + 0.27);\n            tl.to(pin, { y: -12 * u, duration: 0.1, ease: \"power1.out\" }, hit + 0.47);\n            tl.to(pin, { y: 0, duration: 0.1, ease: \"power1.in\" }, hit + 0.57);\n            tl.fromTo(rip, { scale: 0.2, opacity: 0.55 }, { scale: 1.8, opacity: 0, duration: 0.8, ease: \"power2.out\", immediateRender: false }, hit);\n            tl.fromTo(card, { y: 340 * u, opacity: 0 }, { y: 0, opacity: 1, duration: 0.75, ease: \"expo.out\" }, hit + 0.55);\n            tl.fromTo([\"#sl-shop\", \"#sl-street\", \"#sl-hrs\"], { y: 20 * u, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: \"power3.out\", stagger: 0.1 }, hit + 0.7);\n\n            var total = parseFloat(root.dataset.duration || \"5.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"store-location-pin\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "990a7a23b83938917df60a6f877bfdceee49dca5d9685522b358f4b0e1f52559",
+ "duration": 5.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "shop",
+   "type": "string",
+   "role": "content",
+   "label": "Shop name",
+   "default": "Kopi Senja"
+  },
+  {
+   "id": "street",
+   "type": "string",
+   "role": "content",
+   "label": "Street",
+   "default": "Jl. Melati No. 12, Bandung"
+  },
+  {
+   "id": "hours",
+   "type": "string",
+   "role": "content",
+   "label": "Hours",
+   "default": "Buka 08.00–21.00"
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "content",
+   "label": "Map seed",
+   "default": 5,
+   "min": 1,
+   "max": 999
+  },
+  {
+   "id": "drop_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Pin drop time",
+   "default": 1.5,
+   "min": 0.8,
+   "max": 3
+  },
+  {
+   "id": "map_color",
+   "type": "color",
+   "role": "style",
+   "label": "Street colour",
+   "default": "#e4e4e7"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2563eb"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

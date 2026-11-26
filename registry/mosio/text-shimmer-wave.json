@@ -1,0 +1,137 @@
+{
+ "name": "text-shimmer-wave",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "ibelick",
+ "source": {
+  "repo": "https://github.com/ibelick/motion-primitives",
+  "path": "components/core/text-shimmer-wave.tsx",
+  "commit": "120f64f6ca60348e251f929e9c81f11ccbe45eda"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Text Shimmer Wave\n\nA wave of light runs through muted text: each letter in turn lifts toward the viewer, tilts, grows slightly and brightens, then settles back, and the wave repeats.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- A status line (loading, thinking, generating) needs life without changing its words.\n- A quiet highlight that travels along one line of text.\n\nAvoid when:\n- A single clean specular sweep that returns to normal: use text-shimmer.\n- The text must stay perfectly still and flat.\n\nVariables:\n- text (string): Text, default \"Generating your story\"\n- duration (number, 0.3-3): Wave time, default 1\n- spread (number, 0.3-3): Spread, default 1\n- z_distance (number, 0-60): Z distance, default 10\n- x_distance (number, -30-30): X distance, default 2\n- y_distance (number, -30-30): Y distance, default -2\n- scale_distance (number, 1-1.6): Scale, default 1.1\n- rotate_y_distance (number, 0-60): Rotate Y, default 10\n- font_size (number, 12-240): Font size, default 80\n- color (color): Base color, default \"#a1a1aa\"\n- highlight_color (color): Highlight color, default \"#000000\"\n- font_weight (enum): Font weight, default \"600\"\n\nSource: https://github.com/ibelick/motion-primitives. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Text Shimmer Wave\n\n  A wave of light runs through muted text: each letter in turn lifts toward the viewer, tilts, grows slightly and brightens, then settles back, and the wave repeats.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/ibelick/motion-primitives/blob/120f64f6ca60348e251f929e9c81f11ccbe45eda/components/core/text-shimmer-wave.tsx\n\n  MIT License\n\n  Copyright (c) 2024 ibelick\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n  app/page.tsx\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"text-shimmer-wave\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"The line of text.\", \"default\": \"Generating your story\"},\n    {\"id\": \"duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Wave time\", \"description\": \"Seconds each letter takes for its lift.\", \"default\": 1, \"min\": 0.3, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"spread\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Spread\", \"description\": \"Higher values let the wave travel faster across the line.\", \"default\": 1, \"min\": 0.3, \"max\": 3, \"step\": 0.05},\n    {\"id\": \"z_distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Z distance\", \"description\": \"Lift toward the viewer, in pixels.\", \"default\": 10, \"min\": 0, \"max\": 60, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"x_distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"X distance\", \"description\": \"Sideways drift, in pixels.\", \"default\": 2, \"min\": -30, \"max\": 30, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"y_distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Y distance\", \"description\": \"Vertical drift, in pixels (negative is up).\", \"default\": -2, \"min\": -30, \"max\": 30, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"scale_distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Scale\", \"description\": \"Peak scale of a letter.\", \"default\": 1.1, \"min\": 1, \"max\": 1.6, \"step\": 0.01},\n    {\"id\": \"rotate_y_distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Rotate Y\", \"description\": \"Peak tilt around the vertical axis.\", \"default\": 10, \"min\": 0, \"max\": 60, \"step\": 1, \"unit\": \"deg\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 80, \"min\": 12, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Base color\", \"description\": \"Resting color of the letters.\", \"default\": \"#a1a1aa\"},\n    {\"id\": \"highlight_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Highlight color\", \"description\": \"Color of a letter at the peak of the wave.\", \"default\": \"#000000\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Text Shimmer Wave</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #a1a1aa);\n          font-family: var(--font-display, \"Geist\", system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .tsw-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .tsw-line { position: relative; display: inline-block; perspective: 500px; white-space: pre; line-height: 1.2; letter-spacing: -0.02em; text-align: center; }\n        .tsw-ch { display: inline-block; white-space: pre; transform-style: preserve-3d; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"text-shimmer-wave\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"tsw-clip\" class=\"tsw-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <div id=\"tsw-line\" class=\"tsw-line\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function pick(v, l, f) { return l.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { if (typeof v === \"boolean\") return v; if (v === \"true\") return true; if (v === \"false\") return false; return f; }\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            gsap.registerPlugin(CustomEase);\n            var total = parseFloat(root.dataset.duration || \"4\");\n            // Motion tweens with no easing named run easeInOut.\n            var EIO = CustomEase.create(\"tsw-eio\", \"M0,0 C0.42,0 0.58,1 1,1\");\n            // Unit step response of a damped spring (semi-implicit Euler at 480 Hz), sampled once.\n            function springTable(k, c, m, dur) {\n              var dt = 1 / 480, x = 0, v = 0, out = [0];\n              for (var t = 0; t < dur; t += dt) { v += ((-k * (x - 1) - c * v) / m) * dt; x += v * dt; out.push(x); }\n              return out;\n            }\n            function springAt(tab, tau) {\n              if (tau <= 0) return 0;\n              var i = tau * 480; if (i >= tab.length - 1) return tab[tab.length - 1];\n              var j = Math.floor(i); return tab[j] + (tab[j + 1] - tab[j]) * (i - j);\n            }\n            var clock = { t: 0 };\n            function finish(tl, draw) {\n              if (draw) { tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0); draw(0); }\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"text-shimmer-wave\"] = tl;\n            }\n\n\n            var line = document.getElementById(\"tsw-line\");\n            var text = str(vars.text, \"Generating your story\");\n            var dur = num(vars.duration, 1, 0.3, 3), spread = num(vars.spread, 1, 0.3, 3);\n            var zd = num(vars.z_distance, 10, 0, 60), xd = num(vars.x_distance, 2, -30, 30), yd = num(vars.y_distance, -2, -30, 30);\n            var sc = num(vars.scale_distance, 1.1, 1, 1.6), ry = num(vars.rotate_y_distance, 10, 0, 60);\n            var base = str(vars.color, \"#a1a1aa\"), hi = str(vars.highlight_color, \"#000000\");\n            var size = num(vars.font_size, 80, 12, 240);\n            line.style.fontSize = size + \"px\"; line.style.color = base;\n            line.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\", \"800\"], \"600\");\n            line.setAttribute(\"aria-label\", text);\n            var chars = Array.from(text).map(function (ch) { var s = document.createElement(\"span\"); s.className = \"tsw-ch\"; s.textContent = ch; s.style.color = base; line.appendChild(s); return s; });\n            var maxW = root.clientWidth * 0.9;\n            if (line.scrollWidth > maxW) { size = size * maxW / line.scrollWidth; line.style.fontSize = size + \"px\"; }\n            var n = chars.length, repeatDelay = (n * 0.05) / spread, period = dur + repeatDelay;\n            var half = dur / 2, tl = gsap.timeline({ paused: true });\n            chars.forEach(function (el, i) {\n              var delay = (i * dur * (1 / spread)) / n;\n              for (var t0 = delay; t0 < total; t0 += period) {\n                tl.to(el, { z: zd, x: xd, y: yd, scale: sc, rotationY: ry, color: hi, duration: half, ease: EIO }, t0);\n                tl.to(el, { z: 0, x: 0, y: 0, scale: 1, rotationY: 0, color: base, duration: half, ease: EIO }, t0 + half);\n              }\n            });\n            finish(tl, null);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "f0ec0a515919a1ceab8bc97ef316d65f85e5ef916e1f8eadf0051eee6faaf3f9",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 100
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Generating your story"
+  },
+  {
+   "id": "duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Wave time",
+   "default": 1,
+   "min": 0.3,
+   "max": 3
+  },
+  {
+   "id": "spread",
+   "type": "number",
+   "role": "motion",
+   "label": "Spread",
+   "default": 1,
+   "min": 0.3,
+   "max": 3
+  },
+  {
+   "id": "z_distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Z distance",
+   "default": 10,
+   "min": 0,
+   "max": 60
+  },
+  {
+   "id": "x_distance",
+   "type": "number",
+   "role": "motion",
+   "label": "X distance",
+   "default": 2,
+   "min": -30,
+   "max": 30
+  },
+  {
+   "id": "y_distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Y distance",
+   "default": -2,
+   "min": -30,
+   "max": 30
+  },
+  {
+   "id": "scale_distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Scale",
+   "default": 1.1,
+   "min": 1,
+   "max": 1.6
+  },
+  {
+   "id": "rotate_y_distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Rotate Y",
+   "default": 10,
+   "min": 0,
+   "max": 60
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 80,
+   "min": 12,
+   "max": 240
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Base color",
+   "default": "#a1a1aa"
+  },
+  {
+   "id": "highlight_color",
+   "type": "color",
+   "role": "style",
+   "label": "Highlight color",
+   "default": "#000000"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://motion-primitives.com"
+}

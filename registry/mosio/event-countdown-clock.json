@@ -1,0 +1,145 @@
+{
+ "name": "event-countdown-clock",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "repo": "https://github.com/lemomo-ai/lemo-opuscar",
+  "path": "styles/countdown/STYLE.md",
+  "commit": "413a6bd6d78ebd3bdd5abaec9538a26867f890df"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Event Countdown Clock\n\nA T− clock in four cells (days, hours, minutes, seconds) in a hairline panel under a title that wipes in. The days and hours race down, the last five seconds tick in real time with a ten-segment bar emptying each second, then the clock turns to the accent colour, flips to T+, and a short \"now\" line takes the title's place.\n\nCategory: commerce. Length: 9.5 s. WebGL: no.\n\nUse when:\n- A launch, shop opening, premiere or graduation with a known moment to build up to.\n- The video should end on the moment itself (\"Kami buka sekarang!\").\n\nAvoid when:\n- A sale deadline stated as a date: use flash-sale-burst, it stays true whenever watched.\n- A real-time countdown longer than a few seconds: this one races the days and hours as a time-lapse.\n\nVariables:\n- event_title (string): Event title, default \"Grand Opening\"\n- event_subtitle (string): Event subtitle, default \"Kopi Senja \\u00b7 Jl. Melati 12\"\n- panel_label (string): Clock label, default \"Menuju buka\"\n- days (number, 0-999): Days left, default 2\n- hours (number, 0-23): Hours left, default 3\n- minutes (number, 0-59): Minutes left, default 14\n- seconds (number, 0-59): Seconds left, default 8\n- unit_labels (string): Unit labels, default \"Hari|Jam|Menit|Detik\"\n- now_text (string): Moment at zero, default \"Kami buka sekarang!\"\n- bg_color (color): Background, default \"#ffffff\"\n- panel_color (color): Panel, default \"#fafafa\"\n- main_color (color): Main colour, default \"#2563eb\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- transparent (boolean): Transparent, default false\n\nSource: https://github.com/lemomo-ai/lemo-opuscar. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Event Countdown Clock\n\n  A ticking T− clock with days, hours, minutes and seconds cells counting down to an event, ending on a short \"now\" moment.\n\n  Extracted from the Mosio recipe countdown by usemosio/blocks.\n  Adapted from the lemo-opuscar film style \"countdown\" (https://github.com/lemomo-ai/lemo-opuscar, styles/countdown/STYLE.md at commit 413a6bd6d78ebd3bdd5abaec9538a26867f890df), MIT.\n  The clock, the ten-segment second bar, the title plate wipe, and the clock changing colour at zero follow that style; the cells and the layout are this block's own.\n\n  MIT License\n\n  Copyright (c) 2026 LemoLab\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"event-countdown-clock\"\n  data-composition-duration=\"9.5\"\n  data-composition-variables='[\n  {\n    \"id\": \"event_title\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Event title\",\n    \"description\": \"Headline above the clock.\",\n    \"default\": \"Grand Opening\"\n  },\n  {\n    \"id\": \"event_subtitle\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Event subtitle\",\n    \"description\": \"Muted line under the title: place, date or occasion.\",\n    \"default\": \"Kopi Senja · Jl. Melati 12\"\n  },\n  {\n    \"id\": \"panel_label\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Clock label\",\n    \"description\": \"Small label next to the T− sign.\",\n    \"default\": \"Menuju buka\"\n  },\n  {\n    \"id\": \"days\",\n    \"type\": \"number\",\n    \"role\": \"content\",\n    \"label\": \"Days left\",\n    \"description\": \"Days on the clock when it starts.\",\n    \"default\": 2,\n    \"min\": 0,\n    \"max\": 999,\n    \"step\": 1\n  },\n  {\n    \"id\": \"hours\",\n    \"type\": \"number\",\n    \"role\": \"content\",\n    \"label\": \"Hours left\",\n    \"description\": \"Hours on the clock when it starts.\",\n    \"default\": 3,\n    \"min\": 0,\n    \"max\": 23,\n    \"step\": 1\n  },\n  {\n    \"id\": \"minutes\",\n    \"type\": \"number\",\n    \"role\": \"content\",\n    \"label\": \"Minutes left\",\n    \"description\": \"Minutes on the clock when it starts.\",\n    \"default\": 14,\n    \"min\": 0,\n    \"max\": 59,\n    \"step\": 1\n  },\n  {\n    \"id\": \"seconds\",\n    \"type\": \"number\",\n    \"role\": \"content\",\n    \"label\": \"Seconds left\",\n    \"description\": \"Seconds on the clock when it starts.\",\n    \"default\": 8,\n    \"min\": 0,\n    \"max\": 59,\n    \"step\": 1\n  },\n  {\n    \"id\": \"unit_labels\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Unit labels\",\n    \"description\": \"Four labels separated by |: days, hours, minutes, seconds.\",\n    \"default\": \"Hari|Jam|Menit|Detik\"\n  },\n  {\n    \"id\": \"now_text\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Moment at zero\",\n    \"description\": \"Short line that replaces the title when the clock reaches zero.\",\n    \"default\": \"Kami buka sekarang!\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Page behind the clock.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"panel_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Panel\",\n    \"description\": \"Clock panel surface.\",\n    \"default\": \"#fafafa\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Main colour\",\n    \"description\": \"T− sign, segment bar and the digits after zero: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Digits and title.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Unit labels, panel label and the subtitle.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the ground clear so the clock sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Event Countdown Clock</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n        }\n        #root * { box-sizing: border-box; }\n        .cd-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        #root { background: var(--cd-bg); color: var(--cd-text); font-family: Geist, system-ui, sans-serif; font-variant-numeric: tabular-nums; }\n        .cd-col { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(var(--u) * 90); padding: 0 calc(var(--u) * 60); }\n        .cd-head { display: grid; width: 100%; max-width: calc(var(--u) * 1700); }\n        .cd-head > * { grid-area: 1 / 1; }\n        .cd-title { display: flex; align-items: stretch; gap: calc(var(--u) * 26); }\n        .cd-h1 { font-weight: 600; font-size: calc(var(--u) * 100); letter-spacing: -0.05em; line-height: 1.05; }\n        .cd-sub { margin-top: calc(var(--u) * 14); font-weight: 400; font-size: calc(var(--u) * 36); letter-spacing: -0.01em; color: var(--cd-muted); }\n        .cd-now { align-self: center; font-weight: 600; font-size: calc(var(--u) * 110); letter-spacing: -0.05em; line-height: 1.05; color: var(--cd-main); }\n        .cd-panel { position: relative; width: 100%; max-width: calc(var(--u) * 1700); padding: calc(var(--u) * 40) calc(var(--u) * 36) calc(var(--u) * 60); background: var(--cd-panel); border: 1px solid color-mix(in oklab, var(--cd-text) 12%, transparent); border-radius: calc(var(--u) * 28); overflow: hidden; }\n        .cd-top { position: relative; display: flex; align-items: baseline; gap: calc(var(--u) * 22); margin-bottom: calc(var(--u) * 14); }\n        .cd-sign { font-weight: 600; font-size: calc(var(--u) * 64); letter-spacing: -0.03em; line-height: 1; color: var(--cd-main); }\n        .cd-hint { font-weight: 500; font-size: calc(var(--u) * 30); color: var(--cd-muted); }\n        .cd-cells { position: relative; display: flex; align-items: flex-start; justify-content: center; gap: 0; }\n        .cd-cell { flex: 1 1 0; min-width: 0; text-align: center; }\n        .cd-num { display: inline-flex; font-weight: 600; font-size: calc(var(--u) * 140); letter-spacing: -0.04em; line-height: 1.1; color: var(--cd-text); }\n        .cd-d { display: inline-block; width: 0.6em; text-align: center; }\n        .cd-lab { margin-top: calc(var(--u) * 4); font-weight: 500; font-size: calc(var(--u) * 30); color: var(--cd-muted); }\n        .cd-colon { flex: 0 0 auto; font-weight: 400; font-size: calc(var(--u) * 140); line-height: 1.1; color: var(--cd-muted); }\n        .cd-seg { position: absolute; left: calc(var(--u) * 36); right: calc(var(--u) * 36); bottom: calc(var(--u) * 22); height: calc(var(--u) * 8); display: grid; grid-template-columns: repeat(10, 1fr); gap: calc(var(--u) * 8); }\n        .cd-seg i { background: color-mix(in oklab, var(--cd-text) 10%, transparent); border-radius: 2px; }\n        .cd-seg i.on { background: var(--cd-main); }\n        @container (aspect-ratio > 1) {\n          .cd-col { gap: calc(var(--u) * 100); }\n          .cd-h1 { font-size: calc(var(--u) * 130); } .cd-sub { font-size: calc(var(--u) * 40); } .cd-now { font-size: calc(var(--u) * 150); }\n          .cd-num, .cd-colon { font-size: calc(var(--u) * 250); }\n          .cd-sign { font-size: calc(var(--u) * 90); } .cd-hint, .cd-lab { font-size: calc(var(--u) * 34); }\n          .cd-panel { padding: calc(var(--u) * 44) calc(var(--u) * 52) calc(var(--u) * 64); } .cd-seg { left: calc(var(--u) * 52); right: calc(var(--u) * 52); bottom: calc(var(--u) * 28); }\n        }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"event-countdown-clock\" data-duration=\"9.5\" data-fps=\"30\">\n        <div id=\"cd-clip\" class=\"cd-stage clip\" data-start=\"0\" data-duration=\"9.5\" data-track-index=\"0\">\n          <div class=\"cd-col\">\n            <div class=\"cd-head\" id=\"cd-head\">\n              <div class=\"cd-title\" id=\"cd-title\"><div><div class=\"cd-h1\" id=\"cd-h1\"></div><div class=\"cd-sub\" id=\"cd-sub\"></div></div></div>\n              <div class=\"cd-now\" id=\"cd-now\"></div>\n            </div>\n            <div class=\"cd-panel\" id=\"cd-panel\">\n              <div class=\"cd-top\"><span class=\"cd-sign\" id=\"cd-sign\">T−</span><span class=\"cd-hint\" id=\"cd-hint\"></span></div>\n              <div class=\"cd-cells\" id=\"cd-cells\"></div>\n              <div class=\"cd-seg\" id=\"cd-seg\"></div>\n            </div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function ink(c, thr) {\n              var m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(c).trim());\n              if (!m) return \"#14161a\";\n              var h = m[1].length === 3 ? m[1].replace(/./g, \"$&$&\") : m[1];\n              var r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);\n              return 0.299 * r + 0.587 * g + 0.114 * b > (thr || 150) ? \"#14161a\" : \"#ffffff\";\n            }\n            function setColors(p, list) {\n              list.forEach(function (c) { root.style.setProperty(\"--\" + p + \"-\" + c[0], colr(vars[c[1]], c[2])); });\n            }\n            // Shrink a one-line element's wrapper (flex, centred) when its content is wider than the wrapper.\n            var fitList = [];\n            function fit(wrap) { fitList.push(wrap); refit(); }\n            function refit() {\n              fitList.forEach(function (w) {\n                w.style.transform = \"\";\n                var c = w.firstElementChild, cw = c ? c.offsetWidth : 0, aw = w.clientWidth;\n                if (cw > aw && aw > 0) w.style.transform = \"scale(\" + (aw / cw).toFixed(4) + \")\";\n              });\n            }\n            if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n\n            var main = colr(vars.main_color, \"#2563eb\");\n            setColors(\"cd\", [[\"bg\", \"bg_color\", \"#ffffff\"], [\"panel\", \"panel_color\", \"#fafafa\"], [\"main\", \"main_color\", \"#2563eb\"],\n              [\"text\", \"text_color\", \"#0a0a0a\"], [\"muted\", \"muted_color\", \"#737373\"]]);\n            document.getElementById(\"cd-h1\").textContent = str(vars.event_title, \"Grand Opening\");\n            var subT = typeof vars.event_subtitle === \"string\" ? vars.event_subtitle : \"Kopi Senja · Jl. Melati 12\";\n            document.getElementById(\"cd-sub\").textContent = subT; if (!subT) document.getElementById(\"cd-sub\").style.display = \"none\";\n            document.getElementById(\"cd-hint\").textContent = typeof vars.panel_label === \"string\" ? vars.panel_label : \"Menuju buka\";\n            document.getElementById(\"cd-now\").textContent = str(vars.now_text, \"Kami buka sekarang!\");\n            var labs = str(vars.unit_labels, \"Hari|Jam|Menit|Detik\").split(\"|\").map(function (s) { return s.trim(); });\n            var def = [\"Hari\", \"Jam\", \"Menit\", \"Detik\"];\n            for (var q = 0; q < 4; q++) if (!labs[q]) labs[q] = def[q];\n            var d0 = Math.round(num(vars.days, 2, 0, 999)), h0 = Math.round(num(vars.hours, 3, 0, 23)), m0 = Math.round(num(vars.minutes, 14, 0, 59)), s0 = Math.round(num(vars.seconds, 8, 0, 59));\n            var START = Math.max(6, ((d0 * 24 + h0) * 60 + m0) * 60 + s0);\n            var dayDigits = Math.max(2, String(Math.floor(START / 86400)).length);\n\n            // Cells: days, hours, minutes, seconds. Digits sit in fixed slots so the clock never jitters.\n            var cellsEl = document.getElementById(\"cd-cells\"), cells = [], nums = [];\n            [dayDigits, 2, 2, 2].forEach(function (n, i) {\n              if (i) el(\"span\", \"cd-colon\", cellsEl, \":\");\n              var c = el(\"div\", \"cd-cell\", cellsEl), num_ = el(\"div\", \"cd-num\", c), slots = [];\n              for (var k = 0; k < n; k++) slots.push(el(\"span\", \"cd-d\", num_, \"0\"));\n              el(\"div\", \"cd-lab\", c).textContent = labs[i];\n              cells.push(slots); nums.push(num_);\n            });\n            var segEl = document.getElementById(\"cd-seg\"), segs = [];\n            for (var s = 0; s < 10; s++) segs.push(el(\"i\", \"\", segEl));\n            var sign = document.getElementById(\"cd-sign\");\n\n            // One mapping for the whole piece: zero is at Z. The last five seconds run in real time,\n            // before that the days and hours race down (an eased time-lapse), after zero the clock counts up.\n            var Z = 7.0, TR = Z - 5, TC = 0.8;\n            function cubic(p) { return p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2; }\n            function remaining(t) {\n              if (t >= Z) return -(t - Z);\n              if (t >= TR) return Z - t;\n              if (t <= TC) return START;\n              return 5 + (START - 5) * (1 - cubic((t - TC) / (TR - TC)));\n            }\n            var lastKey = \"\";\n            function draw(t) {\n              var rem = remaining(t), whole, lit, since;\n              if (rem > 0) {\n                whole = Math.ceil(rem - 1e-9);\n                since = t >= TR ? whole - rem : 1;\n                lit = t >= TR ? Math.ceil((rem - (whole - 1)) * 10 - 1e-9) : 10;\n              } else {\n                var el_ = t - Z; whole = Math.floor(el_); since = el_ - whole; lit = Math.min(10, Math.ceil(since * 10));\n              }\n              var vals = [Math.floor(whole / 86400), Math.floor(whole % 86400 / 3600), Math.floor(whole % 3600 / 60), whole % 60];\n              vals.forEach(function (v, i) {\n                var str_ = String(v); while (str_.length < cells[i].length) str_ = \"0\" + str_;\n                cells[i].forEach(function (slot, k) { var ch = str_.charAt(str_.length - cells[i].length + k) || \"0\"; if (slot.textContent !== ch) slot.textContent = ch; });\n              });\n              var dropY = -14 * U * (1 - Math.min(1, since / 0.12)) * (1 - Math.min(1, since / 0.12));\n              nums[3].style.transform = \"translateY(\" + dropY.toFixed(2) + \"px)\";\n              var key = lit + \"|\" + (rem > 0 ? \"m\" : \"p\");\n              if (key !== lastKey) { segs.forEach(function (e, i) { e.className = i < lit ? \"on\" : \"\"; }); lastKey = key; }\n              var txt_ = rem > 0 ? \"T−\" : \"T+\";\n              if (sign.textContent !== txt_) sign.textContent = txt_;\n            }\n\n            var tl = gsap.timeline({ paused: true });\n            var clock = { t: 0 };\n            tl.to(clock, { t: 9.5, duration: 9.5, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            tl.fromTo(\"#cd-title\", { clipPath: \"inset(0 100% 0 0)\" }, { clipPath: \"inset(0 0% 0 0)\", duration: 0.5, ease: \"power2.out\" }, 0.2);\n            tl.fromTo(\"#cd-panel\", { y: 40 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: \"power3.out\" }, 0.1);\n            tl.to(\"#cd-title\", { x: -120 * U, opacity: 0, duration: 0.3, ease: \"power2.in\" }, Z - 0.5);\n            // Zero: the digits turn to the accent colour and the \"now\" line takes the title's place.\n            tl.to(\".cd-num\", { color: main, duration: 0.2, ease: \"none\" }, Z);\n            tl.to(\".cd-hint\", { opacity: 0, duration: 0.2, ease: \"none\" }, Z);\n            tl.fromTo(\"#cd-now\", { y: 50 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: \"power3.out\", immediateRender: true }, Z + 0.25);\n            draw(0);\n\n            var total = parseFloat(root.dataset.duration || \"9.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"event-countdown-clock\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "d181b52cba8176982a28d546392c541ed50c88d83bb3f328bf69fa0166e9b756",
+ "duration": 9.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "event_title",
+   "type": "string",
+   "role": "content",
+   "label": "Event title",
+   "default": "Grand Opening"
+  },
+  {
+   "id": "event_subtitle",
+   "type": "string",
+   "role": "content",
+   "label": "Event subtitle",
+   "default": "Kopi Senja · Jl. Melati 12"
+  },
+  {
+   "id": "panel_label",
+   "type": "string",
+   "role": "content",
+   "label": "Clock label",
+   "default": "Menuju buka"
+  },
+  {
+   "id": "days",
+   "type": "number",
+   "role": "content",
+   "label": "Days left",
+   "default": 2,
+   "min": 0,
+   "max": 999
+  },
+  {
+   "id": "hours",
+   "type": "number",
+   "role": "content",
+   "label": "Hours left",
+   "default": 3,
+   "min": 0,
+   "max": 23
+  },
+  {
+   "id": "minutes",
+   "type": "number",
+   "role": "content",
+   "label": "Minutes left",
+   "default": 14,
+   "min": 0,
+   "max": 59
+  },
+  {
+   "id": "seconds",
+   "type": "number",
+   "role": "content",
+   "label": "Seconds left",
+   "default": 8,
+   "min": 0,
+   "max": 59
+  },
+  {
+   "id": "unit_labels",
+   "type": "string",
+   "role": "content",
+   "label": "Unit labels",
+   "default": "Hari|Jam|Menit|Detik"
+  },
+  {
+   "id": "now_text",
+   "type": "string",
+   "role": "content",
+   "label": "Moment at zero",
+   "default": "Kami buka sekarang!"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "panel_color",
+   "type": "color",
+   "role": "style",
+   "label": "Panel",
+   "default": "#fafafa"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Main colour",
+   "default": "#2563eb"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

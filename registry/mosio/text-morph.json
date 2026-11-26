@@ -1,0 +1,85 @@
+{
+ "name": "text-morph",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "ibelick",
+ "source": {
+  "repo": "https://github.com/ibelick/motion-primitives",
+  "path": "components/core/text-morph.tsx",
+  "commit": "120f64f6ca60348e251f929e9c81f11ccbe45eda"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Text Morph\n\nOne word turns into the next by letter identity: letters the two words share glide to their new places on a spring while new letters fade in and the leftover ones fade out.\n\nCategory: typography. Length: 5.5 s. WebGL: no.\n\nUse when:\n- Related words or phrases follow one another and the shared letters should visibly travel from one to the next.\n- A playful, physical word change on a clean background.\n\nAvoid when:\n- The words share almost no letters: the effect reads as a plain crossfade; use text-loop.\n- A gooey blur morph: use morph-text.\n\nVariables:\n- texts (string): Texts, default \"Motion|Emotion|Promotion|Commotion\"\n- start (number, 0-5): First change, default 0.8\n- hold (number, 0.6-6): Time between changes, default 1.4\n- font_size (number, 12-240): Font size, default 150\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"700\"\n\nSource: https://github.com/ibelick/motion-primitives. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Text Morph\n\n  One word turns into the next by letter identity: letters the two words share glide to their new places on a spring while new letters fade in and the leftover ones fade out.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/ibelick/motion-primitives/blob/120f64f6ca60348e251f929e9c81f11ccbe45eda/components/core/text-morph.tsx\n\n  MIT License\n\n  Copyright (c) 2024 ibelick\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n  app/page.tsx\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"text-morph\"\n  data-composition-duration=\"5.5\"\n  data-composition-variables='[\n    {\"id\": \"texts\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Texts\", \"description\": \"Words or phrases separated by | (a bar).\", \"default\": \"Motion|Emotion|Promotion|Commotion\"},\n    {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"First change\", \"description\": \"Seconds before the first change.\", \"default\": 0.8, \"min\": 0, \"max\": 5, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"hold\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Time between changes\", \"description\": \"Seconds from one change to the next.\", \"default\": 1.4, \"min\": 0.6, \"max\": 6, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 150, \"min\": 12, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Text Morph</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, \"Geist\", system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .tmo-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .tmo-meas { position: absolute; left: 0; top: 0; visibility: hidden; white-space: nowrap; line-height: 1; letter-spacing: -0.02em; }\n        .tmo-ch { display: inline-block; }\n        .tmo-live { position: absolute; left: 50%; top: 50%; white-space: pre; line-height: 1; letter-spacing: -0.02em; will-change: transform, opacity; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"text-morph\" data-duration=\"5.5\" data-fps=\"30\">\n        <div id=\"tmo-clip\" class=\"tmo-stage clip\" data-start=\"0\" data-duration=\"5.5\" data-track-index=\"0\">\n          <div id=\"tmo-meas\" class=\"tmo-meas\"></div>\n          <div id=\"tmo-live\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function pick(v, l, f) { return l.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { if (typeof v === \"boolean\") return v; if (v === \"true\") return true; if (v === \"false\") return false; return f; }\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            gsap.registerPlugin(CustomEase);\n            var total = parseFloat(root.dataset.duration || \"5.5\");\n            // Motion tweens with no easing named run easeInOut.\n            var EIO = CustomEase.create(\"tmo-eio\", \"M0,0 C0.42,0 0.58,1 1,1\");\n            // Unit step response of a damped spring (semi-implicit Euler at 480 Hz), sampled once.\n            function springTable(k, c, m, dur) {\n              var dt = 1 / 480, x = 0, v = 0, out = [0];\n              for (var t = 0; t < dur; t += dt) { v += ((-k * (x - 1) - c * v) / m) * dt; x += v * dt; out.push(x); }\n              return out;\n            }\n            function springAt(tab, tau) {\n              if (tau <= 0) return 0;\n              var i = tau * 480; if (i >= tab.length - 1) return tab[tab.length - 1];\n              var j = Math.floor(i); return tab[j] + (tab[j + 1] - tab[j]) * (i - j);\n            }\n            var clock = { t: 0 };\n            function finish(tl, draw) {\n              if (draw) { tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0); draw(0); }\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"text-morph\"] = tl;\n            }\n\n\n            var meas = document.getElementById(\"tmo-meas\"), live = document.getElementById(\"tmo-live\");\n            var texts = str(vars.texts, \"Motion|Emotion|Promotion|Commotion\").split(\"|\").map(function (s) { return s.trim(); }).filter(Boolean);\n            if (texts.length < 2) texts = [\"Motion\", \"Emotion\"];\n            var start = num(vars.start, 0.8, 0, 5), hold = num(vars.hold, 1.4, 0.6, 6);\n            var weight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\", \"800\"], \"700\");\n            var size = num(vars.font_size, 150, 12, 240);\n            live.setAttribute(\"aria-label\", texts.join(\", \"));\n            meas.style.fontWeight = weight; meas.style.fontSize = size + \"px\";\n            // Shrink so the widest phrase fits.\n            var widest = 0;\n            texts.forEach(function (t) { meas.textContent = t; widest = Math.max(widest, meas.scrollWidth); });\n            var maxW = root.clientWidth * 0.9;\n            if (widest > maxW) { size = size * maxW / widest; meas.style.fontSize = size + \"px\"; }\n            // Every phrase is laid out once in flow (hidden) to read where each letter belongs.\n            var phrases = texts.map(function (t) {\n              var counts = {}, keys = [];\n              Array.from(t).forEach(function (ch) { var lo = ch.toLowerCase(); counts[lo] = (counts[lo] || 0) + 1; keys.push({ key: lo + counts[lo], label: ch === \" \" ? \" \" : ch }); });\n              return keys;\n            });\n            // Elements: a key that stays in consecutive phrases is one element; reappearing makes a new one.\n            var elems = [], lastRun = {};\n            phrases.forEach(function (keys, pi) {\n              keys.forEach(function (c, ci) {\n                var prev = pi > 0 && phrases[pi - 1].some(function (o) { return o.key === c.key; });\n                var id = c.key + \"#\" + (prev ? lastRun[c.key] : (lastRun[c.key] = (lastRun[c.key] === undefined ? 0 : lastRun[c.key] + 1)));\n                var e = elems.filter(function (x) { return x.id === id; })[0];\n                if (!e) {\n                  var el = document.createElement(\"span\"); el.className = \"tmo-live\"; el.style.fontWeight = weight; el.style.fontSize = size + \"px\"; el.textContent = c.label;\n                  live.appendChild(el); e = { id: id, el: el, at: {}, lab: {} }; elems.push(e);\n                }\n                e.at[pi] = ci; e.lab[pi] = c.label;\n              });\n            });\n            var tab = springTable(280, 18, 0.3, 1.5), lay = null, sig = \"\";\n            function measure() {\n              meas.style.fontSize = size + \"px\";\n              var out = phrases.map(function (keys) {\n                meas.innerHTML = \"\";\n                var spans = keys.map(function (c) { var s = document.createElement(\"span\"); s.className = \"tmo-ch\"; s.textContent = c.label; meas.appendChild(s); return s; });\n                var w = meas.offsetWidth;\n                return spans.map(function (s) { return s.offsetLeft - w / 2; });\n              });\n              var h = JSON.stringify(out); if (h !== sig) { sig = h; lay = out; }\n            }\n            function draw(t) {\n              measure();\n              elems.forEach(function (e) {\n                var cur = 0, x = 0, o = 0, found = false;\n                var xAt = function (pi) { return lay[pi][e.at[pi]]; };\n                for (var pi = 0; pi < phrases.length; pi++) if (e.at[pi] !== undefined) { found = true; break; }\n                if (!found) return;\n                // state before any change: phrase 0\n                var inP = e.at[0] !== undefined; x = inP ? xAt(0) : 0; o = inP ? 1 : 0; var label = inP ? e.lab[0] : null;\n                for (var k = 1; k < phrases.length; k++) {\n                  var tau = t - (start + (k - 1) * hold);\n                  if (tau < 0) break;\n                  var s = springAt(tab, tau), a = e.at[k - 1] !== undefined, b = e.at[k] !== undefined, cl = Math.min(1, Math.max(0, s));\n                  if (a && b) { x = xAt(k - 1) + (xAt(k) - xAt(k - 1)) * s; o = 1; }\n                  else if (a) { x = xAt(k - 1); o = 1 - cl; }\n                  else if (b) { x = xAt(k); o = cl; }\n                  else { o = 0; }\n                  if (b) label = e.lab[k];\n                }\n                if (label !== null) e.el.textContent = label;\n                e.el.style.transform = \"translate(\" + x + \"px, -50%)\";\n                e.el.style.opacity = String(o);\n              });\n            }\n            finish(gsap.timeline({ paused: true }), draw);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "bb4ea07c7bdd1f2b1dab6f3c20889780fffd53408861d7f5d6bca2df09791bed",
+ "duration": 5.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 200
+ },
+ "variables": [
+  {
+   "id": "texts",
+   "type": "string",
+   "role": "content",
+   "label": "Texts",
+   "default": "Motion|Emotion|Promotion|Commotion"
+  },
+  {
+   "id": "start",
+   "type": "number",
+   "role": "motion",
+   "label": "First change",
+   "default": 0.8,
+   "min": 0,
+   "max": 5
+  },
+  {
+   "id": "hold",
+   "type": "number",
+   "role": "motion",
+   "label": "Time between changes",
+   "default": 1.4,
+   "min": 0.6,
+   "max": 6
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 150,
+   "min": 12,
+   "max": 240
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://motion-primitives.com"
+}

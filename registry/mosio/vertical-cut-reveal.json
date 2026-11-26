@@ -1,0 +1,149 @@
+{
+ "name": "vertical-cut-reveal",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Daniel Petho",
+ "source": {
+  "repo": "https://github.com/danielpetho/fancy",
+  "path": "src/fancy/components/text/vertical-cut-reveal.tsx",
+  "commit": "f9f62c61207b2dd3210476dd98af3c9a5be24094"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Vertical Cut Reveal\n\nLetters, words or whole lines slide up from behind an invisible cut line with a spring, staggered from the first, last, center or in random order; several lines follow one another.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- A headline of one to a few lines should be revealed by pieces sliding up (or down) out of a hard-edged cut.\n- You need to choose how the pieces are split (letters, words, lines) and where the stagger starts.\n\nAvoid when:\n- You want a blur-to-sharp entrance: use per-word-rise or per-character-rise.\n- Only a soft masked line reveal is needed: use mask-reveal-up.\n\nVariables:\n- text (string): Text, default \"HI, FRIEND!\\nIT IS NICE TO\\nMEET YOU.\"\n- font_size (number, 24-300): Font size, default 110\n- font_weight (enum): Font weight, default \"700\"\n- color (color): Color, default \"#2447e6\"\n- align (enum): Align, default \"left\"\n- tracking (number, -0.1-0.4): Tracking, default 0.04\n- split_by (enum): Split by, default \"characters\"\n- stagger (number, 0-0.6): Stagger, default 0.025\n- stagger_from (enum): Stagger from, default \"first\"\n- reverse (boolean): Reverse, default false\n- line_delay (number, 0-2): Line delay, default 0.5\n- start (number, 0-3): Start, default 0.2\n- stiffness (number, 50-600): Stiffness, default 200\n- damping (number, 5-60): Damping, default 21\n\nSource: https://github.com/danielpetho/fancy. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Vertical Cut Reveal\n\n  Letters, words or whole lines slide up from behind an invisible cut line with a spring, staggered from the first, last, center or in random order; several lines follow one another.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/danielpetho/fancy/blob/f9f62c61207b2dd3210476dd98af3c9a5be24094/src/fancy/components/text/vertical-cut-reveal.tsx\n\n  MIT License\n\n  Copyright (c) 2024 Daniel Petho\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"vertical-cut-reveal\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Lines of text, separated by a line break.\", \"default\": \"HI, FRIEND!\\nIT IS NICE TO\\nMEET YOU.\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Long lines shrink to fit the frame.\", \"default\": 110, \"min\": 24, \"max\": 300, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#2447e6\"},\n    {\"id\": \"align\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Align\", \"description\": \"Alignment of the lines.\", \"default\": \"left\", \"options\": [{\"value\": \"left\", \"label\": \"Left\"}, {\"value\": \"center\", \"label\": \"Center\"}]},\n    {\"id\": \"tracking\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Tracking\", \"description\": \"Letter spacing in em.\", \"default\": 0.04, \"min\": -0.1, \"max\": 0.4, \"step\": 0.01, \"unit\": \"em\"},\n    {\"id\": \"split_by\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Split by\", \"description\": \"What slides as one piece.\", \"default\": \"characters\", \"options\": [{\"value\": \"characters\", \"label\": \"Characters\"}, {\"value\": \"words\", \"label\": \"Words\"}, {\"value\": \"lines\", \"label\": \"Lines\"}]},\n    {\"id\": \"stagger\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Seconds between neighbouring pieces.\", \"default\": 0.025, \"min\": 0, \"max\": 0.6, \"step\": 0.005, \"unit\": \"s\"},\n    {\"id\": \"stagger_from\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Stagger from\", \"description\": \"Where the wave of pieces starts.\", \"default\": \"first\", \"options\": [{\"value\": \"first\", \"label\": \"First\"}, {\"value\": \"last\", \"label\": \"Last\"}, {\"value\": \"center\", \"label\": \"Center\"}, {\"value\": \"random\", \"label\": \"Random\"}]},\n    {\"id\": \"reverse\", \"type\": \"boolean\", \"role\": \"motion\", \"label\": \"Reverse\", \"description\": \"Pieces slide in from above instead of from below.\", \"default\": false},\n    {\"id\": \"line_delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Line delay\", \"description\": \"Seconds between one line starting and the next (letters and words). Lines mode uses the stagger instead.\", \"default\": 0.5, \"min\": 0, \"max\": 2, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start\", \"description\": \"Seconds before the first piece moves.\", \"default\": 0.2, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"stiffness\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stiffness\", \"description\": \"Spring stiffness.\", \"default\": 200, \"min\": 50, \"max\": 600, \"step\": 10},\n    {\"id\": \"damping\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Damping\", \"description\": \"Spring damping.\", \"default\": 21, \"min\": 5, \"max\": 60, \"step\": 1}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Vertical Cut Reveal</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #2447e6; font-family: Geist, system-ui, sans-serif; }\n        .vc-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .vc-block { display: flex; flex-direction: column; width: 88cqw; line-height: 1.15; }\n        .vc-row { display: flex; flex-wrap: wrap; white-space: pre; }\n        .vc-word { display: inline-flex; overflow: hidden; padding: 0.04em 0 0.12em; margin: -0.04em 0 -0.12em; }\n        .vc-piece { display: inline-block; white-space: pre; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"vertical-cut-reveal\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"vc-clip\" class=\"vc-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <div id=\"vc-block\" class=\"vc-block\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var DEFS = [{\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Lines of text, separated by a line break.\", \"default\": \"HI, FRIEND!\\nIT IS NICE TO\\nMEET YOU.\"}, {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Long lines shrink to fit the frame.\", \"default\": 110, \"min\": 24, \"max\": 300, \"step\": 1, \"unit\": \"px\"}, {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]}, {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#2447e6\"}, {\"id\": \"align\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Align\", \"description\": \"Alignment of the lines.\", \"default\": \"left\", \"options\": [{\"value\": \"left\", \"label\": \"Left\"}, {\"value\": \"center\", \"label\": \"Center\"}]}, {\"id\": \"tracking\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Tracking\", \"description\": \"Letter spacing in em.\", \"default\": 0.04, \"min\": -0.1, \"max\": 0.4, \"step\": 0.01, \"unit\": \"em\"}, {\"id\": \"split_by\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Split by\", \"description\": \"What slides as one piece.\", \"default\": \"characters\", \"options\": [{\"value\": \"characters\", \"label\": \"Characters\"}, {\"value\": \"words\", \"label\": \"Words\"}, {\"value\": \"lines\", \"label\": \"Lines\"}]}, {\"id\": \"stagger\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Seconds between neighbouring pieces.\", \"default\": 0.025, \"min\": 0, \"max\": 0.6, \"step\": 0.005, \"unit\": \"s\"}, {\"id\": \"stagger_from\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Stagger from\", \"description\": \"Where the wave of pieces starts.\", \"default\": \"first\", \"options\": [{\"value\": \"first\", \"label\": \"First\"}, {\"value\": \"last\", \"label\": \"Last\"}, {\"value\": \"center\", \"label\": \"Center\"}, {\"value\": \"random\", \"label\": \"Random\"}]}, {\"id\": \"reverse\", \"type\": \"boolean\", \"role\": \"motion\", \"label\": \"Reverse\", \"description\": \"Pieces slide in from above instead of from below.\", \"default\": false}, {\"id\": \"line_delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Line delay\", \"description\": \"Seconds between one line starting and the next (letters and words). Lines mode uses the stagger instead.\", \"default\": 0.5, \"min\": 0, \"max\": 2, \"step\": 0.05, \"unit\": \"s\"}, {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start\", \"description\": \"Seconds before the first piece moves.\", \"default\": 0.2, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"}, {\"id\": \"stiffness\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stiffness\", \"description\": \"Spring stiffness.\", \"default\": 200, \"min\": 50, \"max\": 600, \"step\": 10}, {\"id\": \"damping\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Damping\", \"description\": \"Spring damping.\", \"default\": 21, \"min\": 5, \"max\": 60, \"step\": 1}];\n            var root = document.getElementById(\"root\");\n            var raw = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            var D = parseFloat(root.dataset.duration || \"4\");\n            function V(id) {\n              var d = null;\n              for (var i = 0; i < DEFS.length; i++) if (DEFS[i].id === id) d = DEFS[i];\n              var v = raw[id];\n              if (v === undefined || v === null || (v === \"\" && d.type !== \"string\")) return d.default;\n              if (d.type === \"number\") { var n = Number(v); return Number.isFinite(n) ? Math.min(d.max, Math.max(d.min, n)) : d.default; }\n              if (d.type === \"boolean\") return v === true || v === \"true\";\n              if (d.type === \"enum\") { for (var j = 0; j < d.options.length; j++) if (String(d.options[j].value) === String(v)) return d.options[j].value; return d.default; }\n              if (d.type === \"string\") return typeof v === \"string\" ? v : d.default;\n              return typeof v === \"string\" && v ? v : d.default;\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function hash3(a, b, c) { return mulberry32((a * 7919 + b * 104729 + c * 1299709) | 0)(); }\n            // Stagger delays in seconds: \"first\", \"last\", \"center\", \"random\" (seeded shuffle) or an index.\n            function stagger(n, from, step, seed) {\n              var out = [], i;\n              if (from === \"random\") {\n                var rng = mulberry32(seed || 7), idx = [];\n                for (i = 0; i < n; i++) idx.push(i);\n                for (i = n - 1; i > 0; i--) { var j = Math.floor(rng() * (i + 1)); var tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp; }\n                for (i = 0; i < n; i++) out[idx[i]] = i * step;\n                return out;\n              }\n              for (i = 0; i < n; i++) {\n                var k = from === \"last\" ? n - 1 - i : from === \"center\" ? Math.abs(Math.floor(n / 2) - i) : typeof from === \"number\" ? Math.abs(from - i) : i;\n                out.push(k * step);\n              }\n              return out;\n            }\n            // Damped spring from 0 to 1 (stiffness/damping/mass or duration/bounce, as Motion defines them).\n            function spring(o) {\n              var m = o.mass || 1, k, c;\n              if (o.duration !== undefined) { var w = (2 * Math.PI) / o.duration; k = w * w * m; c = 2 * (1 - (o.bounce || 0)) * Math.sqrt(k * m); }\n              else { k = o.stiffness; c = o.damping; }\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              function at(t) {\n                if (t <= 0) return 0;\n                if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n                if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t)); }\n                var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n                return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n              }\n              var settle = 6;\n              for (var t = 0.02; t < 6; t += 0.02) {\n                var ok = true;\n                for (var u = t; u < Math.min(t + 0.3, 6); u += 0.05) if (Math.abs(1 - at(u)) > 0.002) { ok = false; break; }\n                if (ok) { settle = t; break; }\n              }\n              return { at: at, duration: settle };\n            }\n            function fitText(text) { return Array.from(text); }\n\n            var block = document.getElementById(\"vc-block\");\n            var text = V(\"text\") || \"HI, FRIEND!\";\n            var lines = text.split(\"\\n\");\n            block.setAttribute(\"aria-label\", text);\n            var longest = 1; lines.forEach(function (l) { longest = Math.max(longest, fitText(l).length); });\n            var tracking = V(\"tracking\");\n            block.style.fontSize = \"min(\" + V(\"font_size\") + \"px, calc(88cqw / \" + (longest * (0.62 + tracking)).toFixed(2) + \"))\";\n            block.style.fontWeight = V(\"font_weight\"); block.style.color = V(\"color\"); block.style.letterSpacing = tracking + \"em\";\n            var left = V(\"align\") === \"left\"; block.style.alignItems = left ? \"flex-start\" : \"center\";\n            var splitBy = V(\"split_by\"), reverse = V(\"reverse\");\n            var rows = lines.map(function (l, li) {\n              var row = document.createElement(\"div\"); row.className = \"vc-row\"; row.id = \"vc-row-\" + li; row.setAttribute(\"aria-hidden\", \"true\");\n              var pieces = [];\n              if (splitBy === \"lines\") {\n                var w = document.createElement(\"span\"); w.className = \"vc-word\"; var c = document.createElement(\"span\"); c.className = \"vc-piece\"; c.textContent = l || \" \";\n                w.appendChild(c); row.appendChild(w); pieces.push(c);\n              } else {\n                var words = l.split(\" \");\n                words.forEach(function (word, wi) {\n                  var w = document.createElement(\"span\"); w.className = \"vc-word\";\n                  (splitBy === \"characters\" ? fitText(word) : [word]).forEach(function (ch) {\n                    var c = document.createElement(\"span\"); c.className = \"vc-piece\"; c.textContent = ch; w.appendChild(c); pieces.push(c);\n                  });\n                  row.appendChild(w);\n                  if (wi < words.length - 1) { var s = document.createElement(\"span\"); s.className = \"vc-piece\"; s.textContent = \" \"; row.appendChild(s); }\n                });\n              }\n              block.appendChild(row);\n              return pieces;\n            });\n            var step = V(\"stagger\"), start = V(\"start\"), lineDelay = V(\"line_delay\"), from = V(\"stagger_from\");\n            var sp = spring({ stiffness: V(\"stiffness\"), damping: V(\"damping\") });\n            var delays = rows.map(function (pieces, li) {\n              if (splitBy === \"lines\") return pieces.map(function () { return 0; });\n              return stagger(pieces.length, from, step, 3 + li);\n            });\n            if (splitBy === \"lines\") { var rd = stagger(rows.length, from, step, 3); rows.forEach(function (p, li) { delays[li] = [rd[li]]; }); }\n            var sign = reverse ? -1 : 1;\n            var tl = gsap.timeline({ paused: true });\n            function draw(t) {\n              for (var li = 0; li < rows.length; li++) {\n                var base = start + (splitBy === \"lines\" ? 0 : li * lineDelay);\n                for (var i = 0; i < rows[li].length; i++) {\n                  var p = sp.at(t - base - delays[li][i]);\n                  rows[li][i].style.transform = \"translateY(\" + (sign * 100 * (1 - p)).toFixed(3) + \"%)\";\n                }\n              }\n            }\n\n            var clock = { t: 0 };\n            tl.to(clock, { t: D, duration: D, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"vertical-cut-reveal\"] = tl;\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "13519939c95cc0bd1818e4df64fa7116b8e48b05a4538a52e2f79a23dac7c6e4",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 130
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "HI, FRIEND!\nIT IS NICE TO\nMEET YOU."
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 110,
+   "min": 24,
+   "max": 300
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#2447e6"
+  },
+  {
+   "id": "align",
+   "type": "enum",
+   "role": "style",
+   "label": "Align",
+   "default": "left"
+  },
+  {
+   "id": "tracking",
+   "type": "number",
+   "role": "style",
+   "label": "Tracking",
+   "default": 0.04,
+   "min": -0.1,
+   "max": 0.4
+  },
+  {
+   "id": "split_by",
+   "type": "enum",
+   "role": "motion",
+   "label": "Split by",
+   "default": "characters"
+  },
+  {
+   "id": "stagger",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 0.025,
+   "min": 0,
+   "max": 0.6
+  },
+  {
+   "id": "stagger_from",
+   "type": "enum",
+   "role": "motion",
+   "label": "Stagger from",
+   "default": "first"
+  },
+  {
+   "id": "reverse",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Reverse",
+   "default": false
+  },
+  {
+   "id": "line_delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Line delay",
+   "default": 0.5,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "start",
+   "type": "number",
+   "role": "motion",
+   "label": "Start",
+   "default": 0.2,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "stiffness",
+   "type": "number",
+   "role": "motion",
+   "label": "Stiffness",
+   "default": 200,
+   "min": 50,
+   "max": 600
+  },
+  {
+   "id": "damping",
+   "type": "number",
+   "role": "motion",
+   "label": "Damping",
+   "default": 21,
+   "min": 5,
+   "max": 60
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://fancycomponents.dev"
+}

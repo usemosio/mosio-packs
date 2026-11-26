@@ -1,0 +1,120 @@
+{
+ "name": "dolly-zoom",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/dolly-zoom/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Dolly Zoom\n\nThe vertigo shot: a corridor with a red door stretches deeper while the subject in the middle keeps its exact size. A host puts its own subject in by replacing the .dz-subject svg with its own centered content.\n\nCategory: camera. Length: 2.2 s. WebGL: no.\n\nUse when:\n- A realization or a turning point in the story needs one unsettling, cinematic beat.\n- A logo, product or figure should stay perfectly still while the space around it warps.\n\nAvoid when:\n- You need to move from one scene to the next, not a held shot: use push-through.\n- The move should feel calm and simply show depth: use parallax-depth.\n\nVariables:\n- intensity (number, 0-2): Intensity, default 1\n- reverse (boolean): Reverse, default false\n- background_color (color): Background, default \"#0B0B0B\"\n- wall_color (color): Wall, default \"#1B1B1B\"\n- wall_alt_color (color): Wall alt, default \"#151515\"\n- floor_color (color): Floor, default \"#262626\"\n- floor_alt_color (color): Floor alt, default \"#1D1D1D\"\n- line_color (color): Lines, default \"#FFFFFF\"\n- light_color (color): Ceiling lights, default \"#FFFFFF\"\n- door_color (color): Door, default \"#E5322D\"\n- figure_color (color): Figure, default \"#FFFFFF\"\n- speed (number, 0.25-3): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Dolly Zoom\n\n  The vertigo shot: a corridor with a red door stretches deeper while the subject in the middle keeps its exact size. A host puts its own subject in by replacing the .dz-subject svg with its own centered content.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/dolly-zoom/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"dolly-zoom\"\n  data-composition-duration=\"2.2\"\n  data-composition-variables='[\n    {\"id\": \"intensity\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Intensity\", \"description\": \"How far the camera dollies in while zooming out, 0 to 2.\", \"default\": 1, \"min\": 0, \"max\": 2, \"step\": 0.05},\n    {\"id\": \"reverse\", \"type\": \"boolean\", \"role\": \"motion\", \"label\": \"Reverse\", \"description\": \"Play the move in reverse: the background compresses toward the subject.\", \"default\": false},\n    {\"id\": \"background_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Frame background.\", \"default\": \"#0B0B0B\"},\n    {\"id\": \"wall_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Wall\", \"description\": \"Wall color.\", \"default\": \"#1B1B1B\"},\n    {\"id\": \"wall_alt_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Wall alt\", \"description\": \"Alternate wall and ceiling color.\", \"default\": \"#151515\"},\n    {\"id\": \"floor_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Floor\", \"description\": \"Floor color.\", \"default\": \"#262626\"},\n    {\"id\": \"floor_alt_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Floor alt\", \"description\": \"Alternate floor color.\", \"default\": \"#1D1D1D\"},\n    {\"id\": \"line_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Lines\", \"description\": \"Corridor edge line color.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"light_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Ceiling lights\", \"description\": \"Ceiling light color.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"door_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Door\", \"description\": \"Door color at the end of the corridor.\", \"default\": \"#E5322D\"},\n    {\"id\": \"figure_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Figure\", \"description\": \"Color of the default standing figure.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 3, \"step\": 0.05}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Dolly Zoom</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n\n        #root { background: var(--background); }\n        .dz-stage { position: absolute; inset: 0; overflow: hidden; }\n        .dz-svg { position: absolute; inset: 0; width: 100%; height: 100%; }\n        .dz-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 45%, rgba(0,0,0,0.55) 100%); }\n        .dz-subject { position: absolute; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"dolly-zoom\" data-duration=\"2.2\" data-fps=\"30\">\n        <div id=\"dz-clip\" class=\"dz-stage clip\" data-start=\"0\" data-duration=\"2.2\" data-track-index=\"0\">\n          <svg class=\"dz-svg\" id=\"dz-svg\"><g id=\"dz-world\"></g></svg>\n          <div class=\"dz-vignette\"></div>\n          <!-- Subject held at constant size. A host replaces this svg (or fills .dz-subject) with its own content, centered. -->\n          <svg class=\"dz-subject\" id=\"dz-subject\" viewBox=\"0 0 60 175\"><g id=\"dz-fig\"><circle cx=\"30\" cy=\"14\" r=\"12\"></circle><path d=\"M12 34 Q30 26 48 34 L54 96 Q54 102 48 102 L44 102 L42 172 L33 172 L30 108 L27 172 L18 172 L16 102 L12 102 Q6 102 6 96 Z\"></path></g></svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var NAME = \"dolly-zoom\";\n\nvar root = document.getElementById(\"root\");\nvar vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\nfunction num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : f; }\nfunction str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\nfunction col(v, f) { return typeof v === \"string\" && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v.trim()) ? v.trim() : f; }\nfunction bool(v, f) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : f; }\nvar FPS = 30;\nvar DUR = parseFloat(root.dataset.duration || \"2\");\nvar TOTAL = Math.round(DUR * FPS);\nfunction lerp(a, b, t) { return a + (b - a) * t; }\nfunction cl(x, a, b) { return Math.min(b, Math.max(a, x)); }\n// interpolate(x, [in...], [out...], easing): clamped on both sides, easing applied per segment.\nfunction interp(x, inp, out, easing) {\n  if (x <= inp[0]) return out[0];\n  if (x >= inp[inp.length - 1]) return out[out.length - 1];\n  var i = 0;\n  while (x > inp[i + 1]) i++;\n  var t = (x - inp[i]) / (inp[i + 1] - inp[i]);\n  if (easing) t = easing(t);\n  return out[i] + (out[i + 1] - out[i]) * t;\n}\nfunction bez(x1, y1, x2, y2) {\n  return function (x) {\n    if (x <= 0) return 0; if (x >= 1) return 1;\n    var t = x;\n    for (var i = 0; i < 8; i++) {\n      var cx = 3 * x1 * t * (1 - t) * (1 - t) + 3 * x2 * t * t * (1 - t) + t * t * t - x;\n      var d = 3 * x1 * (1 - t) * (1 - t) - 6 * x1 * t * (1 - t) + 6 * x2 * t * (1 - t) - 3 * x2 * t * t + 3 * t * t;\n      if (Math.abs(cx) < 1e-6 || Math.abs(d) < 1e-6) break;\n      t -= cx / d;\n    }\n    t = cl(t, 0, 1);\n    return 3 * y1 * t * (1 - t) * (1 - t) + 3 * y2 * t * t * (1 - t) + t * t * t;\n  };\n}\nvar E = {\n  lin: function (t) { return t; },\n  quad: function (t) { return t * t; },\n  cubic: function (t) { return t * t * t; },\n  sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); }\n};\nfunction eOut(f) { return function (t) { return 1 - f(1 - t); }; }\nfunction eInOut(f) { return function (t) { return t < 0.5 ? f(2 * t) / 2 : 1 - f(2 - 2 * t) / 2; }; }\nvar outCubic = eOut(E.cubic), outQuad = eOut(E.quad), inCubic = E.cubic, inQuad = E.quad;\nvar inOutCubic = eInOut(E.cubic), inOutQuad = eInOut(E.quad), inOutSin = eInOut(E.sin), outSin = eOut(E.sin);\n// Damped spring from 0 to 1 (rest at 1, no initial velocity), frames at 30 fps.\nfunction spring(frame, cfg) {\n  if (frame <= 0) return 0;\n  var m = cfg.mass || 1, k = cfg.stiffness, c = cfg.damping;\n  var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m)), t = frame / FPS;\n  if (z < 1) {\n    var wd = w0 * Math.sqrt(1 - z * z);\n    return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));\n  }\n  if (z === 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n  var s = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + s, r2 = -z * w0 - s;\n  return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n}\n// Seeded random: same string in, same number out.\nfunction rnd(seed) {\n  var sd = String(seed), h = 1779033703 ^ sd.length;\n  for (var i = 0; i < sd.length; i++) { h = Math.imul(h ^ sd.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }\n  h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); h ^= h >>> 16;\n  var a = (h >>> 0);\n  a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a);\n  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n}\nfunction rgb(h) {\n  h = h.replace(\"#\", \"\");\n  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];\n}\nfunction mixc(a, b, t) {\n  var x = rgb(a), y = rgb(b);\n  return \"rgb(\" + Math.round(lerp(x[0], y[0], t)) + \",\" + Math.round(lerp(x[1], y[1], t)) + \",\" + Math.round(lerp(x[2], y[2], t)) + \")\";\n}\nfunction rgba(h, a) { var x = rgb(h); return \"rgba(\" + x[0] + \",\" + x[1] + \",\" + x[2] + \",\" + a + \")\"; }\nvar SVGNS = \"http://www.w3.org/2000/svg\";\nfunction svgEl(tag, attrs, parent) {\n  var e = document.createElementNS(SVGNS, tag);\n  for (var k in attrs) e.setAttribute(k, attrs[k]);\n  if (parent) parent.appendChild(e);\n  return e;\n}\nfunction setA(e, attrs) { for (var k in attrs) e.setAttribute(k, attrs[k]); }\n// Drive draw(frame) from the timeline; frames run 0..frames over frames/30 seconds.\nfunction drive(draw, frames) {\n  var tl = gsap.timeline({ paused: true });\n  var clock = { frame: 0 };\n  tl.to(clock, { frame: frames, duration: frames / FPS, ease: \"none\", onUpdate: function () { draw(clock.frame); } }, 0);\n  draw(0);\n  return tl;\n}\nfunction finish(tl) {\n  if (tl.duration() < DUR) tl.to({}, { duration: DUR - tl.duration() });\n  tl.seek(0);\n  window.__timelines = window.__timelines || {};\n  window.__timelines[NAME] = tl;\n}\n\n\nvar svg = document.getElementById(\"dz-svg\"), world = document.getElementById(\"dz-world\"), subject = document.getElementById(\"dz-subject\"), fig = document.getElementById(\"dz-fig\");\nvar intensity = num(vars.intensity, 1, 0, 2), reverse = bool(vars.reverse, false), speed = num(vars.speed, 1, 0, 4);\nvar C = { background: col(vars.background_color, \"#0B0B0B\"), wall: col(vars.wall_color, \"#1B1B1B\"), wallAlt: col(vars.wall_alt_color, \"#151515\"), floor: col(vars.floor_color, \"#262626\"), floorAlt: col(vars.floor_alt_color, \"#1D1D1D\"), line: col(vars.line_color, \"#FFFFFF\"), light: col(vars.light_color, \"#FFFFFF\"), door: col(vars.door_color, \"#E5322D\"), figure: col(vars.figure_color, \"#FFFFFF\") };\nroot.style.setProperty(\"--background\", C.background);\nfig.setAttribute(\"fill\", C.figure);\nvar W = root.clientWidth, H = root.clientHeight;\nsvg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\nvar START = 4, END = 36, HALF_W = 2, CEIL = -1.3, FLOOR = 1.7, SUBJECT_Z = 6, DOOR_Z = 14, NEAR = 0.25;\nvar k = H * 0.19, cx = W / 2, cy = H / 2;\nvar figureH = k * 1.75, floorY = cy + k * FLOOR;\nsubject.setAttribute(\"height\", figureH); subject.style.left = cx - (figureH * 60) / 175 / 2 + \"px\"; subject.style.top = floorY - figureH + \"px\";\nvar moveEase = bez(0.45, 0, 0.3, 1);\nfunction draw(frame) {\n  var t = frame * speed;\n  var move = interp(t, [START, END], [0, 1], moveEase);\n  var amount = reverse ? 1 - move : move;\n  var d0 = SUBJECT_Z, d1 = d0 / (1 + 1.7 * Math.max(0, intensity));\n  var dist = d0 + (d1 - d0) * amount, cam = SUBJECT_Z - dist, f = k * dist;\n  function project(p) { var depth = Math.max(NEAR, p[2] - cam); return [cx + (f * p[0]) / depth, cy + (f * p[1]) / depth]; }\n  function poly(pts) { return pts.map(project).map(function (q) { return q[0].toFixed(1) + \",\" + q[1].toFixed(1); }).join(\" \"); }\n  function fog(z) { return interp(z - cam, [1, DOOR_Z - cam], [1, 0.25]); }\n  var L = -HALF_W, R = HALF_W, out = \"\";\n  function pg(pts, fill, extra) { out += '<polygon points=\"' + poly(pts) + '\" fill=\"' + fill + '\" ' + (extra || \"\") + \"/>\"; }\n  pg([[L, CEIL, DOOR_Z], [R, CEIL, DOOR_Z], [R, FLOOR, DOOR_Z], [L, FLOOR, DOOR_Z]], C.wallAlt);\n  var dw = 0.85, dt = FLOOR - 2.3;\n  pg([[-dw, dt, DOOR_Z], [dw, dt, DOOR_Z], [dw, FLOOR, DOOR_Z], [-dw, FLOOR, DOOR_Z]], C.door);\n  for (var z = DOOR_Z - 1; z >= Math.floor(cam); z--) {\n    var z0 = Math.max(z, cam + NEAR), z1 = z + 1;\n    if (z1 <= z0) continue;\n    var alt = z % 2 === 0;\n    pg([[L, FLOOR, z0], [R, FLOOR, z0], [R, FLOOR, z1], [L, FLOOR, z1]], alt ? C.floor : C.floorAlt);\n    pg([[L, CEIL, z0], [R, CEIL, z0], [R, CEIL, z1], [L, CEIL, z1]], C.wallAlt);\n    pg([[L, CEIL, z0], [L, FLOOR, z0], [L, FLOOR, z1], [L, CEIL, z1]], alt ? C.wall : C.wallAlt);\n    pg([[R, CEIL, z0], [R, FLOOR, z0], [R, FLOOR, z1], [R, CEIL, z1]], alt ? C.wall : C.wallAlt);\n    pg([[-0.35, CEIL, z + 0.3], [0.35, CEIL, z + 0.3], [0.35, CEIL, z + 0.7], [-0.35, CEIL, z + 0.7]], C.light, 'opacity=\"' + 0.75 * fog(z) + '\"');\n    if (z >= cam + NEAR) pg([[L, CEIL, z], [R, CEIL, z], [R, FLOOR, z], [L, FLOOR, z]], \"none\", 'stroke=\"' + C.line + '\" stroke-opacity=\"' + 0.32 * fog(z) + '\" stroke-width=\"' + Math.max(1, (f / (z - cam)) * 0.012) + '\"');\n  }\n  [[-HALF_W, CEIL], [HALF_W, CEIL], [-HALF_W, FLOOR], [HALF_W, FLOOR]].forEach(function (e) {\n    var x = e[0], y = e[1];\n    var a = project([x, y, Math.max(-4, cam + NEAR)]), b = project([x, y, DOOR_Z]);\n    out += '<line x1=\"' + a[0].toFixed(1) + '\" y1=\"' + a[1].toFixed(1) + '\" x2=\"' + b[0].toFixed(1) + '\" y2=\"' + b[1].toFixed(1) + '\" stroke=\"' + C.line + '\" stroke-opacity=\"0.45\" stroke-width=\"1.5\"/>';\n  });\n  world.innerHTML = out;\n}\nfinish(drive(draw, TOTAL));\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "4b5532fbaf612be77eb242aa5d1e391375c4b13dbc31337eb92a3d50c314ca57",
+ "duration": 2.2,
+ "webgl": false,
+ "demo_background": "#0B0B0B",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "intensity",
+   "type": "number",
+   "role": "motion",
+   "label": "Intensity",
+   "default": 1,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "reverse",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Reverse",
+   "default": false
+  },
+  {
+   "id": "background_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#0B0B0B"
+  },
+  {
+   "id": "wall_color",
+   "type": "color",
+   "role": "style",
+   "label": "Wall",
+   "default": "#1B1B1B"
+  },
+  {
+   "id": "wall_alt_color",
+   "type": "color",
+   "role": "style",
+   "label": "Wall alt",
+   "default": "#151515"
+  },
+  {
+   "id": "floor_color",
+   "type": "color",
+   "role": "style",
+   "label": "Floor",
+   "default": "#262626"
+  },
+  {
+   "id": "floor_alt_color",
+   "type": "color",
+   "role": "style",
+   "label": "Floor alt",
+   "default": "#1D1D1D"
+  },
+  {
+   "id": "line_color",
+   "type": "color",
+   "role": "style",
+   "label": "Lines",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "light_color",
+   "type": "color",
+   "role": "style",
+   "label": "Ceiling lights",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "door_color",
+   "type": "color",
+   "role": "style",
+   "label": "Door",
+   "default": "#E5322D"
+  },
+  {
+   "id": "figure_color",
+   "type": "color",
+   "role": "style",
+   "label": "Figure",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 3
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

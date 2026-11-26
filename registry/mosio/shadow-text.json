@@ -1,0 +1,108 @@
+{
+ "name": "shadow-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Kokonut UI",
+ "source": {
+  "repo": "https://github.com/kokonut-labs/kokonutui",
+  "path": "components/kokonutui/shadow-text.tsx",
+  "commit": "4d497b7b03f02ffd07225e638c0b9ace3f892dbb"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Shadow Text\n\nEvery letter casts a long, soft shadow that swings across the line as the sun crosses the sky, long and low at the edges, short at noon.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- A headline should feel lit by a moving light: warm, physical, editorial.\n- A short phrase needs a slow, calm motion that is not an entrance.\n\nAvoid when:\n- The text must be stamped or cut out hard: use shadow-sweep-text.\n- Many lines of small text: the shadows blur the letters.\n\nVariables:\n- text (string): Text, default \"Golden hour, every day.\"\n- font_size (number, 24-260): Font size, default 110\n- color (color): Text color, default \"#18181b\"\n- shadow_color (color): Shadow color, default \"#18181b\"\n- shadow_strength (number, 0-2): Shadow strength, default 1\n- reach (number, 0.2-2.5): Reach, default 1.1\n- from_hour (number, 0-24): Start hour, default 6.5\n- to_hour (number, 0-24): End hour, default 19.5\n- font_weight (enum): Font weight, default \"600\"\n\nSource: https://github.com/kokonut-labs/kokonutui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Shadow Text\n\n  Every letter casts a long, soft shadow like a sundial; the sun crosses the sky and the shadows swing from one side to the other.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/kokonut-labs/kokonutui/blob/4d497b7b03f02ffd07225e638c0b9ace3f892dbb/components/kokonutui/shadow-text.tsx\n\n  MIT License\n\n  Copyright (c) 2025 kokonutUI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"shadow-text\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Short headline. It wraps onto lines when it is wider than the frame.\", \"default\": \"Golden hour, every day.\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 110, \"min\": 24, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Color of the letters.\", \"default\": \"#18181b\"},\n    {\"id\": \"shadow_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Shadow color\", \"description\": \"Color of the cast shadows.\", \"default\": \"#18181b\"},\n    {\"id\": \"shadow_strength\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Shadow strength\", \"description\": \"How dark the shadows get, 0 to 2.\", \"default\": 1, \"min\": 0, \"max\": 2, \"step\": 0.05},\n    {\"id\": \"reach\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Reach\", \"description\": \"The longest a shadow gets, in em.\", \"default\": 1.1, \"min\": 0.2, \"max\": 2.5, \"step\": 0.05, \"unit\": \"em\"},\n    {\"id\": \"from_hour\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start hour\", \"description\": \"Time of day the sun starts at (6 is sunrise on the left, 13 is noon, 20 is sunset on the right).\", \"default\": 6.5, \"min\": 0, \"max\": 24, \"step\": 0.25, \"unit\": \"h\"},\n    {\"id\": \"to_hour\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"End hour\", \"description\": \"Time of day the sun ends at.\", \"default\": 19.5, \"min\": 0, \"max\": 24, \"step\": 0.25, \"unit\": \"h\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Shadow Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700&amp;display=block\" />\n      <style>\n        #root { position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none; }\n        #root { color: var(--st-color, #18181b); font-family: var(--font-display, Geist, system-ui, sans-serif); }\n        .st-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .st-line { max-width: 88%; text-align: center; line-height: 1.05; letter-spacing: -0.04em; text-wrap: balance; }\n        .st-word { display: inline-block; white-space: nowrap; }\n        .st-letter { display: inline-block; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"shadow-text\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"st-clip\" class=\"st-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <p id=\"st-line\" class=\"st-line\" role=\"img\"></p>\n        </div>\n\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, a, b) { var x = Number(v); return Number.isFinite(x) ? Math.min(b, Math.max(a, x)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n\n\n            var line = document.getElementById(\"st-line\");\n            var text = str(vars.text, \"Golden hour, every day.\");\n            var size = num(vars.font_size, 110, 24, 260);\n            var reach = num(vars.reach, 1.1, 0.2, 2.5);\n            var strength = num(vars.shadow_strength, 1, 0, 2);\n            var fromH = num(vars.from_hour, 6.5, 0, 24), toH = num(vars.to_hour, 19.5, 0, 24);\n            var weight = [\"500\", \"600\", \"700\"].indexOf(String(vars.font_weight)) >= 0 ? String(vars.font_weight) : \"600\";\n            root.style.setProperty(\"--st-color\", col(vars.color, \"#18181b\"));\n            function rgbOf(hex) {\n              var h = String(hex || \"\").replace(\"#\", \"\");\n              if (h.length === 3) h = h.replace(/(.)/g, \"$1$1\");\n              var n = parseInt(h, 16);\n              return Number.isFinite(n) && h.length === 6 ? [(n >> 16) & 255, (n >> 8) & 255, n & 255] : [24, 24, 27];\n            }\n            var rgb = rgbOf(vars.shadow_color);\n            line.style.fontSize = size + \"px\";\n            line.style.fontWeight = weight;\n            line.setAttribute(\"aria-label\", text);\n\n            var letters = [];\n            text.split(\" \").forEach(function (word, w, all) {\n              var ws = document.createElement(\"span\");\n              ws.className = \"st-word\";\n              Array.from(word).forEach(function (ch) {\n                var s = document.createElement(\"span\");\n                s.className = \"st-letter\";\n                s.textContent = ch;\n                ws.appendChild(s);\n                letters.push(s);\n              });\n              line.appendChild(ws);\n              if (w < all.length - 1) line.appendChild(document.createTextNode(\" \"));\n            });\n\n            // Where the sun stands for an hour of the day: left at 6, overhead at 13, right at 20.\n            function sunAt(hours) {\n              var t = (hours - 6) / 14;\n              if (t < 0 || t > 1) return { x: 0.5, height: 0.7, strength: 0.35 };\n              return { x: t, height: Math.sin(Math.PI * t), strength: 1 };\n            }\n            // A long, soft shadow as one stack of text shadows.\n            function cast(dx, dy, s) {\n              var length = Math.hypot(dx, dy);\n              if (length < 0.5 || s < 0.01) return \"none\";\n              var steps = Math.round(Math.min(26, Math.max(6, length / 3)));\n              var spacing = length / steps, parts = [];\n              for (var i = 1; i <= steps; i++) {\n                var f = i / steps;\n                var blur = Math.max(spacing * 1.15, 0.3 + f * length * 0.08);\n                var a = s * strength * (3.6 / steps) * Math.pow(1 - f, 1.6);\n                parts.push((dx * f).toFixed(1) + \"px \" + (dy * f).toFixed(1) + \"px \" + blur.toFixed(1) + \"px rgba(\" + rgb[0] + \",\" + rgb[1] + \",\" + rgb[2] + \",\" + a.toFixed(3) + \")\");\n              }\n              return parts.join(\",\");\n            }\n            var box = root.getBoundingClientRect();\n            var scaleX = box.width / (root.offsetWidth || box.width);\n            var centers = letters.map(function (el) {\n              var r = el.getBoundingClientRect();\n              return { x: (r.left - box.left + r.width / 2) / scaleX, y: (r.top - box.top + r.height * 0.6) / scaleX };\n            });\n            var W = root.offsetWidth, H = root.offsetHeight;\n            function draw(p) {\n              var sun = sunAt(fromH + (toH - fromH) * p);\n              var longest = reach * size;\n              var lx = W * (sun.x * 1.6 - 0.3), ly = -H * 3;\n              var len = longest * (0.18 + (1 - sun.height) * 0.82);\n              for (var i = 0; i < letters.length; i++) {\n                var dx = centers[i].x - lx, dy = centers[i].y - ly, d = Math.hypot(dx, dy);\n                letters[i].style.textShadow = cast((dx / d) * len, (dy / d) * len, sun.strength);\n              }\n            }\n            var tl = gsap.timeline({ paused: true });\n            var clock = { p: 0 };\n            var sweep = Math.max(1, parseFloat(root.dataset.duration || \"5\") - 0.5);\n            tl.to(clock, { p: 1, duration: sweep, ease: \"power1.inOut\", onUpdate: function () { draw(clock.p); } }, 0.25);\n            draw(0);\n\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"shadow-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "df220244d1853eba5de83c5c283ee27bdd740968cf7aa592d1bb0ae5044727b3",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#f2efe9",
+ "demo_values": {
+  "text": "Golden hour, every day.",
+  "font_size": 150
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Golden hour, every day."
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 110,
+   "min": 24,
+   "max": 260
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#18181b"
+  },
+  {
+   "id": "shadow_color",
+   "type": "color",
+   "role": "style",
+   "label": "Shadow color",
+   "default": "#18181b"
+  },
+  {
+   "id": "shadow_strength",
+   "type": "number",
+   "role": "style",
+   "label": "Shadow strength",
+   "default": 1,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "reach",
+   "type": "number",
+   "role": "motion",
+   "label": "Reach",
+   "default": 1.1,
+   "min": 0.2,
+   "max": 2.5
+  },
+  {
+   "id": "from_hour",
+   "type": "number",
+   "role": "motion",
+   "label": "Start hour",
+   "default": 6.5,
+   "min": 0,
+   "max": 24
+  },
+  {
+   "id": "to_hour",
+   "type": "number",
+   "role": "motion",
+   "label": "End hour",
+   "default": 19.5,
+   "min": 0,
+   "max": 24
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  }
+ ],
+ "author_url": "https://kokonutui.com"
+}

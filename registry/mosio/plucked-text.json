@@ -1,0 +1,97 @@
+{
+ "name": "plucked-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Kokonut UI",
+ "source": {
+  "repo": "https://github.com/kokonut-labs/kokonutui",
+  "path": "components/kokonutui/plucked-text.tsx",
+  "commit": "4d497b7b03f02ffd07225e638c0b9ace3f892dbb"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Plucked Text\n\nText rides on a taut string: it is pulled, let go and rings (high notes first, a slow sway last), carrying and tilting every letter.\n\nCategory: typography. Length: 6 s. WebGL: no.\n\nUse when:\n- A short phrase should feel like a plucked guitar string: musical, springy, physical.\n- A title needs a vibrating beat after a reveal.\n\nAvoid when:\n- Long text: the string must be short enough to ring.\n- A clean static title card.\n\nVariables:\n- text (string): Text, default \"Good vibrations\"\n- font_size (number, 24-240): Font size, default 110\n- color (color): Text color, default \"#18181b\"\n- string_color (color): String color, default \"#a1a1aa\"\n- tension (number, 0.3-3): Tension, default 1\n- pluck_at (number, 0-3): First pluck, default 0.5\n- second_pluck (boolean): Second pluck, default true\n- font_weight (enum): Font weight, default \"600\"\n\nSource: https://github.com/kokonut-labs/kokonutui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Plucked Text\n\n  A line of text rides on a taut string pinned at both ends: the string is pulled and let go, and it rings, carrying the letters up and down and tilting them with its slope until the sound dies away.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/kokonut-labs/kokonutui/blob/4d497b7b03f02ffd07225e638c0b9ace3f892dbb/components/kokonutui/plucked-text.tsx\n\n  MIT License\n\n  Copyright (c) 2025 kokonutUI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"plucked-text\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"One short line that sits on the string.\", \"default\": \"Good vibrations\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 110, \"min\": 24, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Color of the letters.\", \"default\": \"#18181b\"},\n    {\"id\": \"string_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"String color\", \"description\": \"Color of the string and its end pins.\", \"default\": \"#a1a1aa\"},\n    {\"id\": \"tension\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Tension\", \"description\": \"How taut the string is. Higher rings faster and settles sooner.\", \"default\": 1, \"min\": 0.3, \"max\": 3, \"step\": 0.05},\n    {\"id\": \"pluck_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"First pluck\", \"description\": \"Second the first pluck starts.\", \"default\": 0.5, \"min\": 0, \"max\": 3, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"second_pluck\", \"type\": \"boolean\", \"role\": \"motion\", \"label\": \"Second pluck\", \"description\": \"Pluck the string a second time from the other side.\", \"default\": true},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Plucked Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700&amp;display=block\" />\n      <style>\n        #root { position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none; }\n        #root { font-family: var(--font-display, Geist, system-ui, sans-serif); color: var(--pl-color, #18181b); }\n        .pl-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .pl-box { position: relative; padding: 0.7em 0.5em; line-height: 1; letter-spacing: -0.02em; }\n        .pl-letters { position: relative; display: block; white-space: pre; }\n        .pl-letter { display: inline-block; transform-origin: 50% 100%; }\n        .pl-svg { position: absolute; overflow: visible; pointer-events: none; color: var(--pl-string, #a1a1aa); }\n        .pl-pin { position: absolute; width: 0.12em; height: 0.12em; border-radius: 50%; background: var(--pl-string, #a1a1aa); transform: translate(-50%, -50%); }\n        .pl-finger { position: absolute; width: 0.2em; height: 0.2em; border-radius: 50%; border: 2px solid var(--pl-string, #a1a1aa); background: rgba(161,161,170,0.25); transform: translate(-50%, -50%); opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"plucked-text\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"pl-clip\" class=\"pl-stage clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\">\n          <div id=\"pl-box\" class=\"pl-box\" role=\"img\">\n            <span id=\"pl-letters\" class=\"pl-letters\" aria-hidden=\"true\"></span>\n            <svg id=\"pl-svg\" class=\"pl-svg\" aria-hidden=\"true\" height=\"1\">\n              <path id=\"pl-ghost\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" opacity=\"0.3\"></path>\n              <path id=\"pl-path\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"></path>\n            </svg>\n            <span id=\"pl-pin-a\" class=\"pl-pin\"></span><span id=\"pl-pin-b\" class=\"pl-pin\"></span>\n            <span id=\"pl-finger\" class=\"pl-finger\"></span>\n          </div>\n        </div>\n\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, a, b) { var x = Number(v); return Number.isFinite(x) ? Math.min(b, Math.max(a, x)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n\n\n            var box = document.getElementById(\"pl-box\");\n            var lettersEl = document.getElementById(\"pl-letters\");\n            var svg = document.getElementById(\"pl-svg\");\n            var pathEl = document.getElementById(\"pl-path\"), ghostEl = document.getElementById(\"pl-ghost\");\n            var pinA = document.getElementById(\"pl-pin-a\"), pinB = document.getElementById(\"pl-pin-b\"), finger = document.getElementById(\"pl-finger\");\n            var text = str(vars.text, \"Good vibrations\");\n            var size = num(vars.font_size, 110, 24, 240);\n            var tension = num(vars.tension, 1, 0.3, 3);\n            var pluckAt = num(vars.pluck_at, 0.5, 0, 3);\n            var second = !(vars.second_pluck === false || vars.second_pluck === \"false\");\n            var weight = [\"500\", \"600\", \"700\"].indexOf(String(vars.font_weight)) >= 0 ? String(vars.font_weight) : \"600\";\n            root.style.setProperty(\"--pl-color\", col(vars.color, \"#18181b\"));\n            root.style.setProperty(\"--pl-string\", col(vars.string_color, \"#a1a1aa\"));\n            box.style.fontWeight = weight;\n            box.style.fontSize = size + \"px\";\n            box.setAttribute(\"aria-label\", text);\n            var letters = Array.from(text).map(function (ch) {\n              var s = document.createElement(\"span\");\n              s.className = \"pl-letter\";\n              s.textContent = ch;\n              lettersEl.appendChild(s);\n              return s;\n            });\n            var probe = document.createElement(\"span\");\n            probe.style.cssText = \"display:inline-block;width:0;height:0\";\n            lettersEl.appendChild(probe);\n            var maxW = root.clientWidth * 0.92;\n            if (box.offsetWidth > maxW) { size = Math.max(24, size * maxW / box.offsetWidth); box.style.fontSize = size + \"px\"; }\n\n            // Geometry, in unscaled px relative to the box.\n            var bb = box.getBoundingClientRect();\n            var kk = box.offsetWidth / (bb.width || box.offsetWidth);\n            var em = parseFloat(getComputedStyle(box).fontSize);\n            var baseY = (probe.getBoundingClientRect().bottom - bb.top) * kk;\n            var pinPad = em * 0.25;\n            var length = box.offsetWidth - pinPad * 2;\n            svg.style.left = pinPad + \"px\"; svg.style.top = baseY + \"px\"; svg.setAttribute(\"width\", length);\n            pinA.style.left = pinPad + \"px\"; pinA.style.top = baseY + \"px\";\n            pinB.style.left = (pinPad + length) + \"px\"; pinB.style.top = baseY + \"px\";\n            var swing = em * 0.6;\n            var letterX = letters.map(function (el) { var r = el.getBoundingClientRect(); return (r.left - bb.left + r.width / 2) * kk - pinPad; });\n\n            // The string as a sum of its standing waves, each a damped oscillator solved exactly.\n            var WAVE_SPEED = 1500, MAX_MODES = 24, MAX_HZ = 22, DAMP_BASE = 0.9, DAMP_HIGH = 0.012, TILT = 0.85, STEP = 6;\n            var f0 = WAVE_SPEED * tension / (2 * length);\n            var count = Math.max(4, Math.min(MAX_MODES, Math.floor(MAX_HZ / f0)));\n            var modes = [];\n            for (var n = 1; n <= count; n++) {\n              var omega = 2 * Math.PI * f0 * n, gamma = (DAMP_BASE + DAMP_HIGH * n * n) * Math.sqrt(tension);\n              modes.push({ omega: omega, gamma: gamma, d: Math.sqrt(Math.max(omega * omega - gamma * gamma, 1)) });\n            }\n            function soften(x, max) { return max * Math.tanh(x / max); }\n            // The string pulled into a V with its apex at x = apex and height h, as standing-wave amplitudes.\n            function tri(apex, h) {\n              var d = Math.min(Math.max(apex, 1), length - 1);\n              return modes.map(function (m, i) { var k = i + 1; return (2 * h * length * length) / (k * k * Math.PI * Math.PI * d * (length - d)) * Math.sin(k * Math.PI * d / length); });\n            }\n            // Pluck events: pull the string down to a point over 0.28 s, hold a beat, let go.\n            var plucks = [{ t: pluckAt, apex: length * 0.3, h: swing * 1.3 }];\n            if (second) plucks.push({ t: pluckAt + 2.7, apex: length * 0.72, h: -swing * 1.1 });\n            var PULL = 0.28, HOLD = 0.08;\n            plucks.forEach(function (p) { p.q = tri(p.apex, p.h); });\n            // Amplitudes of every mode at time t.\n            function qAt(t) {\n              var ev = null;\n              for (var i = 0; i < plucks.length; i++) if (t >= plucks[i].t) ev = plucks[i];\n              var out = new Array(count);\n              if (!ev) { for (var a = 0; a < count; a++) out[a] = 0; return { q: out, grab: null }; }\n              var tau = t - ev.t;\n              if (tau < PULL + HOLD) {\n                var u = Math.min(1, tau / PULL), e = 1 - Math.pow(1 - u, 3);\n                for (var b = 0; b < count; b++) out[b] = ev.q[b] * e;\n                return { q: out, grab: { apex: ev.apex, h: ev.h * e, on: Math.min(1, tau / 0.1) } };\n              }\n              var r = tau - PULL - HOLD;\n              for (var c = 0; c < count; c++) {\n                var m = modes[c], dec = Math.exp(-m.gamma * r), q0 = ev.q[c];\n                out[c] = dec * (q0 * Math.cos(m.d * r) + (m.gamma * q0 / m.d) * Math.sin(m.d * r));\n              }\n              var fade = 0;\n              return { q: out, grab: { apex: ev.apex, h: 0, on: Math.max(0, 1 - r / 0.15) } };\n            }\n            function sum(q, x) { var y = 0; for (var i = 0; i < count; i++) y += q[i] * Math.sin((i + 1) * Math.PI * x / length); return y; }\n            function slopeAt(q, x) { var y = 0; for (var i = 0; i < count; i++) { var kx = (i + 1) * Math.PI / length; y += q[i] * kx * Math.cos(kx * x); } return y; }\n            function shape(q) {\n              var d = \"\";\n              for (var i = 0; i <= Math.ceil(length / STEP); i++) { var x = Math.min(i * STEP, length); d += (i ? \"L\" : \"M\") + x.toFixed(1) + \" \" + soften(sum(q, x), swing).toFixed(2); }\n              return d;\n            }\n            function draw(t) {\n              var st = qAt(t), q = st.q;\n              pathEl.setAttribute(\"d\", shape(q));\n              ghostEl.setAttribute(\"d\", shape(qAt(Math.max(0, t - 1 / 20)).q));\n              for (var i = 0; i < letters.length; i++) {\n                var raw = sum(q, letterX[i]), y = soften(raw, swing), th = Math.tanh(raw / swing);\n                var slope = slopeAt(q, letterX[i]) * (1 - th * th);\n                letters[i].style.transform = \"translate(0,\" + y.toFixed(2) + \"px) rotate(\" + (Math.atan(slope) * TILT).toFixed(4) + \"rad)\";\n              }\n              if (st.grab && st.grab.on > 0) {\n                finger.style.opacity = st.grab.on.toFixed(2);\n                finger.style.left = (pinPad + st.grab.apex) + \"px\";\n                finger.style.top = (baseY + soften(st.grab.h, swing)) + \"px\";\n              } else finger.style.opacity = 0;\n            }\n            var dur = parseFloat(root.dataset.duration || \"6\");\n            var tl = gsap.timeline({ paused: true });\n            var clock = { t: 0 };\n            tl.to(clock, { t: dur, duration: dur, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n\n            var total = parseFloat(root.dataset.duration || \"6\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"plucked-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "9308e37b1e3d7b0862667900d6cee9e36bcf8103ac075df063deecc3a64f4d59",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#fafafa",
+ "demo_values": {
+  "text": "Good vibrations",
+  "font_size": 130
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Good vibrations"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 110,
+   "min": 24,
+   "max": 240
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#18181b"
+  },
+  {
+   "id": "string_color",
+   "type": "color",
+   "role": "style",
+   "label": "String color",
+   "default": "#a1a1aa"
+  },
+  {
+   "id": "tension",
+   "type": "number",
+   "role": "motion",
+   "label": "Tension",
+   "default": 1,
+   "min": 0.3,
+   "max": 3
+  },
+  {
+   "id": "pluck_at",
+   "type": "number",
+   "role": "motion",
+   "label": "First pluck",
+   "default": 0.5,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "second_pluck",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Second pluck",
+   "default": true
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  }
+ ],
+ "author_url": "https://kokonutui.com"
+}

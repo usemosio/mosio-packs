@@ -1,0 +1,91 @@
+{
+ "name": "stripes",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/stripes/stripes.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Diagonal Stripes\n\nBold black and white diagonal stripes slide across the frame.\n\nCategory: shaders. Length: 5 s. WebGL: yes.\n\nUse when:\n- A bold graphic backdrop for a punchy title, a sale or a transition card.\n- Black-and-white or two-color motion that needs no image assets.\n\nAvoid when:\n- You want soft, calm color: use shader-mesh-gradient.\n- Text sits directly on the stripes at small sizes: put it on a plain panel.\n\nVariables:\n- color_a (color): Stripe color, default \"#000000\"\n- color_b (color): Gap color, default \"#ffffff\"\n- speed (number, 0-4): Speed, default 0.5\n- count (number, 1-40): Stripes, default 9\n- angle (number, 0-180): Angle, default 45\n- softness (number, 0-1): Softness, default 0\n- resolution (number, 0.25-1): Resolution, default 0.75\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Diagonal Stripes\n\n  Bold black and white diagonal stripes slide across the frame.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/stripes/stripes.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: upstream mounts a WebGPU shader from the shaders.com library (MIT, a\n  1.4 MB bundled script). This block draws the same look with a small hand-written WebGL2 fragment\n  shader instead (no bundled files), fills whatever frame the host gives it, takes its colors and\n  settings from variables, draws at a reduced resolution (the `resolution` variable) and takes its\n  time from the timeline.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"stripes\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    { \"id\":\"color_a\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Stripe color\",\"description\":\"First stripe color.\",\"default\":\"#000000\" },\n    { \"id\":\"color_b\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Gap color\",\"description\":\"Second stripe color.\",\"default\":\"#ffffff\" },\n    { \"id\":\"speed\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Speed\",\"description\":\"How fast it moves. 0 holds still.\",\"default\":0.5,\"min\":0,\"max\":4,\"step\":0.05 },\n    { \"id\":\"count\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Stripes\",\"description\":\"How many stripe pairs fit across the shorter side of the frame.\",\"default\":9,\"min\":1,\"max\":40,\"step\":1 },\n    { \"id\":\"angle\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Angle\",\"description\":\"Direction of the stripes.\",\"default\":45,\"min\":0,\"max\":180,\"step\":1,\"unit\":\"deg\" },\n    { \"id\":\"softness\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Softness\",\"description\":\"Blur on the stripe edges. 0 is hard.\",\"default\":0,\"min\":0,\"max\":1,\"step\":0.01 },\n    { \"id\":\"resolution\",\"type\":\"number\",\"role\":\"quality\",\"label\":\"Resolution\",\"description\":\"Share of the frame size the shader is drawn at, then scaled up. Lower renders faster; raise it if edges look soft.\",\"default\":0.75,\"min\":0.25,\"max\":1,\"step\":0.05 }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Diagonal Stripes</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          background: var(--stp-fallback, #000000);\n          pointer-events: none;\n        }\n        .stp-stage {\n          position: absolute;\n          inset: 0;\n        }\n        .stp-canvas {\n          position: absolute;\n          inset: 0;\n          width: 100%;\n          height: 100%;\n          display: block;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"stripes\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"stp-clip\" class=\"stp-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <canvas id=\"stp-canvas\" class=\"stp-canvas\"></canvas>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var canvas = document.getElementById(\"stp-canvas\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            var DEFAULTS = {\"color_a\":\"#000000\",\"color_b\":\"#ffffff\",\"speed\":0.5,\"count\":9,\"angle\":45,\"softness\":0,\"resolution\":0.75};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function parseColor(s, fallback) {\n              var m = /^#?([0-9a-f]{6}|[0-9a-f]{3})$/i.exec(String(s == null ? \"\" : s).trim());\n              if (!m) return fallback;\n              var h = m[1];\n              if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n              return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255];\n            }\n            var P = {};\n            P.color_a = parseColor(vars.color_a, parseColor(DEFAULTS.color_a));\n            P.color_b = parseColor(vars.color_b, parseColor(DEFAULTS.color_b));\n            P.speed = num(vars.speed, DEFAULTS.speed, 0, 4);\n            P.count = num(vars.count, DEFAULTS.count, 1, 40);\n            P.angle = num(vars.angle, DEFAULTS.angle, 0, 180);\n            P.softness = num(vars.softness, DEFAULTS.softness, 0, 1);\n            P.resolution = num(vars.resolution, DEFAULTS.resolution, 0.25, 1);\n            function css(c) { return \"rgb(\" + Math.round(c[0] * 255) + \",\" + Math.round(c[1] * 255) + \",\" + Math.round(c[2] * 255) + \")\"; }\n            // Without WebGL the block still shows a plain backdrop.\n            root.style.setProperty(\"--stp-fallback\", css(P.color_a));\n\n            var VERTEX = [\n              \"#version 300 es\",\n              \"layout(location = 0) in vec2 a_position;\",\n              \"void main() { gl_Position = vec4(a_position, 0.0, 1.0); }\"\n            ].join(\"\\n\");\n\n            var FRAGMENT = [\n              \"#version 300 es\",\n              \"precision highp float;\",\n              \"uniform vec2 u_res; uniform float u_time;\",\n              \"out vec4 o;\",\n              \"float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}\",\n              \"float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1,0)),f.x),mix(h21(i+vec2(0,1)),h21(i+vec2(1,1)),f.x),f.y);}\",\n              \"float fbm(vec2 p){float a=.5,s=0.;for(int i=0;i<5;i++){s+=a*vn(p);p=p*2.03+vec2(17.1,9.2);a*=.5;}return s;}\",\n              \"vec3 pal(float x){return .5+.5*cos(6.28318*(x+vec3(0.,.33,.67)));}\",\n              \"uniform vec3 u_color_a,u_color_b; uniform float u_speed,u_count,u_angle,u_softness;\",\n              \"void main(){\",\n              \"  vec2 p=gl_FragCoord.xy/min(u_res.x,u_res.y);\",\n              \"  float a=radians(u_angle);\",\n              \"  float s=(p.x*cos(a)+p.y*sin(a))*u_count+u_time*u_speed;\",\n              \"  float f=fract(s);\",\n              \"  float w=max(fwidth(s),.0001)+u_softness*.45;\",\n              \"  float m=smoothstep(.5-w,.5+w,f)*(1.-smoothstep(1.-w*2.,1.,f))+smoothstep(0.,w*2.,f)*0.;\",\n              \"  float edge=smoothstep(0.,w,f)*(1.-smoothstep(.5,.5+w,f));\",\n              \"  float band=smoothstep(.5-w,.5+w,f);\",\n              \"  float wrap=1.-smoothstep(1.-w,1.,f);\",\n              \"  float k=band*wrap; // 0 for first half, 1 for second half, soft at both seams\",\n              \"  o=vec4(mix(u_color_a,u_color_b,k),1.);\",\n              \"}\",\n            ].join(\"\\n\");\n\n            // The canvas is drawn at `resolution` × the frame size and stretched to fill it.\n            var width = Math.max(2, Math.round(root.clientWidth * P.resolution));\n            var height = Math.max(2, Math.round(root.clientHeight * P.resolution));\n            canvas.width = width;\n            canvas.height = height;\n            var gl = canvas.getContext(\"webgl2\", { antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true });\n\n            function compile(type, source) {\n              var s = gl.createShader(type);\n              gl.shaderSource(s, source);\n              gl.compileShader(s);\n              if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) || \"shader compile failed\");\n              return s;\n            }\n            var draw = function () {};\n            try {\n              if (!gl) throw new Error(\"WebGL2 is not available\");\n              var program = gl.createProgram();\n              gl.attachShader(program, compile(gl.VERTEX_SHADER, VERTEX));\n              gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAGMENT));\n              gl.linkProgram(program);\n              if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program) || \"link failed\");\n              gl.useProgram(program);\n              var buffer = gl.createBuffer();\n              gl.bindBuffer(gl.ARRAY_BUFFER, buffer);\n              gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);\n              gl.enableVertexAttribArray(0);\n              gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);\n              gl.viewport(0, 0, width, height);\n              function u(name) { return gl.getUniformLocation(program, name); }\n              gl.uniform2f(u(\"u_res\"), width, height);\n              gl.uniform3fv(u(\"u_color_a\"), P.color_a);\n              gl.uniform3fv(u(\"u_color_b\"), P.color_b);\n              gl.uniform1f(u(\"u_speed\"), P.speed);\n              gl.uniform1f(u(\"u_count\"), P.count);\n              gl.uniform1f(u(\"u_angle\"), P.angle);\n              gl.uniform1f(u(\"u_softness\"), P.softness);\n              var timeLoc = u(\"u_time\");\n              draw = function (frame) {\n                gl.uniform1f(timeLoc, frame / 30);\n                gl.drawArrays(gl.TRIANGLES, 0, 6);\n              };\n            } catch (err) {\n              canvas.style.display = \"none\";\n              if (window.console) console.warn(\"stripes:\", err.message);\n            }\n\n            var total = parseFloat(root.dataset.duration || \"5\");\n            var totalFrames = Math.round(total * 30);\n            var clock = { frame: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, {\n              frame: totalFrames,\n              duration: total,\n              ease: \"none\",\n              onUpdate: function () { draw(clock.frame); }\n            }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"stripes\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "3c53ec65f65ba3e0f9ef94946020df08169a108c2ec6ff5a64c2e2e4ca8b6ee6",
+ "duration": 5,
+ "webgl": true,
+ "demo_background": "#000000",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "color_a",
+   "type": "color",
+   "role": "style",
+   "label": "Stripe color",
+   "default": "#000000"
+  },
+  {
+   "id": "color_b",
+   "type": "color",
+   "role": "style",
+   "label": "Gap color",
+   "default": "#ffffff"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 0.5,
+   "min": 0,
+   "max": 4
+  },
+  {
+   "id": "count",
+   "type": "number",
+   "role": "style",
+   "label": "Stripes",
+   "default": 9,
+   "min": 1,
+   "max": 40
+  },
+  {
+   "id": "angle",
+   "type": "number",
+   "role": "style",
+   "label": "Angle",
+   "default": 45,
+   "min": 0,
+   "max": 180
+  },
+  {
+   "id": "softness",
+   "type": "number",
+   "role": "style",
+   "label": "Softness",
+   "default": 0,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "resolution",
+   "type": "number",
+   "role": "quality",
+   "label": "Resolution",
+   "default": 0.75,
+   "min": 0.25,
+   "max": 1
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

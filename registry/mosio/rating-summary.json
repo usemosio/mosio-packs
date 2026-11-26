@@ -1,0 +1,107 @@
+{
+ "name": "rating-summary",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "count-up and stagger: a number and bars growing to their real values"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Rating Summary\n\nA big average rating (\"4,9\" with an Indonesian decimal comma) counts up while five stars fill, five bars (5 to 1 stars) grow to their shares, and the review count (\"1.284 ulasan\") counts up last. Score, shares and review count are variables.\n\nCategory: commerce. Length: 5.5 s. WebGL: no.\n\nUse when:\n- Backing a shop or product up with its average rating and how the ratings split.\n- A social-proof moment near the end of a promo.\n\nAvoid when:\n- Individual customer quotes: use review-card-stack or chat-review-typed.\n- Any other statistic: use stat-count-up-bars.\n\nVariables:\n- score (string): Score, default \"4,9\"\n- shares (string): Shares, default \"78,15,5,1,1\"\n- reviews (string): Review count, default \"1.284 ulasan\"\n- title (string): Title, default \"Rating pelanggan\"\n- bar_color (color): Bar colour, default \"#0a0a0a\"\n- bg_color (color): Background, default \"#ffffff\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- main_color (color): Accent, default \"#2563eb\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Rating Summary\n\n  A big average rating (\"4,9\" with an Indonesian decimal comma) counts up while five stars fill, five bars (5 to 1 stars) grow to their shares, and the review count (\"1.284 ulasan\") counts up last. Score, shares and review count are variables.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"rating-summary\"\n  data-composition-duration=\"5.5\"\n  data-composition-variables='[\n  {\n    \"id\": \"score\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Score\",\n    \"description\": \"Average rating out of 5. A comma or a dot works as the decimal mark.\",\n    \"default\": \"4,9\"\n  },\n  {\n    \"id\": \"shares\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Shares\",\n    \"description\": \"Five numbers separated by commas: the percentage of 5-, 4-, 3-, 2- and 1-star ratings.\",\n    \"default\": \"78,15,5,1,1\"\n  },\n  {\n    \"id\": \"reviews\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Review count\",\n    \"description\": \"Shown last. Digits count up with dots as thousands separators; the words around them are kept.\",\n    \"default\": \"1.284 ulasan\"\n  },\n  {\n    \"id\": \"title\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Title\",\n    \"description\": \"Small line above the score. Leave empty to hide it.\",\n    \"default\": \"Rating pelanggan\"\n  },\n  {\n    \"id\": \"bar_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Bar colour\",\n    \"description\": \"The share bars.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Main text and outlines.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Secondary text and hairlines.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent\",\n    \"description\": \"The stars: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Font family name. Geist is loaded by default; another family must be loaded by the host.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Rating Summary</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          color: var(--rs-text); font-family: var(--FAM, Geist), system-ui, sans-serif; background: var(--rs-bg);\n        }\n        #root * { box-sizing: border-box; }\n        .rs-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        .rs-wrap { position: absolute; left: 50%; top: 50%; display: flex; transform-origin: 50% 50%; }\n        .rs-left { display: flex; flex-direction: column; align-items: center; }\n        .rs-title { font-size: calc(var(--u) * 40); font-weight: 500; color: var(--rs-muted); margin-bottom: calc(var(--u) * 8); }\n        .rs-score { font-size: calc(var(--u) * 400); font-weight: 700; letter-spacing: -0.06em; line-height: 1; font-variant-numeric: tabular-nums; }\n        .rs-stars { width: calc(var(--u) * 540); height: calc(var(--u) * 108); margin-top: calc(var(--u) * 6); }\n        .rs-stars { position: relative; }\n        .rs-stars svg { width: 100%; height: 100%; display: block; overflow: visible; }\n        .rs-sfill { position: absolute; left: 0; top: 0; height: 100%; overflow: hidden; }\n        .rs-sfill svg { width: auto; height: auto; max-width: none; }\n        .rs-rev { margin-top: calc(var(--u) * 28); font-size: calc(var(--u) * 52); font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }\n        .rs-bars { display: flex; flex-direction: column; justify-content: center; gap: calc(var(--u) * 30); }\n        .rs-row { display: flex; align-items: center; gap: calc(var(--u) * 22); font-size: calc(var(--u) * 40); font-weight: 600; font-variant-numeric: tabular-nums; }\n        .rs-lab { width: calc(var(--u) * 84); display: flex; align-items: center; justify-content: flex-end; gap: calc(var(--u) * 6); }\n        .rs-lab svg { width: calc(var(--u) * 30); height: calc(var(--u) * 30); }\n        .rs-track { flex: 1; height: calc(var(--u) * 26); border-radius: calc(var(--u) * 13); background: rgba(115,115,115,0.18); overflow: hidden; }\n        .rs-fill { height: 100%; border-radius: calc(var(--u) * 13); background: var(--rs-bar); transform-origin: 0 50%; }\n        .rs-pct { width: calc(var(--u) * 110); color: var(--rs-muted); font-weight: 500; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"rating-summary\" data-duration=\"5.5\" data-fps=\"30\">\n        <div id=\"rs-clip\" class=\"rs-stage clip\" data-start=\"0\" data-duration=\"5.5\" data-track-index=\"0\">\n\n          <div class=\"rs-wrap\" id=\"rs-wrap\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function svg(tag, attrs, parent) { var e = document.createElementNS(\"http://www.w3.org/2000/svg\", tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function rp(n) { return \"Rp\" + dots(n); }\n            function money(s) { var d = String(s).replace(/[^\\d]/g, \"\"); return d ? parseInt(d, 10) : 0; }\n            function list(s, d) { var a = String(str(s, d)).split(\";\").map(function (x) { return x.trim(); }).filter(Boolean); return a.length ? a : String(d).split(\";\").map(function (x) { return x.trim(); }); }\n            function mulberry(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function setColors(p, c) { for (var k in c) root.style.setProperty(\"--\" + p + \"-\" + k, colr(vars[k + \"_color\"], c[k])); }\n            var fam = str(vars.font_family, \"Geist\");\n            root.style.setProperty(\"--FAM\", /^[\\w\\s-]+$/.test(fam) ? '\"' + fam + '\"' : \"Geist\");\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n            setColors(\"rs\", { bg: \"#ffffff\", text: \"#0a0a0a\", muted: \"#737373\", main: \"#2563eb\", bar: \"#0a0a0a\" });\n\n\n            var u = U, wrap = document.getElementById(\"rs-wrap\");\n            root.style.setProperty(\"--rs-bar\", colr(vars.bar_color, \"#0a0a0a\"));\n            var scoreTxt = str(vars.score, \"4,9\");\n            var score = Math.min(5, Math.max(0, parseFloat(scoreTxt.replace(\",\", \".\")) || 4.9));\n            var shares = String(str(vars.shares, \"78,15,5,1,1\")).split(/[,;\\s]+/).map(function (x) { return Math.max(0, Math.min(100, Number(x) || 0)); });\n            while (shares.length < 5) shares.push(0); shares = shares.slice(0, 5);\n            var reviews = str(vars.reviews, \"1.284 ulasan\"), title = typeof vars.title === \"string\" ? vars.title.trim() : \"Rating pelanggan\";\n            function fmt(v) { return (Math.round(v * 10) / 10).toFixed(1).replace(\".\", \",\"); }\n            var STAR = \"M50 6 L62.3 36.5 L95 39 L70 60.5 L77.8 92 L50 74.6 L22.2 92 L30 60.5 L5 39 L37.7 36.5 Z\";\n            var left = el(\"div\", \"rs-left\", wrap);\n            var tEl = el(\"div\", \"rs-title\", left); tEl.textContent = title; if (!title) tEl.style.display = \"none\";\n            var sEl = el(\"div\", \"rs-score\", left); sEl.textContent = fmt(0);\n            var stars = el(\"div\", \"rs-stars\", left);\n            var ssv = svg(\"svg\", { viewBox: \"0 0 500 100\" }, stars);\n            var gb = svg(\"g\", { fill: \"rgba(115,115,115,0.22)\" }, ssv);\n            var fillBox = el(\"div\", \"rs-sfill\", stars);\n            var fsv = svg(\"svg\", { viewBox: \"0 0 500 100\" }, fillBox);\n            var gf = svg(\"g\", { fill: colr(vars.main_color, \"#2563eb\") }, fsv);\n            for (var i = 0; i < 5; i++) { [gb, gf].forEach(function (g) { svg(\"path\", { d: STAR, transform: \"translate(\" + i * 100 + \" 0)\" }, g); }); }\n            var starsW = 540 * u;\n            fsv.style.width = starsW + \"px\"; fsv.style.height = 108 * u + \"px\";\n            var rev = el(\"div\", \"rs-rev\", left);\n            var bars = el(\"div\", \"rs-bars\", wrap), rows = [];\n            for (var k = 0; k < 5; k++) {\n              var r = el(\"div\", \"rs-row\", bars), lab = el(\"div\", \"rs-lab\", r);\n              lab.innerHTML = \"<span>\" + (5 - k) + '</span><svg viewBox=\"0 0 100 100\"><path d=\"' + STAR + '\" fill=\"currentColor\"></path></svg>';\n              var tr = el(\"div\", \"rs-track\", r), f = el(\"div\", \"rs-fill\", tr);\n              var pc = el(\"div\", \"rs-pct\", r); pc.textContent = String(shares[k]).replace(\".\", \",\") + \"%\";\n              rows.push({ r: r, f: f, p: pc, v: shares[k] });\n            }\n            var gw, gh;\n            if (PORTRAIT) { wrap.style.flexDirection = \"column\"; wrap.style.alignItems = \"center\"; wrap.style.gap = 70 * u + \"px\"; bars.style.width = 860 * u + \"px\"; gw = 860 * u; gh = 400 * u + 108 * u + 130 * u + 70 * u + 5 * 56 * u + 4 * 30 * u + 80 * u; }\n            else { wrap.style.alignItems = \"center\"; wrap.style.gap = 110 * u + \"px\"; bars.style.width = 780 * u + \"px\"; gw = 540 * u + 110 * u + 780 * u + 20 * u; gh = 640 * u; }\n            wrap.style.width = gw + \"px\"; wrap.style.height = gh + \"px\";\n            var S = Math.min(1.3, (H * 0.88) / gh, (W * 0.94) / gw);\n            gsap.set(wrap, { xPercent: -50, yPercent: -50, scale: S });\n\n            var m = /^(\\D*)(\\d[\\d.,]*)(.*)$/.exec(reviews), rv = m ? parseInt(m[2].replace(/[.,]/g, \"\"), 10) : NaN;\n            function showRev(v) { rev.textContent = !m || v >= rv ? reviews : m[1] + dots(v) + m[3]; }\n            showRev(0);\n            var sc = { v: 0 }, rc = { v: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(tEl, { opacity: 0, y: 20 * u }, { opacity: 1, y: 0, duration: 0.5, ease: \"power3.out\" }, 0.1);\n            tl.fromTo(sc, { v: 0 }, { v: score, duration: 1.2, ease: \"power2.out\", onUpdate: function () { sEl.textContent = fmt(sc.v); } }, 0.3);\n            tl.fromTo(sEl, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.5, ease: \"power3.out\" }, 0.3);\n            tl.fromTo(fillBox, { width: 0 }, { width: starsW * score / 5, duration: 1.2, ease: \"power2.out\" }, 0.45);\n            rows.forEach(function (o, i) {\n              var t = 1.3 + i * 0.12;\n              tl.fromTo(o.f, { scaleX: 0 }, { scaleX: Math.max(0.0001, o.v / 100), duration: 0.8, ease: \"expo.out\" }, t);\n              tl.fromTo([o.r.firstChild, o.p], { opacity: 0 }, { opacity: 1, duration: 0.4, ease: \"power2.out\" }, t);\n            });\n            tl.fromTo(rev, { opacity: 0, y: 20 * u }, { opacity: 1, y: 0, duration: 0.5, ease: \"power3.out\" }, 2.5);\n            if (m && rv) tl.fromTo(rc, { v: 0 }, { v: rv, duration: 1.0, ease: \"power2.out\", immediateRender: false, onUpdate: function () { showRev(Math.round(rc.v)); } }, 2.5);\n            tl.set(rev, { opacity: 0 }, 0);\n\n            var total = parseFloat(root.dataset.duration || \"5.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"rating-summary\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "4d37c92a3d847e808b4282469609456c144759bddee731915c563da080814ea0",
+ "duration": 5.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "score",
+   "type": "string",
+   "role": "content",
+   "label": "Score",
+   "default": "4,9"
+  },
+  {
+   "id": "shares",
+   "type": "string",
+   "role": "content",
+   "label": "Shares",
+   "default": "78,15,5,1,1"
+  },
+  {
+   "id": "reviews",
+   "type": "string",
+   "role": "content",
+   "label": "Review count",
+   "default": "1.284 ulasan"
+  },
+  {
+   "id": "title",
+   "type": "string",
+   "role": "content",
+   "label": "Title",
+   "default": "Rating pelanggan"
+  },
+  {
+   "id": "bar_color",
+   "type": "color",
+   "role": "style",
+   "label": "Bar colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2563eb"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

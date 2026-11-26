@@ -1,0 +1,122 @@
+{
+ "name": "confetti",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/confetti/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Confetti\n\nA deterministic burst of confetti pieces that fall, spin and flutter with gravity.\n\nCategory: effects. Length: 3 s. WebGL: no.\n\nUse when:\n- A celebration moment: a signup, a goal reached, a launch, a milestone.\n- A burst that must repeat identically on every render (seeded).\n\nAvoid when:\n- A subtle or professional tone: confetti reads as playful.\n- A continuous rain of pieces is wanted rather than one burst.\n\nVariables:\n- particle_count (number, 10-400): Particles, default 140\n- colors (string): Colors, default \"#1d9bf0, #ff5da2, #ffd23f, #22c55e, #a855f7, #ff7a45\"\n- origin_x (number, 0-1): Origin X, default 0.5\n- origin_y (number, 0-1): Origin Y, default 0.5\n- start_frame (number, 0-60): Start frame, default 0\n- lifetime (number, 20-240): Lifetime, default 90\n- power (number, 2-40): Power, default 17\n- gravity (number, 0-2): Gravity, default 0.45\n- size (number, 4-40): Size, default 13\n- seed (number, 0-9999): Seed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Confetti\n\n  A deterministic burst of confetti pieces that fall, spin and flutter with gravity.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/confetti/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"confetti\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    {\"id\": \"particle_count\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Particles\", \"description\": \"Number of confetti pieces.\", \"default\": 140, \"min\": 10, \"max\": 400, \"step\": 1},\n    {\"id\": \"colors\", \"type\": \"string\", \"role\": \"style\", \"label\": \"Colors\", \"description\": \"Comma-separated piece colors.\", \"default\": \"#1d9bf0, #ff5da2, #ffd23f, #22c55e, #a855f7, #ff7a45\"},\n    {\"id\": \"origin_x\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Origin X\", \"description\": \"Burst origin as a fraction of the frame width.\", \"default\": 0.5, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"origin_y\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Origin Y\", \"description\": \"Burst origin as a fraction of the frame height.\", \"default\": 0.5, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"start_frame\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start frame\", \"description\": \"Frame the burst fires on.\", \"default\": 0, \"min\": 0, \"max\": 60, \"step\": 1, \"unit\": \"frames\"},\n    {\"id\": \"lifetime\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Lifetime\", \"description\": \"Lifetime of the burst, in frames.\", \"default\": 90, \"min\": 20, \"max\": 240, \"step\": 1, \"unit\": \"frames\"},\n    {\"id\": \"power\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Power\", \"description\": \"Initial launch speed (px per frame at a 720 px tall frame).\", \"default\": 17, \"min\": 2, \"max\": 40, \"step\": 0.5},\n    {\"id\": \"gravity\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Gravity\", \"description\": \"Downward acceleration (px per frame squared at a 720 px tall frame).\", \"default\": 0.45, \"min\": 0, \"max\": 2, \"step\": 0.05},\n    {\"id\": \"size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Size\", \"description\": \"Base piece size in px at a 720 px tall frame.\", \"default\": 13, \"min\": 4, \"max\": 40, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"seed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Seed\", \"description\": \"Same seed draws an identical burst every time.\", \"default\": 1, \"min\": 0, \"max\": 9999, \"step\": 1}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Confetti</title>\n  </head>\n  <body>\n    <template>\n      \n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .co-stage { position: absolute; inset: 0; overflow: hidden; }\n        .co-piece { position: absolute; left: 0; top: 0; border-radius: 2px; opacity: 0; will-change: transform; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"confetti\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"c-clip\" class=\"c-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <div id=\"co-field\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return value !== \"\" && value !== null && Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function bezier(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 32; i++) {\n                  var u = 1 - t;\n                  var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                var v = 1 - t;\n                return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n              };\n            }\n            function clamp01(p) { return Math.min(1, Math.max(0, p)); }\n            function ip(x, a, b, from, to, ease) {\n              var p = b === a ? (x >= b ? 1 : 0) : clamp01((x - a) / (b - a));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n            // Damped spring from 0 to 1, rest at 0 velocity (mass, stiffness, damping), at `frame` of 30 fps.\n            function spring(frame, cfg) {\n              if (frame <= 0) return 0;\n              var t = frame / 30, m = cfg.mass, k = cfg.stiffness, c = cfg.damping;\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              if (z < 1) {\n                var wd = w0 * Math.sqrt(1 - z * z);\n                return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t));\n              }\n              return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n            }\n            // Seeded generator (mulberry32).\n            function rng(seed) {\n              var a = seed >>> 0;\n              return function () {\n                a = (a + 0x6d2b79f5) >>> 0;\n                var t = a;\n                t = Math.imul(t ^ (t >>> 15), t | 1);\n                t ^= t + Math.imul(t ^ (t >>> 7), t | 61);\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            var TOTAL = 3;\n            var FRAMES = Math.round(TOTAL * 30);\n            var clock = { frame: 0 };\n            function frameNow() { return Math.round(clock.frame * 1000) / 1000; }\n            function start(draw) {\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { frame: FRAMES, duration: TOTAL, ease: \"none\", onUpdate: function () { draw(frameNow()); } }, 0);\n              draw(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"confetti\"] = tl;\n            }\n            function onFonts(fn) {\n              if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn, function () {});\n            }\n            function fit(el, size, frac, hfrac) {\n              el.style.fontSize = size + \"px\";\n              var maxW = Math.max(1, root.clientWidth * frac);\n              var maxH = Math.max(1, root.clientHeight * (hfrac || 0.9));\n              var k = Math.min(1, maxW / Math.max(1, el.scrollWidth), maxH / Math.max(1, el.scrollHeight));\n              if (k < 1) { size = Math.max(8, size * k); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n\n\n            var count = Math.round(num(vars.particle_count, 140, 10, 400));\n            var palette = String(str(vars.colors, \"\")).split(\",\").map(function (s) { return s.trim(); }).filter(Boolean);\n            if (!palette.length) palette = [\"#1d9bf0\", \"#ff5da2\", \"#ffd23f\", \"#22c55e\", \"#a855f7\", \"#ff7a45\"];\n            var ox = num(vars.origin_x, 0.5, 0, 1), oy = num(vars.origin_y, 0.5, 0, 1);\n            var startFrame = num(vars.start_frame, 0, 0, 60), lifetime = num(vars.lifetime, 90, 20, 240);\n            var power = num(vars.power, 17, 2, 40), gravity = num(vars.gravity, 0.45, 0, 2);\n            var size = num(vars.size, 13, 4, 40), seed = Math.round(num(vars.seed, 1, 0, 9999));\n            var field = document.getElementById(\"co-field\");\n            var rand = rng(seed);\n            var parts = [];\n            for (var i = 0; i < count; i++) {\n              var p = { angle: rand() * Math.PI * 2, speed: 0.35 + 0.65 * rand() };\n              p.color = palette[Math.floor(rand() * palette.length)];\n              p.size = 0.7 + 0.6 * rand();\n              p.rot0 = rand() * Math.PI * 2;\n              p.spin = (rand() - 0.5) * 0.6;\n              p.drift = (rand() - 0.5) * 2;\n              var d = document.createElement(\"div\");\n              d.className = \"co-piece\"; d.id = \"co-piece-\" + i;\n              d.style.background = p.color;\n              field.appendChild(d); p.el = d; parts.push(p);\n            }\n            var W = root.clientWidth, H = root.clientHeight, sc = H / 720;\n            start(function (frame) {\n              var tt = frame - startFrame;\n              var fadeIn = ip(tt, 0, 4, 0, 1), fadeOut = ip(tt, lifetime * 0.7, lifetime, 1, 0);\n              var op = tt < 0 || tt > lifetime ? 0 : Math.min(fadeIn, fadeOut);\n              parts.forEach(function (p) {\n                if (op <= 0) { p.el.style.opacity = 0; return; }\n                var vx = Math.cos(p.angle) * p.speed * power + p.drift;\n                var vy = Math.sin(p.angle) * p.speed * power;\n                var x = W * ox + vx * tt * sc;\n                var y = H * oy + (vy * tt + 0.5 * gravity * tt * tt) * sc;\n                var rot = p.rot0 + p.spin * tt;\n                var flutter = Math.cos(p.rot0 + p.spin * tt * 1.6);\n                var w = size * p.size * sc;\n                p.el.style.width = w + \"px\"; p.el.style.height = w * 0.62 + \"px\";\n                p.el.style.opacity = op;\n                p.el.style.transform = \"translate(\" + x + \"px,\" + y + \"px) translate(-50%,-50%) rotate(\" + rot + \"rad) scale(\" + flutter + \",1)\";\n              });\n            });\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "b57d16ca792a0ff731e15d516695b807238890a2ad0175e3b928f2546bf67a89",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#0b1020",
+ "demo_values": {
+  "particle_count": 220
+ },
+ "variables": [
+  {
+   "id": "particle_count",
+   "type": "number",
+   "role": "style",
+   "label": "Particles",
+   "default": 140,
+   "min": 10,
+   "max": 400
+  },
+  {
+   "id": "colors",
+   "type": "string",
+   "role": "style",
+   "label": "Colors",
+   "default": "#1d9bf0, #ff5da2, #ffd23f, #22c55e, #a855f7, #ff7a45"
+  },
+  {
+   "id": "origin_x",
+   "type": "number",
+   "role": "motion",
+   "label": "Origin X",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "origin_y",
+   "type": "number",
+   "role": "motion",
+   "label": "Origin Y",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "start_frame",
+   "type": "number",
+   "role": "motion",
+   "label": "Start frame",
+   "default": 0,
+   "min": 0,
+   "max": 60
+  },
+  {
+   "id": "lifetime",
+   "type": "number",
+   "role": "motion",
+   "label": "Lifetime",
+   "default": 90,
+   "min": 20,
+   "max": 240
+  },
+  {
+   "id": "power",
+   "type": "number",
+   "role": "motion",
+   "label": "Power",
+   "default": 17,
+   "min": 2,
+   "max": 40
+  },
+  {
+   "id": "gravity",
+   "type": "number",
+   "role": "motion",
+   "label": "Gravity",
+   "default": 0.45,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "size",
+   "type": "number",
+   "role": "style",
+   "label": "Size",
+   "default": 13,
+   "min": 4,
+   "max": 40
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "motion",
+   "label": "Seed",
+   "default": 1,
+   "min": 0,
+   "max": 9999
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

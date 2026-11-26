@@ -1,0 +1,202 @@
+{
+ "name": "fog-rise",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Studio",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/fog-rise/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Fog Rise\n\nDisplay text resolves out of fog center-out, sharpening from heavy blur as it tilts up on a spring.\n\nCategory: typography. Length: 2.4 s. WebGL: no.\n\nUse when:\n- A big display word should materialize out of atmosphere, resolving from heavy blur as if rising along the z-axis.\n- The center characters resolve first and the edges follow.\n\nAvoid when:\n- The whole line should sharpen at once without per-character order: use focus-blur-resolve.\n- Characters should travel up from below the baseline: use per-character-rise or bottom-up-letters.\n\nVariables:\n- text (string): Text, default \"Studio\"\n- font_size (number, 12-560): Font size, default 304\n- color (color): Color, default \"#004CFF\"\n- font_weight (enum): Font weight, default \"400\"\n- stagger (number, 0-15): Stagger, default 5\n- blur (number, 0-0.5): Blur, default 0.17\n- tilt (number, 0-90): Tilt, default 55\n- depth (number, 1-8): Depth, default 5\n- lift (number, 0-1): Lift, default 0.85\n- drift (number, 0-0.012): Drift, default 0.005\n- exit_at (number, 0-200): Exit at, default 60\n- exit_accel (number, 0.002-0.05): Exit acceleration, default 0.04\n- mass (number, 0.3-3): Mass, default 1.3\n- stiffness (number, 30-250): Stiffness, default 60\n- damping (number, 5-30): Damping, default 13\n- spread_gap (number, 0-0.3): Spread gap, default 0.07\n- tracking (number, -0.12-0): Tracking, default -0.07\n- resolve_frames (number, 8-50): Resolve frames, default 22\n- fade_frames (number, 2-25): Fade frames, default 18\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Fog Rise\n\n  Display text resolves out of fog center-out, sharpening from heavy blur as it tilts up on a spring.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/fog-rise/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"fog-rise\"\n  data-composition-duration=\"2.4\"\n  data-composition-variables='[\n    { \"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Big display word.\", \"default\": \"Studio\" },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 304, \"min\": 12, \"max\": 560, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#004CFF\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"400\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}] },\n    { \"id\": \"stagger\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Frames between each ring of characters, center first (30 fps).\", \"default\": 5, \"min\": 0, \"max\": 15, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"blur\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Blur\", \"description\": \"Starting blur as a fraction of the font size.\", \"default\": 0.17, \"min\": 0, \"max\": 0.5, \"step\": 0.01 },\n    { \"id\": \"tilt\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Tilt\", \"description\": \"Degrees the line is tipped back before it rises.\", \"default\": 55, \"min\": 0, \"max\": 90, \"step\": 1, \"unit\": \"deg\" },\n    { \"id\": \"depth\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Depth\", \"description\": \"Perspective distance in font sizes.\", \"default\": 5, \"min\": 1, \"max\": 8, \"step\": 0.1 },\n    { \"id\": \"lift\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Lift\", \"description\": \"How far below its place the line starts, in font sizes.\", \"default\": 0.85, \"min\": 0, \"max\": 1, \"step\": 0.05 },\n    { \"id\": \"drift\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Drift\", \"description\": \"Slow upward creep per frame, in font sizes.\", \"default\": 0.005, \"min\": 0, \"max\": 0.012, \"step\": 0.001 },\n    { \"id\": \"exit_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Exit at\", \"description\": \"Frame where the line starts to accelerate upward and out (30 fps).\", \"default\": 60, \"min\": 0, \"max\": 200, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"exit_accel\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Exit acceleration\", \"description\": \"How hard the line accelerates out.\", \"default\": 0.04, \"min\": 0.002, \"max\": 0.05, \"step\": 0.002 },\n    { \"id\": \"mass\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Mass\", \"description\": \"Spring mass.\", \"default\": 1.3, \"min\": 0.3, \"max\": 3, \"step\": 0.1 },\n    { \"id\": \"stiffness\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stiffness\", \"description\": \"Spring stiffness.\", \"default\": 60, \"min\": 30, \"max\": 250, \"step\": 1 },\n    { \"id\": \"damping\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Damping\", \"description\": \"Spring damping.\", \"default\": 13, \"min\": 5, \"max\": 30, \"step\": 1 },\n    { \"id\": \"spread_gap\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Spread gap\", \"description\": \"Extra gap between letters at the start, in font sizes. It closes as the spring settles.\", \"default\": 0.07, \"min\": 0, \"max\": 0.3, \"step\": 0.01 },\n    { \"id\": \"tracking\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Tracking\", \"description\": \"Letter spacing in em.\", \"default\": -0.07, \"min\": -0.12, \"max\": 0, \"step\": 0.01, \"unit\": \"em\" },\n    { \"id\": \"resolve_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Resolve frames\", \"description\": \"Frames the blur takes to clear after the last ring starts.\", \"default\": 22, \"min\": 8, \"max\": 50, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"fade_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Fade frames\", \"description\": \"Frames each character takes to fade in.\", \"default\": 18, \"min\": 2, \"max\": 25, \"step\": 1, \"unit\": \"frames\" }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Fog Rise</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #004cff);\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .fgr-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: flex-end;\n          justify-content: center;\n          padding-bottom: 6%;\n          white-space: nowrap;\n        }\n        .fgr-line { display: inline-block; line-height: 1.15; white-space: nowrap; transform-origin: 50% 100%; }\n        .fgr-char { display: inline-block; white-space: pre; opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"fog-rise\" data-duration=\"2.4\" data-fps=\"30\">\n        <div id=\"fgr-clip\" class=\"fgr-stage clip\" data-start=\"0\" data-duration=\"2.4\" data-track-index=\"0\">\n          <span id=\"fgr-line\" class=\"fgr-line\" role=\"img\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            gsap.registerPlugin(CustomEase);\n            function bz(id, a, b, c, d) {\n              return CustomEase.create(\"fgr-\" + id, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\");\n            }\n            // interpolate(frame, [a, b], [from, to], { easing }) as a tween (frames at 30 fps).\n            function tw(tl, el, from, to, a, b, ease, keep) {\n              var t = Object.assign({}, to, { duration: (b - a) / 30, ease: ease || \"none\", immediateRender: !keep });\n              tl.fromTo(el, from, t, a / 30);\n            }\n            // Shrink an element's font size so it fits a fraction of the frame width.\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            var TOTAL = parseFloat(root.dataset.duration || \"2.4\");\n            function finish(tl) {\n              if (tl.duration() < TOTAL) tl.to({}, { duration: TOTAL - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"fog-rise\"] = tl;\n            }\n            var text = str(vars.text, \"Studio\");\n            var weight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"400\");\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            // interpolate() with clamping, easing given as a function of progress.\n            function ip(f, a, b, from, to, ease) {\n              var p = b === a ? 1 : Math.min(1, Math.max(0, (f - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n\n            var stagger = num(vars.stagger, 5, 0, 15);\n            var blur = num(vars.blur, 0.17, 0, 0.5);\n            var tilt = num(vars.tilt, 55, 0, 90);\n            var depth = num(vars.depth, 5, 1, 8);\n            var lift = num(vars.lift, 0.85, 0, 1);\n            var drift = num(vars.drift, 0.005, 0, 0.012);\n            var exitAt = num(vars.exit_at, 60, 0, 200);\n            var exitAccel = num(vars.exit_accel, 0.04, 0.002, 0.05);\n            var mass = num(vars.mass, 1.3, 0.3, 3);\n            var stiffness = num(vars.stiffness, 60, 30, 250);\n            var damping = num(vars.damping, 13, 5, 30);\n            var spreadGap = num(vars.spread_gap, 0.07, 0, 0.3);\n            var tracking = num(vars.tracking, -0.07, -0.12, 0);\n            var resolve = num(vars.resolve_frames, 22, 8, 50);\n            var fade = num(vars.fade_frames, 18, 2, 25);\n            var stage = document.getElementById(\"fgr-clip\");\n            var line = document.getElementById(\"fgr-line\");\n            line.style.fontWeight = weight;\n            line.style.letterSpacing = tracking + \"em\";\n            line.setAttribute(\"aria-label\", text);\n            var chars = Array.from(text).map(function (ch, i) {\n              var s = document.createElement(\"span\");\n              s.id = \"fgr-char-\" + i;\n              s.className = \"fgr-char\";\n              s.textContent = ch;\n              line.appendChild(s);\n              return s;\n            });\n            var size = fit(line, num(vars.font_size, 304, 12, 560), 0.8);\n            stage.style.perspective = depth * size + \"px\";\n\n            // Damped spring from 0 to 1 (underdamped closed form), sampled per frame.\n            var w0 = Math.sqrt(stiffness / mass);\n            var zeta = damping / (2 * Math.sqrt(stiffness * mass));\n            function spring(f) {\n              var t = f / 30;\n              if (zeta < 1) {\n                var wd = w0 * Math.sqrt(1 - zeta * zeta);\n                return 1 - Math.exp(-zeta * w0 * t) * (Math.cos(wd * t) + (zeta * w0 / wd) * Math.sin(wd * t));\n              }\n              return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n            }\n            var center = (chars.length - 1) / 2;\n            var minRing = chars.length % 2 === 0 ? 0.5 : 0;\n            var maxRing = Math.floor(center);\n            var P = { f: 0 };\n            function apply() {\n              var f = P.f;\n              var c = spring(f);\n              var angle = tilt * (1 - c);\n              var liftY = lift * size * (1 - c);\n              var driftY = drift * size * f;\n              var exitT = exitAt > 0 ? Math.max(f - exitAt, 0) : 0;\n              var exitY = 0.5 * exitAccel * exitT * exitT * size;\n              var gap = spreadGap * size * (1 - c);\n              line.style.transform = \"translateY(\" + (liftY - driftY - exitY) + \"px) rotateX(\" + -angle + \"deg)\";\n              var b = blur * size * ip(f, 0, maxRing * stagger + resolve, 1, 0);\n              chars.forEach(function (ch, j) {\n                var start = (Math.abs(j - center) - minRing) * stagger;\n                ch.style.opacity = ip(f, start, start + fade, 0, 1);\n                ch.style.marginRight = j < chars.length - 1 ? gap + \"px\" : \"0px\";\n                ch.style.filter = b > 0.05 ? \"blur(\" + b + \"px)\" : \"none\";\n              });\n            }\n            apply();\n            var tl = gsap.timeline({ paused: true });\n            tl.to(P, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: apply }, 0);\n            finish(tl);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "36a93f259c6f7c3ef9530bb7f7fb1407d85dfbda1f30a94bb5a69808c1f78cce",
+ "duration": 2.4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 300
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Studio"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 304,
+   "min": 12,
+   "max": 560
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#004CFF"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "400"
+  },
+  {
+   "id": "stagger",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 5,
+   "min": 0,
+   "max": 15
+  },
+  {
+   "id": "blur",
+   "type": "number",
+   "role": "motion",
+   "label": "Blur",
+   "default": 0.17,
+   "min": 0,
+   "max": 0.5
+  },
+  {
+   "id": "tilt",
+   "type": "number",
+   "role": "motion",
+   "label": "Tilt",
+   "default": 55,
+   "min": 0,
+   "max": 90
+  },
+  {
+   "id": "depth",
+   "type": "number",
+   "role": "motion",
+   "label": "Depth",
+   "default": 5,
+   "min": 1,
+   "max": 8
+  },
+  {
+   "id": "lift",
+   "type": "number",
+   "role": "motion",
+   "label": "Lift",
+   "default": 0.85,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "drift",
+   "type": "number",
+   "role": "motion",
+   "label": "Drift",
+   "default": 0.005,
+   "min": 0,
+   "max": 0.012
+  },
+  {
+   "id": "exit_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Exit at",
+   "default": 60,
+   "min": 0,
+   "max": 200
+  },
+  {
+   "id": "exit_accel",
+   "type": "number",
+   "role": "motion",
+   "label": "Exit acceleration",
+   "default": 0.04,
+   "min": 0.002,
+   "max": 0.05
+  },
+  {
+   "id": "mass",
+   "type": "number",
+   "role": "motion",
+   "label": "Mass",
+   "default": 1.3,
+   "min": 0.3,
+   "max": 3
+  },
+  {
+   "id": "stiffness",
+   "type": "number",
+   "role": "motion",
+   "label": "Stiffness",
+   "default": 60,
+   "min": 30,
+   "max": 250
+  },
+  {
+   "id": "damping",
+   "type": "number",
+   "role": "motion",
+   "label": "Damping",
+   "default": 13,
+   "min": 5,
+   "max": 30
+  },
+  {
+   "id": "spread_gap",
+   "type": "number",
+   "role": "style",
+   "label": "Spread gap",
+   "default": 0.07,
+   "min": 0,
+   "max": 0.3
+  },
+  {
+   "id": "tracking",
+   "type": "number",
+   "role": "style",
+   "label": "Tracking",
+   "default": -0.07,
+   "min": -0.12,
+   "max": 0
+  },
+  {
+   "id": "resolve_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Resolve frames",
+   "default": 22,
+   "min": 8,
+   "max": 50
+  },
+  {
+   "id": "fade_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Fade frames",
+   "default": 18,
+   "min": 2,
+   "max": 25
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

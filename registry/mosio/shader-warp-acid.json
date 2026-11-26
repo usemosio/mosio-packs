@@ -1,0 +1,154 @@
+{
+ "name": "shader-warp-acid",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/shader-warp-acid/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Shader Warp Acid\n\nLoud lime and cyan fluid swirling over black. A WebGL shader backdrop; the acid preset of shader-warp.\n\nCategory: shaders. Length: 5.0 s. WebGL: yes.\n\nUse when:\n- A loud, attention-grabbing beat or a quick hype cut.\n- Foreground is light text or a bright product shot that needs a dark field around it.\n- You want a finished Warp look without tuning the palette and parameters yourself.\n\nAvoid when:\n- The video must use your brand colors: start from `shader-warp` and set `colors`.\n- You want a lighter, contrasting mood from the same shader: use `shader-warp-cream`.\n\nVariables:\n- colors (string): Colors, default \"#0a0a0a, #c6ff00, #00e5ff\"\n- speed (number, 0-8): Speed, default 3\n- shape (enum): Pattern, default \"checks\"\n- proportion (number, 0-1): Proportion, default 0.5\n- softness (number, 0-2): Softness, default 0.3\n- distortion (number, 0-1): Distortion, default 0.2\n- swirl (number, 0-1): Swirl, default 0.7\n- swirl_iterations (number, 1-20): Swirl iterations, default 8\n- shape_scale (number, 0-1): Pattern scale, default 0.3\n- rotation (number, 0-360): Rotation, default 0\n- scale (number, 0.1-4): Scale, default 1\n- offset_x (number, -2-2): Offset X, default 0\n- offset_y (number, -2-2): Offset Y, default 0\n- resolution (number, 0.25-1): Resolution, default 0.5\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Shader Warp Acid\n\n  Loud lime and cyan fluid swirling over black\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/shader-warp-acid/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n\n  The vertex and fragment shaders below are from Paper Shaders\n  (@paper-design/shaders 0.0.82, dist/vertex-shader.js and dist/shaders/warp.js),\n  https://github.com/paper-design/shaders\n\n  Copyright 2026 Paper. Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License. You may obtain a copy\n  of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by\n  applicable law or agreed to in writing, software distributed under the License is\n  distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either\n  express or implied. See the License for the specific language governing permissions\n  and limitations under the License.\n\n  NOTICE: Paper Shaders. Copyright 2026 Paper. Powered by Paper Shaders:\n  https://shaders.paper.design\n\n  Changes by usemosio/blocks: the shared GLSL helpers are inlined, the vertex shader keeps\n  only the outputs the fragment shader reads, Paper's bundled noise image is replaced by a texture made from a seeded generator with the same value spread, and the shader mount is rewritten: the canvas\n  is drawn at a reduced resolution (the `resolution` variable) and its time comes from the timeline.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"shader-warp-acid\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"colors\", \"type\": \"string\", \"role\": \"style\", \"label\": \"Colors\", \"description\": \"Up to 10 colors, comma separated, blended along the folds.\", \"default\": \"#0a0a0a, #c6ff00, #00e5ff\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"How fast the folds move. 0 holds still.\", \"default\": 3, \"min\": 0, \"max\": 8, \"step\": 0.05},\n    {\"id\": \"shape\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Pattern\", \"description\": \"The pattern that gets warped.\", \"default\": \"checks\", \"options\": [{\"value\": \"checks\", \"label\": \"Checks\"}, {\"value\": \"stripes\", \"label\": \"Stripes\"}, {\"value\": \"edge\", \"label\": \"Edge\"}]},\n    {\"id\": \"proportion\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Proportion\", \"description\": \"Balance between the colors in the pattern.\", \"default\": 0.5, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"softness\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Softness\", \"description\": \"How softly the colors blend. 0 gives hard bands.\", \"default\": 0.3, \"min\": 0, \"max\": 2, \"step\": 0.01},\n    {\"id\": \"distortion\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Distortion\", \"description\": \"How far noise pushes the pattern around.\", \"default\": 0.2, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"swirl\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Swirl\", \"description\": \"How strongly the pattern is folded into swirls.\", \"default\": 0.7, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"swirl_iterations\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Swirl iterations\", \"description\": \"How many times the swirl is applied. More makes finer folds.\", \"default\": 8, \"min\": 1, \"max\": 20, \"step\": 1},\n    {\"id\": \"shape_scale\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Pattern scale\", \"description\": \"Size of the pattern cells or stripes.\", \"default\": 0.3, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"rotation\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Rotation\", \"description\": \"Turns the whole pattern.\", \"default\": 0, \"min\": 0, \"max\": 360, \"step\": 1, \"unit\": \"deg\"},\n    {\"id\": \"scale\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Scale\", \"description\": \"Zooms the pattern in or out.\", \"default\": 1, \"min\": 0.1, \"max\": 4, \"step\": 0.01},\n    {\"id\": \"offset_x\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Offset X\", \"description\": \"Moves the pattern sideways, in frame widths.\", \"default\": 0, \"min\": -2, \"max\": 2, \"step\": 0.01},\n    {\"id\": \"offset_y\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Offset Y\", \"description\": \"Moves the pattern up or down, in frame heights.\", \"default\": 0, \"min\": -2, \"max\": 2, \"step\": 0.01},\n    {\"id\": \"resolution\", \"type\": \"number\", \"role\": \"quality\", \"label\": \"Resolution\", \"description\": \"Share of the frame size the shader is drawn at, then scaled up. Lower renders faster but softens fine detail.\", \"default\": 0.5, \"min\": 0.25, \"max\": 1, \"step\": 0.05}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Shader Warp Acid</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          background: var(--swpacid-fallback, #12121a);\n          pointer-events: none;\n        }\n        .swpacid-stage {\n          position: absolute;\n          inset: 0;\n        }\n        .swpacid-canvas {\n          position: absolute;\n          inset: 0;\n          width: 100%;\n          height: 100%;\n          display: block;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"shader-warp-acid\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"swpacid-clip\" class=\"swpacid-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <canvas id=\"swpacid-canvas\" class=\"swpacid-canvas\"></canvas>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var canvas = document.getElementById(\"swpacid-canvas\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function pick(value, fallback, options) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function parseColor(s) {\n              var m = /^#?([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.exec(String(s).trim());\n              if (!m) return null;\n              var h = m[1];\n              if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n              var a = h.length === 8 ? parseInt(h.slice(6, 8), 16) / 255 : 1;\n              return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255, a];\n            }\n            function color(value, fallback) {\n              return (typeof value === \"string\" && parseColor(value)) || parseColor(fallback);\n            }\n            function list(value, fallback, max) {\n              var parsed = String(typeof value === \"string\" && value.trim() ? value : fallback).split(\",\").map(parseColor).filter(Boolean).slice(0, max);\n              return parsed.length ? parsed : String(fallback).split(\",\").map(parseColor).slice(0, max);\n            }\n            function css(c) {\n              return \"rgba(\" + Math.round(c[0] * 255) + \",\" + Math.round(c[1] * 255) + \",\" + Math.round(c[2] * 255) + \",\" + c[3] + \")\";\n            }\n\n            var SHAPES = { checks: 0, stripes: 1, edge: 2 };\n            // Paper ships its 128×128 noise texture as a PNG. The same kind of texture is made here\n            // from a seeded generator: white noise per channel with Paper's value spread (about\n            // 30 % of texels near 0, 20 % near 1, the rest even), so nothing is loaded.\n            function noiseTexture() {\n              var seed = 0x2f6b9a1d;\n              function rand() {\n                seed = (seed + 0x6d2b79f5) | 0;\n                var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);\n                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              }\n              var data = new Uint8Array(128 * 128 * 4);\n              for (var i = 0; i < data.length; i++) {\n                if (i % 4 === 3) { data[i] = 255; continue; }\n                var u = rand();\n                data[i] = Math.floor(u < 0.3 ? rand() * 16 : u < 0.5 ? 240 + rand() * 16 : 16 + rand() * 224);\n              }\n              return data;\n            }\n\n            var colors = list(vars.colors, \"#0a0a0a, #c6ff00, #00e5ff\", 10);\n            var speed = num(vars.speed, 3, 0, 8);\n            var shape = pick(vars.shape, \"checks\", Object.keys(SHAPES));\n            var proportion = num(vars.proportion, 0.5, 0, 1);\n            var softness = num(vars.softness, 0.3, 0, 2);\n            var distortion = num(vars.distortion, 0.2, 0, 1);\n            var swirl = num(vars.swirl, 0.7, 0, 1);\n            var swirlIterations = Math.round(num(vars.swirl_iterations, 8, 1, 20));\n            var shapeScale = num(vars.shape_scale, 0.3, 0, 1);\n            var rotation = num(vars.rotation, 0, 0, 360);\n            var scale = num(vars.scale, 1, 0.1, 4);\n            var offsetX = num(vars.offset_x, 0, -2, 2);\n            var offsetY = num(vars.offset_y, 0, -2, 2);\n            var resolution = num(vars.resolution, 0.5, 0.25, 1);\n\n            // Without WebGL the block still shows the palette as a plain gradient.\n            root.style.setProperty(\"--swp-fallback\", \"linear-gradient(160deg, \" + colors.map(css).join(\", \") + \")\");\n\n            // Paper Shaders vertex shader, pattern outputs only.\n            var VERTEX = [\n              \"#version 300 es\",\n              \"precision mediump float;\",\n              \"layout(location = 0) in vec4 a_position;\",\n              \"uniform vec2 u_resolution;\",\n              \"uniform float u_pixelRatio;\",\n              \"uniform float u_originX;\",\n              \"uniform float u_originY;\",\n              \"uniform float u_worldWidth;\",\n              \"uniform float u_worldHeight;\",\n              \"uniform float u_fit;\",\n              \"uniform float u_scale;\",\n              \"uniform float u_rotation;\",\n              \"uniform float u_offsetX;\",\n              \"uniform float u_offsetY;\",\n              \"out vec2 v_patternUV;\",\n              \"out vec2 v_patternBoxSize;\",\n              \"vec3 getBoxSize(float boxRatio, vec2 givenBoxSize) {\",\n              \"vec2 box = vec2(0.);\",\n              \"box.x = boxRatio * min(givenBoxSize.x / boxRatio, givenBoxSize.y);\",\n              \"float noFitBoxWidth = box.x;\",\n              \"if (u_fit == 1.) { // fit = contain\",\n              \"box.x = boxRatio * min(u_resolution.x / boxRatio, u_resolution.y);\",\n              \"} else if (u_fit == 2.) { // fit = cover\",\n              \"box.x = boxRatio * max(u_resolution.x / boxRatio, u_resolution.y);\",\n              \"}\",\n              \"box.y = box.x / boxRatio;\",\n              \"return vec3(box, noFitBoxWidth);\",\n              \"}\",\n              \"void main() {\",\n              \"gl_Position = a_position;\",\n              \"vec2 uv = gl_Position.xy * .5;\",\n              \"vec2 boxOrigin = vec2(.5 - u_originX, u_originY - .5);\",\n              \"vec2 givenBoxSize = vec2(u_worldWidth, u_worldHeight);\",\n              \"givenBoxSize = max(givenBoxSize, vec2(1.)) * u_pixelRatio;\",\n              \"float r = u_rotation * 3.14159265358979323846 / 180.;\",\n              \"mat2 graphicRotation = mat2(cos(r), sin(r), -sin(r), cos(r));\",\n              \"vec2 graphicOffset = vec2(-u_offsetX, u_offsetY);\",\n              \"float patternBoxRatio = givenBoxSize.x / givenBoxSize.y;\",\n              \"vec2 patternBoxGivenSize = vec2(\",\n              \"(u_worldWidth == 0.) ? u_resolution.x : givenBoxSize.x,\",\n              \"(u_worldHeight == 0.) ? u_resolution.y : givenBoxSize.y\",\n              \");\",\n              \"patternBoxRatio = patternBoxGivenSize.x / patternBoxGivenSize.y;\",\n              \"vec3 boxSizeData = getBoxSize(patternBoxRatio, patternBoxGivenSize);\",\n              \"v_patternBoxSize = boxSizeData.xy;\",\n              \"float patternBoxNoFitBoxWidth = boxSizeData.z;\",\n              \"vec2 patternBoxScale = u_resolution.xy / v_patternBoxSize;\",\n              \"v_patternUV = uv;\",\n              \"v_patternUV += graphicOffset / patternBoxScale;\",\n              \"v_patternUV += boxOrigin;\",\n              \"v_patternUV -= boxOrigin / patternBoxScale;\",\n              \"v_patternUV *= u_resolution.xy;\",\n              \"v_patternUV /= u_pixelRatio;\",\n              \"if (u_fit > 0.) {\",\n              \"v_patternUV *= (patternBoxNoFitBoxWidth / v_patternBoxSize.x);\",\n              \"}\",\n              \"v_patternUV /= u_scale;\",\n              \"v_patternUV = graphicRotation * v_patternUV;\",\n              \"v_patternUV += boxOrigin / patternBoxScale;\",\n              \"v_patternUV -= boxOrigin;\",\n              \"v_patternUV *= .01;\",\n              \"}\"\n            ].join(\"\\n\");\n\n            // Paper Shaders warp fragment shader.\n            var FRAGMENT = [\n              \"#version 300 es\",\n              \"precision mediump float;\",\n              \"uniform float u_time;\",\n              \"uniform sampler2D u_noiseTexture;\",\n              \"uniform vec4 u_colors[10];\",\n              \"uniform float u_colorsCount;\",\n              \"uniform float u_proportion;\",\n              \"uniform float u_softness;\",\n              \"uniform float u_shape;\",\n              \"uniform float u_shapeScale;\",\n              \"uniform float u_distortion;\",\n              \"uniform float u_swirl;\",\n              \"uniform float u_swirlIterations;\",\n              \"in vec2 v_patternUV;\",\n              \"out vec4 fragColor;\",\n              \"#define TWO_PI 6.28318530718\",\n              \"#define PI 3.14159265358979323846\",\n              \"vec2 rotate(vec2 uv, float th) {\",\n              \"  return mat2(cos(th), sin(th), -sin(th), cos(th)) * uv;\",\n              \"}\",\n              \"float randomG(vec2 p) {\",\n              \"  vec2 uv = floor(p) / 100. + .5;\",\n              \"  return texture(u_noiseTexture, fract(uv)).g;\",\n              \"}\",\n              \"float valueNoise(vec2 st) {\",\n              \"  vec2 i = floor(st);\",\n              \"  vec2 f = fract(st);\",\n              \"  float a = randomG(i);\",\n              \"  float b = randomG(i + vec2(1.0, 0.0));\",\n              \"  float c = randomG(i + vec2(0.0, 1.0));\",\n              \"  float d = randomG(i + vec2(1.0, 1.0));\",\n              \"  vec2 u = f * f * (3.0 - 2.0 * f);\",\n              \"  float x1 = mix(a, b, u.x);\",\n              \"  float x2 = mix(c, d, u.x);\",\n              \"  return mix(x1, x2, u.y);\",\n              \"}\",\n              \"void main() {\",\n              \"  vec2 uv = v_patternUV;\",\n              \"  uv *= .5;\",\n              \"  const float firstFrameOffset = 118.;\",\n              \"  float t = 0.0625 * (u_time + firstFrameOffset);\",\n              \"  float n1 = valueNoise(uv * 1. + t);\",\n              \"  float n2 = valueNoise(uv * 2. - t);\",\n              \"  float angle = n1 * TWO_PI;\",\n              \"  uv.x += 4. * u_distortion * n2 * cos(angle);\",\n              \"  uv.y += 4. * u_distortion * n2 * sin(angle);\",\n              \"  float swirl = u_swirl;\",\n              \"  for (int i = 1; i <= 20; i++) {\",\n              \"    if (i >= int(u_swirlIterations)) break;\",\n              \"    float iFloat = float(i);\",\n              \"    uv.x += swirl / iFloat * cos(t + iFloat * 1.5 * uv.y);\",\n              \"    uv.y += swirl / iFloat * cos(t + iFloat * 1. * uv.x);\",\n              \"  }\",\n              \"  float proportion = clamp(u_proportion, 0., 1.);\",\n              \"  float shape = 0.;\",\n              \"  if (u_shape < .5) {\",\n              \"    vec2 checksShape_uv = uv * (.5 + 3.5 * u_shapeScale);\",\n              \"    shape = .5 + .5 * sin(checksShape_uv.x) * cos(checksShape_uv.y);\",\n              \"    shape += .48 * sign(proportion - .5) * pow(abs(proportion - .5), .5);\",\n              \"  } else if (u_shape < 1.5) {\",\n              \"    vec2 stripesShape_uv = uv * (2. * u_shapeScale);\",\n              \"    float f = fract(stripesShape_uv.y);\",\n              \"    shape = smoothstep(.0, .55, f) * (1.0 - smoothstep(.45, 1., f));\",\n              \"    shape += .48 * sign(proportion - .5) * pow(abs(proportion - .5), .5);\",\n              \"  } else {\",\n              \"    float shapeScaling = 5. * (1. - u_shapeScale);\",\n              \"    float e0 = 0.45 - shapeScaling;\",\n              \"    float e1 = 0.55 + shapeScaling;\",\n              \"    shape = smoothstep(min(e0, e1), max(e0, e1), 1.0 - uv.y + 0.3 * (proportion - 0.5));\",\n              \"  }\",\n              \"  float mixer = shape * (u_colorsCount - 1.);\",\n              \"  vec4 gradient = u_colors[0];\",\n              \"  gradient.rgb *= gradient.a;\",\n              \"  float aa = fwidth(shape);\",\n              \"  for (int i = 1; i < 10; i++) {\",\n              \"    if (i >= int(u_colorsCount)) break;\",\n              \"    float m = clamp(mixer - float(i - 1), 0.0, 1.0);\",\n              \"    float localMixerStart = floor(m);\",\n              \"    float softness = .5 * u_softness + fwidth(m);\",\n              \"    float smoothed = smoothstep(max(0., .5 - softness - aa), min(1., .5 + softness + aa), m - localMixerStart);\",\n              \"    float stepped = localMixerStart + smoothed;\",\n              \"    m = mix(stepped, m, u_softness);\",\n              \"    vec4 c = u_colors[i];\",\n              \"    c.rgb *= c.a;\",\n              \"    gradient = mix(gradient, c, m);\",\n              \"  }\",\n              \"  vec3 color = gradient.rgb;\",\n              \"  float opacity = gradient.a;\",\n              \"  color += 1. / 256. * (fract(sin(dot(.014 * gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453123) - .5);\",\n              \"  fragColor = vec4(color, opacity);\",\n              \"}\"\n            ].join(\"\\n\");\n\n            // The canvas is drawn at `resolution` × the frame size and stretched to fill it.\n            var frameWidth = Math.max(2, root.clientWidth);\n            var frameHeight = Math.max(2, root.clientHeight);\n            var width = Math.max(2, Math.round(frameWidth * resolution));\n            var height = Math.max(2, Math.round(frameHeight * resolution));\n            canvas.width = width;\n            canvas.height = height;\n            var gl = canvas.getContext(\"webgl2\", { antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true });\n\n            function compile(type, source) {\n              var s = gl.createShader(type);\n              gl.shaderSource(s, source);\n              gl.compileShader(s);\n              if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) || \"shader compile failed\");\n              return s;\n            }\n            var draw = function () {};\n            try {\n              if (!gl) throw new Error(\"WebGL2 is not available\");\n              var program = gl.createProgram();\n              gl.attachShader(program, compile(gl.VERTEX_SHADER, VERTEX));\n              gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAGMENT));\n              gl.linkProgram(program);\n              if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program) || \"link failed\");\n              gl.useProgram(program);\n              var buffer = gl.createBuffer();\n              gl.bindBuffer(gl.ARRAY_BUFFER, buffer);\n              gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);\n              gl.enableVertexAttribArray(0);\n              gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);\n              gl.viewport(0, 0, width, height);\n              function u(name) { return gl.getUniformLocation(program, name); }\n              // Paper sizes the pattern in its own pixels, which are half a frame pixel (it draws at\n              // a pixel ratio of at least 2), so `resolution` changes how finely it is sampled, not\n              // how large it is.\n              gl.uniform2f(u(\"u_resolution\"), frameWidth * 2, frameHeight * 2);\n              gl.uniform1f(u(\"u_pixelRatio\"), 2);\n              gl.uniform1f(u(\"u_originX\"), 0.5);\n              gl.uniform1f(u(\"u_originY\"), 0.5);\n              gl.uniform1f(u(\"u_worldWidth\"), 0);\n              gl.uniform1f(u(\"u_worldHeight\"), 0);\n              gl.uniform1f(u(\"u_fit\"), 2); // cover, as remocn sets it\n              gl.uniform1f(u(\"u_scale\"), scale);\n              gl.uniform1f(u(\"u_rotation\"), rotation);\n              gl.uniform1f(u(\"u_offsetX\"), offsetX);\n              gl.uniform1f(u(\"u_offsetY\"), offsetY);\n              var flat = new Float32Array(10 * 4);\n              colors.forEach(function (c, i) { flat.set(c, i * 4); });\n              gl.uniform4fv(u(\"u_colors\"), flat);\n              gl.uniform1f(u(\"u_colorsCount\"), colors.length);\n              gl.uniform1f(u(\"u_proportion\"), proportion);\n              gl.uniform1f(u(\"u_softness\"), softness);\n              gl.uniform1f(u(\"u_shape\"), SHAPES[shape]);\n              gl.uniform1f(u(\"u_shapeScale\"), shapeScale);\n              gl.uniform1f(u(\"u_distortion\"), distortion);\n              gl.uniform1f(u(\"u_swirl\"), swirl);\n              gl.uniform1f(u(\"u_swirlIterations\"), swirlIterations);\n              gl.activeTexture(gl.TEXTURE0);\n              gl.bindTexture(gl.TEXTURE_2D, gl.createTexture());\n              gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);\n              gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);\n              gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);\n              gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);\n              gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 128, 128, 0, gl.RGBA, gl.UNSIGNED_BYTE, noiseTexture());\n              gl.uniform1i(u(\"u_noiseTexture\"), 0);\n              var timeLoc = u(\"u_time\");\n              draw = function (frame) {\n                // remocn: frame = (frame / fps) * speed * 1000 ms; Paper's u_time is that in seconds.\n                gl.uniform1f(timeLoc, (frame / 30) * speed);\n                gl.clearColor(0, 0, 0, 0);\n                gl.clear(gl.COLOR_BUFFER_BIT);\n                gl.drawArrays(gl.TRIANGLES, 0, 6);\n              };\n            } catch (err) {\n              canvas.style.display = \"none\";\n              if (window.console) console.warn(\"shader-warp-acid:\", err.message);\n            }\n\n            var total = parseFloat(root.dataset.duration || \"5\");\n            var totalFrames = Math.round(total * 30);\n            var clock = { frame: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, {\n              frame: totalFrames,\n              duration: total,\n              ease: \"none\",\n              onUpdate: function () { draw(clock.frame); }\n            }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"shader-warp-acid\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "72437b58e072837c7d64986c9d2656582140f3e6f7242618ff0ae356d255a225",
+ "duration": 5.0,
+ "webgl": true,
+ "demo_background": "#0a0a0a",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "colors",
+   "type": "string",
+   "role": "style",
+   "label": "Colors",
+   "default": "#0a0a0a, #c6ff00, #00e5ff"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 3,
+   "min": 0,
+   "max": 8
+  },
+  {
+   "id": "shape",
+   "type": "enum",
+   "role": "style",
+   "label": "Pattern",
+   "default": "checks"
+  },
+  {
+   "id": "proportion",
+   "type": "number",
+   "role": "style",
+   "label": "Proportion",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "softness",
+   "type": "number",
+   "role": "style",
+   "label": "Softness",
+   "default": 0.3,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "distortion",
+   "type": "number",
+   "role": "style",
+   "label": "Distortion",
+   "default": 0.2,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "swirl",
+   "type": "number",
+   "role": "style",
+   "label": "Swirl",
+   "default": 0.7,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "swirl_iterations",
+   "type": "number",
+   "role": "style",
+   "label": "Swirl iterations",
+   "default": 8,
+   "min": 1,
+   "max": 20
+  },
+  {
+   "id": "shape_scale",
+   "type": "number",
+   "role": "style",
+   "label": "Pattern scale",
+   "default": 0.3,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "rotation",
+   "type": "number",
+   "role": "style",
+   "label": "Rotation",
+   "default": 0,
+   "min": 0,
+   "max": 360
+  },
+  {
+   "id": "scale",
+   "type": "number",
+   "role": "style",
+   "label": "Scale",
+   "default": 1,
+   "min": 0.1,
+   "max": 4
+  },
+  {
+   "id": "offset_x",
+   "type": "number",
+   "role": "style",
+   "label": "Offset X",
+   "default": 0,
+   "min": -2,
+   "max": 2
+  },
+  {
+   "id": "offset_y",
+   "type": "number",
+   "role": "style",
+   "label": "Offset Y",
+   "default": 0,
+   "min": -2,
+   "max": 2
+  },
+  {
+   "id": "resolution",
+   "type": "number",
+   "role": "quality",
+   "label": "Resolution",
+   "default": 0.5,
+   "min": 0.25,
+   "max": 1
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

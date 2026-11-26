@@ -1,0 +1,107 @@
+{
+ "name": "gallery-tunnel",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/gallery-tunnel/gallery-tunnel.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Gallery Tunnel\n\nA flight down a rectangular corridor whose walls, floor and ceiling hold coloured slabs between thin edge mouldings, fading into fog: a continuous, loopable forward-motion backdrop. WebGL.\n\nCategory: shaders. Length: 12 s. WebGL: yes.\n\nUse when:\n- A forward-motion backdrop: a lit corridor of coloured panels for an intro, a gallery or a product reel.\n- A loopable travel shot that needs no footage: speed, palette and density are variables.\n\nAvoid when:\n- The scene needs photos in the panels: this block only has colour slabs.\n- The viewer is prone to motion discomfort: the flight is constant.\n\nVariables:\n- speed (number, 0-8): Flight speed, default 3\n- palette (string): Slab palette, default \"#2563eb,#d4d4d4,#737373,#e5e5e5,#404040,#a3a3a3\"\n- grid (number, 1-4): Grid density, default 2\n- fill (number, 0-1): Slot fill rate, default 0.5\n- fog (number, 3-14.5): Fog distance, default 14.25\n- edgeColor (color): Edge line colour, default \"#b0b0b0\"\n- edgeOpacity (number, 0-1): Edge line opacity, default 0.5\n- backdrop (color): Backdrop and fog colour, default \"#000000\"\n- resolution (number, 0.25-1): Resolution, default 0.75\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Gallery Tunnel\n\n  A flight down a rectangular corridor whose walls, floor and ceiling hold coloured slabs between thin edge mouldings, fading into fog: a continuous, loopable forward-motion backdrop. WebGL.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/gallery-tunnel/gallery-tunnel.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: fills the host frame and keeps a wide field of view on vertical frames; rewritten from three.js (not loaded) to raw WebGL2: slabs and edge lines are quads built each frame from the timeline time (edges are flat strips on the wall planes instead of tube meshes), with the same linear fog and recycling; the `images` slots are left out because the block ships no image files, so every filled slot is a colour slab; the canvas is drawn at the `resolution` variable.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"gallery-tunnel\"\n  data-composition-duration=\"12\"\n  data-composition-variables='[{\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Flight speed\", \"default\": 3, \"min\": 0, \"max\": 8, \"step\": 0.1, \"unit\": \"segments/s\"},\n    {\"id\": \"palette\", \"type\": \"string\", \"role\": \"style\", \"label\": \"Slab palette\", \"description\": \"Comma-separated hex colours for the coloured slabs.\", \"default\": \"#2563eb,#d4d4d4,#737373,#e5e5e5,#404040,#a3a3a3\"},\n    {\"id\": \"grid\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Grid density\", \"description\": \"Slots per wall face per axis (2 gives 16 per segment).\", \"default\": 2, \"min\": 1, \"max\": 4, \"step\": 1},\n    {\"id\": \"fill\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Slot fill rate\", \"default\": 0.5, \"min\": 0, \"max\": 1, \"step\": 0.05},\n    {\"id\": \"fog\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Fog distance\", \"description\": \"Depth, in segments, at which the corridor reaches the pure backdrop colour.\", \"default\": 14.25, \"min\": 3, \"max\": 14.5, \"step\": 0.25, \"unit\": \"segments\"},\n    {\"id\": \"edgeColor\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Edge line colour\", \"default\": \"#b0b0b0\"},\n    {\"id\": \"edgeOpacity\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Edge line opacity\", \"default\": 0.5, \"min\": 0, \"max\": 1, \"step\": 0.05},\n    {\"id\": \"backdrop\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Backdrop and fog colour\", \"default\": \"#000000\"},\n    {\"id\": \"resolution\", \"type\": \"number\", \"role\": \"quality\", \"label\": \"Resolution\", \"description\": \"Share of the frame size the corridor is drawn at, then scaled up. Thin edge lines need 0.75.\", \"default\": 0.75, \"min\": 0.25, \"max\": 1, \"step\": 0.05}]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Gallery Tunnel</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          background: #000;\n          pointer-events: none;\n        }\n        .gtn-stage {\n          position: absolute;\n          inset: 0;\n        }\n        .gtn-canvas {\n          position: absolute;\n          inset: 0;\n          width: 100%;\n          height: 100%;\n          display: block;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"gallery-tunnel\" data-duration=\"12\" data-fps=\"30\">\n        <div id=\"gtn-clip\" class=\"gtn-stage clip\" data-start=\"0\" data-duration=\"12\" data-track-index=\"0\">\n          <canvas id=\"gtn-canvas\" class=\"gtn-canvas\"></canvas>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var NAME = \"gallery-tunnel\";\n            var DUR = 12;\n            var root = document.getElementById(\"root\");\n            var canvas = document.getElementById(\"gtn-canvas\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function clampNum(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function hex(value, fallback) {\n              var m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(value || \"\").trim());\n              if (!m) return fallback;\n              var h = m[1].length === 3 ? m[1].replace(/./g, \"$&$&\") : m[1];\n              return \"#\" + h.toLowerCase();\n            }\n            function rgb(value) {\n              var h = hex(value, \"#000000\").slice(1);\n              return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255];\n            }\n            var DEFS = [{\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Flight speed\", \"default\": 3, \"min\": 0, \"max\": 8, \"step\": 0.1, \"unit\": \"segments/s\"}, {\"id\": \"palette\", \"type\": \"string\", \"role\": \"style\", \"label\": \"Slab palette\", \"description\": \"Comma-separated hex colours for the coloured slabs.\", \"default\": \"#2563eb,#d4d4d4,#737373,#e5e5e5,#404040,#a3a3a3\"}, {\"id\": \"grid\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Grid density\", \"description\": \"Slots per wall face per axis (2 gives 16 per segment).\", \"default\": 2, \"min\": 1, \"max\": 4, \"step\": 1}, {\"id\": \"fill\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Slot fill rate\", \"default\": 0.5, \"min\": 0, \"max\": 1, \"step\": 0.05}, {\"id\": \"fog\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Fog distance\", \"description\": \"Depth, in segments, at which the corridor reaches the pure backdrop colour.\", \"default\": 14.25, \"min\": 3, \"max\": 14.5, \"step\": 0.25, \"unit\": \"segments\"}, {\"id\": \"edgeColor\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Edge line colour\", \"default\": \"#b0b0b0\"}, {\"id\": \"edgeOpacity\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Edge line opacity\", \"default\": 0.5, \"min\": 0, \"max\": 1, \"step\": 0.05}, {\"id\": \"backdrop\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Backdrop and fog colour\", \"default\": \"#000000\"}, {\"id\": \"resolution\", \"type\": \"number\", \"role\": \"quality\", \"label\": \"Resolution\", \"description\": \"Share of the frame size the corridor is drawn at, then scaled up. Thin edge lines need 0.75.\", \"default\": 0.75, \"min\": 0.25, \"max\": 1, \"step\": 0.05}];\n            var V = {};\n            DEFS.forEach(function (d) {\n              var raw = vars[d.id];\n              if (d.type === \"number\") V[d.id] = clampNum(raw, d.default, d.min, d.max);\n              else if (d.type === \"color\") V[d.id] = hex(raw, d.default);\n              else if (d.type === \"boolean\") V[d.id] = typeof raw === \"boolean\" ? raw : raw === \"true\" ? true : raw === \"false\" ? false : d.default;\n              else V[d.id] = typeof raw === \"string\" ? raw.trim() : d.default;\n            });\n\n            var W = Math.max(2, root.clientWidth);\n            var H = Math.max(2, root.clientHeight);\n            var cw = Math.max(2, Math.round(W * V.resolution));\n            var ch = Math.max(2, Math.round(H * V.resolution));\n            root.style.background = V.backdrop;\n            canvas.width = cw;\n            canvas.height = ch;\n            var TUNNEL_WIDTH = 2, TUNNEL_HEIGHT = 1.8, SEGMENT_DEPTH = 1, NUM_SEGMENTS = 15;\n            var LINE_RADIUS = 0.003, INSET = 0.94, SKIN = 0.002;\n            var GRID = Math.max(1, Math.min(4, Math.round(V.grid)));\n            var FOG_FAR = Math.max(3, Math.min(14.5, V.fog));\n            var BACK = Math.max(0, Math.min(1.5, NUM_SEGMENTS * SEGMENT_DEPTH - FOG_FAR));\n            var PALETTE = String(V.palette).split(\",\").map(function (s) { return hex(s, \"\"); }).filter(Boolean).map(rgb);\n            if (!PALETTE.length) PALETTE.push([1, 1, 1]);\n            var BACKDROP = rgb(V.backdrop), EDGE = rgb(V.edgeColor);\n            // Deterministic 2D integer hash: the only source of \"randomness\".\n            function hash2(a, b) {\n              var h = Math.imul(a | 0, 0x27d4eb2d) ^ Math.imul(b | 0, 0x165667b1);\n              h = Math.imul(h ^ (h >>> 15), 0x2545f491);\n              h ^= h >>> 13;\n              return (h >>> 0) / 4294967296;\n            }\n            var HW = TUNNEL_WIDTH / 2, HH = TUNNEL_HEIGHT / 2;\n            var cellZ = SEGMENT_DEPTH / GRID, cellX = TUNNEL_WIDTH / GRID, cellY = TUNNEL_HEIGHT / GRID;\n            // The camera keeps a wide view across the frame, also on vertical frames.\n            var ASPECT = cw / ch;\n            var FOVY = ASPECT >= 1 ? 75 * Math.PI / 180 : 2 * Math.atan(Math.tan(Math.PI / 4) / ASPECT);\n            function perspective(fovy, aspect, near, far) {\n              var f = 1 / Math.tan(fovy / 2), nf = 1 / (near - far);\n              return new Float32Array([f / aspect, 0, 0, 0, 0, f, 0, 0, 0, 0, (far + near) * nf, -1, 0, 0, 2 * far * near * nf, 0]);\n            }\n            var MAXQ = NUM_SEGMENTS * (4 * GRID * GRID + 2 * (GRID - 1) + 2 * (GRID + 1) + 4 * GRID) + 8;\n            var verts = new Float32Array(MAXQ * 6 * 7);\n            var nv;\n            function vtx(x, y, z, c, a) { verts[nv++] = x; verts[nv++] = y; verts[nv++] = z; verts[nv++] = c[0]; verts[nv++] = c[1]; verts[nv++] = c[2]; verts[nv++] = a; }\n            // A quad from a centre and two half-extent axes.\n            function quad(cx, cy, cz, ux, uy, uz, vx, vy, vz, c, a) {\n              var p = [[-1, -1], [1, -1], [1, 1], [-1, -1], [1, 1], [-1, 1]];\n              for (var k = 0; k < 6; k++) vtx(cx + ux * p[k][0] + vx * p[k][1], cy + uy * p[k][0] + vy * p[k][1], cz + uz * p[k][0] + vz * p[k][1], c, a);\n            }\n\n            var VERTEX = `#version 300 es\nprecision highp float;\nin vec3 aPos;\nin vec4 aColor;\nuniform mat4 uProj;\nout vec4 vColor;\nout float vDepth;\nvoid main() {\n  vColor = aColor;\n  vDepth = -aPos.z;\n  gl_Position = uProj * vec4(aPos, 1.0);\n}`;\n            var FRAGMENT = `#version 300 es\nprecision highp float;\nout vec4 outColor;\nin vec4 vColor;\nin float vDepth;\nuniform vec3 uFogColor;\nuniform float uFogNear;\nuniform float uFogFar;\nvoid main() {\n  float f = clamp((uFogFar - vDepth) / (uFogFar - uFogNear), 0.0, 1.0);\n  outColor = vec4(mix(uFogColor, vColor.rgb, f), vColor.a);\n}\n`;\n\n            var gl = canvas.getContext(\"webgl2\", { alpha: false, antialias: true, depth: true, stencil: false, preserveDrawingBuffer: true });\n            function compile(type, source) {\n              var shader = gl.createShader(type);\n              gl.shaderSource(shader, source);\n              gl.compileShader(shader);\n              if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader) || \"shader compile failed\");\n              return shader;\n            }\n            var paint = null;\n            try {\n              if (!gl) throw new Error(\"WebGL2 is not available\");\n              var prog = gl.createProgram();\n              gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERTEX));\n              gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAGMENT));\n              gl.linkProgram(prog);\n              if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog) || \"link failed\");\n              gl.useProgram(prog);\n              var buf = gl.createBuffer();\n              gl.bindBuffer(gl.ARRAY_BUFFER, buf);\n              gl.bufferData(gl.ARRAY_BUFFER, verts.byteLength, gl.DYNAMIC_DRAW);\n              var aPos = gl.getAttribLocation(prog, \"aPos\"), aColor = gl.getAttribLocation(prog, \"aColor\");\n              gl.enableVertexAttribArray(aPos);\n              gl.vertexAttribPointer(aPos, 3, gl.FLOAT, false, 28, 0);\n              gl.enableVertexAttribArray(aColor);\n              gl.vertexAttribPointer(aColor, 4, gl.FLOAT, false, 28, 12);\n              gl.viewport(0, 0, cw, ch);\n              gl.enable(gl.DEPTH_TEST);\n              gl.enable(gl.BLEND);\n              gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);\n              function u(name) { return gl.getUniformLocation(prog, name); }\n              gl.uniformMatrix4fv(u(\"uProj\"), false, perspective(FOVY, ASPECT, 0.05, 40));\n              gl.uniform3f(u(\"uFogColor\"), BACKDROP[0], BACKDROP[1], BACKDROP[2]);\n              gl.uniform1f(u(\"uFogNear\"), 1);\n              gl.uniform1f(u(\"uFogFar\"), FOG_FAR * SEGMENT_DEPTH);\n              paint = function (t) {\n\n                gl.clearColor(BACKDROP[0], BACKDROP[1], BACKDROP[2], 1);\n                gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);\n                // Everything about frame t is computed from t alone: d is the distance flown in\n                // segments and a the absolute number of the segment in pool slot i.\n                var d = V.speed * t;\n                nv = 0;\n                var LR = LINE_RADIUS, D = SEGMENT_DEPTH;\n                var opaque = 0, i, s, k, j, f, iu, iz, u, z;\n                for (i = 0; i < NUM_SEGMENTS; i++) {\n                  var a = i + NUM_SEGMENTS * Math.ceil((d - i - BACK) / NUM_SEGMENTS);\n                  if (a % 2 !== 0) continue;\n                  var z0 = -(a - d) * SEGMENT_DEPTH;\n                  s = 0;\n                  for (f = 0; f < 4; f++) {\n                    for (iz = 0; iz < GRID; iz++) {\n                      for (iu = 0; iu < GRID; iu++, s++) {\n                        if (hash2(a, s * 4 + 1) >= V.fill) continue;\n                        var col = PALETTE[Math.floor(hash2(a, s * 4 + 3) * PALETTE.length) % PALETTE.length];\n                        var pz = z0 - (iz + 0.5) * cellZ;\n                        if (f < 2) {\n                          var py = (f === 0 ? -HH - SKIN : HH + SKIN);\n                          quad(-HW + (iu + 0.5) * cellX, py, pz, cellX * INSET / 2, 0, 0, 0, 0, cellZ * INSET / 2, col, 1);\n                        } else {\n                          var px = (f === 2 ? -HW - SKIN : HW + SKIN);\n                          quad(px, -HH + (iu + 0.5) * cellY, pz, 0, 0, cellZ * INSET / 2, 0, cellY * INSET / 2, 0, col, 1);\n                        }\n                      }\n                    }\n                  }\n                }\n                opaque = nv / 7;\n                // Edge lines (thin quads on the wall planes), drawn over the slabs at the edge opacity.\n                for (i = 0; i < NUM_SEGMENTS; i++) {\n                  var a2 = i + NUM_SEGMENTS * Math.ceil((d - i - BACK) / NUM_SEGMENTS);\n                  var zb = -(a2 - d) * SEGMENT_DEPTH;\n                  for (k = 1; k < GRID; k++) {\n                    u = -HW + k * cellX;\n                    quad(u, -HH, zb - D / 2, LR, 0, 0, 0, 0, D / 2, EDGE, V.edgeOpacity);\n                    quad(u, HH, zb - D / 2, LR, 0, 0, 0, 0, D / 2, EDGE, V.edgeOpacity);\n                  }\n                  for (k = 0; k <= GRID; k++) {\n                    u = -HH + k * cellY;\n                    quad(-HW, u, zb - D / 2, 0, LR, 0, 0, 0, D / 2, EDGE, V.edgeOpacity);\n                    quad(HW, u, zb - D / 2, 0, LR, 0, 0, 0, D / 2, EDGE, V.edgeOpacity);\n                  }\n                  for (j = 0; j < GRID; j++) {\n                    z = zb - j * cellZ;\n                    quad(0, -HH, z, HW, 0, 0, 0, 0, LR, EDGE, V.edgeOpacity);\n                    quad(0, HH, z, HW, 0, 0, 0, 0, LR, EDGE, V.edgeOpacity);\n                    quad(-HW, 0, z, 0, HH, 0, 0, 0, LR, EDGE, V.edgeOpacity);\n                    quad(HW, 0, z, 0, HH, 0, 0, 0, LR, EDGE, V.edgeOpacity);\n                  }\n                }\n                gl.bindBuffer(gl.ARRAY_BUFFER, buf);\n                gl.bufferSubData(gl.ARRAY_BUFFER, 0, verts.subarray(0, nv));\n                gl.depthMask(true);\n                gl.drawArrays(gl.TRIANGLES, 0, opaque);\n                gl.depthMask(false);\n                gl.drawArrays(gl.TRIANGLES, opaque, nv / 7 - opaque);\n              };\n            } catch (err) {\n              canvas.style.display = \"none\";\n              if (window.console) console.warn(NAME + \":\", err.message);\n            }\n\n            var tl = gsap.timeline({ paused: true, onUpdate: function () { if (paint) paint(tl.time()); } });\n\n            // The block lasts DUR seconds even when nothing is tweened at the end.\n            tl.set({}, {}, DUR);\n            if (paint) paint(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[NAME] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "bbe9c8ba1e9bdea13eef36236973edacea9e126321ce4d2bab8ca8657cd7b7b0",
+ "duration": 12,
+ "webgl": true,
+ "demo_background": "#000000",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Flight speed",
+   "default": 3,
+   "min": 0,
+   "max": 8
+  },
+  {
+   "id": "palette",
+   "type": "string",
+   "role": "style",
+   "label": "Slab palette",
+   "default": "#2563eb,#d4d4d4,#737373,#e5e5e5,#404040,#a3a3a3"
+  },
+  {
+   "id": "grid",
+   "type": "number",
+   "role": "style",
+   "label": "Grid density",
+   "default": 2,
+   "min": 1,
+   "max": 4
+  },
+  {
+   "id": "fill",
+   "type": "number",
+   "role": "style",
+   "label": "Slot fill rate",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "fog",
+   "type": "number",
+   "role": "style",
+   "label": "Fog distance",
+   "default": 14.25,
+   "min": 3,
+   "max": 14.5
+  },
+  {
+   "id": "edgeColor",
+   "type": "color",
+   "role": "style",
+   "label": "Edge line colour",
+   "default": "#b0b0b0"
+  },
+  {
+   "id": "edgeOpacity",
+   "type": "number",
+   "role": "style",
+   "label": "Edge line opacity",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "backdrop",
+   "type": "color",
+   "role": "style",
+   "label": "Backdrop and fog colour",
+   "default": "#000000"
+  },
+  {
+   "id": "resolution",
+   "type": "number",
+   "role": "quality",
+   "label": "Resolution",
+   "default": 0.75,
+   "min": 0.25,
+   "max": 1
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

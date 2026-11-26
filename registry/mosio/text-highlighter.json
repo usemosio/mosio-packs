@@ -1,0 +1,117 @@
+{
+ "name": "text-highlighter",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Daniel Petho",
+ "source": {
+  "repo": "https://github.com/danielpetho/fancy",
+  "path": "src/fancy/components/text/text-highlighter.tsx",
+  "commit": "f9f62c61207b2dd3210476dd98af3c9a5be24094"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Text Highlighter\n\nMarked phrases in a paragraph get a highlighter fill that wipes across them (left to right, right to left, top down or bottom up), one phrase after another, wrapping correctly across lines.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- Key phrases inside a paragraph should be picked out with a highlighter wipe, in reading order.\n- The highlights may break over several lines and each line should fill as the wipe runs.\n\nAvoid when:\n- Only a single word needs a marker stroke: use marker-highlight.\n- The emphasis is a colour change, not a fill: use inline-highlight.\n\nVariables:\n- text (string): Text, default \"Typefaces are the voice of a page. [[A good headline is chosen, not defaulted]], and the best ones disappear into the message. Spacing does as much work as shape: [[the room between letters and lines]] decides how easily a reader moves through the text. [[Test it at the size people will actually see.]]\"\n- font_size (number, 16-160): Font size, default 54\n- font_weight (enum): Font weight, default \"400\"\n- color (color): Text color, default \"#111111\"\n- highlight_color (color): Highlight color, default \"#f2ad91\"\n- direction (enum): Direction, default \"ltr\"\n- line_height (number, 1-2.5): Line height, default 1.5\n- start (number, 0-4): Start, default 0.4\n- stagger (number, 0-3): Stagger, default 0.7\n- wipe_duration (number, 0.2-3): Wipe duration, default 1\n\nSource: https://github.com/danielpetho/fancy. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Text Highlighter\n\n  Marked phrases in a paragraph get a highlighter fill that wipes across them (left to right, right to left, top down or bottom up), one phrase after another, wrapping correctly across lines.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/danielpetho/fancy/blob/f9f62c61207b2dd3210476dd98af3c9a5be24094/src/fancy/components/text/text-highlighter.tsx\n\n  MIT License\n\n  Copyright (c) 2024 Daniel Petho\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"text-highlighter\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Paragraph. Wrap each phrase to highlight in double square brackets, like [[this]].\", \"default\": \"Typefaces are the voice of a page. [[A good headline is chosen, not defaulted]], and the best ones disappear into the message. Spacing does as much work as shape: [[the room between letters and lines]] decides how easily a reader moves through the text. [[Test it at the size people will actually see.]]\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 54, \"min\": 16, \"max\": 160, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"400\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}]},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Paragraph text color.\", \"default\": \"#111111\"},\n    {\"id\": \"highlight_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Highlight color\", \"description\": \"Color of the highlighter fill.\", \"default\": \"#f2ad91\"},\n    {\"id\": \"direction\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Direction\", \"description\": \"Direction the highlight wipes in.\", \"default\": \"ltr\", \"options\": [{\"value\": \"ltr\", \"label\": \"Left to right\"}, {\"value\": \"rtl\", \"label\": \"Right to left\"}, {\"value\": \"ttb\", \"label\": \"Top to bottom\"}, {\"value\": \"btt\", \"label\": \"Bottom to top\"}]},\n    {\"id\": \"line_height\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Line height\", \"description\": \"Line height as a multiple of the font size.\", \"default\": 1.5, \"min\": 1, \"max\": 2.5, \"step\": 0.05},\n    {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start\", \"description\": \"Seconds before the first highlight starts.\", \"default\": 0.4, \"min\": 0, \"max\": 4, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"stagger\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Seconds between one highlight and the next.\", \"default\": 0.7, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"wipe_duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Wipe duration\", \"description\": \"Perceived duration of each highlight&#39;s spring.\", \"default\": 1, \"min\": 0.2, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Text Highlighter</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #111111; font-family: Geist, system-ui, sans-serif; }\n        .th-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .th-text { width: min(84cqw, 1100px); white-space: pre-wrap; }\n        .th-mark { display: inline; border-radius: 0.3em; padding: 0 1px; background-repeat: no-repeat; -webkit-box-decoration-break: clone; box-decoration-break: clone; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"text-highlighter\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"th-clip\" class=\"th-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <p id=\"th-text\" class=\"th-text\"></p>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var DEFS = [{\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Paragraph. Wrap each phrase to highlight in double square brackets, like [[this]].\", \"default\": \"Typefaces are the voice of a page. [[A good headline is chosen, not defaulted]], and the best ones disappear into the message. Spacing does as much work as shape: [[the room between letters and lines]] decides how easily a reader moves through the text. [[Test it at the size people will actually see.]]\"}, {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 54, \"min\": 16, \"max\": 160, \"step\": 1, \"unit\": \"px\"}, {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"400\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}]}, {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Paragraph text color.\", \"default\": \"#111111\"}, {\"id\": \"highlight_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Highlight color\", \"description\": \"Color of the highlighter fill.\", \"default\": \"#f2ad91\"}, {\"id\": \"direction\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Direction\", \"description\": \"Direction the highlight wipes in.\", \"default\": \"ltr\", \"options\": [{\"value\": \"ltr\", \"label\": \"Left to right\"}, {\"value\": \"rtl\", \"label\": \"Right to left\"}, {\"value\": \"ttb\", \"label\": \"Top to bottom\"}, {\"value\": \"btt\", \"label\": \"Bottom to top\"}]}, {\"id\": \"line_height\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Line height\", \"description\": \"Line height as a multiple of the font size.\", \"default\": 1.5, \"min\": 1, \"max\": 2.5, \"step\": 0.05}, {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start\", \"description\": \"Seconds before the first highlight starts.\", \"default\": 0.4, \"min\": 0, \"max\": 4, \"step\": 0.05, \"unit\": \"s\"}, {\"id\": \"stagger\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Seconds between one highlight and the next.\", \"default\": 0.7, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"}, {\"id\": \"wipe_duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Wipe duration\", \"description\": \"Perceived duration of each highlight's spring.\", \"default\": 1, \"min\": 0.2, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"}];\n            var root = document.getElementById(\"root\");\n            var raw = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            var D = parseFloat(root.dataset.duration || \"5\");\n            function V(id) {\n              var d = null;\n              for (var i = 0; i < DEFS.length; i++) if (DEFS[i].id === id) d = DEFS[i];\n              var v = raw[id];\n              if (v === undefined || v === null || (v === \"\" && d.type !== \"string\")) return d.default;\n              if (d.type === \"number\") { var n = Number(v); return Number.isFinite(n) ? Math.min(d.max, Math.max(d.min, n)) : d.default; }\n              if (d.type === \"boolean\") return v === true || v === \"true\";\n              if (d.type === \"enum\") { for (var j = 0; j < d.options.length; j++) if (String(d.options[j].value) === String(v)) return d.options[j].value; return d.default; }\n              if (d.type === \"string\") return typeof v === \"string\" ? v : d.default;\n              return typeof v === \"string\" && v ? v : d.default;\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function hash3(a, b, c) { return mulberry32((a * 7919 + b * 104729 + c * 1299709) | 0)(); }\n            // Stagger delays in seconds: \"first\", \"last\", \"center\", \"random\" (seeded shuffle) or an index.\n            function stagger(n, from, step, seed) {\n              var out = [], i;\n              if (from === \"random\") {\n                var rng = mulberry32(seed || 7), idx = [];\n                for (i = 0; i < n; i++) idx.push(i);\n                for (i = n - 1; i > 0; i--) { var j = Math.floor(rng() * (i + 1)); var tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp; }\n                for (i = 0; i < n; i++) out[idx[i]] = i * step;\n                return out;\n              }\n              for (i = 0; i < n; i++) {\n                var k = from === \"last\" ? n - 1 - i : from === \"center\" ? Math.abs(Math.floor(n / 2) - i) : typeof from === \"number\" ? Math.abs(from - i) : i;\n                out.push(k * step);\n              }\n              return out;\n            }\n            // Damped spring from 0 to 1 (stiffness/damping/mass or duration/bounce, as Motion defines them).\n            function spring(o) {\n              var m = o.mass || 1, k, c;\n              if (o.duration !== undefined) { var w = (2 * Math.PI) / o.duration; k = w * w * m; c = 2 * (1 - (o.bounce || 0)) * Math.sqrt(k * m); }\n              else { k = o.stiffness; c = o.damping; }\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              function at(t) {\n                if (t <= 0) return 0;\n                if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n                if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t)); }\n                var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n                return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n              }\n              var settle = 6;\n              for (var t = 0.02; t < 6; t += 0.02) {\n                var ok = true;\n                for (var u = t; u < Math.min(t + 0.3, 6); u += 0.05) if (Math.abs(1 - at(u)) > 0.002) { ok = false; break; }\n                if (ok) { settle = t; break; }\n              }\n              return { at: at, duration: settle };\n            }\n            function fitText(text) { return Array.from(text); }\n\n            var el = document.getElementById(\"th-text\");\n            var text = V(\"text\") || \"[[Highlighted]] text\";\n            el.style.fontSize = V(\"font_size\") + \"px\"; el.style.fontWeight = V(\"font_weight\");\n            el.style.lineHeight = V(\"line_height\"); el.style.color = V(\"color\");\n            var color = V(\"highlight_color\"), dir = V(\"direction\");\n            var marks = [];\n            var parts = text.split(/\\[\\[|\\]\\]/);\n            parts.forEach(function (part, i) {\n              if (i % 2 === 0) { el.appendChild(document.createTextNode(part)); return; }\n              var m = document.createElement(\"span\"); m.className = \"th-mark\"; m.id = \"th-mark-\" + marks.length;\n              m.textContent = part;\n              m.style.backgroundImage = \"linear-gradient(\" + color + \", \" + color + \")\";\n              m.style.backgroundPosition = dir === \"rtl\" ? \"100% 0%\" : dir === \"btt\" ? \"0% 100%\" : \"0% 0%\";\n              el.appendChild(m); marks.push(m);\n            });\n            var sp = spring({ duration: V(\"wipe_duration\"), bounce: 0 });\n            var start = V(\"start\"), gap = V(\"stagger\");\n            var tl = gsap.timeline({ paused: true });\n            function draw(t) {\n              for (var i = 0; i < marks.length; i++) {\n                var p = Math.max(0, Math.min(1, sp.at(t - start - i * gap))) * 100;\n                marks[i].style.backgroundSize = dir === \"ttb\" || dir === \"btt\" ? \"100% \" + p.toFixed(2) + \"%\" : p.toFixed(2) + \"% 100%\";\n              }\n            }\n\n            var clock = { t: 0 };\n            tl.to(clock, { t: D, duration: D, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"text-highlighter\"] = tl;\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "a9459a1f0a88186cb11b84589c61107aca5d8257a4e2ea9542b5be2ea6ddf72d",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#fefefe",
+ "demo_values": {
+  "font_size": 64
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Typefaces are the voice of a page. [[A good headline is chosen, not defaulted]], and the best ones disappear into the message. Spacing does as much work as shape: [[the room between letters and lines]] decides how easily a reader moves through the text. [[Test it at the size people will actually see.]]"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 54,
+   "min": 16,
+   "max": 160
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "400"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#111111"
+  },
+  {
+   "id": "highlight_color",
+   "type": "color",
+   "role": "style",
+   "label": "Highlight color",
+   "default": "#f2ad91"
+  },
+  {
+   "id": "direction",
+   "type": "enum",
+   "role": "motion",
+   "label": "Direction",
+   "default": "ltr"
+  },
+  {
+   "id": "line_height",
+   "type": "number",
+   "role": "style",
+   "label": "Line height",
+   "default": 1.5,
+   "min": 1,
+   "max": 2.5
+  },
+  {
+   "id": "start",
+   "type": "number",
+   "role": "motion",
+   "label": "Start",
+   "default": 0.4,
+   "min": 0,
+   "max": 4
+  },
+  {
+   "id": "stagger",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 0.7,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "wipe_duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Wipe duration",
+   "default": 1,
+   "min": 0.2,
+   "max": 3
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://fancycomponents.dev"
+}

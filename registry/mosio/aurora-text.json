@@ -1,0 +1,106 @@
+{
+ "name": "aurora-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Magic UI",
+ "source": {
+  "repo": "https://github.com/magicuidesign/magicui",
+  "path": "apps/www/registry/magicui/aurora-text.tsx",
+  "commit": "166367b4e31a27f166fd6c2b71d7be290fe0c1bc"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Aurora Text\n\nFour-colour gradient text whose colours drift slowly through the letters, magenta to violet to blue to cyan by default, set after a plain lead-in word.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- One emphasised word in a headline should glow with a slowly drifting aurora of colour.\n- A hero line needs a soft, premium colour movement without any entrance animation.\n\nAvoid when:\n- The colour should flow quickly in two tones: use animated-gradient-text.\n- The gradient should sweep once across the text: use text-shimmer.\n\nVariables:\n- text_before (string): Lead-in, default \"Ship\"\n- text (string): Aurora text, default \"beautiful\"\n- font_size (number, 12-260): Font size, default 96\n- color_1 (color): Colour 1, default \"#FF0080\"\n- color_2 (color): Colour 2, default \"#7928CA\"\n- color_3 (color): Colour 3, default \"#0070F3\"\n- color_4 (color): Colour 4, default \"#38bdf8\"\n- text_color (color): Lead-in colour, default \"#0a0a0a\"\n- speed (number, 0.25-6): Speed, default 2\n\nSource: https://github.com/magicuidesign/magicui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Aurora Text\n\n  Four-colour gradient text whose colours drift slowly through the letters, magenta to violet to blue to cyan by default, set after a plain lead-in word.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/magicuidesign/magicui/blob/166367b4e31a27f166fd6c2b71d7be290fe0c1bc/apps/www/registry/magicui/aurora-text.tsx\n\n  MIT License\n\n  Copyright (c) Magic UI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"aurora-text\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"text_before\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Lead-in\", \"description\": \"Plain text before the aurora word. Leave empty to show only the aurora word.\", \"default\": \"Ship\"},\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Aurora text\", \"description\": \"The word or phrase filled with the drifting gradient.\", \"default\": \"beautiful\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 96, \"min\": 12, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color_1\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Colour 1\", \"description\": \"First gradient colour (also closes the loop).\", \"default\": \"#FF0080\"},\n    {\"id\": \"color_2\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Colour 2\", \"description\": \"Second gradient colour.\", \"default\": \"#7928CA\"},\n    {\"id\": \"color_3\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Colour 3\", \"description\": \"Third gradient colour.\", \"default\": \"#0070F3\"},\n    {\"id\": \"color_4\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Colour 4\", \"description\": \"Fourth gradient colour.\", \"default\": \"#38bdf8\"},\n    {\"id\": \"text_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Lead-in colour\", \"description\": \"Colour of the plain lead-in text.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"The drift takes 10 / speed seconds for one pass (source default speed 1 takes 10 s, so 2 fits the block).\", \"default\": 2, \"min\": 0.25, \"max\": 6, \"step\": 0.25}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Aurora Text</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700;800&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .aut-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .aut-line { font-family: var(--font-display, Geist, system-ui, sans-serif); font-weight: 700; letter-spacing: -0.05em; line-height: 1.1; white-space: pre; }\n        .aut-aurora {\n          display: inline;\n          background-size: 200% auto;\n          background-repeat: no-repeat;\n          -webkit-background-clip: text;\n          background-clip: text;\n          color: transparent;\n          -webkit-text-fill-color: transparent;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"aurora-text\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"aut-clip\" class=\"aut-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <span id=\"aut-line\" class=\"aut-line\"><span id=\"aut-before\"></span><span id=\"aut-aurora\" class=\"aut-aurora\"></span></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Shrink an element's font until it fits a share of the frame width.\n            function fit(el, size, share) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * share);\n              if (el.scrollWidth > max) {\n                size = Math.max(12, size * (max / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            // A seeded random generator, so every seek draws the same thing.\n            function mulberry32(a) {\n              return function () {\n                a |= 0; a = (a + 0x6d2b79f5) | 0;\n                var t = Math.imul(a ^ (a >>> 15), 1 | a);\n                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n            gsap.registerPlugin(CustomEase);\n            var TAG = \"aut\";\n            var bezN = 0;\n            function bez(x1, y1, x2, y2) {\n              return CustomEase.create(TAG + \"-\" + bezN++, \"M0,0 C\" + x1 + \",\" + y1 + \" \" + x2 + \",\" + y2 + \" 1,1\");\n            }\n            var tl = gsap.timeline({ paused: true });\n            function finish() {\n              var total = parseFloat(root.dataset.duration || \"5\");\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"aurora-text\"] = tl;\n            }\n\n            var line = document.getElementById(\"aut-line\");\n            var before = document.getElementById(\"aut-before\");\n            var aurora = document.getElementById(\"aut-aurora\");\n            var lead = typeof vars.text_before === \"string\" ? vars.text_before : \"Ship\";\n            before.textContent = lead ? lead + \" \" : \"\";\n            before.style.color = col(vars.text_color, \"#0a0a0a\");\n            aurora.textContent = str(vars.text, \"beautiful\");\n            var c1 = col(vars.color_1, \"#FF0080\");\n            aurora.style.backgroundImage = \"linear-gradient(135deg, \" + c1 + \", \" + col(vars.color_2, \"#7928CA\") + \", \" +\n              col(vars.color_3, \"#0070F3\") + \", \" + col(vars.color_4, \"#38bdf8\") + \", \" + c1 + \")\";\n            fit(line, num(vars.font_size, 96, 12, 260), 0.9);\n            var cycle = 10 / num(vars.speed, 2, 0.25, 6);\n            var total = parseFloat(root.dataset.duration || \"5\");\n            // Source keyframes (aurora, ease-in-out between them, alternating direction): the\n            // gradient slides 0 -> 50 -> 100 -> 50 -> 0 % of its overhang. Rotation and scale in\n            // the source sit on an inline element and do not render, so only the slide is ported.\n            var inOut = bez(0.42, 0, 0.58, 1);\n            var path = [0, 50, 100, 50, 0];\n            function slide(u) {\n              var seg = Math.min(3, Math.floor(u * 4));\n              var local = u * 4 - seg;\n              return path[seg] + (path[seg + 1] - path[seg]) * inOut(local);\n            }\n            var clock = { t: 0 };\n            function draw(t) {\n              var k = Math.floor(t / cycle);\n              var u = (t - k * cycle) / cycle;\n              if (k % 2 === 1) u = 1 - u;\n              aurora.style.backgroundPosition = slide(u).toFixed(3) + \"% 50%\";\n            }\n            tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n\n            finish();\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "5c8b722f87d02b185092ca5c7892f961e60cfad5c5f52e042e28910feefede36",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "text_before": "Ship",
+  "text": "beautiful",
+  "font_size": 150
+ },
+ "variables": [
+  {
+   "id": "text_before",
+   "type": "string",
+   "role": "content",
+   "label": "Lead-in",
+   "default": "Ship"
+  },
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Aurora text",
+   "default": "beautiful"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 96,
+   "min": 12,
+   "max": 260
+  },
+  {
+   "id": "color_1",
+   "type": "color",
+   "role": "style",
+   "label": "Colour 1",
+   "default": "#FF0080"
+  },
+  {
+   "id": "color_2",
+   "type": "color",
+   "role": "style",
+   "label": "Colour 2",
+   "default": "#7928CA"
+  },
+  {
+   "id": "color_3",
+   "type": "color",
+   "role": "style",
+   "label": "Colour 3",
+   "default": "#0070F3"
+  },
+  {
+   "id": "color_4",
+   "type": "color",
+   "role": "style",
+   "label": "Colour 4",
+   "default": "#38bdf8"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Lead-in colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 2,
+   "min": 0.25,
+   "max": 6
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://magicui.design"
+}

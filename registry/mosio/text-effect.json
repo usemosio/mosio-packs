@@ -1,0 +1,116 @@
+{
+ "name": "text-effect",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "ibelick",
+ "source": {
+  "repo": "https://github.com/ibelick/motion-primitives",
+  "path": "components/core/text-effect.tsx",
+  "commit": "120f64f6ca60348e251f929e9c81f11ccbe45eda"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Text Effect\n\nText enters piece by piece with a preset (blur, fade-in-blur, scale, fade, slide) split per character, per word or per line, with the source's stagger times, and can leave in reverse.\n\nCategory: typography. Length: 3.5 s. WebGL: no.\n\nUse when:\n- A headline or sentence needs a clean staggered entrance and the split (letters, words, lines) and the look (blur, slide, scale, fade) should be a choice.\n- One block should cover several simple reveal styles.\n\nAvoid when:\n- A very specific reveal such as a mask wipe or a rise from a clipped line: use mask-reveal-up or per-character-rise.\n- Words should land on a speech rhythm: use the caption blocks.\n\nVariables:\n- text (string): Text, default \"Text that arrives with style\"\n- preset (enum): Preset, default \"fade-in-blur\"\n- per (enum): Split, default \"word\"\n- delay (number, 0-5): Delay, default 0.3\n- speed_reveal (number, 0.2-5): Reveal speed, default 1\n- speed_segment (number, 0.2-5): Segment speed, default 1\n- exit (boolean): Leave at the end, default false\n- font_size (number, 12-240): Font size, default 72\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"600\"\n\nSource: https://github.com/ibelick/motion-primitives. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Text Effect\n\n  Text enters piece by piece with a preset (blur, fade-in-blur, scale, fade, slide) split per character, per word or per line, with the source's stagger times, and can leave in reverse.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/ibelick/motion-primitives/blob/120f64f6ca60348e251f929e9c81f11ccbe45eda/components/core/text-effect.tsx\n\n  MIT License\n\n  Copyright (c) 2024 ibelick\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n  app/page.tsx\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"text-effect\"\n  data-composition-duration=\"3.5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Text to reveal. A new line starts a new line when per is line.\", \"default\": \"Text that arrives with style\"},\n    {\"id\": \"preset\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Preset\", \"description\": \"How each piece appears.\", \"default\": \"fade-in-blur\", \"options\": [{\"value\": \"blur\", \"label\": \"Blur\"}, {\"value\": \"fade-in-blur\", \"label\": \"Fade in + blur\"}, {\"value\": \"scale\", \"label\": \"Scale\"}, {\"value\": \"fade\", \"label\": \"Fade\"}, {\"value\": \"slide\", \"label\": \"Slide\"}]},\n    {\"id\": \"per\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Split\", \"description\": \"Reveal per character, word or line.\", \"default\": \"word\", \"options\": [{\"value\": \"char\", \"label\": \"Character\"}, {\"value\": \"word\", \"label\": \"Word\"}, {\"value\": \"line\", \"label\": \"Line\"}]},\n    {\"id\": \"delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Delay\", \"description\": \"Seconds before the first piece starts.\", \"default\": 0.3, \"min\": 0, \"max\": 5, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"speed_reveal\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Reveal speed\", \"description\": \"Higher values shorten the gap between pieces.\", \"default\": 1, \"min\": 0.2, \"max\": 5, \"step\": 0.1},\n    {\"id\": \"speed_segment\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Segment speed\", \"description\": \"Higher values shorten the animation of each piece.\", \"default\": 1, \"min\": 0.2, \"max\": 5, \"step\": 0.1},\n    {\"id\": \"exit\", \"type\": \"boolean\", \"role\": \"motion\", \"label\": \"Leave at the end\", \"description\": \"Play the reverse (last piece first) near the end.\", \"default\": false},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 72, \"min\": 12, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Text Effect</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, \"Geist\", system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .tef-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .tef-text { width: 88%; text-align: center; line-height: 1.15; letter-spacing: -0.02em; }\n        .tef-line { display: block; }\n        .tef-seg, .tef-ch { display: inline-block; white-space: pre; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"text-effect\" data-duration=\"3.5\" data-fps=\"30\">\n        <div id=\"tef-clip\" class=\"tef-stage clip\" data-start=\"0\" data-duration=\"3.5\" data-track-index=\"0\">\n          <div id=\"tef-text\" class=\"tef-text\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function pick(v, l, f) { return l.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { if (typeof v === \"boolean\") return v; if (v === \"true\") return true; if (v === \"false\") return false; return f; }\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            gsap.registerPlugin(CustomEase);\n            var total = parseFloat(root.dataset.duration || \"3.5\");\n            // Motion tweens with no easing named run easeInOut.\n            var EIO = CustomEase.create(\"tef-eio\", \"M0,0 C0.42,0 0.58,1 1,1\");\n            // Unit step response of a damped spring (semi-implicit Euler at 480 Hz), sampled once.\n            function springTable(k, c, m, dur) {\n              var dt = 1 / 480, x = 0, v = 0, out = [0];\n              for (var t = 0; t < dur; t += dt) { v += ((-k * (x - 1) - c * v) / m) * dt; x += v * dt; out.push(x); }\n              return out;\n            }\n            function springAt(tab, tau) {\n              if (tau <= 0) return 0;\n              var i = tau * 480; if (i >= tab.length - 1) return tab[tab.length - 1];\n              var j = Math.floor(i); return tab[j] + (tab[j + 1] - tab[j]) * (i - j);\n            }\n            var clock = { t: 0 };\n            function finish(tl, draw) {\n              if (draw) { tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0); draw(0); }\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"text-effect\"] = tl;\n            }\n\n\n            var box = document.getElementById(\"tef-text\");\n            var text = str(vars.text, \"Text that arrives with style\").replace(/\\\\n/g, \"\\n\");\n            var preset = pick(vars.preset, [\"blur\", \"fade-in-blur\", \"scale\", \"fade\", \"slide\"], \"fade-in-blur\");\n            var per = pick(vars.per, [\"char\", \"word\", \"line\"], \"word\");\n            var delay = num(vars.delay, 0.3, 0, 5), sr = num(vars.speed_reveal, 1, 0.2, 5), ss = num(vars.speed_segment, 1, 0.2, 5);\n            var size = num(vars.font_size, 72, 12, 240);\n            box.style.fontSize = size + \"px\";\n            box.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\", \"800\"], \"600\");\n            box.setAttribute(\"aria-label\", text.replace(/\\n/g, \" \"));\n            var items = [];\n            function add(cls, txt) { var s = document.createElement(\"span\"); s.className = cls; s.textContent = txt; return s; }\n            if (per === \"line\") {\n              text.split(\"\\n\").forEach(function (l) { var s = add(\"tef-line\", l || \" \"); box.appendChild(s); items.push(s); });\n            } else {\n              text.split(/(\\s+)/).filter(function (s) { return s !== \"\"; }).forEach(function (seg) {\n                var w = add(\"tef-seg\", per === \"word\" ? seg : \"\");\n                if (per === \"char\") Array.from(seg).forEach(function (ch) { var c = add(\"tef-ch\", ch); w.appendChild(c); items.push(c); });\n                else items.push(w);\n                box.appendChild(w);\n              });\n            }\n            // The source's pixel values are for body-size text; scale them with the type.\n            var k = size / 36;\n            var PRESETS = {\n              \"blur\": { y: 0, s: 1, b: 12 }, \"fade-in-blur\": { y: 20, s: 1, b: 12 },\n              \"scale\": { y: 0, s: 0, b: 0 }, \"fade\": { y: 0, s: 1, b: 0 }, \"slide\": { y: 20, s: 1, b: 0 }\n            };\n            var P = PRESETS[preset];\n            function hidden() { var o = { opacity: 0, y: P.y * k, scale: P.s }; if (P.b) o.filter = \"blur(\" + P.b * k + \"px)\"; return o; }\n            function shown() { var o = { opacity: 1, y: 0, scale: 1 }; if (P.b) o.filter = \"blur(0px)\"; return o; }\n            var stagger = ({ char: 0.03, word: 0.05, line: 0.1 })[per] / sr, seg = 0.3 / ss;\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: EIO, immediateRender: true }, delay);\n            items.forEach(function (el, i) {\n              var h = hidden(), s = shown();\n              tl.fromTo(el, h, Object.assign({ duration: seg, ease: EIO, immediateRender: true }, s), delay + i * stagger);\n            });\n            if (bool(vars.exit, false)) {\n              var spanEnd = (items.length - 1) * stagger + seg;\n              var at = Math.max(delay + spanEnd, total - spanEnd - 0.15);\n              items.forEach(function (el, i) {\n                tl.to(el, Object.assign({ duration: seg, ease: EIO }, hidden()), at + (items.length - 1 - i) * stagger);\n              });\n            }\n            finish(tl, null);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "6a80ba71aa012946c113b3c7d7f5f84543a1336d2bcd8623b9bb8d03c468b5ed",
+ "duration": 3.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "text": "Text that arrives with style",
+  "font_size": 110
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Text that arrives with style"
+  },
+  {
+   "id": "preset",
+   "type": "enum",
+   "role": "motion",
+   "label": "Preset",
+   "default": "fade-in-blur"
+  },
+  {
+   "id": "per",
+   "type": "enum",
+   "role": "motion",
+   "label": "Split",
+   "default": "word"
+  },
+  {
+   "id": "delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Delay",
+   "default": 0.3,
+   "min": 0,
+   "max": 5
+  },
+  {
+   "id": "speed_reveal",
+   "type": "number",
+   "role": "motion",
+   "label": "Reveal speed",
+   "default": 1,
+   "min": 0.2,
+   "max": 5
+  },
+  {
+   "id": "speed_segment",
+   "type": "number",
+   "role": "motion",
+   "label": "Segment speed",
+   "default": 1,
+   "min": 0.2,
+   "max": 5
+  },
+  {
+   "id": "exit",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Leave at the end",
+   "default": false
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 12,
+   "max": 240
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://motion-primitives.com"
+}

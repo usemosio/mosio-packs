@@ -1,0 +1,101 @@
+{
+ "name": "word-roller-multi-slot",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "lifeprompt-team",
+ "source": {
+  "repo": "https://github.com/lifeprompt-team/remotion-scenes",
+  "path": "src/scenes/RollerAnimations/RollerMultiSlot.tsx",
+  "commit": "02c7a84241da7010b5f59c420b0110aafd1d6f0d"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Word Roller Multi Slot\n\nThree slot-machine columns spin at once, each with its own word list, and stop one after another with a bounce, the landed words and column outlines turning to the accent colour.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- A tagline built from three independent choices (verb, article, noun) that spin and land on the final phrase.\n- A playful slot-machine reveal with a built-in sense of anticipation.\n\nAvoid when:\n- A single changing word: use inline-word-roll or word-roller-slot-reveal.\n- Long words: the columns get wide and the row shrinks.\n\nVariables:\n- column_1 (string): Column 1 words, default \"Make, Build, Create, Design, Craft, CREATE\"\n- column_2 (string): Column 2 words, default \"the, a, your, our, THE\"\n- column_3 (string): Column 3 words, default \"magic, future, dream, vision, FUTURE\"\n- font_size (number, 12-160): Font size, default 36\n- color (color): Spinning color, default \"#0a0a0a\"\n- accent (color): Landed color, default \"#2563eb\"\n- panel (color): Column fill, default \"#ffffff\"\n- background (color): Background, default \"#fafafa\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/lifeprompt-team/remotion-scenes. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Word Roller Multi Slot\n\n  Three slot-machine columns spin at once, each with its own word list, and stop one after another with a bounce, the landed words and column outlines turning to the accent colour.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/lifeprompt-team/remotion-scenes/blob/02c7a84241da7010b5f59c420b0110aafd1d6f0d/src/scenes/RollerAnimations/RollerMultiSlot.tsx\n\n  MIT License\n\n  Copyright (c) 2026 lifeprompt-team\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"word-roller-multi-slot\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"column_1\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Column 1 words\", \"description\": \"Words the first column spins through, separated by commas. The last one is where it stops.\", \"default\": \"Make, Build, Create, Design, Craft, CREATE\"},\n    {\"id\": \"column_2\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Column 2 words\", \"description\": \"Words the second column spins through. The last one is where it stops.\", \"default\": \"the, a, your, our, THE\"},\n    {\"id\": \"column_3\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Column 3 words\", \"description\": \"Words the third column spins through. The last one is where it stops.\", \"default\": \"magic, future, dream, vision, FUTURE\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Size of the column words in pixels. A wide row shrinks to fit the frame.\", \"default\": 36, \"min\": 12, \"max\": 160, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Spinning color\", \"description\": \"Color of the words while they spin.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Landed color\", \"description\": \"Color of the stopped words and the column outline.\", \"default\": \"#2563eb\"},\n    {\"id\": \"panel\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Column fill\", \"description\": \"Fill of each column.\", \"default\": \"#ffffff\"},\n    {\"id\": \"background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Fill behind the text. Use transparent to lay the block over your own footage.\", \"default\": \"#fafafa\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Word Roller Multi Slot</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100;300;400;500;600;700;800;900&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, -apple-system, sans-serif);\n          pointer-events: none;\n        }\n        .wmu-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n\n        #root { color: var(--c, #0a0a0a); }\n        .wmu-g { display: flex; gap: 0.556em; align-items: center; line-height: 1; }\n        .wmu-col { position: relative; overflow: hidden; background: var(--pn, #ffffff); border: 0.056em solid #e5e5e5; border-radius: 0.222em; height: 2.222em; }\n        .wmu-sc { position: absolute; top: 0.278em; left: 0; right: 0; }\n        .wmu-cell { height: 1.667em; display: flex; align-items: center; justify-content: center; white-space: pre; font-weight: 500; font-size: 0.889em; }\n        .wmu-mask { position: absolute; left: 0; right: 0; height: 0.417em; z-index: 2; }\n        .wmu-mask.t { top: 0; background: linear-gradient(var(--pn, #ffffff), transparent); }\n        .wmu-mask.b { bottom: 0; background: linear-gradient(transparent, var(--pn, #ffffff)); }\n\n        .wmu-sizer { display: grid; height: 0; overflow: hidden; visibility: hidden; pointer-events: none; }\n        .wmu-sizer span { grid-area: 1 / 1; white-space: pre; }\n\n        .wmu-sizer { padding: 0 0.55em; }\n        .wmu-sizer span { font-size: 1em; font-weight: 700; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"word-roller-multi-slot\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"wmu-clip\" class=\"wmu-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <div id=\"wmu-g\" class=\"wmu-g\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function el(id) { return document.getElementById(id); }\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return value !== \"\" && value !== null && value !== undefined && Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function txt(value, fallback) {\n              return typeof value === \"string\" ? value : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function list(value, fallback, max) {\n              var a = (typeof value === \"string\" ? value : \"\").split(\",\").map(function (s) { return s.trim(); }).filter(Boolean);\n              if (!a.length) a = fallback.slice();\n              return a.slice(0, max || 12);\n            }\n            function bezier(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 32; i++) {\n                  var u = 1 - t;\n                  var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                var v = 1 - t;\n                return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n              };\n            }\n            var E = {\n              out: bezier(0.16, 1, 0.3, 1), \"in\": bezier(0.7, 0, 0.84, 0), inOut: bezier(0.87, 0, 0.13, 1),\n              overshoot: bezier(0.34, 1.56, 0.64, 1), smooth: bezier(0.4, 0, 0.2, 1),\n              quadIn: function (x) { return x * x; },\n              quadOut: function (x) { return 1 - (1 - x) * (1 - x); },\n              cubicOut: function (x) { return 1 - Math.pow(1 - x, 3); },\n              cubicInOut: function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }\n            };\n            function clamp01(p) { return Math.min(1, Math.max(0, p)); }\n            // the source framework interpolate with clamped ends, one input range and one output range.\n            function ip(x, a, b, from, to, ease) {\n              var p = b === a ? (x >= b ? 1 : 0) : clamp01((x - a) / (b - a));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n            // Damped spring from 0 towards 1 (mass, stiffness, damping), frame at 30 fps, in closed form.\n            function spring(frame, cfg) {\n              if (frame <= 0) return 0;\n              var t = frame / 30, m = cfg.mass || 1, k = cfg.stiffness === undefined ? 100 : cfg.stiffness, c = cfg.damping === undefined ? 10 : cfg.damping;\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              if (z < 1) {\n                var wd = w0 * Math.sqrt(1 - z * z);\n                return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t));\n              }\n              var q = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + q, r2 = -z * w0 - q;\n              return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n            }\n            // Seeded generator (mulberry32).\n            function rng(seed) {\n              var a = seed >>> 0;\n              return function () {\n                a = (a + 0x6d2b79f5) >>> 0;\n                var t = a;\n                t = Math.imul(t ^ (t >>> 15), t | 1);\n                t ^= t + Math.imul(t ^ (t >>> 7), t | 61);\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            function onFonts(fn) {\n              if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn, function () {});\n            }\n            // Sets the group's font size, then shrinks it so the group (or its probe) fits the frame.\n            function fitG(g, size, probe, wf, hf, wmul) {\n              g.style.fontSize = size + \"px\";\n              var p = probe || g;\n              var w = Math.max(1, p.offsetWidth * (wmul || 1)), h = Math.max(1, p.offsetHeight);\n              var k = Math.min(1, root.clientWidth * (wf || 0.9) / w, root.clientHeight * (hf || 0.9) / h);\n              if (k < 1) { size = Math.max(6, size * k); g.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            function fillSizer(sizer, words) {\n              sizer.textContent = \"\";\n              words.forEach(function (w) {\n                var s = document.createElement(\"span\");\n                s.textContent = w;\n                sizer.appendChild(s);\n              });\n            }\n            function setText(node, value) {\n              if (node.__t !== value) { node.__t = value; node.textContent = value; }\n            }\n            var speed = num(vars.speed, 1, 0.25, 4);\n            var TOTAL = parseFloat(root.dataset.duration || \"4\");\n            var clock = { frame: 0 };\n            function start(draw) {\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { frame: Math.round(TOTAL * 30), duration: TOTAL, ease: \"none\", onUpdate: function () { draw(Math.round(clock.frame * speed * 1000) / 1000); } }, 0);\n              draw(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"word-roller-multi-slot\"] = tl;\n            }\n\n            root.style.background = str(vars.background, \"#fafafa\");\n            \n            var cols = [\n              list(vars.column_1, [\"Make\", \"Build\", \"Create\", \"Design\", \"Craft\", \"CREATE\"], 10),\n              list(vars.column_2, [\"the\", \"a\", \"your\", \"our\", \"THE\"], 10),\n              list(vars.column_3, [\"magic\", \"future\", \"dream\", \"vision\", \"FUTURE\"], 10)\n            ];\n            var stops = [50, 65, 80];\n            var g = el(\"wmu-g\");\n            var color = str(vars.color, \"#0a0a0a\"), accent = str(vars.accent, \"#2563eb\");\n            root.style.setProperty(\"--c\", color);\n            root.style.setProperty(\"--ac\", accent);\n            root.style.setProperty(\"--pn\", str(vars.panel, \"#ffffff\"));\n            var parts = cols.map(function (words, i) {\n              var col = document.createElement(\"div\"); col.className = \"wmu-col\";\n              var sz = document.createElement(\"div\"); sz.className = \"wmu-sizer\";\n              fillSizer(sz, words);\n              var mt = document.createElement(\"div\"); mt.className = \"wmu-mask t\";\n              var mb = document.createElement(\"div\"); mb.className = \"wmu-mask b\";\n              var sc = document.createElement(\"div\"); sc.className = \"wmu-sc\";\n              var a = document.createElement(\"div\"); a.className = \"wmu-cell\";\n              var b = document.createElement(\"div\"); b.className = \"wmu-cell\";\n              sc.appendChild(a); sc.appendChild(b);\n              col.appendChild(sz); col.appendChild(mt); col.appendChild(mb); col.appendChild(sc);\n              g.appendChild(col);\n              return { words: words, col: col, sc: sc, a: a, b: b, stop: stops[i], start: i * 5 };\n            });\n            var base = num(vars.font_size, 36, 12, 160);\n            function fit() { fitG(g, base, null, 0.9, 0.7); }\n            fit();\n            onFonts(fit);\n\n            // remocn-scenes: columns accelerate over 20 frames to 8 px a frame (60 px rows at 36 px type),\n            // then each stops with a spring bounce at frames 50, 65 and 80.\n            function draw(t) {\n              var WH = 60, U = 36;\n              parts.forEach(function (p, idx) {\n                var n = p.words.length, fin = n - 1, total = fin * WH, L = n * WH;\n                var spinning = t < p.stop;\n                var scrollY = 0;\n                if (spinning) {\n                  var lt = Math.max(0, t - p.start);\n                  var maxSpeed = 8;\n                  if (lt < 20) scrollY = (lt * (maxSpeed * E.quadIn(lt / 20)) * 0.5) % L;\n                  else scrollY = (20 * maxSpeed * 0.25 + (lt - 20) * maxSpeed) % L;\n                } else {\n                  var st = t - p.stop;\n                  var bs = spring(st, { damping: 10, stiffness: 250 });\n                  var over = 20 * Math.exp(-st * 0.15) * Math.sin(st * 0.8);\n                  scrollY = total + (1 - bs) * over;\n                }\n                var w = ((scrollY % L) + L) % L;\n                var di = Math.floor(w / WH) % n;\n                var ni = (di + 1) % n;\n                var off = w % WH;\n                var isFinal = !spinning && t >= p.stop + 15;\n                var impact = !spinning && t < p.stop + 8 ? spring(t - p.stop, { damping: 15, stiffness: 400 }) : 1;\n                if (isFinal) {\n                  setText(p.a, p.words[fin]);\n                  p.a.style.fontSize = \"1em\"; p.a.style.fontWeight = 700; p.a.style.color = accent;\n                  p.b.style.display = \"none\";\n                } else {\n                  setText(p.a, p.words[di]); setText(p.b, p.words[ni]);\n                  p.a.style.fontSize = p.b.style.fontSize = \"0.889em\"; p.a.style.fontWeight = p.b.style.fontWeight = 500;\n                  p.a.style.color = p.b.style.color = color;\n                  p.b.style.display = \"\";\n                }\n                if (isFinal) off = scrollY - total;\n                p.sc.style.transform = \"translateY(\" + (-off / U) + \"em)\";\n                p.sc.style.filter = spinning ? \"blur(\" + (3 / U) + \"em)\" : \"none\";\n                p.col.style.transform = \"scale(\" + impact + \")\";\n                p.col.style.borderColor = isFinal ? accent : \"#e5e5e5\";\n              });\n            }\n            start(draw);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "dc73c583ab5e1e36855da1c017fa384a38242c38100c58814e06f5cda373acc4",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#fafafa",
+ "demo_values": {
+  "font_size": 60
+ },
+ "variables": [
+  {
+   "id": "column_1",
+   "type": "string",
+   "role": "content",
+   "label": "Column 1 words",
+   "default": "Make, Build, Create, Design, Craft, CREATE"
+  },
+  {
+   "id": "column_2",
+   "type": "string",
+   "role": "content",
+   "label": "Column 2 words",
+   "default": "the, a, your, our, THE"
+  },
+  {
+   "id": "column_3",
+   "type": "string",
+   "role": "content",
+   "label": "Column 3 words",
+   "default": "magic, future, dream, vision, FUTURE"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 36,
+   "min": 12,
+   "max": 160
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Spinning color",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Landed color",
+   "default": "#2563eb"
+  },
+  {
+   "id": "panel",
+   "type": "color",
+   "role": "style",
+   "label": "Column fill",
+   "default": "#ffffff"
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#fafafa"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/lifeprompt-team/remotion-scenes"
+}

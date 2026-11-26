@@ -1,0 +1,102 @@
+{
+ "name": "payment-methods-row",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "pop and stagger: pills popping in one by one with line-drawn icons"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Payment Methods Row\n\nA line (\"Bayar pakai apa saja\") and a row of generic payment chips (Transfer bank, Kode QR, E-wallet, COD, Kartu) that pop in one after another, each with a small drawn glyph. No brand names or logos. The line and the methods are variables.\n\nCategory: commerce. Length: 4.5 s. WebGL: no.\n\nUse when:\n- Telling customers which ways of paying a shop accepts.\n- A closing moment of an online shop promo (\"bayar pakai apa saja\").\n\nAvoid when:\n- Showing one payment being made: use qr-pay-scan.\n- A checkout flow: use checkout-flow.\n\nVariables:\n- heading (string): Heading, default \"Bayar pakai apa saja\"\n- methods (string): Methods, default \"Transfer bank; Kode QR; E-wallet; COD; Kartu\"\n- stagger (number, 0.06-0.4): Gap between chips, default 0.14\n- chip_color (color): Chip colour, default \"#ffffff\"\n- bg_color (color): Background, default \"#ffffff\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- main_color (color): Accent, default \"#2563eb\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Payment Methods Row\n\n  A line (\"Bayar pakai apa saja\") and a row of generic payment chips (Transfer bank, Kode QR, E-wallet, COD, Kartu) that pop in one after another, each with a small drawn glyph. No brand names or logos. The line and the methods are variables.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"payment-methods-row\"\n  data-composition-duration=\"4.5\"\n  data-composition-variables='[\n  {\n    \"id\": \"heading\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Heading\",\n    \"description\": \"Line above the chips.\",\n    \"default\": \"Bayar pakai apa saja\"\n  },\n  {\n    \"id\": \"methods\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Methods\",\n    \"description\": \"Up to six method names separated by semicolons. Glyphs are chosen by position: bank, QR code, wallet, delivery box, card, then repeating.\",\n    \"default\": \"Transfer bank; Kode QR; E-wallet; COD; Kartu\"\n  },\n  {\n    \"id\": \"stagger\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Gap between chips\",\n    \"description\": \"Seconds between two chips popping in.\",\n    \"default\": 0.14,\n    \"min\": 0.06,\n    \"max\": 0.4,\n    \"step\": 0.01\n  },\n  {\n    \"id\": \"chip_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Chip colour\",\n    \"description\": \"Chip background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Main text and outlines.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Secondary text and hairlines.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent\",\n    \"description\": \"The glyph lines: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Font family name. Geist is loaded by default; another family must be loaded by the host.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Payment Methods Row</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          color: var(--pm-text); font-family: var(--FAM, Geist), system-ui, sans-serif; background: var(--pm-bg);\n        }\n        #root * { box-sizing: border-box; }\n        .pm-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        .pm-wrap { position: absolute; left: 50%; top: 50%; display: flex; flex-direction: column; align-items: center; transform-origin: 50% 50%; }\n        .pm-head { font-size: calc(var(--u) * 92); font-weight: 700; letter-spacing: -0.045em; line-height: 1.1; text-align: center; margin-bottom: calc(var(--u) * 70); }\n        .pm-mask { display: block; overflow: hidden; padding-bottom: calc(var(--u) * 12); }\n        .pm-mask > span { display: block; }\n        .pm-row { display: flex; flex-wrap: wrap; justify-content: center; gap: calc(var(--u) * 28); }\n        .pm-chip { display: flex; align-items: center; gap: calc(var(--u) * 20); height: calc(var(--u) * 134); padding: 0 calc(var(--u) * 42) 0 calc(var(--u) * 36); border-radius: calc(var(--u) * 62); background: var(--pm-chip); border: calc(var(--u) * 3) solid rgba(10,10,10,0.14); box-shadow: 0 calc(var(--u) * 6) calc(var(--u) * 14) rgba(0,0,0,0.06); font-size: calc(var(--u) * 50); font-weight: 600; letter-spacing: -0.025em; white-space: nowrap; }\n        .pm-chip svg { width: calc(var(--u) * 74); height: calc(var(--u) * 74); flex: none; overflow: visible; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"payment-methods-row\" data-duration=\"4.5\" data-fps=\"30\">\n        <div id=\"pm-clip\" class=\"pm-stage clip\" data-start=\"0\" data-duration=\"4.5\" data-track-index=\"0\">\n\n          <div class=\"pm-wrap\" id=\"pm-wrap\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function svg(tag, attrs, parent) { var e = document.createElementNS(\"http://www.w3.org/2000/svg\", tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function rp(n) { return \"Rp\" + dots(n); }\n            function money(s) { var d = String(s).replace(/[^\\d]/g, \"\"); return d ? parseInt(d, 10) : 0; }\n            function list(s, d) { var a = String(str(s, d)).split(\";\").map(function (x) { return x.trim(); }).filter(Boolean); return a.length ? a : String(d).split(\";\").map(function (x) { return x.trim(); }); }\n            function mulberry(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function setColors(p, c) { for (var k in c) root.style.setProperty(\"--\" + p + \"-\" + k, colr(vars[k + \"_color\"], c[k])); }\n            var fam = str(vars.font_family, \"Geist\");\n            root.style.setProperty(\"--FAM\", /^[\\w\\s-]+$/.test(fam) ? '\"' + fam + '\"' : \"Geist\");\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n            setColors(\"pm\", { bg: \"#ffffff\", text: \"#0a0a0a\", muted: \"#737373\", main: \"#2563eb\", chip: \"#ffffff\" });\n\n\n            var u = U, wrap = document.getElementById(\"pm-wrap\");\n            root.style.setProperty(\"--pm-chip\", colr(vars.chip_color, \"#ffffff\"));\n            var heading = typeof vars.heading === \"string\" ? vars.heading.trim() : \"Bayar pakai apa saja\";\n            var methods = list(vars.methods, \"Transfer bank; Kode QR; E-wallet; COD; Kartu\").slice(0, 6);\n            var gapT = num(vars.stagger, 0.14, 0.06, 0.4);\n            var main = colr(vars.main_color, \"#2563eb\");\n            var GL = [\n              [[\"path\", \"M3 10 L12 4 L21 10 Z\"], [\"path\", \"M6 10v8\"], [\"path\", \"M10 10v8\"], [\"path\", \"M14 10v8\"], [\"path\", \"M18 10v8\"], [\"path\", \"M3 20h18\"]],\n              [[\"rect\", { x: 3, y: 3, width: 7, height: 7, rx: 1 }], [\"rect\", { x: 14, y: 3, width: 7, height: 7, rx: 1 }], [\"rect\", { x: 3, y: 14, width: 7, height: 7, rx: 1 }], [\"path\", \"M14 14h3v3h-3z\"], [\"path\", \"M20 14v1\"], [\"path\", \"M14 20h1\"], [\"path\", \"M19 19h2v2\"]],\n              [[\"path\", \"M3 9V6.5A2.5 2.5 0 0 1 5.5 4H17\"], [\"rect\", { x: 3, y: 8, width: 18, height: 12, rx: 2.5 }], [\"path\", \"M16.5 14h4.5\"], [\"path\", \"M16.6 14h.01\"]],\n              [[\"path\", \"M4 7.5 L12 3.5 L20 7.5 V16.5 L12 20.5 L4 16.5 Z\"], [\"path\", \"M4 7.5 L12 11.5 L20 7.5\"], [\"path\", \"M12 11.5V20.5\"]],\n              [[\"rect\", { x: 2.5, y: 5, width: 19, height: 14, rx: 2.5 }], [\"path\", \"M2.5 10h19\"], [\"path\", \"M6 15h4\"]]\n            ];\n            var hEl = el(\"div\", \"pm-head\", wrap), hm = null;\n            if (heading) { var mk = el(\"span\", \"pm-mask\", hEl); hm = el(\"span\", \"\", mk); hm.textContent = heading; } else hEl.style.display = \"none\";\n            var row = el(\"div\", \"pm-row\", wrap), chips = [], strokes = [];\n            methods.forEach(function (name, i) {\n              var c = el(\"div\", \"pm-chip\", row);\n              var sv = svg(\"svg\", { viewBox: \"0 0 24 24\", fill: \"none\", stroke: main, \"stroke-width\": 1.9, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\" }, c);\n              GL[i % GL.length].forEach(function (g) {\n                var e = typeof g[1] === \"string\" ? svg(g[0], { d: g[1], pathLength: 1 }, sv) : svg(g[0], Object.assign({ pathLength: 1 }, g[1]), sv);\n                e.style.strokeDasharray = \"1\"; e.style.strokeDashoffset = \"1\"; strokes.push({ e: e, i: i });\n              });\n              el(\"span\", \"\", c).textContent = name;\n              chips.push(c);\n            });\n            var gw = (PORTRAIT ? 1000 : 1940) * u;\n            wrap.style.width = gw + \"px\"; row.style.width = gw + \"px\";\n            var gh = wrap.offsetHeight;\n            var S = Math.min(1.3, (H * 0.88) / gh, (W * 0.94) / gw);\n            wrap.style.height = gh + \"px\";\n            gsap.set(wrap, { xPercent: -50, yPercent: -50, scale: S });\n\n            var tl = gsap.timeline({ paused: true });\n            if (hm) tl.fromTo(hm, { yPercent: 115 }, { yPercent: 0, duration: 0.7, ease: \"expo.out\" }, 0.15);\n            var t0 = 0.8;\n            chips.forEach(function (c, i) {\n              tl.fromTo(c, { scale: 0.55, opacity: 0, y: 28 * u }, { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: \"back.out(1.6)\" }, t0 + i * gapT * 1.0);\n              var mine = strokes.filter(function (s) { return s.i === i; }).map(function (s) { return s.e; });\n              tl.fromTo(mine, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.5, ease: \"power2.out\", stagger: 0.06 }, t0 + i * gapT + 0.2);\n            });\n\n            var total = parseFloat(root.dataset.duration || \"4.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"payment-methods-row\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "42307fba9c9a011dfb35ab70b4130d1b437a2ec1488fd1d0224b17a924bf09ec",
+ "duration": 4.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "heading",
+   "type": "string",
+   "role": "content",
+   "label": "Heading",
+   "default": "Bayar pakai apa saja"
+  },
+  {
+   "id": "methods",
+   "type": "string",
+   "role": "content",
+   "label": "Methods",
+   "default": "Transfer bank; Kode QR; E-wallet; COD; Kartu"
+  },
+  {
+   "id": "stagger",
+   "type": "number",
+   "role": "motion",
+   "label": "Gap between chips",
+   "default": 0.14,
+   "min": 0.06,
+   "max": 0.4
+  },
+  {
+   "id": "chip_color",
+   "type": "color",
+   "role": "style",
+   "label": "Chip colour",
+   "default": "#ffffff"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2563eb"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

@@ -1,0 +1,116 @@
+{
+ "name": "flow-field",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/flow-field/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Flow Field\n\nHundreds of particles ride a seeded, slowly changing vector field and leave fine fading trails, as a seamless loop.\n\nCategory: motion-graphics. Length: 10 s. WebGL: no.\n\nUse when:\n- A title card, quote or hero shot needs a quiet, organic line texture behind it that keeps moving without drawing attention.\n- A scene about data, AI, networks or motion needs a generative backdrop that stays monochrome with a few accent strands.\n- The background has to loop without a seam for any length of shot.\n\nAvoid when:\n- The backdrop should be soft color fields rather than thin lines: use a gradient or mesh block.\n- The motion should read as clouds or smoke rather than strands.\n- The loop should be geometric and rule-based rather than organic.\n\nVariables:\n- particles (number, 50-800): Particles, default 300\n- trail_length (number, 8-120): Trail length, default 72\n- stroke_width (number, 0.5-4): Stroke width, default 1.4\n- accent_ratio (number, 0-1): Accent share, default 0.1\n- loop_frames (number, 120-600): Loop frames, default 300\n- seed (number, 1-50): Seed, default 1\n- speed (number, 0.1-4): Speed, default 1\n- background (color): Background, default \"#111111\"\n- color (color): Trails, default \"#FFFFFF\"\n- accent (color): Accent, default \"#E5322D\"\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Flow Field\n\n  Hundreds of particles ride a seeded, slowly changing vector field and leave fine fading trails, as a seamless loop.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/flow-field/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"flow-field\"\n  data-composition-duration=\"10\"\n  data-composition-variables='[\n    {\"id\": \"particles\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Particles\", \"description\": \"Number of particles in flight.\", \"default\": 300, \"min\": 50, \"max\": 800, \"step\": 10},\n    {\"id\": \"trail_length\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Trail length\", \"description\": \"Trail length in frames.\", \"default\": 72, \"min\": 8, \"max\": 120, \"step\": 1, \"unit\": \"frames\"},\n    {\"id\": \"stroke_width\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Stroke width\", \"description\": \"Trail width in pixels at 720p.\", \"default\": 1.4, \"min\": 0.5, \"max\": 4, \"step\": 0.1, \"unit\": \"px\"},\n    {\"id\": \"accent_ratio\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Accent share\", \"description\": \"Share of trails drawn in the accent color.\", \"default\": 0.1, \"min\": 0, \"max\": 1, \"step\": 0.05},\n    {\"id\": \"loop_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Loop frames\", \"description\": \"Frames for one seamless loop of the field. The component lasts 10 s, so 300 loops once.\", \"default\": 300, \"min\": 120, \"max\": 600, \"step\": 30, \"unit\": \"frames\"},\n    {\"id\": \"seed\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Seed\", \"description\": \"Changes the field and where the particles start.\", \"default\": 1, \"min\": 1, \"max\": 50, \"step\": 1},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed of the simulation.\", \"default\": 1, \"min\": 0.1, \"max\": 4, \"step\": 0.1},\n    {\"id\": \"background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Background color.\", \"default\": \"#111111\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Trails\", \"description\": \"Trail color.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Accent\", \"description\": \"Accent trail color.\", \"default\": \"#E5322D\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Flow Field</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { background: #111111; }\n        .ff-stage { position: absolute; inset: 0; }\n        .ff-stage svg { display: block; width: 100%; height: 100%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"flow-field\" data-duration=\"10\" data-fps=\"30\">\n        <div id=\"ff-clip\" class=\"ff-stage clip\" data-start=\"0\" data-duration=\"10\" data-track-index=\"0\">\n          <svg id=\"ff-svg\" role=\"img\" aria-label=\"Flow field\"></svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            var FPS = 30;\n            var W = root.clientWidth || 1080;\n            var H = root.clientHeight || 1920;\n\n            // Seeded random in [0, 1): a string hash, so the same key always gives the same value.\n            function rnd(key) {\n              var h = 1779033703 ^ key.length;\n              for (var i = 0; i < key.length; i++) {\n                h = Math.imul(h ^ key.charCodeAt(i), 3432918353);\n                h = (h << 13) | (h >>> 19);\n              }\n              h = Math.imul(h ^ (h >>> 16), 2246822507);\n              h = Math.imul(h ^ (h >>> 13), 3266489909);\n              h ^= h >>> 16;\n              return (h >>> 0) / 4294967296;\n            }\n\n            function fmt(n) { return Math.round(n * 10) / 10; }\n\n            var SVGNS = \"http://www.w3.org/2000/svg\";\n            function el(tag, attrs, parent) {\n              var e = document.createElementNS(SVGNS, tag);\n              for (var k in attrs) e.setAttribute(k, attrs[k]);\n              if (parent) parent.appendChild(e);\n              return e;\n            }\n\n            var tl = gsap.timeline({ paused: true });\n            // Runs draw(frame) from the timeline so seeking to a time always draws the same picture.\n            function drive(frames, draw) {\n              var clock = { frame: 0 };\n              tl.to(clock, { frame: frames, duration: frames / FPS, ease: \"none\", onUpdate: function () { draw(clock.frame); } }, 0);\n              draw(0);\n            }\n\n            var particles = Math.round(num(vars.particles, 300, 50, 800));\n            var trailLength = num(vars.trail_length, 72, 8, 120);\n            var strokeWidth = num(vars.stroke_width, 1.4, 0.5, 4);\n            var accentRatio = num(vars.accent_ratio, 0.1, 0, 1);\n            var loop = Math.round(num(vars.loop_frames, 300, 120, 600));\n            var seed = Math.round(num(vars.seed, 1, 1, 50));\n            var speed = num(vars.speed, 1, 0.1, 4);\n            root.style.background = str(vars.background, \"#111111\");\n            var color = str(vars.color, \"#FFFFFF\");\n            var accent = str(vars.accent, \"#E5322D\");\n\n            var TAU = Math.PI * 2, WAVES = 4, STEP = 0.0042, BUCKETS = 6, LIFE_FRAMES = 150;\n            function r(key) { return rnd(\"flow-field-\" + seed + \"-\" + key); }\n            var base = r(\"base\") * TAU, waves = [];\n            for (var k = 0; k < WAVES; k++) {\n              waves.push({\n                fx: (r(\"fx\" + k) * 2 - 1) * (0.9 + k * 0.8),\n                fy: (r(\"fy\" + k) * 2 - 1) * (0.9 + k * 0.8),\n                phase: r(\"ph\" + k) * TAU,\n                drift: 0.6 + r(\"dr\" + k) * 0.9,\n                amp: 1.6 / (1 + k * 1.4)\n              });\n            }\n            // Flow angle at (x, y); tau walks once around a circle per loop, so the end matches the start.\n            function field(x, y, tau) {\n              var a = base;\n              for (var i = 0; i < WAVES; i++) {\n                var w = waves[i];\n                a += w.amp * Math.sin(w.fx * x + w.fy * y + w.phase + w.drift * Math.sin(tau + w.phase));\n              }\n              return a;\n            }\n\n            var svg = document.getElementById(\"ff-svg\");\n            svg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n            var unit = Math.min(W, H), spanX = W / unit, spanY = H / unit;\n            var sw = (strokeWidth * unit) / 720;\n            var layers = {};\n            [\"color\", \"accent\"].forEach(function (name) {\n              var g = el(\"g\", { fill: \"none\", stroke: name === \"color\" ? color : accent, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\" }, svg);\n              layers[name] = [];\n              for (var b = 0; b < BUCKETS; b++) {\n                layers[name].push(el(\"path\", {\n                  \"stroke-opacity\": 0.9 * Math.pow(1 - b / BUCKETS, 1.4),\n                  \"stroke-width\": sw * (1 - (b / BUCKETS) * 0.5)\n                }, g));\n              }\n            });\n\n            var lives = Math.max(1, Math.round(loop / LIFE_FRAMES));\n            var life = loop / lives;\n            var trail = Math.max(2, Math.min(trailLength, life * 0.6));\n            var travel = life - trail;\n            var offsets = [], isAccent = [];\n            for (var p = 0; p < particles; p++) {\n              offsets.push(r(\"off-\" + p) * life);\n              isAccent.push(r(\"accent-\" + p) < accentRatio);\n            }\n            var pts = [];\n\n            function draw(frame) {\n              var time = frame * speed;\n              var paths = { color: [], accent: [] };\n              for (var b = 0; b < BUCKETS; b++) { paths.color.push(\"\"); paths.accent.push(\"\"); }\n              for (var i = 0; i < particles; i++) {\n                var local = time + offsets[i];\n                var cycle = Math.floor(local / life);\n                var age = local - cycle * life;\n                // The head moves for `travel` frames, then stops while the tail catches up.\n                var head = Math.min(age, travel);\n                var tail = Math.max(0, age - trail);\n                if (head - tail < 0.05) continue;\n                var slot = ((cycle % lives) + lives) % lives;\n                var key = \"p\" + i + \"-c\" + slot;\n                var x = -0.08 + r(key + \"-x\") * (spanX + 0.16);\n                var y = -0.08 + r(key + \"-y\") * (spanY + 0.16);\n                var birth = time - age;\n                pts.length = 0;\n                pts.push(x, y);\n                var steps = Math.ceil(head);\n                for (var s = 0; s < steps; s++) {\n                  var a = field(x, y, (TAU * (birth + s)) / loop);\n                  x += Math.cos(a) * STEP;\n                  y += Math.sin(a) * STEP;\n                  pts.push(x, y);\n                }\n                var at = function (kk) {\n                  var j = Math.min(Math.floor(kk), steps - 1);\n                  var f = kk - j;\n                  if (j < 0) return [pts[0], pts[1]];\n                  return [pts[j * 2] + (pts[j * 2 + 2] - pts[j * 2]) * f, pts[j * 2 + 1] + (pts[j * 2 + 3] - pts[j * 2 + 1]) * f];\n                };\n                var target = isAccent[i] ? paths.accent : paths.color;\n                // Older age buckets are fainter.\n                for (var bk = 0; bk < BUCKETS; bk++) {\n                  var from = Math.max(tail, age - (trail * (bk + 1)) / BUCKETS);\n                  var to = Math.min(head, age - (trail * bk) / BUCKETS);\n                  if (to - from <= 0.01) continue;\n                  var f0 = at(from);\n                  var d = \"M \" + fmt(f0[0] * unit) + \" \" + fmt(f0[1] * unit);\n                  for (var q = Math.floor(from) + 1; q < to; q++) d += \" L \" + fmt(pts[q * 2] * unit) + \" \" + fmt(pts[q * 2 + 1] * unit);\n                  var t0 = at(to);\n                  d += \" L \" + fmt(t0[0] * unit) + \" \" + fmt(t0[1] * unit) + \" \";\n                  target[bk] += d;\n                }\n              }\n              for (var n = 0; n < BUCKETS; n++) {\n                layers.color[n].setAttribute(\"d\", paths.color[n]);\n                layers.accent[n].setAttribute(\"d\", paths.accent[n]);\n              }\n            }\n            drive(Math.round(parseFloat(root.dataset.duration || \"10\") * FPS), draw);\n\n            var total = parseFloat(root.dataset.duration || \"10\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"flow-field\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "67ec894c3a59976de6e87b7b6637c73c139f1dc008e0792979120bc4ef85c578",
+ "duration": 10,
+ "webgl": false,
+ "demo_background": "#111111",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "particles",
+   "type": "number",
+   "role": "style",
+   "label": "Particles",
+   "default": 300,
+   "min": 50,
+   "max": 800
+  },
+  {
+   "id": "trail_length",
+   "type": "number",
+   "role": "style",
+   "label": "Trail length",
+   "default": 72,
+   "min": 8,
+   "max": 120
+  },
+  {
+   "id": "stroke_width",
+   "type": "number",
+   "role": "style",
+   "label": "Stroke width",
+   "default": 1.4,
+   "min": 0.5,
+   "max": 4
+  },
+  {
+   "id": "accent_ratio",
+   "type": "number",
+   "role": "style",
+   "label": "Accent share",
+   "default": 0.1,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "loop_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Loop frames",
+   "default": 300,
+   "min": 120,
+   "max": 600
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "style",
+   "label": "Seed",
+   "default": 1,
+   "min": 1,
+   "max": 50
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.1,
+   "max": 4
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#111111"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Trails",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#E5322D"
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

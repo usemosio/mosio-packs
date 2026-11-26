@@ -1,0 +1,177 @@
+{
+ "name": "trim-burst",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/trim-burst/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Trim Burst\n\nShort strokes shoot outward from a point and shrink to nothing: a quick spark, pop or impact accent.\n\nCategory: shapes. Length: 1.5 s. WebGL: no.\n\nUse when:\n- A click, hit, pop or reveal needs a quick burst of lines as a punctuation accent.\n- A UI action or number landing should feel celebratory without a full particle system.\n\nAvoid when:\n- You need a large, sustained celebration: use confetti or particles.\n- The burst should sit on a moving target: the origin is a fixed point.\n\nVariables:\n- x (number, 0-1): X, default 0.5\n- y (number, 0-1): Y, default 0.5\n- count (number, 1-24): Strokes, default 8\n- inner_radius (number, 0-160): Inner radius, default 16\n- reach (number, 8-240): Reach, default 64\n- stroke_length (number, 4-200): Stroke length, default 56\n- weight (number, 0.5-8): Weight, default 2\n- rotation (number, -180-180): Rotation, default 0\n- spread (number, 15-360): Spread, default 360\n- jitter (number, 0-1): Jitter, default 0.5\n- dots (boolean): Tip dots, default false\n- cap (enum): Cap, default \"round\"\n- color (color): Line color, default \"#ffffff\"\n- seed (number, 1-99): Seed, default 1\n- delay (number, 0-30): Delay, default 0\n- speed (number, 0.25-3): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Trim Burst\n\n  Short strokes shoot outward from a point and shrink to nothing: a quick spark, pop or impact accent.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/trim-burst/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"trim-burst\"\n  data-composition-duration=\"1.5\"\n  data-composition-variables='[{\"id\":\"x\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"X\",\"description\":\"Burst origin across the frame, 0 (left) to 1 (right).\",\"default\":0.5,\"min\":0,\"max\":1,\"step\":0.01},{\"id\":\"y\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Y\",\"description\":\"Burst origin down the frame, 0 (top) to 1 (bottom).\",\"default\":0.5,\"min\":0,\"max\":1,\"step\":0.01},{\"id\":\"count\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Strokes\",\"description\":\"Number of strokes.\",\"default\":8,\"min\":1,\"max\":24,\"step\":1},{\"id\":\"inner_radius\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Inner radius\",\"description\":\"Gap between the origin and where strokes start, at a 720 px frame height.\",\"default\":16,\"min\":0,\"max\":160,\"step\":1,\"unit\":\"px\"},{\"id\":\"reach\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Reach\",\"description\":\"How far each stroke travels.\",\"default\":64,\"min\":8,\"max\":240,\"step\":1,\"unit\":\"px\"},{\"id\":\"stroke_length\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Stroke length\",\"description\":\"Length of each visible stroke.\",\"default\":56,\"min\":4,\"max\":200,\"step\":1,\"unit\":\"px\"},{\"id\":\"weight\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Weight\",\"description\":\"Line thickness.\",\"default\":2,\"min\":0.5,\"max\":8,\"step\":0.25,\"unit\":\"px\"},{\"id\":\"rotation\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Rotation\",\"description\":\"Rotation of the whole burst in degrees.\",\"default\":0,\"min\":-180,\"max\":180,\"step\":1,\"unit\":\"deg\"},{\"id\":\"spread\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Spread\",\"description\":\"Angle covered by the strokes; below 360 they fan out around the rotation.\",\"default\":360,\"min\":15,\"max\":360,\"step\":1,\"unit\":\"deg\"},{\"id\":\"jitter\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Jitter\",\"description\":\"Random variety in angle, length and launch time.\",\"default\":0.5,\"min\":0,\"max\":1,\"step\":0.05},{\"id\":\"dots\",\"type\":\"boolean\",\"role\":\"style\",\"label\":\"Tip dots\",\"description\":\"Pop a small dot at the tip of each stroke.\",\"default\":false},{\"id\":\"cap\",\"type\":\"enum\",\"role\":\"style\",\"label\":\"Cap\",\"description\":\"Stroke ends.\",\"default\":\"round\",\"options\":[{\"value\":\"round\",\"label\":\"Round\"},{\"value\":\"butt\",\"label\":\"Butt\"}]},{\"id\":\"color\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Line color\",\"description\":\"Stroke color.\",\"default\":\"#ffffff\"},{\"id\":\"seed\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Seed\",\"description\":\"Seed for the random variation.\",\"default\":1,\"min\":1,\"max\":99,\"step\":1},{\"id\":\"delay\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Delay\",\"description\":\"Frames (30 fps) before the burst starts.\",\"default\":0,\"min\":0,\"max\":30,\"step\":1,\"unit\":\"frames\"},{\"id\":\"speed\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Speed\",\"description\":\"Playback speed multiplier.\",\"default\":1,\"min\":0.25,\"max\":3,\"step\":0.05,\"unit\":\"x\"}]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Trim Burst</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n\n        }\n        .tbu-stage { position: absolute; inset: 0; }\n        .tbu-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"trim-burst\" data-duration=\"1.5\" data-fps=\"30\">\n        <div id=\"tbu-clip\" class=\"tbu-stage clip\" data-start=\"0\" data-duration=\"1.5\" data-track-index=\"0\">\n          <svg id=\"tbu-svg\" class=\"tbu-svg\" role=\"img\" aria-label=\"Trim burst\"><g id=\"tbu-lines\" fill=\"none\"></g><g id=\"tbu-dots\"></g></svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Frame-based helpers, written from their definitions.\n            var Easing = (function () {\n              function bezier(x1, y1, x2, y2) {\n                return function (x) {\n                  if (x <= 0) return 0;\n                  if (x >= 1) return 1;\n                  var lo = 0, hi = 1, t = x;\n                  for (var i = 0; i < 40; i++) {\n                    var u = 1 - t;\n                    var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                    if (Math.abs(cx - x) < 1e-6) break;\n                    if (cx < x) lo = t; else hi = t;\n                    t = (lo + hi) / 2;\n                  }\n                  var v = 1 - t;\n                  return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n                };\n              }\n              return {\n                bezier: bezier,\n                linear: function (t) { return t; },\n                quad: function (t) { return t * t; },\n                cubic: function (t) { return t * t * t; },\n                sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); },\n                poly: function (n) { return function (t) { return Math.pow(t, n); }; },\n                ease: bezier(0.42, 0, 1, 1),\n                out: function (f) { return function (t) { return 1 - f(1 - t); }; },\n                inOut: function (f) { return function (t) { return t < 0.5 ? f(t * 2) / 2 : 1 - f((1 - t) * 2) / 2; }; }\n              };\n            })();\n            function interpolate(input, inR, outR, o) {\n              o = o || {};\n              var n = inR.length;\n              var left = o.extrapolateLeft || \"extend\";\n              var right = o.extrapolateRight || \"extend\";\n              var i = 1;\n              while (i < n - 1 && input > inR[i]) i++;\n              var a = inR[i - 1], b = inR[i];\n              if (input < inR[0] && left === \"clamp\") return outR[0];\n              if (input > inR[n - 1] && right === \"clamp\") return outR[n - 1];\n              var t = b === a ? 0 : (input - a) / (b - a);\n              if (o.easing) t = o.easing(t);\n              return outR[i - 1] + (outR[i] - outR[i - 1]) * t;\n            }\n            // Damped spring from rest to 1. durationInFrames stretches time so the spring has settled by then.\n            function spring(o) {\n              var c = o.config || {};\n              var mass = c.mass != null ? c.mass : 1;\n              var k = c.stiffness != null ? c.stiffness : 100;\n              var damp = c.damping != null ? c.damping : 10;\n              function at(t) {\n                var w0 = Math.sqrt(k / mass);\n                var z = damp / (2 * Math.sqrt(k * mass));\n                if (z < 1) {\n                  var wd = w0 * Math.sqrt(1 - z * z);\n                  return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));\n                }\n                return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              }\n              var t = Math.max(0, o.frame) / o.fps;\n              if (o.durationInFrames) {\n                var settle = 4, step = 1 / o.fps;\n                for (var s = settle; s > 0.05; s -= step) {\n                  if (Math.abs(1 - at(s)) > 0.001) { settle = s + step; break; }\n                  settle = s;\n                }\n                t = (Math.max(0, o.frame) / o.durationInFrames) * settle;\n                if (o.frame >= o.durationInFrames) return 1;\n              }\n              return at(t);\n            }\n            function parseColor(c) {\n              var m;\n              c = String(c).trim();\n              if ((m = /^#([0-9a-f]{3,8})$/i.exec(c))) {\n                var h = m[1];\n                if (h.length <= 4) h = h.split(\"\").map(function (x) { return x + x; }).join(\"\");\n                return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16), h.length === 8 ? parseInt(h.slice(6, 8), 16) / 255 : 1];\n              }\n              if ((m = /^rgba?\\(([^)]+)\\)/i.exec(c))) {\n                var p = m[1].split(\",\").map(Number);\n                return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1];\n              }\n              return [0, 0, 0, 1];\n            }\n            function interpolateColors(t, inR, outR) {\n              var a = parseColor(outR[0]), b = parseColor(outR[1]);\n              var u = Math.min(1, Math.max(0, (t - inR[0]) / (inR[1] - inR[0])));\n              return \"rgba(\" + [0, 1, 2].map(function (i) { return Math.round(a[i] + (b[i] - a[i]) * u); }).join(\",\") + \",\" + (a[3] + (b[3] - a[3]) * u) + \")\";\n            }\n            // Seeded 0..1 value: the same seed always gives the same number.\n            function random(seed) {\n              var s = String(seed), h = 2166136261;\n              for (var i = 0; i < s.length; i++) {\n                h ^= s.charCodeAt(i);\n                h = Math.imul(h, 16777619);\n              }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              h = Math.imul(h ^ (h >>> 16), 3266489917);\n              return ((h ^ (h >>> 15)) >>> 0) / 4294967296;\n            }\n            // Fit a fixed-size design stage into the frame.\n            function fit(el, w, h, fill) {\n              var s = Math.min(root.clientWidth / w, root.clientHeight / h) * (fill || 1);\n              el.style.position = \"absolute\";\n              el.style.left = \"50%\";\n              el.style.top = \"50%\";\n              el.style.width = w + \"px\";\n              el.style.height = h + \"px\";\n              el.style.transform = \"translate(-50%, -50%) scale(\" + s + \")\";\n              return s;\n            }\n            // Drive draw(frame) from the timeline so seeking always draws the same picture.\n            function clockTween(tl, totalFrames, draw, rate) {\n              var clock = { frame: 0 };\n              tl.to(clock, { frame: totalFrames, duration: totalFrames / 30, ease: \"none\", onUpdate: function () { draw(clock.frame * (rate || 1)); } }, 0);\n              draw(0);\n            }\n            var SVGNS = \"http://www.w3.org/2000/svg\";\n            function svgEl(tag, attrs, parent) {\n              var e = document.createElementNS(SVGNS, tag);\n              for (var k in attrs) e.setAttribute(k, attrs[k]);\n              if (parent) parent.appendChild(e);\n              return e;\n            }\n\n\n            \n\n                                            \n\n                                 \n             \n             \n                 \n                       \n                 \n                        \n                  \n                    \n                  \n                  \n                 \n                     \n                 \n                \n                 \n                 \n                     \n \n\n                                   \n\n                                                                       \n                 \n                  \n               \n \n\n                                  \n                \n                \n                \n                 \n \n\n                                \n                \n              \n                 \n \n\n                                \n                \n             \n             \n             \n             \n                \n \n\n                               \n                \n             \n             \n            \n \n\nconst trimBurstDefaults                                              = {\n  x: 0.5,\n  y: 0.5,\n  count: 8,\n  innerRadius: 16,\n  reach: 64,\n  strokeLength: 56,\n  weight: 2,\n  rotation: 0,\n  spread: 360,\n  jitter: 0.5,\n  dots: false,\n  cap: \"round\",\n  color: \"#ffffff\",\n  seed: 1,\n  delay: 0,\n  speed: 1,\n};\n\nconst LIFE = 15;\nconst LAG = 3;\nconst STAGGER = 6;\nconst HOLD = 24;\nconst LEASH = 6;\nconst WOBBLE = 0.25;\nconst MAX_STEP = 45;\nconst SHRINK = 0.45;\nconst DOT_START = 4;\nconst DOT_POP = 4;\nconst DOT_BACK = 1.4;\nconst DOT_RADIUS = 1.25;\nconst DOT_GAP = 2;\nconst MAX_COUNT = 32;\nconst MAX_SIZE = 2000;\nconst MIN_STROKE = 1;\nconst MIN_WEIGHT = 0.25;\nconst MAX_WEIGHT = 24;\nconst VISIBLE = 0.001;\nconst END_EASE = Easing.bezier(0.16, 1, 0.3, 1);\nconst START_EASE = Easing.bezier(0.45, 0, 0.55, 1);\n\nconst finite = (value                    , fallback        ) =>\n  typeof value === \"number\" && Number.isFinite(value) ? value : fallback;\nconst clamp = (value        , min        , max        ) =>\n  Math.min(max, Math.max(min, value));\nconst within = (\n  value                    ,\n  fallback        ,\n  min        ,\n  max        ,\n) => clamp(finite(value, fallback), min, max);\nconst round = (value        ) => Math.round(value * 1000) / 1000;\nconst rateOf = (speed                    ) =>\n  Math.max(0, finite(speed, trimBurstDefaults.speed));\nconst delayOf = (delay                    ) =>\n  Math.max(0, finite(delay, trimBurstDefaults.delay));\nconst countOf = (count                    ) =>\n  Math.round(within(count, trimBurstDefaults.count, 1, MAX_COUNT));\nconst jitterOf = (jitter                    ) =>\n  within(jitter, trimBurstDefaults.jitter, 0, 1);\nconst capOf = (cap                    )               =>\n  cap === \"butt\" ? cap : \"round\";\n\nfunction getTrimBurstTimeline(\n  options                                             = {},\n) {\n  const count = countOf(options.count);\n  const stagger = count > 1 ? STAGGER * jitterOf(options.jitter) : 0;\n  return { life: LIFE, lag: LAG, stagger, length: LIFE + stagger };\n}\n\n                                                                        \n\nconst trimBurstLength = getTrimBurstTimeline().length;\n\nfunction getTrimBurstDuration(\n  options                                                                 = {},\n) {\n  const rate = rateOf(options.speed);\n  const { length } = getTrimBurstTimeline(options);\n  const motion = rate === 0 ? 0 : length / rate;\n  return Math.ceil(round(delayOf(options.delay) + motion)) + HOLD;\n}\n\nfunction getTrimBurstTime(\n  frame        ,\n  options                                                    = {},\n) {\n  const fps = Math.max(1, finite(options.fps, 30));\n  const elapsed = Math.max(0, finite(frame, 0) - delayOf(options.delay));\n  return elapsed * (30 / fps) * rateOf(options.speed);\n}\n\nfunction getTrimBurstEndProgress(time        ) {\n  if (Number.isNaN(time) || time <= 0) return 0;\n  if (time >= LIFE) return 1;\n  return END_EASE(time / LIFE);\n}\n\nfunction getTrimBurstStartProgress(time        ) {\n  if (Number.isNaN(time) || time <= LAG) return 0;\n  if (time >= LIFE) return 1;\n  return START_EASE((time - LAG) / (LIFE - LAG));\n}\n\nfunction getTrimBurstLeash(gap        , strokeLength        ) {\n  if (!(gap > 0 && strokeLength > 0)) return 0;\n  return gap / (1 + (gap / strokeLength) ** LEASH) ** (1 / LEASH);\n}\n\nfunction getTrimBurstTrim(\n  time        ,\n  reach        ,\n  strokeLength        ,\n)                {\n  const distance = Math.max(0, finite(reach, 0));\n  const end = distance * getTrimBurstEndProgress(time);\n  const own = distance * getTrimBurstStartProgress(time);\n  const length = getTrimBurstLeash(end - own, strokeLength);\n  return { start: end - length, end, length };\n}\n\nfunction getTrimBurstDotScale(time        ) {\n  if (Number.isNaN(time) || time <= DOT_START || time >= LIFE) return 0;\n  const pop = Math.min(1, (time - DOT_START) / DOT_POP) - 1;\n  const grow = 1 + (DOT_BACK + 1) * pop ** 3 + DOT_BACK * pop ** 2;\n  const settle = DOT_START + DOT_POP;\n  const shrink = clamp((time - settle) / (LIFE - settle), 0, 1);\n  return grow * (1 - shrink ** 3);\n}\n\nfunction getTrimBurstStrokes(\n  options       \n                     \n                                                       \n    = {},\n)                    {\n  const count = countOf(options.count);\n  const rotation = finite(options.rotation, trimBurstDefaults.rotation);\n  const spread = within(options.spread, trimBurstDefaults.spread, 0, 360);\n  const jitter = jitterOf(options.jitter);\n  const seed = finite(options.seed, trimBurstDefaults.seed);\n  const fan = spread < 360 && count > 1;\n  const step = fan ? spread / (count - 1) : 360 / count;\n  const first = fan ? rotation - spread / 2 : rotation;\n  const wobble = WOBBLE * jitter * Math.min(step, MAX_STEP);\n  const { stagger } = getTrimBurstTimeline({ count, jitter });\n  const keys = Array.from({ length: count }, (_, index) =>\n    random(`trim-burst-${seed}-order-${index}`),\n  );\n  const order = keys.map((_, index) => index);\n  order.sort((a, b) => keys[a] - keys[b]);\n  const ranks           = [];\n  for (const [position, index] of order.entries()) ranks[index] = position;\n  return keys.map((_, index) => {\n    const turn = random(`trim-burst-${seed}-angle-${index}`) * 2 - 1;\n    const shrink = random(`trim-burst-${seed}-scale-${index}`);\n    return {\n      index,\n      angle: first + index * step + turn * wobble,\n      scale: 1 - SHRINK * jitter * shrink,\n      launch: count > 1 ? (stagger * ranks[index]) / (count - 1) : 0,\n    };\n  });\n}\n\nfunction getTrimBurstState(\n  frame        ,\n  options                   = {},\n  strokes                    = getTrimBurstStrokes(options),\n) {\n  const fallback = trimBurstDefaults;\n  const width = Math.max(1, finite(options.width, 1280));\n  const height = Math.max(1, finite(options.height, 720));\n  const unit = height / 720;\n  const time = getTrimBurstTime(frame, options);\n  const originX = finite(options.x, fallback.x) * width;\n  const originY = finite(options.y, fallback.y) * height;\n  const inner = within(options.innerRadius, fallback.innerRadius, 0, MAX_SIZE);\n  const reach = within(options.reach, fallback.reach, 0, MAX_SIZE);\n  const strokeLength = within(\n    options.strokeLength,\n    fallback.strokeLength,\n    MIN_STROKE,\n    MAX_SIZE,\n  );\n  const size = within(options.weight, fallback.weight, MIN_WEIGHT, MAX_WEIGHT);\n  const offset = inner * unit;\n  const weight = size * unit;\n  const gap = DOT_GAP * weight;\n  const radius = DOT_RADIUS * weight;\n  const lines                  = [];\n  const dots                 = [];\n  for (const stroke of strokes) {\n    const local = time - stroke.launch;\n    const trim = getTrimBurstTrim(\n      local,\n      reach * unit * stroke.scale,\n      strokeLength * unit * stroke.scale,\n    );\n    const angle = (stroke.angle * Math.PI) / 180;\n    const dx = Math.sin(angle);\n    const dy = -Math.cos(angle);\n    const along = (distance        ) => ({\n      x: round(originX + dx * (offset + distance)),\n      y: round(originY + dy * (offset + distance)),\n    });\n    if (trim.length > VISIBLE) {\n      const from = along(trim.start);\n      const to = along(trim.end);\n      lines.push({\n        index: stroke.index,\n        x1: from.x,\n        y1: from.y,\n        x2: to.x,\n        y2: to.y,\n        width: round(Math.min(weight, trim.length)),\n      });\n    }\n    const pop = options.dots === true ? getTrimBurstDotScale(local) : 0;\n    if (pop > 0) {\n      const center = along(trim.end + gap + radius);\n      dots.push({\n        index: stroke.index,\n        cx: center.x,\n        cy: center.y,\n        r: round(radius * pop),\n      });\n    }\n  }\n  return {\n    width,\n    height,\n    unit,\n    time,\n    originX,\n    originY,\n    weight,\n    cap: capOf(options.cap),\n    lines,\n    dots,\n  };\n}\n\n                                                                  \n\n\n            var opt = {\n              x: num(vars.x, 0.5, 0, 1), y: num(vars.y, 0.5, 0, 1), count: Math.round(num(vars.count, 8, 1, 24)),\n              innerRadius: num(vars.inner_radius, 16, 0, 160), reach: num(vars.reach, 64, 8, 240), strokeLength: num(vars.stroke_length, 56, 4, 200),\n              weight: num(vars.weight, 2, 0.5, 8), rotation: num(vars.rotation, 0, -180, 180), spread: num(vars.spread, 360, 15, 360),\n              jitter: num(vars.jitter, 0.5, 0, 1), dots: bool(vars.dots, false), cap: pick(vars.cap, [\"round\", \"butt\"], \"round\"),\n              seed: Math.round(num(vars.seed, 1, 1, 99)), delay: num(vars.delay, 0, 0, 30), speed: num(vars.speed, 1, 0.25, 3),\n              width: root.clientWidth, height: root.clientHeight, fps: 30\n            };\n            var color = str(vars.color, \"#ffffff\");\n            var svg = document.getElementById(\"tbu-svg\");\n            svg.setAttribute(\"viewBox\", \"0 0 \" + opt.width + \" \" + opt.height);\n            var linesG = document.getElementById(\"tbu-lines\"), dotsG = document.getElementById(\"tbu-dots\");\n            linesG.setAttribute(\"stroke\", color);\n            linesG.setAttribute(\"stroke-linecap\", opt.cap);\n            dotsG.setAttribute(\"fill\", color);\n            var strokes = getTrimBurstStrokes(opt);\n            function draw(frame) {\n              var s = getTrimBurstState(frame, opt, strokes);\n              var l = \"\", d = \"\";\n              s.lines.forEach(function (ln) { l += '<line x1=\"' + ln.x1 + '\" y1=\"' + ln.y1 + '\" x2=\"' + ln.x2 + '\" y2=\"' + ln.y2 + '\" stroke-width=\"' + ln.width + '\"/>'; });\n              s.dots.forEach(function (dt) { d += '<circle cx=\"' + dt.cx + '\" cy=\"' + dt.cy + '\" r=\"' + dt.r + '\"/>'; });\n              linesG.innerHTML = l;\n              dotsG.innerHTML = d;\n            }\n            var tl = gsap.timeline({ paused: true });\n            clockTween(tl, 45, draw, 1);\n\n            var total = parseFloat(root.dataset.duration || \"1.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"trim-burst\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "f5786371643f365758b7ceee31bf25f3c98451f05eeb89f0e8c92c42ce4cf710",
+ "duration": 1.5,
+ "webgl": false,
+ "demo_background": "#002fa7",
+ "demo_values": {
+  "reach": 150,
+  "stroke_length": 120,
+  "inner_radius": 50,
+  "weight": 5,
+  "count": 12,
+  "dots": true
+ },
+ "variables": [
+  {
+   "id": "x",
+   "type": "number",
+   "role": "layout",
+   "label": "X",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "y",
+   "type": "number",
+   "role": "layout",
+   "label": "Y",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "count",
+   "type": "number",
+   "role": "layout",
+   "label": "Strokes",
+   "default": 8,
+   "min": 1,
+   "max": 24
+  },
+  {
+   "id": "inner_radius",
+   "type": "number",
+   "role": "layout",
+   "label": "Inner radius",
+   "default": 16,
+   "min": 0,
+   "max": 160
+  },
+  {
+   "id": "reach",
+   "type": "number",
+   "role": "motion",
+   "label": "Reach",
+   "default": 64,
+   "min": 8,
+   "max": 240
+  },
+  {
+   "id": "stroke_length",
+   "type": "number",
+   "role": "layout",
+   "label": "Stroke length",
+   "default": 56,
+   "min": 4,
+   "max": 200
+  },
+  {
+   "id": "weight",
+   "type": "number",
+   "role": "style",
+   "label": "Weight",
+   "default": 2,
+   "min": 0.5,
+   "max": 8
+  },
+  {
+   "id": "rotation",
+   "type": "number",
+   "role": "layout",
+   "label": "Rotation",
+   "default": 0,
+   "min": -180,
+   "max": 180
+  },
+  {
+   "id": "spread",
+   "type": "number",
+   "role": "layout",
+   "label": "Spread",
+   "default": 360,
+   "min": 15,
+   "max": 360
+  },
+  {
+   "id": "jitter",
+   "type": "number",
+   "role": "motion",
+   "label": "Jitter",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "dots",
+   "type": "boolean",
+   "role": "style",
+   "label": "Tip dots",
+   "default": false
+  },
+  {
+   "id": "cap",
+   "type": "enum",
+   "role": "style",
+   "label": "Cap",
+   "default": "round"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Line color",
+   "default": "#ffffff"
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "motion",
+   "label": "Seed",
+   "default": 1,
+   "min": 1,
+   "max": 99
+  },
+  {
+   "id": "delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Delay",
+   "default": 0,
+   "min": 0,
+   "max": 30
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 3
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

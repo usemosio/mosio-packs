@@ -1,0 +1,139 @@
+{
+ "name": "pixelate-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Daniel Petho",
+ "source": {
+  "repo": "https://github.com/danielpetho/fancy",
+  "path": "src/fancy/components/filter/pixelate-svg-filter.tsx",
+  "commit": "f9f62c61207b2dd3210476dd98af3c9a5be24094"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Pixelate Text\n\nA title block, a paragraph and a gradient swatch start as coarse blocks of pixels and resolve to sharp, using an SVG pixelate filter (convolve, tile, dilate) whose block size eases down to one pixel.\n\nCategory: typography. Length: 3.5 s. WebGL: no.\n\nUse when:\n- Text or a small layout should resolve from chunky pixels into sharp type, like a low-resolution image loading in.\n- A retro or digital entrance is wanted without any WebGL.\n\nAvoid when:\n- The pixelation should wipe across a region of a video: use pixelate-region or grid-pixelate-wipe.\n- The text is very small: the pixel blocks will eat it.\n\nVariables:\n- title (string): Title, default \"Ari Yu\"\n- subtitle (string): Subtitle, default \"Creative Director & Writer\"\n- body (string): Body, default \"Selected works: Dreamweaver #93, Starlight #87 \\u201cdigital dreams\\u201d, The Quantum Mirror, Holograph Vol. 5, Byte Flow Vol. 12, Neural Canvas #9, Nebula #4 and the Binary Pulse zine.\"\n- title_size (number, 16-260): Title size, default 96\n- body_size (number, 12-120): Body size, default 34\n- color (color): Text color, default \"#111111\"\n- muted_color (color): Muted color, default \"#6b7280\"\n- swatch (boolean): Swatch, default true\n- swatch_from (color): Swatch from, default \"#ff9a8b\"\n- swatch_to (color): Swatch to, default \"#4f46e5\"\n- start_size (number, 4-120): Start pixel size, default 40\n- hold (number, 0-3): Hold, default 0.3\n- resolve (number, 0.2-5): Resolve, default 1.4\n\nSource: https://github.com/danielpetho/fancy. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Pixelate Text\n\n  A title block, a paragraph and a gradient swatch start as coarse blocks of pixels and resolve to sharp, using an SVG pixelate filter (convolve, tile, dilate) whose block size eases down to one pixel.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/danielpetho/fancy/blob/f9f62c61207b2dd3210476dd98af3c9a5be24094/src/fancy/components/filter/pixelate-svg-filter.tsx\n\n  MIT License\n\n  Copyright (c) 2024 Daniel Petho\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"pixelate-text\"\n  data-composition-duration=\"3.5\"\n  data-composition-variables='[\n    {\"id\": \"title\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Title\", \"description\": \"Heading line.\", \"default\": \"Ari Yu\"},\n    {\"id\": \"subtitle\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Subtitle\", \"description\": \"Line under the heading.\", \"default\": \"Creative Director &amp; Writer\"},\n    {\"id\": \"body\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Body\", \"description\": \"Paragraph under the subtitle.\", \"default\": \"Selected works: Dreamweaver #93, Starlight #87 “digital dreams”, The Quantum Mirror, Holograph Vol. 5, Byte Flow Vol. 12, Neural Canvas #9, Nebula #4 and the Binary Pulse zine.\"},\n    {\"id\": \"title_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Title size\", \"description\": \"Title size in pixels.\", \"default\": 96, \"min\": 16, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"body_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Body size\", \"description\": \"Body text size in pixels.\", \"default\": 34, \"min\": 12, \"max\": 120, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Text color.\", \"default\": \"#111111\"},\n    {\"id\": \"muted_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Muted color\", \"description\": \"Color of the subtitle and body.\", \"default\": \"#6b7280\"},\n    {\"id\": \"swatch\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Swatch\", \"description\": \"Show a gradient square next to the text, pixelated along with it.\", \"default\": true},\n    {\"id\": \"swatch_from\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Swatch from\", \"description\": \"First color of the swatch.\", \"default\": \"#ff9a8b\"},\n    {\"id\": \"swatch_to\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Swatch to\", \"description\": \"Second color of the swatch.\", \"default\": \"#4f46e5\"},\n    {\"id\": \"start_size\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start pixel size\", \"description\": \"Size of the pixel blocks at the start, in pixels.\", \"default\": 40, \"min\": 4, \"max\": 120, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"hold\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Hold\", \"description\": \"Seconds the block holds at its coarsest before resolving.\", \"default\": 0.3, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"resolve\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Resolve\", \"description\": \"Seconds the blocks take to shrink to one pixel (ease out).\", \"default\": 1.4, \"min\": 0.2, \"max\": 5, \"step\": 0.05, \"unit\": \"s\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Pixelate Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #111111; font-family: Geist, system-ui, sans-serif; }\n        .px-defs { position: absolute; width: 0; height: 0; }\n        .px-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .px-col { width: min(80cqw, 1000px); display: flex; flex-direction: column; gap: 1.6em; }\n        .px-title { font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; }\n        .px-sub { font-weight: 600; line-height: 1.25; margin-top: 0.4em; }\n        .px-body { line-height: 1.45; }\n        .px-swatch { width: 34cqmin; aspect-ratio: 1; border-radius: 0.6cqmin; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"pixelate-text\" data-duration=\"3.5\" data-fps=\"30\">\n        <svg class=\"px-defs\" aria-hidden=\"true\"><defs>\n          <filter id=\"px-filter\" x=\"0\" y=\"0\" width=\"1\" height=\"1\">\n            <feConvolveMatrix kernelMatrix=\"1 1 1 1 1 1 1 1 1\" result=\"AVG\" />\n            <feFlood x=\"1\" y=\"1\" width=\"1\" height=\"1\" />\n            <feComposite id=\"px-tile\" operator=\"arithmetic\" k1=\"0\" k2=\"1\" k3=\"0\" k4=\"0\" width=\"16\" height=\"16\" />\n            <feTile result=\"TILE\" />\n            <feComposite in=\"AVG\" in2=\"TILE\" operator=\"in\" k1=\"0\" k2=\"1\" k3=\"0\" k4=\"0\" />\n            <feMorphology id=\"px-dilate\" operator=\"dilate\" radius=\"8\" />\n          </filter>\n        </defs></svg>\n        <div id=\"px-clip\" class=\"px-stage clip\" data-start=\"0\" data-duration=\"3.5\" data-track-index=\"0\">\n          <div id=\"px-col\" class=\"px-col\">\n            <div id=\"px-swatch\" class=\"px-swatch\"></div>\n            <div><div id=\"px-title\" class=\"px-title\"></div><div id=\"px-sub\" class=\"px-sub\"></div></div>\n            <p id=\"px-body\" class=\"px-body\"></p>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var DEFS = [{\"id\": \"title\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Title\", \"description\": \"Heading line.\", \"default\": \"Ari Yu\"}, {\"id\": \"subtitle\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Subtitle\", \"description\": \"Line under the heading.\", \"default\": \"Creative Director & Writer\"}, {\"id\": \"body\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Body\", \"description\": \"Paragraph under the subtitle.\", \"default\": \"Selected works: Dreamweaver #93, Starlight #87 “digital dreams”, The Quantum Mirror, Holograph Vol. 5, Byte Flow Vol. 12, Neural Canvas #9, Nebula #4 and the Binary Pulse zine.\"}, {\"id\": \"title_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Title size\", \"description\": \"Title size in pixels.\", \"default\": 96, \"min\": 16, \"max\": 260, \"step\": 1, \"unit\": \"px\"}, {\"id\": \"body_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Body size\", \"description\": \"Body text size in pixels.\", \"default\": 34, \"min\": 12, \"max\": 120, \"step\": 1, \"unit\": \"px\"}, {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Text color.\", \"default\": \"#111111\"}, {\"id\": \"muted_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Muted color\", \"description\": \"Color of the subtitle and body.\", \"default\": \"#6b7280\"}, {\"id\": \"swatch\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Swatch\", \"description\": \"Show a gradient square next to the text, pixelated along with it.\", \"default\": true}, {\"id\": \"swatch_from\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Swatch from\", \"description\": \"First color of the swatch.\", \"default\": \"#ff9a8b\"}, {\"id\": \"swatch_to\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Swatch to\", \"description\": \"Second color of the swatch.\", \"default\": \"#4f46e5\"}, {\"id\": \"start_size\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start pixel size\", \"description\": \"Size of the pixel blocks at the start, in pixels.\", \"default\": 40, \"min\": 4, \"max\": 120, \"step\": 1, \"unit\": \"px\"}, {\"id\": \"hold\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Hold\", \"description\": \"Seconds the block holds at its coarsest before resolving.\", \"default\": 0.3, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"}, {\"id\": \"resolve\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Resolve\", \"description\": \"Seconds the blocks take to shrink to one pixel (ease out).\", \"default\": 1.4, \"min\": 0.2, \"max\": 5, \"step\": 0.05, \"unit\": \"s\"}];\n            var root = document.getElementById(\"root\");\n            var raw = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            var D = parseFloat(root.dataset.duration || \"3.5\");\n            function V(id) {\n              var d = null;\n              for (var i = 0; i < DEFS.length; i++) if (DEFS[i].id === id) d = DEFS[i];\n              var v = raw[id];\n              if (v === undefined || v === null || (v === \"\" && d.type !== \"string\")) return d.default;\n              if (d.type === \"number\") { var n = Number(v); return Number.isFinite(n) ? Math.min(d.max, Math.max(d.min, n)) : d.default; }\n              if (d.type === \"boolean\") return v === true || v === \"true\";\n              if (d.type === \"enum\") { for (var j = 0; j < d.options.length; j++) if (String(d.options[j].value) === String(v)) return d.options[j].value; return d.default; }\n              if (d.type === \"string\") return typeof v === \"string\" ? v : d.default;\n              return typeof v === \"string\" && v ? v : d.default;\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function hash3(a, b, c) { return mulberry32((a * 7919 + b * 104729 + c * 1299709) | 0)(); }\n            // Stagger delays in seconds: \"first\", \"last\", \"center\", \"random\" (seeded shuffle) or an index.\n            function stagger(n, from, step, seed) {\n              var out = [], i;\n              if (from === \"random\") {\n                var rng = mulberry32(seed || 7), idx = [];\n                for (i = 0; i < n; i++) idx.push(i);\n                for (i = n - 1; i > 0; i--) { var j = Math.floor(rng() * (i + 1)); var tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp; }\n                for (i = 0; i < n; i++) out[idx[i]] = i * step;\n                return out;\n              }\n              for (i = 0; i < n; i++) {\n                var k = from === \"last\" ? n - 1 - i : from === \"center\" ? Math.abs(Math.floor(n / 2) - i) : typeof from === \"number\" ? Math.abs(from - i) : i;\n                out.push(k * step);\n              }\n              return out;\n            }\n            // Damped spring from 0 to 1 (stiffness/damping/mass or duration/bounce, as Motion defines them).\n            function spring(o) {\n              var m = o.mass || 1, k, c;\n              if (o.duration !== undefined) { var w = (2 * Math.PI) / o.duration; k = w * w * m; c = 2 * (1 - (o.bounce || 0)) * Math.sqrt(k * m); }\n              else { k = o.stiffness; c = o.damping; }\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              function at(t) {\n                if (t <= 0) return 0;\n                if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n                if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t)); }\n                var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n                return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n              }\n              var settle = 6;\n              for (var t = 0.02; t < 6; t += 0.02) {\n                var ok = true;\n                for (var u = t; u < Math.min(t + 0.3, 6); u += 0.05) if (Math.abs(1 - at(u)) > 0.002) { ok = false; break; }\n                if (ok) { settle = t; break; }\n              }\n              return { at: at, duration: settle };\n            }\n            function fitText(text) { return Array.from(text); }\n\n            var col = document.getElementById(\"px-col\");\n            document.getElementById(\"px-title\").textContent = V(\"title\");\n            document.getElementById(\"px-sub\").textContent = V(\"subtitle\");\n            document.getElementById(\"px-body\").textContent = V(\"body\");\n            var title = document.getElementById(\"px-title\"), sub = document.getElementById(\"px-sub\"), body = document.getElementById(\"px-body\"), sw = document.getElementById(\"px-swatch\");\n            title.style.fontSize = V(\"title_size\") + \"px\"; title.style.color = V(\"color\");\n            sub.style.fontSize = Math.round(V(\"title_size\") * 0.34) + \"px\"; sub.style.color = V(\"color\");\n            body.style.fontSize = V(\"body_size\") + \"px\"; body.style.color = V(\"muted_color\");\n            if (V(\"swatch\")) sw.style.background = \"linear-gradient(135deg, \" + V(\"swatch_from\") + \", \" + V(\"swatch_to\") + \")\"; else sw.style.display = \"none\";\n            var tile = document.getElementById(\"px-tile\"), dil = document.getElementById(\"px-dilate\");\n            var size0 = V(\"start_size\"), hold = V(\"hold\"), resolve = V(\"resolve\");\n            gsap.registerPlugin(CustomEase);\n            var easeOut = CustomEase.create(\"px-out\", \"M0,0 C0,0 0.58,1 1,1\");\n            var tl = gsap.timeline({ paused: true });\n            var lastSize = -1;\n            function draw(t) {\n              var p = Math.min(1, Math.max(0, (t - hold) / resolve));\n              var size = size0 + (1 - size0) * easeOut(p);\n              if (size < 1.5) { if (lastSize !== 0) col.style.filter = \"\"; lastSize = 0; return; }\n              size = Math.round(size * 4) / 4;\n              if (size !== lastSize) { tile.setAttribute(\"width\", size); tile.setAttribute(\"height\", size); dil.setAttribute(\"radius\", (size / 2).toFixed(2)); lastSize = size; }\n              col.style.filter = \"url(#px-filter)\";\n            }\n\n            var clock = { t: 0 };\n            tl.to(clock, { t: D, duration: D, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"pixelate-text\"] = tl;\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "f5a2bfe64505236c5c87eaf8ed1fa8a8ed412892dde36052e5763005431bf1c3",
+ "duration": 3.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "title_size": 130,
+  "body_size": 40
+ },
+ "variables": [
+  {
+   "id": "title",
+   "type": "string",
+   "role": "content",
+   "label": "Title",
+   "default": "Ari Yu"
+  },
+  {
+   "id": "subtitle",
+   "type": "string",
+   "role": "content",
+   "label": "Subtitle",
+   "default": "Creative Director & Writer"
+  },
+  {
+   "id": "body",
+   "type": "string",
+   "role": "content",
+   "label": "Body",
+   "default": "Selected works: Dreamweaver #93, Starlight #87 “digital dreams”, The Quantum Mirror, Holograph Vol. 5, Byte Flow Vol. 12, Neural Canvas #9, Nebula #4 and the Binary Pulse zine."
+  },
+  {
+   "id": "title_size",
+   "type": "number",
+   "role": "style",
+   "label": "Title size",
+   "default": 96,
+   "min": 16,
+   "max": 260
+  },
+  {
+   "id": "body_size",
+   "type": "number",
+   "role": "style",
+   "label": "Body size",
+   "default": 34,
+   "min": 12,
+   "max": 120
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#111111"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted color",
+   "default": "#6b7280"
+  },
+  {
+   "id": "swatch",
+   "type": "boolean",
+   "role": "style",
+   "label": "Swatch",
+   "default": true
+  },
+  {
+   "id": "swatch_from",
+   "type": "color",
+   "role": "style",
+   "label": "Swatch from",
+   "default": "#ff9a8b"
+  },
+  {
+   "id": "swatch_to",
+   "type": "color",
+   "role": "style",
+   "label": "Swatch to",
+   "default": "#4f46e5"
+  },
+  {
+   "id": "start_size",
+   "type": "number",
+   "role": "motion",
+   "label": "Start pixel size",
+   "default": 40,
+   "min": 4,
+   "max": 120
+  },
+  {
+   "id": "hold",
+   "type": "number",
+   "role": "motion",
+   "label": "Hold",
+   "default": 0.3,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "resolve",
+   "type": "number",
+   "role": "motion",
+   "label": "Resolve",
+   "default": 1.4,
+   "min": 0.2,
+   "max": 5
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://fancycomponents.dev"
+}

@@ -1,0 +1,96 @@
+{
+ "name": "paper-wobble",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/paper-wobble/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Paper Wobble\n\nPer-pose reshoot jitter that makes any content feel hand-placed on a desk.\n\nCategory: effects. Length: 3 s. WebGL: no.\n\nUse when:\n- Any block should carry the stop-motion reshoot wobble: headlines, cards, or content that must feel hand-placed rather than laid out.\n- Two or more elements should read as separate objects on a desk: give each its own seed.\n\nAvoid when:\n- The content should sit rock-still: UI simulations, code blocks being read.\n- You want smooth floating motion rather than discrete poses.\n- The component already jitters itself (paper stickers): wrapping it doubles the shake.\n\nVariables:\n- title (string): Title, default \"Paper Wobble\"\n- card_title (string): Card title, default \"Shot on a desk\"\n- card_subtitle (string): Card subtitle, default \"Every pose is placed by hand\"\n- amp (number, 0-6): Offset, default 1.4\n- rot_amp (number, 0-2): Rotation, default 0.35\n- seed (string): Seed, default \"wobble\"\n- step (number, 1-6): Frames per pose, default 3\n- color (color): Ink, default \"#26242c\"\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Paper Wobble\n\n  Per-pose reshoot jitter that makes any content feel hand-placed on a desk.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/paper-wobble/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"paper-wobble\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[{\"id\":\"title\",\"type\":\"string\",\"role\":\"content\",\"label\":\"Title\",\"description\":\"Headline that wobbles on its own.\",\"default\":\"Paper Wobble\"},{\"id\":\"card_title\",\"type\":\"string\",\"role\":\"content\",\"label\":\"Card title\",\"description\":\"Large line on the card.\",\"default\":\"Shot on a desk\"},{\"id\":\"card_subtitle\",\"type\":\"string\",\"role\":\"content\",\"label\":\"Card subtitle\",\"description\":\"Small line on the card.\",\"default\":\"Every pose is placed by hand\"},{\"id\":\"amp\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Offset\",\"description\":\"Largest jitter offset in pixels.\",\"default\":1.4,\"min\":0,\"max\":6,\"step\":0.1,\"unit\":\"px\"},{\"id\":\"rot_amp\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Rotation\",\"description\":\"Largest jitter rotation in degrees.\",\"default\":0.35,\"min\":0,\"max\":2,\"step\":0.05,\"unit\":\"deg\"},{\"id\":\"seed\",\"type\":\"string\",\"role\":\"motion\",\"label\":\"Seed\",\"description\":\"Seed for the jitter; each object gets its own.\",\"default\":\"wobble\"},{\"id\":\"step\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Frames per pose\",\"description\":\"How many frames each pose is held (30 fps).\",\"default\":3,\"min\":1,\"max\":6,\"step\":1,\"unit\":\"frames\"},{\"id\":\"color\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Ink\",\"description\":\"Text color.\",\"default\":\"#26242c\"}]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Paper Wobble</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;600&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n\n        }\n        #root { color: var(--pwb-ink, #26242c); font-family: Geist, system-ui, sans-serif; }\n        .pwb-stage { position: absolute; inset: 0; }\n        .pwb-scene { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; }\n        .pwb-wob { display: inline-block; }\n        .pwb-title { font-size: 64px; font-weight: 600; white-space: nowrap; }\n        .pwb-card { background: #fdfcf8; border: 1px solid rgba(38,36,44,0.12); border-radius: 4px; padding: 24px 32px; box-shadow: 0 8px 20px rgba(38,36,44,0.12); }\n        .pwb-card-title { font-size: 28px; font-weight: 600; }\n        .pwb-card-sub { font-size: 18px; color: rgba(38,36,44,0.55); margin-top: 6px; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"paper-wobble\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"pwb-clip\" class=\"pwb-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <div id=\"pwb-scene\" class=\"pwb-scene\">\n            <div id=\"pwb-w1\" class=\"pwb-wob\"><div id=\"pwb-title\" class=\"pwb-title\"></div></div>\n            <div id=\"pwb-w2\" class=\"pwb-wob\"><div class=\"pwb-card\"><div id=\"pwb-ct\" class=\"pwb-card-title\"></div><div id=\"pwb-cs\" class=\"pwb-card-sub\"></div></div></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Frame-based helpers, written from their definitions.\n            var Easing = (function () {\n              function bezier(x1, y1, x2, y2) {\n                return function (x) {\n                  if (x <= 0) return 0;\n                  if (x >= 1) return 1;\n                  var lo = 0, hi = 1, t = x;\n                  for (var i = 0; i < 40; i++) {\n                    var u = 1 - t;\n                    var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                    if (Math.abs(cx - x) < 1e-6) break;\n                    if (cx < x) lo = t; else hi = t;\n                    t = (lo + hi) / 2;\n                  }\n                  var v = 1 - t;\n                  return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n                };\n              }\n              return {\n                bezier: bezier,\n                linear: function (t) { return t; },\n                quad: function (t) { return t * t; },\n                cubic: function (t) { return t * t * t; },\n                sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); },\n                poly: function (n) { return function (t) { return Math.pow(t, n); }; },\n                ease: bezier(0.42, 0, 1, 1),\n                out: function (f) { return function (t) { return 1 - f(1 - t); }; },\n                inOut: function (f) { return function (t) { return t < 0.5 ? f(t * 2) / 2 : 1 - f((1 - t) * 2) / 2; }; }\n              };\n            })();\n            function interpolate(input, inR, outR, o) {\n              o = o || {};\n              var n = inR.length;\n              var left = o.extrapolateLeft || \"extend\";\n              var right = o.extrapolateRight || \"extend\";\n              var i = 1;\n              while (i < n - 1 && input > inR[i]) i++;\n              var a = inR[i - 1], b = inR[i];\n              if (input < inR[0] && left === \"clamp\") return outR[0];\n              if (input > inR[n - 1] && right === \"clamp\") return outR[n - 1];\n              var t = b === a ? 0 : (input - a) / (b - a);\n              if (o.easing) t = o.easing(t);\n              return outR[i - 1] + (outR[i] - outR[i - 1]) * t;\n            }\n            // Damped spring from rest to 1. durationInFrames stretches time so the spring has settled by then.\n            function spring(o) {\n              var c = o.config || {};\n              var mass = c.mass != null ? c.mass : 1;\n              var k = c.stiffness != null ? c.stiffness : 100;\n              var damp = c.damping != null ? c.damping : 10;\n              function at(t) {\n                var w0 = Math.sqrt(k / mass);\n                var z = damp / (2 * Math.sqrt(k * mass));\n                if (z < 1) {\n                  var wd = w0 * Math.sqrt(1 - z * z);\n                  return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));\n                }\n                return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              }\n              var t = Math.max(0, o.frame) / o.fps;\n              if (o.durationInFrames) {\n                var settle = 4, step = 1 / o.fps;\n                for (var s = settle; s > 0.05; s -= step) {\n                  if (Math.abs(1 - at(s)) > 0.001) { settle = s + step; break; }\n                  settle = s;\n                }\n                t = (Math.max(0, o.frame) / o.durationInFrames) * settle;\n                if (o.frame >= o.durationInFrames) return 1;\n              }\n              return at(t);\n            }\n            function parseColor(c) {\n              var m;\n              c = String(c).trim();\n              if ((m = /^#([0-9a-f]{3,8})$/i.exec(c))) {\n                var h = m[1];\n                if (h.length <= 4) h = h.split(\"\").map(function (x) { return x + x; }).join(\"\");\n                return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16), h.length === 8 ? parseInt(h.slice(6, 8), 16) / 255 : 1];\n              }\n              if ((m = /^rgba?\\(([^)]+)\\)/i.exec(c))) {\n                var p = m[1].split(\",\").map(Number);\n                return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1];\n              }\n              return [0, 0, 0, 1];\n            }\n            function interpolateColors(t, inR, outR) {\n              var a = parseColor(outR[0]), b = parseColor(outR[1]);\n              var u = Math.min(1, Math.max(0, (t - inR[0]) / (inR[1] - inR[0])));\n              return \"rgba(\" + [0, 1, 2].map(function (i) { return Math.round(a[i] + (b[i] - a[i]) * u); }).join(\",\") + \",\" + (a[3] + (b[3] - a[3]) * u) + \")\";\n            }\n            // Seeded 0..1 value: the same seed always gives the same number.\n            function random(seed) {\n              var s = String(seed), h = 2166136261;\n              for (var i = 0; i < s.length; i++) {\n                h ^= s.charCodeAt(i);\n                h = Math.imul(h, 16777619);\n              }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              h = Math.imul(h ^ (h >>> 16), 3266489917);\n              return ((h ^ (h >>> 15)) >>> 0) / 4294967296;\n            }\n            // Fit a fixed-size design stage into the frame.\n            function fit(el, w, h, fill) {\n              var s = Math.min(root.clientWidth / w, root.clientHeight / h) * (fill || 1);\n              el.style.position = \"absolute\";\n              el.style.left = \"50%\";\n              el.style.top = \"50%\";\n              el.style.width = w + \"px\";\n              el.style.height = h + \"px\";\n              el.style.transform = \"translate(-50%, -50%) scale(\" + s + \")\";\n              return s;\n            }\n            // Drive draw(frame) from the timeline so seeking always draws the same picture.\n            function clockTween(tl, totalFrames, draw, rate) {\n              var clock = { frame: 0 };\n              tl.to(clock, { frame: totalFrames, duration: totalFrames / 30, ease: \"none\", onUpdate: function () { draw(clock.frame * (rate || 1)); } }, 0);\n              draw(0);\n            }\n            var SVGNS = \"http://www.w3.org/2000/svg\";\n            function svgEl(tag, attrs, parent) {\n              var e = document.createElementNS(SVGNS, tag);\n              for (var k in attrs) e.setAttribute(k, attrs[k]);\n              if (parent) parent.appendChild(e);\n              return e;\n            }\n\n\n            \nconst DEFAULT_STEP = 3;\n\nconst qf = (frame        , step = DEFAULT_STEP)         =>\n  Math.floor(frame / step) * step;\n\nconst qstep = (frame        , step = DEFAULT_STEP)         =>\n  Math.floor(frame / step);\n\nconst hash01 = (seed        )         => {\n  let h = 2166136261;\n  for (let i = 0; i < seed.length; i++) {\n    h ^= seed.charCodeAt(i);\n    h = Math.imul(h, 16777619);\n  }\n  h = Math.imul(h ^ (h >>> 13), 2246822519);\n  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;\n};\n\nconst hashRange = (seed        , lo        , hi        )         =>\n  lo + hash01(seed) * (hi - lo);\n\n                                                           \n\nconst paperJitter = (\n  frame        ,\n  seed        ,\n  options                                                   ,\n)         => {\n  const amp = options?.amp ?? 1.4;\n  const rotAmp = options?.rotAmp ?? 0.35;\n  const s = qstep(frame, options?.step ?? DEFAULT_STEP);\n  return {\n    x: hashRange(`${seed}:x:${s}`, -amp, amp),\n    y: hashRange(`${seed}:y:${s}`, -amp, amp),\n    rot: hashRange(`${seed}:r:${s}`, -rotAmp, rotAmp),\n  };\n};\n\nconst steppedSpring = (args   \n                \n              \n                 \n                \n                                                                   \n )         =>\n  spring({\n    frame: qf(\n      Math.max(0, args.frame - (args.delay ?? 0)),\n      args.step ?? DEFAULT_STEP,\n    ),\n    fps: args.fps,\n    config: args.config,\n  });\n\nconst steppedRamp = (\n  frame        ,\n  from        ,\n  to        ,\n  options                                                  ,\n)         => {\n  const f = qf(frame, options?.step ?? DEFAULT_STEP);\n  if (f <= from) return 0;\n  if (f >= to) return 1;\n  const ease = options?.ease ?? ((t        ) => t);\n  return ease((f - from) / (to - from));\n};\n\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--pwb-ink\", vars.color);\n            var amp = num(vars.amp, 1.4, 0, 6), rotAmp = num(vars.rot_amp, 0.35, 0, 2);\n            var seed = str(vars.seed, \"wobble\"), step = Math.round(num(vars.step, 3, 1, 6));\n            document.getElementById(\"pwb-title\").textContent = str(vars.title, \"Paper Wobble\");\n            document.getElementById(\"pwb-ct\").textContent = str(vars.card_title, \"Shot on a desk\");\n            document.getElementById(\"pwb-cs\").textContent = str(vars.card_subtitle, \"Every pose is placed by hand\");\n            var scene = document.getElementById(\"pwb-scene\");\n            \n            fit(scene, 640, 340, 1);\n            var items = [[\"pwb-w1\", seed + \":title\"], [\"pwb-w2\", seed + \":card\"]].map(function (p) { return { el: document.getElementById(p[0]), seed: p[1] }; });\n            function draw(frame) {\n              items.forEach(function (it) {\n                var j = paperJitter(frame, it.seed, { amp: amp, rotAmp: rotAmp, step: step });\n                it.el.style.transform = \"translate(\" + j.x + \"px, \" + j.y + \"px) rotate(\" + j.rot + \"deg)\";\n              });\n            }\n            var tl = gsap.timeline({ paused: true });\n            clockTween(tl, 90, draw);\n\n            var total = parseFloat(root.dataset.duration || \"3\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"paper-wobble\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "05731704fd3cd3ed5b4069265dcd82685c7607e9e9f50b55057f639c0ae017c3",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#f1eee7",
+ "demo_values": {
+  "title": "Paper Wobble"
+ },
+ "variables": [
+  {
+   "id": "title",
+   "type": "string",
+   "role": "content",
+   "label": "Title",
+   "default": "Paper Wobble"
+  },
+  {
+   "id": "card_title",
+   "type": "string",
+   "role": "content",
+   "label": "Card title",
+   "default": "Shot on a desk"
+  },
+  {
+   "id": "card_subtitle",
+   "type": "string",
+   "role": "content",
+   "label": "Card subtitle",
+   "default": "Every pose is placed by hand"
+  },
+  {
+   "id": "amp",
+   "type": "number",
+   "role": "motion",
+   "label": "Offset",
+   "default": 1.4,
+   "min": 0,
+   "max": 6
+  },
+  {
+   "id": "rot_amp",
+   "type": "number",
+   "role": "motion",
+   "label": "Rotation",
+   "default": 0.35,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "seed",
+   "type": "string",
+   "role": "motion",
+   "label": "Seed",
+   "default": "wobble"
+  },
+  {
+   "id": "step",
+   "type": "number",
+   "role": "motion",
+   "label": "Frames per pose",
+   "default": 3,
+   "min": 1,
+   "max": 6
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Ink",
+   "default": "#26242c"
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

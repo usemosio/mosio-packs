@@ -1,0 +1,107 @@
+{
+ "name": "price-drop",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "original": true
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Price Drop\n\nA product name rises through a mask, the old price is struck through, the new price counts up to its value in one accent colour and a quiet saving label (like \"Hemat 28%\") appears under it, on a clean white page.\n\nCategory: commerce. Length: 5 s. WebGL: no.\n\nUse when:\n- One product has a lower price and the old and new price should be seen side by side.\n- A shop promo, a menu item or a class fee that dropped.\n\nAvoid when:\n- Several products with prices in a list: use menu-price-board.\n- A time-limited sale with a deadline: use flash-sale-burst.\n- The price is not a number to count up (it only fades in then).\n\nVariables:\n- eyebrow (string): Eyebrow, default \"Pedas, wangi, buatan rumah\"\n- product (string): Product name, default \"Sambal Bawang\"\n- old_price (string): Old price, default \"Rp35.000\"\n- new_price (string): New price, default \"Rp25.000\"\n- label (string): Label, default \"Hemat 28%\"\n- bg_color (color): Background, default \"#ffffff\"\n- main_color (color): Main colour, default \"#2563eb\"\n- strike_color (color): Strike colour, default \"#a3a3a3\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Price Drop\n\n  A product name rises, the old price is struck through, and the new price counts up with a stamped saving label.\n\n  Extracted from the Mosio recipe product-hero by usemosio/blocks.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"price-drop\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n  {\n    \"id\": \"eyebrow\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Eyebrow\",\n    \"description\": \"Short line above the product name.\",\n    \"default\": \"Pedas, wangi, buatan rumah\"\n  },\n  {\n    \"id\": \"product\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Product name\",\n    \"description\": \"Product name, one line.\",\n    \"default\": \"Sambal Bawang\"\n  },\n  {\n    \"id\": \"old_price\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Old price\",\n    \"description\": \"Price that is struck through.\",\n    \"default\": \"Rp35.000\"\n  },\n  {\n    \"id\": \"new_price\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"New price\",\n    \"description\": \"Price that counts up. Digits are counted with dots as thousands separators; a prefix such as Rp and a suffix such as /pcs are kept.\",\n    \"default\": \"Rp25.000\"\n  },\n  {\n    \"id\": \"label\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Label\",\n    \"description\": \"Pill stamped under the price, e.g. a saving. Leave empty to hide it.\",\n    \"default\": \"Hemat 28%\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Main colour\",\n    \"description\": \"New price and label outline: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"strike_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Strike colour\",\n    \"description\": \"Line through the old price.\",\n    \"default\": \"#a3a3a3\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Product name.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Old price text.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the price sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Price Drop</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n        }\n        #root * { box-sizing: border-box; }\n        .pd-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        #root { color: var(--pd-text); font-family: Geist, system-ui, sans-serif; background: var(--pd-bg); }\n        .pd-col { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(var(--u) * 30); padding: 0 5cqw; }\n        .pd-fitw { width: 100%; display: flex; justify-content: center; }\n        .pd-eyebrow { display: inline-block; white-space: nowrap; font-size: calc(var(--u) * 40); font-weight: 500; color: var(--pd-muted); letter-spacing: calc(var(--u) * -0.5); }\n        .pd-mask { display: block; overflow: hidden; }\n        .pd-name { display: inline-block; white-space: nowrap; font-size: calc(var(--u) * 104); font-weight: 600; line-height: 1.15; letter-spacing: -0.05em; }\n        .pd-price { display: flex; flex-direction: column; align-items: center; gap: calc(var(--u) * 4); margin-top: calc(var(--u) * 30); }\n        .pd-old { position: relative; display: inline-block; white-space: nowrap; font-size: calc(var(--u) * 70); font-weight: 500; color: var(--pd-muted); }\n        .pd-old i { position: absolute; left: calc(var(--u) * -10); right: calc(var(--u) * -10); top: 52%; height: calc(var(--u) * 4); border-radius: calc(var(--u) * 2); background: var(--pd-strike); transform-origin: 0 50%; }\n        .pd-new { display: inline-block; white-space: nowrap; font-size: calc(var(--u) * 190); font-weight: 600; letter-spacing: -0.05em; line-height: 1.05; color: var(--pd-main); font-variant-numeric: tabular-nums; }\n        .pd-label { display: inline-block; margin-top: calc(var(--u) * 20); padding: calc(var(--u) * 14) calc(var(--u) * 40); border-radius: calc(var(--u) * 80); white-space: nowrap; font-size: calc(var(--u) * 44); font-weight: 600; border: 2px solid var(--pd-main); color: var(--pd-main); }\n        @container (aspect-ratio > 1) {\n          .pd-col { gap: calc(var(--u) * 16); }\n          .pd-name { font-size: calc(var(--u) * 84); }\n          .pd-new { font-size: calc(var(--u) * 200); }\n          .pd-old { font-size: calc(var(--u) * 60); }\n          .pd-price { margin-top: calc(var(--u) * 16); }\n        }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"price-drop\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"pd-clip\" class=\"pd-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <div class=\"pd-col\">\n            <div class=\"pd-fitw\" id=\"pd-fit1\"><span class=\"pd-eyebrow\" id=\"pd-eyebrow\"></span></div>\n            <div class=\"pd-fitw\" id=\"pd-fit2\"><span class=\"pd-mask\"><span class=\"pd-name\" id=\"pd-name\"></span></span></div>\n            <div class=\"pd-price\">\n              <div class=\"pd-fitw\" id=\"pd-fit3\"><span class=\"pd-old\" id=\"pd-old\"><span id=\"pd-old-t\"></span><i id=\"pd-strike\"></i></span></div>\n              <div class=\"pd-fitw\" id=\"pd-fit4\"><span class=\"pd-new\" id=\"pd-new\"></span></div>\n            </div>\n            <span class=\"pd-label\" id=\"pd-label\"></span>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function ink(c, thr) {\n              var m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(c).trim());\n              if (!m) return \"#14161a\";\n              var h = m[1].length === 3 ? m[1].replace(/./g, \"$&$&\") : m[1];\n              var r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);\n              return 0.299 * r + 0.587 * g + 0.114 * b > (thr || 150) ? \"#14161a\" : \"#ffffff\";\n            }\n            function setColors(p, list) {\n              list.forEach(function (c) { root.style.setProperty(\"--\" + p + \"-\" + c[0], colr(vars[c[1]], c[2])); });\n            }\n            // Shrink a one-line element's wrapper (flex, centred) when its content is wider than the wrapper.\n            var fitList = [];\n            function fit(wrap) { fitList.push(wrap); refit(); }\n            function refit() {\n              fitList.forEach(function (w) {\n                w.style.transform = \"\";\n                var c = w.firstElementChild, cw = c ? c.offsetWidth : 0, aw = w.clientWidth;\n                if (cw > aw && aw > 0) w.style.transform = \"scale(\" + (aw / cw).toFixed(4) + \")\";\n              });\n            }\n            if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n\n            var eyebrow = str(vars.eyebrow, \"Pedasnya nampol, wanginya juara\");\n            var product = str(vars.product, \"Sambal Bawang\");\n            var oldP = str(vars.old_price, \"Rp35.000\");\n            var newP = str(vars.new_price, \"Rp25.000\");\n            var label = typeof vars.label === \"string\" ? vars.label.trim() : \"Hemat 28%\";\n            var main = colr(vars.main_color, \"#2563eb\");\n            setColors(\"pd\", [[\"bg\", \"bg_color\", \"#ffffff\"], [\"main\", \"main_color\", \"#2563eb\"],\n              [\"strike\", \"strike_color\", \"#a3a3a3\"], [\"text\", \"text_color\", \"#0a0a0a\"], [\"muted\", \"muted_color\", \"#737373\"]]);\n                        document.getElementById(\"pd-eyebrow\").textContent = eyebrow;\n            document.getElementById(\"pd-name\").textContent = product;\n            document.getElementById(\"pd-old-t\").textContent = oldP;\n            var lab = document.getElementById(\"pd-label\");\n            lab.textContent = label;\n            if (!label) lab.style.display = \"none\";\n            var newEl = document.getElementById(\"pd-new\");\n            newEl.textContent = newP;\n            [\"pd-fit1\", \"pd-fit2\", \"pd-fit3\", \"pd-fit4\"].forEach(function (id) { fit(document.getElementById(id)); });\n\n            // The new price counts up when it has digits: \"Rp25.000\" counts 0 to 25000 in steps.\n            var m = /^(\\D*)(\\d[\\d.,]*)(.*)$/.exec(newP);\n            var value = m ? parseInt(m[2].replace(/[.,]/g, \"\"), 10) : NaN;\n            var step = value >= 10000 ? 1000 : value >= 1000 ? 100 : 1;\n            var counter = { v: 0 };\n            function show(v) { newEl.textContent = !m || v >= value ? newP : m[1] + dots(Math.round(v / step) * step) + m[3]; }\n\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(\"#pd-eyebrow\", { y: -30 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: \"power3.out\" }, 0.15);\n            tl.fromTo(\"#pd-name\", { yPercent: 115 }, { yPercent: 0, duration: 0.7, ease: \"expo.out\" }, 0.3);\n            tl.fromTo(\"#pd-old\", { y: 40 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: \"power3.out\" }, 0.9);\n            tl.fromTo(\"#pd-strike\", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: \"power2.inOut\" }, 1.5);\n            tl.fromTo(\"#pd-new\", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: \"power3.out\" }, 1.9);\n            tl.fromTo(counter, { v: 0 }, { v: value || 0, duration: 1, ease: \"power2.out\", onUpdate: function () { show(counter.v); } }, 1.9);\n                        tl.fromTo(\"#pd-label\", { y: 24 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: \"power3.out\" }, 3.3);\n            show(0);\n\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"price-drop\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "d2abca6ec7cdc8ab0cdee312aa96ea99bfa64bf8a4866882d917cf7e2aeb989b",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "eyebrow",
+   "type": "string",
+   "role": "content",
+   "label": "Eyebrow",
+   "default": "Pedas, wangi, buatan rumah"
+  },
+  {
+   "id": "product",
+   "type": "string",
+   "role": "content",
+   "label": "Product name",
+   "default": "Sambal Bawang"
+  },
+  {
+   "id": "old_price",
+   "type": "string",
+   "role": "content",
+   "label": "Old price",
+   "default": "Rp35.000"
+  },
+  {
+   "id": "new_price",
+   "type": "string",
+   "role": "content",
+   "label": "New price",
+   "default": "Rp25.000"
+  },
+  {
+   "id": "label",
+   "type": "string",
+   "role": "content",
+   "label": "Label",
+   "default": "Hemat 28%"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Main colour",
+   "default": "#2563eb"
+  },
+  {
+   "id": "strike_color",
+   "type": "color",
+   "role": "style",
+   "label": "Strike colour",
+   "default": "#a3a3a3"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

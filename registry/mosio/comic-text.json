@@ -1,0 +1,84 @@
+{
+ "name": "comic-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Magic UI",
+ "source": {
+  "repo": "https://github.com/magicuidesign/magicui",
+  "path": "apps/www/registry/magicui/comic-text.tsx",
+  "commit": "166367b4e31a27f166fd6c2b71d7be290fe0c1bc"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Comic Text\n\nComic-book lettering: skewed uppercase letters with a halftone-dot fill, a heavy black outline and a stacked hard shadow, popping in with a small overshoot.\n\nCategory: typography. Length: 3 s. WebGL: no.\n\nUse when:\n- An exclamation, sound effect or punchy label should look like comic-book lettering.\n- A playful promo needs a big pop-in word with a halftone look.\n\nAvoid when:\n- The tone is quiet or corporate.\n- The text is longer than a few words: the outline gets heavy.\n\nVariables:\n- text (string): Text, default \"BOOM!\"\n- font_size (number, 24-400): Font size, default 160\n- fill_color (color): Fill colour, default \"#FACC15\"\n- dot_color (color): Dot colour, default \"#EF4444\"\n- outline_color (color): Outline colour, default \"#000000\"\n- pop_seconds (number, 0.2-2): Pop time, default 0.6\n\nSource: https://github.com/magicuidesign/magicui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Comic Text\n\n  Comic-book lettering: skewed uppercase letters with a halftone-dot fill, a heavy black outline and a stacked hard shadow, popping in with a small overshoot.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/magicuidesign/magicui/blob/166367b4e31a27f166fd6c2b71d7be290fe0c1bc/apps/www/registry/magicui/comic-text.tsx\n\n  MIT License\n\n  Copyright (c) Magic UI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"comic-text\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"The lettering. It is set in capitals.\", \"default\": \"BOOM!\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 160, \"min\": 24, \"max\": 400, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"fill_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Fill colour\", \"description\": \"Background colour of the letters.\", \"default\": \"#FACC15\"},\n    {\"id\": \"dot_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Dot colour\", \"description\": \"Halftone dots in the letters and the second shadow.\", \"default\": \"#EF4444\"},\n    {\"id\": \"outline_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Outline colour\", \"description\": \"Outline and first shadow.\", \"default\": \"#000000\"},\n    {\"id\": \"pop_seconds\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Pop time\", \"description\": \"Seconds the pop-in takes (the source uses 0.6).\", \"default\": 0.6, \"min\": 0.2, \"max\": 2, \"step\": 0.05, \"unit\": \"s\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Comic Text</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Bangers&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .cmt-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .cmt-pop { display: inline-block; opacity: 0; will-change: transform, opacity; }\n        .cmt-text {\n          display: inline-block;\n          font-family: \"Bangers\", \"Comic Sans MS\", Impact, sans-serif;\n          font-weight: 900;\n          text-transform: uppercase;\n          text-align: center;\n          white-space: pre;\n          line-height: 1.1;\n          transform: skewX(-10deg);\n          background-repeat: repeat;\n          -webkit-background-clip: text;\n          background-clip: text;\n          color: transparent;\n          -webkit-text-fill-color: transparent;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"comic-text\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"cmt-clip\" class=\"cmt-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <div id=\"cmt-pop\" class=\"cmt-pop\"><span id=\"cmt-text\" class=\"cmt-text\"></span></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Shrink an element's font until it fits a share of the frame width.\n            function fit(el, size, share) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * share);\n              if (el.scrollWidth > max) {\n                size = Math.max(12, size * (max / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            // A seeded random generator, so every seek draws the same thing.\n            function mulberry32(a) {\n              return function () {\n                a |= 0; a = (a + 0x6d2b79f5) | 0;\n                var t = Math.imul(a ^ (a >>> 15), 1 | a);\n                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n            gsap.registerPlugin(CustomEase);\n            var TAG = \"cmt\";\n            var bezN = 0;\n            function bez(x1, y1, x2, y2) {\n              return CustomEase.create(TAG + \"-\" + bezN++, \"M0,0 C\" + x1 + \",\" + y1 + \" \" + x2 + \",\" + y2 + \" 1,1\");\n            }\n            var tl = gsap.timeline({ paused: true });\n            function finish() {\n              var total = parseFloat(root.dataset.duration || \"3\");\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"comic-text\"] = tl;\n            }\n\n            var pop = document.getElementById(\"cmt-pop\");\n            var el = document.getElementById(\"cmt-text\");\n            var fill = col(vars.fill_color, \"#FACC15\");\n            var dots = col(vars.dot_color, \"#EF4444\");\n            var ink = col(vars.outline_color, \"#000000\");\n            el.textContent = str(vars.text, \"BOOM!\");\n            var size = fit(el, num(vars.font_size, 160, 24, 400), 0.8);\n            // The source sets these in px at its 5rem (80 px) size; they scale with the text here.\n            var k = size / 80;\n            el.style.webkitTextStroke = (1.75 * k).toFixed(2) + \"px \" + ink;\n            el.style.backgroundColor = fill;\n            el.style.backgroundImage = \"radial-gradient(circle at \" + (1 * k) + \"px \" + (1 * k) + \"px, \" + dots + \" \" + (1 * k) + \"px, transparent 0)\";\n            el.style.backgroundSize = 8 * k + \"px \" + 8 * k + \"px\";\n            el.style.filter = \"drop-shadow(\" + 5 * k + \"px \" + 5 * k + \"px 0 \" + ink + \") drop-shadow(\" + 3 * k + \"px \" + 3 * k + \"px 0 \" + dots + \")\";\n            // the source framework-style cubic-bezier overshoot from the source transition.\n            var pe = bez(0.175, 0.885, 0.32, 1.275);\n            var d = num(vars.pop_seconds, 0.6, 0.2, 2);\n            tl.fromTo(pop, { opacity: 0, scale: 0.8, rotation: -2 }, { opacity: 1, scale: 1, rotation: 0, duration: d, ease: pe, immediateRender: true }, 0);\n\n            finish();\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "da76c51abecc7c02f47639fdf6d9b818491b289fa75ca9ebaa11181b41e5561f",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "text": "BOOM!",
+  "font_size": 400
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "BOOM!"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 160,
+   "min": 24,
+   "max": 400
+  },
+  {
+   "id": "fill_color",
+   "type": "color",
+   "role": "style",
+   "label": "Fill colour",
+   "default": "#FACC15"
+  },
+  {
+   "id": "dot_color",
+   "type": "color",
+   "role": "style",
+   "label": "Dot colour",
+   "default": "#EF4444"
+  },
+  {
+   "id": "outline_color",
+   "type": "color",
+   "role": "style",
+   "label": "Outline colour",
+   "default": "#000000"
+  },
+  {
+   "id": "pop_seconds",
+   "type": "number",
+   "role": "motion",
+   "label": "Pop time",
+   "default": 0.6,
+   "min": 0.2,
+   "max": 2
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://magicui.design"
+}

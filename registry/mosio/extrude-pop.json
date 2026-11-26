@@ -1,0 +1,85 @@
+{
+ "name": "extrude-pop",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/extrude-pop/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Extrude Pop\n\nA flat word pops up out of the plane on a solid colored 3D body, no camera involved.\n\nCategory: typography. Length: 3 s. WebGL: no.\n\nUse when:\n- A short punchy word (a score, a verdict, a CTA) should land with physical weight, like a stamp rising off the page.\n- A faux-3D pop with no cameras or 3D transforms: a 2D extrusion that renders identically everywhere.\n\nAvoid when:\n- The text is long or small: the extruded body doubles the ink, so keep it to one short word.\n- You need real perspective or a moving camera: the extrusion angle is fixed.\n\nVariables:\n- letter (string): Text, default \"WIN\"\n- body_color (color): Body color, default \"#e8192b\"\n- face_color (color): Face color, default \"#ffffff\"\n- minimax_radius (number, 0-200): Extrusion radius, default 80\n- extrude_angle_deg (number, -180-180): Extrusion angle, default -58.6\n- extrude_end_frame (number, 10-90): Extrude frames, default 48\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Extrude Pop\n\n  A flat word pops up out of the plane on a solid colored 3D body, no camera involved.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/extrude-pop/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"extrude-pop\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    { \"id\": \"letter\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"One short, punchy word.\", \"default\": \"WIN\" },\n    { \"id\": \"body_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Body color\", \"description\": \"Color of the extruded body.\", \"default\": \"#e8192b\" },\n    { \"id\": \"face_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Face color\", \"description\": \"Color of the word's front face.\", \"default\": \"#ffffff\" },\n    { \"id\": \"minimax_radius\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Extrusion radius\", \"description\": \"Half the final depth of the extrusion, in px at 1920×1080.\", \"default\": 80, \"min\": 0, \"max\": 200, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"extrude_angle_deg\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Extrusion angle\", \"description\": \"Direction the body extends, in degrees.\", \"default\": -58.6, \"min\": -180, \"max\": 180, \"step\": 0.1, \"unit\": \"deg\" },\n    { \"id\": \"extrude_end_frame\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Extrude frames\", \"description\": \"Frame at which the extrusion is fully grown (30 fps).\", \"default\": 48, \"min\": 10, \"max\": 90, \"step\": 1, \"unit\": \"frames\" }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Extrude Pop</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .exp-svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"extrude-pop\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"exp-clip\" class=\"exp-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\" style=\"position:absolute;inset:0\">\n          <svg id=\"exp-svg\" class=\"exp-svg\" viewBox=\"0 0 1920 1080\" preserveAspectRatio=\"xMidYMid meet\" xmlns=\"http://www.w3.org/2000/svg\"></svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            gsap.registerPlugin(CustomEase);\n            function bz(id, a, b, c, d) {\n              return CustomEase.create(\"exp-\" + id, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\");\n            }\n            // interpolate(frame, [a, b], [from, to], { easing }) as a tween (frames at 30 fps).\n            function tw(tl, el, from, to, a, b, ease, keep) {\n              var t = Object.assign({}, to, { duration: (b - a) / 30, ease: ease || \"none\", immediateRender: !keep });\n              tl.fromTo(el, from, t, a / 30);\n            }\n            // Shrink an element's font size so it fits a fraction of the frame width.\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            var TOTAL = parseFloat(root.dataset.duration || \"3\");\n            function finish(tl) {\n              if (tl.duration() < TOTAL) tl.to({}, { duration: TOTAL - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"extrude-pop\"] = tl;\n            }\n            var letter = str(vars.letter, \"WIN\");\n            var bodyColor = str(vars.body_color, \"#e8192b\");\n            var faceColor = str(vars.face_color, \"#ffffff\");\n            var radiusMax = num(vars.minimax_radius, 80, 0, 200);\n            var angle = num(vars.extrude_angle_deg, -58.6, -180, 180);\n            var endFrame = num(vars.extrude_end_frame, 48, 10, 90);\n            var STEPS = 200, FONT = \"'Helvetica Neue', Helvetica, Arial, sans-serif\", WEIGHT = 700;\n            var BASE = [959.2, 752.5], FONT_SIZE = 603, MAX_W = 1660;\n            var ctx = document.createElement(\"canvas\").getContext(\"2d\");\n            ctx.font = WEIGHT + \" \" + FONT_SIZE + \"px \" + FONT;\n            var measured = ctx.measureText(letter).width;\n            var fitK = measured > 0 ? Math.min(1, MAX_W / measured) : 1;\n            var size = FONT_SIZE * fitK, rMax = radiusMax * fitK;\n\n            var NS = \"http://www.w3.org/2000/svg\";\n            var svg = document.getElementById(\"exp-svg\");\n            function glyph(fill, id) {\n              var t = document.createElementNS(NS, \"text\");\n              t.id = id;\n              t.setAttribute(\"text-anchor\", \"middle\");\n              t.setAttribute(\"font-family\", FONT);\n              t.setAttribute(\"font-weight\", WEIGHT);\n              t.setAttribute(\"font-size\", size);\n              t.setAttribute(\"fill\", fill);\n              t.textContent = letter;\n              svg.appendChild(t);\n              return t;\n            }\n            var body = [];\n            for (var i = STEPS; i >= 0; i--) body[i] = glyph(bodyColor, \"exp-body-\" + i);\n            var face = glyph(faceColor, \"exp-face\");\n\n            var ease = bz(\"pop\", 0.16, 1, 0.3, 1);\n            var theta = (angle * Math.PI) / 180;\n            var P = { f: 0 };\n            function apply() {\n              var f = P.f;\n              var r = rMax * ease(Math.min(1, Math.max(0, f / endFrame)));\n              var depth = r * 2;\n              var sx = (depth * Math.sin(theta)) / STEPS, sy = (depth * Math.cos(theta)) / STEPS;\n              for (var i = 0; i <= STEPS; i++) {\n                body[i].setAttribute(\"x\", BASE[0] + sx * i);\n                body[i].setAttribute(\"y\", BASE[1] + sy * i);\n              }\n              face.setAttribute(\"x\", BASE[0] + sx * STEPS);\n              face.setAttribute(\"y\", BASE[1] + sy * STEPS);\n            }\n            apply();\n            var tl = gsap.timeline({ paused: true });\n            tl.to(P, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: apply }, 0);\n            finish(tl);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "87126ce20472755e3e911034aed229d93b758dd9d57900d985b1119bf20ddde0",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#141318",
+ "demo_values": {
+  "letter": "WIN"
+ },
+ "variables": [
+  {
+   "id": "letter",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "WIN"
+  },
+  {
+   "id": "body_color",
+   "type": "color",
+   "role": "style",
+   "label": "Body color",
+   "default": "#e8192b"
+  },
+  {
+   "id": "face_color",
+   "type": "color",
+   "role": "style",
+   "label": "Face color",
+   "default": "#ffffff"
+  },
+  {
+   "id": "minimax_radius",
+   "type": "number",
+   "role": "motion",
+   "label": "Extrusion radius",
+   "default": 80,
+   "min": 0,
+   "max": 200
+  },
+  {
+   "id": "extrude_angle_deg",
+   "type": "number",
+   "role": "style",
+   "label": "Extrusion angle",
+   "default": -58.6,
+   "min": -180,
+   "max": 180
+  },
+  {
+   "id": "extrude_end_frame",
+   "type": "number",
+   "role": "motion",
+   "label": "Extrude frames",
+   "default": 48,
+   "min": 10,
+   "max": 90
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

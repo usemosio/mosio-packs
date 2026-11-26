@@ -1,0 +1,114 @@
+{
+ "name": "flash-sale-burst",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "original": true
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Flash Sale Burst\n\nA two-word headline rises in, a big percent figure bursts in and shakes once in the accent colour, two crossed running ribbons (black, and outlined) run their text in opposite directions and clear away, then the deadline is set in a bordered box. Clean white page, no starburst.\n\nCategory: commerce. Length: 6.5 s. WebGL: no.\n\nUse when:\n- A time-limited discount, a merch drop or a class closing soon where the percent is the headline.\n- The deadline must be stated as plain text so it stays true whenever the video is watched.\n\nAvoid when:\n- One product with an old and a new price: use price-drop.\n- A live clock counting to a moment: use event-countdown-clock.\n- Calm, premium tone: the shake and flashes are loud.\n\nVariables:\n- word_1 (string): First word, default \"Flash\"\n- word_2 (string): Second word, default \"Sale!\"\n- percent (string): Percent, default \"50%\"\n- percent_suffix (string): Word after the figure, default \"OFF\"\n- ribbon_1 (string): Ribbon 1, default \"SEMUA MENU DISKON\"\n- ribbon_2 (string): Ribbon 2, default \"SAMPAI MINGGU\"\n- deadline_label (string): Deadline label, default \"Berakhir\"\n- deadline (string): Deadline, default \"Minggu, 23.59 WIB\"\n- bg_color (color): Background, default \"#ffffff\"\n- accent_color (color): Accent, default \"#2563eb\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Flash Sale Burst\n\n  A bursting percent figure, two crossed running ribbons and a stamped deadline.\n\n  Extracted from the Mosio recipe flash-sale by usemosio/blocks.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"flash-sale-burst\"\n  data-composition-duration=\"6.5\"\n  data-composition-variables='[\n  {\n    \"id\": \"word_1\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"First word\",\n    \"description\": \"First headline word.\",\n    \"default\": \"Flash\"\n  },\n  {\n    \"id\": \"word_2\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Second word\",\n    \"description\": \"Second headline word.\",\n    \"default\": \"Sale!\"\n  },\n  {\n    \"id\": \"percent\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Percent\",\n    \"description\": \"The bursting figure, e.g. 50% or Rp5rb.\",\n    \"default\": \"50%\"\n  },\n  {\n    \"id\": \"percent_suffix\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Word after the figure\",\n    \"description\": \"Short word under the figure. Leave empty to hide it.\",\n    \"default\": \"OFF\"\n  },\n  {\n    \"id\": \"ribbon_1\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Ribbon 1\",\n    \"description\": \"Text that runs along the first ribbon.\",\n    \"default\": \"SEMUA MENU DISKON\"\n  },\n  {\n    \"id\": \"ribbon_2\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Ribbon 2\",\n    \"description\": \"Text that runs along the second ribbon.\",\n    \"default\": \"SAMPAI MINGGU\"\n  },\n  {\n    \"id\": \"deadline_label\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Deadline label\",\n    \"description\": \"Small spaced line above the stamped deadline.\",\n    \"default\": \"Berakhir\"\n  },\n  {\n    \"id\": \"deadline\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Deadline\",\n    \"description\": \"The stamped deadline, written as text.\",\n    \"default\": \"Minggu, 23.59 WIB\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"accent_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent\",\n    \"description\": \"Percent figure: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Headline, \\\"OFF\\\", the black ribbon and the deadline.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Flash Sale Burst</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n        }\n        #root * { box-sizing: border-box; }\n        .fs-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        #root { background: var(--fs-bg); color: var(--fs-text); font-family: Geist, system-ui, sans-serif; font-variant-numeric: tabular-nums; }\n        .fs-head { position: absolute; left: 5cqw; right: 5cqw; top: 8%; display: flex; justify-content: center; }\n        .fs-headin { display: inline-block; text-align: center; white-space: nowrap; font-size: calc(var(--u) * 170); font-weight: 600; letter-spacing: -0.05em; line-height: 0.95; }\n        .fs-headin span { display: block; }\n        .fs-mid { position: absolute; left: 0; right: 0; top: 27%; height: 46%; display: flex; flex-direction: column; align-items: center; justify-content: center; }\n        .fs-pctw { position: relative; width: 90cqw; display: flex; justify-content: center; }\n        .fs-pct { display: inline-block; white-space: nowrap; font-size: calc(var(--u) * 440); font-weight: 700; line-height: 1; letter-spacing: -0.06em; color: var(--fs-accent); }\n        .fs-off { position: relative; display: inline-block; font-size: calc(var(--u) * 96); font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: var(--fs-text); margin-top: calc(var(--u) * -10); }\n        .fs-tape { position: absolute; left: -20cqw; width: 140cqw; top: 72%; height: calc(var(--u) * 120); margin-top: calc(var(--u) * -60); overflow: hidden; display: flex; align-items: center; }\n        .fs-run { white-space: nowrap; font-size: calc(var(--u) * 56); font-weight: 600; letter-spacing: 0.04em; display: inline-block; }\n        .fs-run span { display: inline-block; }\n        .fs-t1 { background: var(--fs-text); color: var(--fs-bg); transform: rotate(-7deg); }\n        .fs-t2 { background: var(--fs-bg); color: var(--fs-text); border-top: 2px solid var(--fs-text); border-bottom: 2px solid var(--fs-text); transform: rotate(5deg); margin-top: calc(var(--u) * -50); }\n        .fs-info { position: absolute; left: 5cqw; right: 5cqw; top: 70%; display: flex; flex-direction: column; align-items: center; }\n        .fs-label { font-size: calc(var(--u) * 44); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #737373; }\n        .fs-stampw { margin-top: calc(var(--u) * 18); width: 100%; display: flex; justify-content: center; }\n        .fs-stamp { display: inline-block; padding: calc(var(--u) * 16) calc(var(--u) * 40); border-radius: calc(var(--u) * 20); border: 2px solid var(--fs-text); color: var(--fs-text); font-size: calc(var(--u) * 72); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; white-space: nowrap; }\n        @container (aspect-ratio > 1) {\n          .fs-head { top: 5%; }\n          .fs-headin { font-size: calc(var(--u) * 120); }\n          .fs-headin span { display: inline-block; margin: 0 0.18em; }\n          .fs-mid { top: 17%; height: 52%; }\n          .fs-pct { font-size: calc(var(--u) * 360); letter-spacing: calc(var(--u) * -10); }\n          .fs-off { font-size: calc(var(--u) * 76); }\n          .fs-tape { top: 83%; }\n          .fs-run { font-size: calc(var(--u) * 50); }\n          .fs-tape { height: calc(var(--u) * 104); margin-top: calc(var(--u) * -52); }\n          .fs-t2 { margin-top: calc(var(--u) * -40); }\n          .fs-info { top: 76%; }\n          .fs-label { font-size: calc(var(--u) * 38); }\n          .fs-stamp { font-size: calc(var(--u) * 64); }\n        }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"flash-sale-burst\" data-duration=\"6.5\" data-fps=\"30\">\n        <div id=\"fs-clip\" class=\"fs-stage clip\" data-start=\"0\" data-duration=\"6.5\" data-track-index=\"0\">\n          <div class=\"fs-head\"><div class=\"fs-headin\" id=\"fs-headin\"><span id=\"fs-w1\"></span><span class=\"fs-b\" id=\"fs-w2\"></span></div></div>\n          <div class=\"fs-mid\">\n            <div class=\"fs-pctw\" id=\"fs-pctw\"><span class=\"fs-pct\" id=\"fs-pct\"></span></div>\n            <span class=\"fs-off\" id=\"fs-off\"></span>\n          </div>\n          <div class=\"fs-tape fs-t2\" id=\"fs-t2\"><div class=\"fs-run\" id=\"fs-run2\"></div></div>\n          <div class=\"fs-tape fs-t1\" id=\"fs-t1\"><div class=\"fs-run\" id=\"fs-run1\"></div></div>\n          <div class=\"fs-info\" id=\"fs-info\">\n            <div class=\"fs-label\" id=\"fs-label\"></div>\n            <div class=\"fs-stampw\" id=\"fs-stampw\"><span class=\"fs-stamp\" id=\"fs-stamp\"></span></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function ink(c, thr) {\n              var m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(c).trim());\n              if (!m) return \"#14161a\";\n              var h = m[1].length === 3 ? m[1].replace(/./g, \"$&$&\") : m[1];\n              var r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);\n              return 0.299 * r + 0.587 * g + 0.114 * b > (thr || 150) ? \"#14161a\" : \"#ffffff\";\n            }\n            function setColors(p, list) {\n              list.forEach(function (c) { root.style.setProperty(\"--\" + p + \"-\" + c[0], colr(vars[c[1]], c[2])); });\n            }\n            // Shrink a one-line element's wrapper (flex, centred) when its content is wider than the wrapper.\n            var fitList = [];\n            function fit(wrap) { fitList.push(wrap); refit(); }\n            function refit() {\n              fitList.forEach(function (w) {\n                w.style.transform = \"\";\n                var c = w.firstElementChild, cw = c ? c.offsetWidth : 0, aw = w.clientWidth;\n                if (cw > aw && aw > 0) w.style.transform = \"scale(\" + (aw / cw).toFixed(4) + \")\";\n              });\n            }\n            if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n\n            setColors(\"fs\", [[\"bg\", \"bg_color\", \"#ffffff\"], [\"accent\", \"accent_color\", \"#2563eb\"], [\"text\", \"text_color\", \"#0a0a0a\"]]);\n            var w1 = str(vars.word_1, \"Flash\"), w2 = str(vars.word_2, \"Sale!\");\n            var pct = str(vars.percent, \"50%\");\n            var suffix = typeof vars.percent_suffix === \"string\" ? vars.percent_suffix.trim() : \"OFF\";\n            var r1 = str(vars.ribbon_1, \"SEMUA MENU DISKON\"), r2 = str(vars.ribbon_2, \"SAMPAI MINGGU\");\n            var dl = typeof vars.deadline_label === \"string\" ? vars.deadline_label.trim() : \"Berakhir\";\n            var dd = str(vars.deadline, \"Minggu, 23.59 WIB\");\n            document.getElementById(\"fs-w1\").textContent = w1;\n            document.getElementById(\"fs-w2\").textContent = w2;\n            document.getElementById(\"fs-pct\").textContent = pct;\n            var off = document.getElementById(\"fs-off\"); off.textContent = suffix; if (!suffix) off.style.display = \"none\";\n            document.getElementById(\"fs-label\").textContent = dl;\n            document.getElementById(\"fs-stamp\").textContent = dd;\n            fit(document.getElementById(\"fs-pctw\"));\n            fit(document.getElementById(\"fs-stampw\"));\n            var headWrap = root.querySelector(\".fs-head\"); fit(headWrap);\n\n            // Each ribbon repeats its text; the run slides by exactly the width of two repeats, so it loops without a jump.\n            function fillRun(id, text) {\n              var run = document.getElementById(id), html = \"\";\n              for (var i = 0; i < 16; i++) html += \"<span>\" + esc(text) + \"&nbsp;&nbsp;•&nbsp;&nbsp;</span>\";\n              run.innerHTML = html;\n              return run.firstElementChild.offsetWidth;\n            }\n            var run1 = document.getElementById(\"fs-run1\"), run2 = document.getElementById(\"fs-run2\");\n            var unit1 = fillRun(\"fs-run1\", r1), unit2 = fillRun(\"fs-run2\", r2);\n            document.fonts && document.fonts.ready && document.fonts.ready.then(function () { unit1 = fillRun(\"fs-run1\", r1); unit2 = fillRun(\"fs-run2\", r2); });\n\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(\"#fs-headin span\", { scale: 2.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: \"expo.out\", stagger: 0.22, transformOrigin: \"50% 50%\" }, 0.15);\n            tl.fromTo(\"#fs-pct\", { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: \"back.out(1.6)\" }, 0.6);\n            tl.to(\"#fs-pct\", { x: 8 * U, duration: 0.05, yoyo: true, repeat: 9, ease: \"none\" }, 1.3);\n            tl.fromTo(\"#fs-off\", { x: 300 * U, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: \"expo.out\" }, 1.4);\n            tl.fromTo(\"#fs-t1\", { xPercent: -100 }, { xPercent: 0, duration: 0.6, ease: \"expo.out\" }, 1.8);\n            tl.fromTo(\"#fs-t2\", { xPercent: 100 }, { xPercent: 0, duration: 0.6, ease: \"expo.out\" }, 2.0);\n            tl.fromTo(run1, { x: 0 }, { x: function () { return -2 * unit1; }, duration: 6, ease: \"none\" }, 1.8);\n            tl.fromTo(run2, { x: function () { return -2 * unit2; } }, { x: 0, duration: 6, ease: \"none\" }, 2.0);\n            tl.to([\"#fs-t1\", \"#fs-t2\"], { yPercent: -200, opacity: 0, duration: 0.4, ease: \"power2.in\" }, 4.2);\n            tl.fromTo(\"#fs-label\", { y: 80 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: \"power3.out\" }, 4.5);\n            tl.fromTo(\"#fs-stamp\", { scale: 1.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: \"expo.out\" }, 4.7);\n\n            var total = parseFloat(root.dataset.duration || \"6.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"flash-sale-burst\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "2f004853cbfe4cfc864f0d2ac5e246e37b3919123e05b277e82fbc777df2dc5d",
+ "duration": 6.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "word_1",
+   "type": "string",
+   "role": "content",
+   "label": "First word",
+   "default": "Flash"
+  },
+  {
+   "id": "word_2",
+   "type": "string",
+   "role": "content",
+   "label": "Second word",
+   "default": "Sale!"
+  },
+  {
+   "id": "percent",
+   "type": "string",
+   "role": "content",
+   "label": "Percent",
+   "default": "50%"
+  },
+  {
+   "id": "percent_suffix",
+   "type": "string",
+   "role": "content",
+   "label": "Word after the figure",
+   "default": "OFF"
+  },
+  {
+   "id": "ribbon_1",
+   "type": "string",
+   "role": "content",
+   "label": "Ribbon 1",
+   "default": "SEMUA MENU DISKON"
+  },
+  {
+   "id": "ribbon_2",
+   "type": "string",
+   "role": "content",
+   "label": "Ribbon 2",
+   "default": "SAMPAI MINGGU"
+  },
+  {
+   "id": "deadline_label",
+   "type": "string",
+   "role": "content",
+   "label": "Deadline label",
+   "default": "Berakhir"
+  },
+  {
+   "id": "deadline",
+   "type": "string",
+   "role": "content",
+   "label": "Deadline",
+   "default": "Minggu, 23.59 WIB"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "accent_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2563eb"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

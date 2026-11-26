@@ -1,0 +1,80 @@
+{
+ "name": "slot-machine-roll",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/slot-machine-roll/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Slot Machine Roll\n\nEach character sits on its own vertical reel and springs from the old value to the new one, one column after another, like a casino drum. Values of different lengths are right-aligned.\n\nCategory: typography. Length: 3 s. WebGL: no.\n\nUse when:\n- Revealing a price change, plan upgrade or before/after value that includes symbols ($, %, x).\n- A playful, casino-reel feel on a pricing or comparison slide, with short values (1 to 6 characters).\n\nAvoid when:\n- The value is a large plain number like 1,240,000: use rolling-number.\n- The text is longer than about 6 characters: it gets hard to read while the reels spin; use staggered-fade-up.\n- The tone is formal or data-driven: use rolling-number for a composed odometer.\n\nVariables:\n- from (string): From, default \"$99\"\n- to (string): To, default \"$199\"\n- font_size (number, 12-400): Font size, default 120\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"700\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Slot Machine Roll\n\n  Each character sits on its own vertical reel and springs from the old value to the new one,\n  column after column, like a casino drum.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/slot-machine-roll/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"slot-machine-roll\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    { \"id\": \"from\", \"type\": \"string\", \"role\": \"content\", \"label\": \"From\", \"description\": \"Starting value shown before the reels roll.\", \"default\": \"$99\" },\n    { \"id\": \"to\", \"type\": \"string\", \"role\": \"content\", \"label\": \"To\", \"description\": \"Value the reels settle on. Keep it short (1 to 6 characters).\", \"default\": \"$199\" },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels; it also sets the reel travel. Long values shrink to fit the frame.\", \"default\": 120, \"min\": 12, \"max\": 400, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{ \"value\": \"400\", \"label\": \"Regular\" }, { \"value\": \"500\", \"label\": \"Medium\" }, { \"value\": \"600\", \"label\": \"Semibold\" }, { \"value\": \"700\", \"label\": \"Bold\" }] },\n    { \"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\" }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Slot Machine Roll</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, Geist, -apple-system, BlinkMacSystemFont, sans-serif);\n          pointer-events: none;\n        }\n        .smr-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .smr-line { letter-spacing: -0.03em; line-height: 1.1; white-space: nowrap; }\n        .smr-col { display: inline-block; overflow: hidden; height: 1.1em; line-height: 1.1em; vertical-align: top; width: 0.7em; text-align: center; }\n        .smr-reel { display: flex; flex-direction: column; }\n        .smr-reel span { display: block; height: 1.1em; white-space: pre; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"slot-machine-roll\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"smr-clip\" class=\"smr-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <span id=\"smr-line\" class=\"smr-line\" role=\"img\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var line = document.getElementById(\"smr-line\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.length ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // A damped spring from rest at 0 towards 1 (mass, stiffness, damping), t in seconds,\n            // in closed form: the same curve the source framework's spring() samples.\n            function spring(t, mass, stiffness, damping) {\n              if (t <= 0) return 0;\n              var w0 = Math.sqrt(stiffness / mass), z = damping / (2 * Math.sqrt(stiffness * mass));\n              if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              if (z < 1) {\n                var wd = w0 * Math.sqrt(1 - z * z);\n                return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t));\n              }\n              var s = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + s, r2 = -z * w0 - s;\n              return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n            }\n            function padStart(s, n) {\n              var chars = Array.from(s);\n              while (chars.length < n) chars.unshift(\" \");\n              return chars;\n            }\n\n            var from = str(vars.from, \"$99\");\n            var to = str(vars.to, \"$199\");\n            var weight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"700\");\n            var speed = num(vars.speed, 1, 0.25, 4);\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n\n            var len = Math.max(Array.from(from).length, Array.from(to).length);\n            var paddedFrom = padStart(from, len);\n            var paddedTo = padStart(to, len);\n            line.setAttribute(\"aria-label\", to);\n            line.style.fontWeight = weight;\n\n            // Each reel is 0.7em wide: shrink so all of them fit 90 % of the frame width.\n            var size = num(vars.font_size, 120, 12, 400);\n            size = Math.max(12, Math.min(size, (root.clientWidth * 0.9) / (len * 0.7), (root.clientHeight * 0.9) / 1.1));\n            line.style.fontSize = size + \"px\";\n\n            var reels = [];\n            for (var i = 0; i < len; i++) {\n              var colEl = document.createElement(\"span\");\n              colEl.id = \"smr-col-\" + i;\n              colEl.className = \"smr-col\";\n              var reel = document.createElement(\"span\");\n              reel.className = \"smr-reel\";\n              var a = document.createElement(\"span\");\n              a.textContent = paddedFrom[i];\n              var b = document.createElement(\"span\");\n              b.textContent = paddedTo[i];\n              reel.appendChild(a);\n              reel.appendChild(b);\n              colEl.appendChild(reel);\n              line.appendChild(colEl);\n              reels.push(reel);\n            }\n\n            // remocn: spring({ frame: frame - i * 4, fps: 30, config: { damping: 14 } }) with\n            // the source framework's default mass 1 and stiffness 100, clamped to 0..1; the reel moves up by\n            // one 1.1em row as it goes from 0 to 1.\n            function draw(frame) {\n              reels.forEach(function (reel, i) {\n                var raw = spring((frame - i * 4) / 30, 1, 100, 14);\n                var t = Math.max(0, Math.min(1, raw));\n                reel.style.transform = \"translateY(\" + (-t * size * 1.1) + \"px)\";\n              });\n            }\n\n            var total = parseFloat(root.dataset.duration || \"3\");\n            var clock = { t: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t * 30 * speed); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"slot-machine-roll\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "a12bb58e9d81a7245889485b1a5bf99d90b7635ac34e9739fecd0cb680a28e11",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 260
+ },
+ "variables": [
+  {
+   "id": "from",
+   "type": "string",
+   "role": "content",
+   "label": "From",
+   "default": "$99"
+  },
+  {
+   "id": "to",
+   "type": "string",
+   "role": "content",
+   "label": "To",
+   "default": "$199"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 120,
+   "min": 12,
+   "max": 400
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

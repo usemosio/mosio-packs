@@ -1,0 +1,149 @@
+{
+ "name": "media-between-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Daniel Petho",
+ "source": {
+  "repo": "https://github.com/danielpetho/fancy",
+  "path": "src/fancy/components/blocks/media-between-text.tsx",
+  "commit": "f9f62c61207b2dd3210476dd98af3c9a5be24094"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Media Between Text\n\nA sentence with a gap in the middle: a rounded media tile springs open between the two halves, pushing the words apart, then closes again. The tile is a drawn gradient by default, or your own image.\n\nCategory: typography. Length: 4.5 s. WebGL: no.\n\nUse when:\n- A line of text should open a gap and show a picture, clip or swatch inline, as part of the sentence.\n- A headline needs an image tucked between its words, appearing with a spring.\n\nAvoid when:\n- The picture should fill the frame or sit in a separate layout: use a scene or panel block.\n- The text must not shift while the media appears.\n\nVariables:\n- first_text (string): First text, default \"that's a nice (\"\n- second_text (string): Second text, default \") chair!\"\n- font_size (number, 24-260): Font size, default 96\n- font_weight (enum): Font weight, default \"300\"\n- color (color): Text color, default \"#e11d48\"\n- media_width (number, 0.3-4): Media width, default 1.7\n- media_height (number, 0.3-4): Media height, default 1.7\n- media_radius (number, 0-1): Media radius, default 0.12\n- gradient_from (color): Gradient from, default \"#fda4af\"\n- gradient_to (color): Gradient to, default \"#6d28d9\"\n- image (string): Image, default \"\"\n- open_at (number, 0-3): Open at, default 0.5\n- close_at (number, 0-8): Close at, default 3.2\n- spring_duration (number, 0.1-2): Spring duration, default 0.4\n\nSource: https://github.com/danielpetho/fancy. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Media Between Text\n\n  A sentence with a gap in the middle: a rounded media tile springs open between the two halves, pushing the words apart, then closes again. The tile is a drawn gradient by default, or your own image.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/danielpetho/fancy/blob/f9f62c61207b2dd3210476dd98af3c9a5be24094/src/fancy/components/blocks/media-between-text.tsx\n\n  MIT License\n\n  Copyright (c) 2024 Daniel Petho\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"media-between-text\"\n  data-composition-duration=\"4.5\"\n  data-composition-variables='[\n    {\"id\": \"first_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"First text\", \"description\": \"Text before the media.\", \"default\": \"that&#39;s a nice (\"},\n    {\"id\": \"second_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Second text\", \"description\": \"Text after the media.\", \"default\": \") chair!\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. The row shrinks to fit the frame.\", \"default\": 96, \"min\": 24, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"300\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}]},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Text color.\", \"default\": \"#e11d48\"},\n    {\"id\": \"media_width\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Media width\", \"description\": \"Width of the opened media tile, in em of the font size.\", \"default\": 1.7, \"min\": 0.3, \"max\": 4, \"step\": 0.05, \"unit\": \"em\"},\n    {\"id\": \"media_height\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Media height\", \"description\": \"Height of the media tile, in em of the font size.\", \"default\": 1.7, \"min\": 0.3, \"max\": 4, \"step\": 0.05, \"unit\": \"em\"},\n    {\"id\": \"media_radius\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Media radius\", \"description\": \"Corner radius of the tile, in em.\", \"default\": 0.12, \"min\": 0, \"max\": 1, \"step\": 0.01, \"unit\": \"em\"},\n    {\"id\": \"gradient_from\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Gradient from\", \"description\": \"First color of the drawn tile.\", \"default\": \"#fda4af\"},\n    {\"id\": \"gradient_to\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Gradient to\", \"description\": \"Second color of the drawn tile.\", \"default\": \"#6d28d9\"},\n    {\"id\": \"image\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Image\", \"description\": \"Optional image path (for example assets/media/upl_xxx.jpg) drawn over the gradient, cover-fitted. Empty keeps the drawn gradient.\", \"default\": \"\"},\n    {\"id\": \"open_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Open at\", \"description\": \"Seconds when the tile opens.\", \"default\": 0.5, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"close_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Close at\", \"description\": \"Seconds when the tile closes again. 0 keeps it open.\", \"default\": 3.2, \"min\": 0, \"max\": 8, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"spring_duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Spring duration\", \"description\": \"Perceived duration of the opening spring.\", \"default\": 0.4, \"min\": 0.1, \"max\": 2, \"step\": 0.05, \"unit\": \"s\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Media Between Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #e11d48; font-family: Geist, system-ui, sans-serif; }\n        .mbt-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .mbt-row { display: flex; align-items: center; justify-content: center; white-space: pre; line-height: 1.2; }\n        .mbt-media { position: relative; overflow: hidden; flex: none; width: 0; }\n        .mbt-art { position: absolute; inset: 0; }\n        .mbt-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"media-between-text\" data-duration=\"4.5\" data-fps=\"30\">\n        <div id=\"mbt-clip\" class=\"mbt-stage clip\" data-start=\"0\" data-duration=\"4.5\" data-track-index=\"0\">\n          <div id=\"mbt-row\" class=\"mbt-row\"><span id=\"mbt-first\"></span><div id=\"mbt-media\" class=\"mbt-media\"><div id=\"mbt-art\" class=\"mbt-art\"></div></div><span id=\"mbt-second\"></span></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var DEFS = [{\"id\": \"first_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"First text\", \"description\": \"Text before the media.\", \"default\": \"that's a nice (\"}, {\"id\": \"second_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Second text\", \"description\": \"Text after the media.\", \"default\": \") chair!\"}, {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. The row shrinks to fit the frame.\", \"default\": 96, \"min\": 24, \"max\": 260, \"step\": 1, \"unit\": \"px\"}, {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"300\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}]}, {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Text color.\", \"default\": \"#e11d48\"}, {\"id\": \"media_width\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Media width\", \"description\": \"Width of the opened media tile, in em of the font size.\", \"default\": 1.7, \"min\": 0.3, \"max\": 4, \"step\": 0.05, \"unit\": \"em\"}, {\"id\": \"media_height\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Media height\", \"description\": \"Height of the media tile, in em of the font size.\", \"default\": 1.7, \"min\": 0.3, \"max\": 4, \"step\": 0.05, \"unit\": \"em\"}, {\"id\": \"media_radius\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Media radius\", \"description\": \"Corner radius of the tile, in em.\", \"default\": 0.12, \"min\": 0, \"max\": 1, \"step\": 0.01, \"unit\": \"em\"}, {\"id\": \"gradient_from\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Gradient from\", \"description\": \"First color of the drawn tile.\", \"default\": \"#fda4af\"}, {\"id\": \"gradient_to\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Gradient to\", \"description\": \"Second color of the drawn tile.\", \"default\": \"#6d28d9\"}, {\"id\": \"image\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Image\", \"description\": \"Optional image path (for example assets/media/upl_xxx.jpg) drawn over the gradient, cover-fitted. Empty keeps the drawn gradient.\", \"default\": \"\"}, {\"id\": \"open_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Open at\", \"description\": \"Seconds when the tile opens.\", \"default\": 0.5, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"}, {\"id\": \"close_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Close at\", \"description\": \"Seconds when the tile closes again. 0 keeps it open.\", \"default\": 3.2, \"min\": 0, \"max\": 8, \"step\": 0.05, \"unit\": \"s\"}, {\"id\": \"spring_duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Spring duration\", \"description\": \"Perceived duration of the opening spring.\", \"default\": 0.4, \"min\": 0.1, \"max\": 2, \"step\": 0.05, \"unit\": \"s\"}];\n            var root = document.getElementById(\"root\");\n            var raw = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            var D = parseFloat(root.dataset.duration || \"4.5\");\n            function V(id) {\n              var d = null;\n              for (var i = 0; i < DEFS.length; i++) if (DEFS[i].id === id) d = DEFS[i];\n              var v = raw[id];\n              if (v === undefined || v === null || (v === \"\" && d.type !== \"string\")) return d.default;\n              if (d.type === \"number\") { var n = Number(v); return Number.isFinite(n) ? Math.min(d.max, Math.max(d.min, n)) : d.default; }\n              if (d.type === \"boolean\") return v === true || v === \"true\";\n              if (d.type === \"enum\") { for (var j = 0; j < d.options.length; j++) if (String(d.options[j].value) === String(v)) return d.options[j].value; return d.default; }\n              if (d.type === \"string\") return typeof v === \"string\" ? v : d.default;\n              return typeof v === \"string\" && v ? v : d.default;\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function hash3(a, b, c) { return mulberry32((a * 7919 + b * 104729 + c * 1299709) | 0)(); }\n            // Stagger delays in seconds: \"first\", \"last\", \"center\", \"random\" (seeded shuffle) or an index.\n            function stagger(n, from, step, seed) {\n              var out = [], i;\n              if (from === \"random\") {\n                var rng = mulberry32(seed || 7), idx = [];\n                for (i = 0; i < n; i++) idx.push(i);\n                for (i = n - 1; i > 0; i--) { var j = Math.floor(rng() * (i + 1)); var tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp; }\n                for (i = 0; i < n; i++) out[idx[i]] = i * step;\n                return out;\n              }\n              for (i = 0; i < n; i++) {\n                var k = from === \"last\" ? n - 1 - i : from === \"center\" ? Math.abs(Math.floor(n / 2) - i) : typeof from === \"number\" ? Math.abs(from - i) : i;\n                out.push(k * step);\n              }\n              return out;\n            }\n            // Damped spring from 0 to 1 (stiffness/damping/mass or duration/bounce, as Motion defines them).\n            function spring(o) {\n              var m = o.mass || 1, k, c;\n              if (o.duration !== undefined) { var w = (2 * Math.PI) / o.duration; k = w * w * m; c = 2 * (1 - (o.bounce || 0)) * Math.sqrt(k * m); }\n              else { k = o.stiffness; c = o.damping; }\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              function at(t) {\n                if (t <= 0) return 0;\n                if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n                if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t)); }\n                var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n                return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n              }\n              var settle = 6;\n              for (var t = 0.02; t < 6; t += 0.02) {\n                var ok = true;\n                for (var u = t; u < Math.min(t + 0.3, 6); u += 0.05) if (Math.abs(1 - at(u)) > 0.002) { ok = false; break; }\n                if (ok) { settle = t; break; }\n              }\n              return { at: at, duration: settle };\n            }\n            function fitText(text) { return Array.from(text); }\n\n            var row = document.getElementById(\"mbt-row\"), media = document.getElementById(\"mbt-media\"), art = document.getElementById(\"mbt-art\");\n            var a = V(\"first_text\"), b = V(\"second_text\");\n            document.getElementById(\"mbt-first\").textContent = a; document.getElementById(\"mbt-second\").textContent = b;\n            var mw = V(\"media_width\"), mh = V(\"media_height\");\n            row.style.fontSize = \"min(\" + V(\"font_size\") + \"px, calc(90cqw / \" + ((fitText(a + b).length * 0.5 + mw + 0.2)).toFixed(2) + \"))\";\n            row.style.fontWeight = V(\"font_weight\"); row.style.color = V(\"color\");\n            media.style.height = mh + \"em\"; media.style.borderRadius = V(\"media_radius\") + \"em\";\n            media.style.margin = \"0.08em 0 0 0\";\n            var g0 = V(\"gradient_from\"), g1 = V(\"gradient_to\");\n            art.style.background = \"radial-gradient(circle at 70% 28%, rgba(255,255,255,0.55) 0, rgba(255,255,255,0) 32%), linear-gradient(135deg, \" + g0 + \", \" + g1 + \")\";\n            var src = String(V(\"image\") || \"\").trim();\n            if (src) { var img = document.createElement(\"img\"); img.className = \"mbt-img\"; img.id = \"mbt-img\"; img.src = src; img.alt = \"\"; media.appendChild(img); }\n            var sp = spring({ duration: V(\"spring_duration\"), bounce: 0 });\n            var openAt = V(\"open_at\"), closeAt = V(\"close_at\");\n            var tl = gsap.timeline({ paused: true });\n            function draw(t) {\n              var p = sp.at(t - openAt);\n              if (closeAt > 0 && t >= closeAt) p = 1 - sp.at(t - closeAt);\n              if (closeAt > 0 && t >= closeAt && t < closeAt + sp.duration) p = Math.min(p, 1);\n              media.style.width = (mw * Math.max(0, p)).toFixed(4) + \"em\";\n            }\n\n            var clock = { t: 0 };\n            tl.to(clock, { t: D, duration: D, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"media-between-text\"] = tl;\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "468ae42dd90be04aec70fd21f115164e1bc1d1a54e8b99df8591cb6e5a80c260",
+ "duration": 4.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 110
+ },
+ "variables": [
+  {
+   "id": "first_text",
+   "type": "string",
+   "role": "content",
+   "label": "First text",
+   "default": "that's a nice ("
+  },
+  {
+   "id": "second_text",
+   "type": "string",
+   "role": "content",
+   "label": "Second text",
+   "default": ") chair!"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 96,
+   "min": 24,
+   "max": 260
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "300"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#e11d48"
+  },
+  {
+   "id": "media_width",
+   "type": "number",
+   "role": "style",
+   "label": "Media width",
+   "default": 1.7,
+   "min": 0.3,
+   "max": 4
+  },
+  {
+   "id": "media_height",
+   "type": "number",
+   "role": "style",
+   "label": "Media height",
+   "default": 1.7,
+   "min": 0.3,
+   "max": 4
+  },
+  {
+   "id": "media_radius",
+   "type": "number",
+   "role": "style",
+   "label": "Media radius",
+   "default": 0.12,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "gradient_from",
+   "type": "color",
+   "role": "style",
+   "label": "Gradient from",
+   "default": "#fda4af"
+  },
+  {
+   "id": "gradient_to",
+   "type": "color",
+   "role": "style",
+   "label": "Gradient to",
+   "default": "#6d28d9"
+  },
+  {
+   "id": "image",
+   "type": "string",
+   "role": "content",
+   "label": "Image",
+   "default": ""
+  },
+  {
+   "id": "open_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Open at",
+   "default": 0.5,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "close_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Close at",
+   "default": 3.2,
+   "min": 0,
+   "max": 8
+  },
+  {
+   "id": "spring_duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Spring duration",
+   "default": 0.4,
+   "min": 0.1,
+   "max": 2
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://fancycomponents.dev"
+}

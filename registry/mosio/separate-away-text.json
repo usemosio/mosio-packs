@@ -1,0 +1,102 @@
+{
+ "name": "separate-away-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Eldora UI",
+ "source": {
+  "repo": "https://github.com/karthikmudunuri/eldoraui",
+  "path": "apps/www/registry/eldoraui/seperate-away-text.tsx",
+  "commit": "6bb8fd211ecbdfa983f5780bead27d9f3890f20a"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Separate Away Text\n\nTwo stacked lines fade in together while drifting slightly apart, the top one up and the bottom one down, opening a small gap between them.\n\nCategory: typography. Length: 3.5 s. WebGL: no.\n\nUse when:\n- A two-line title should settle in softly with the lines breathing apart.\n- A gentle, premium entrance for a heading and subheading.\n\nAvoid when:\n- A dramatic entrance: the drift is small by design; use multi-direction-slide-text.\n- A single line.\n\nVariables:\n- text_top (string): Top line, default \"Separate\"\n- text_bottom (string): Bottom line, default \"Away\"\n- duration (number, 0.3-5): Time, default 1.5\n- distance (number, 0-60): Drift, default 5\n- start (number, 0-5): Start, default 0.2\n- font_size (number, 12-260): Font size, default 130\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"700\"\n\nSource: https://github.com/karthikmudunuri/eldoraui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Separate Away Text\n\n  Two stacked lines fade in together while drifting slightly apart, the top one up and the bottom one down, opening a small gap between them.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/karthikmudunuri/eldoraui/blob/6bb8fd211ecbdfa983f5780bead27d9f3890f20a/apps/www/registry/eldoraui/seperate-away-text.tsx\n\n  MIT License\n\n  Copyright (c) Mudunuri Bhaskara Karthikeya Varma\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"separate-away-text\"\n  data-composition-duration=\"3.5\"\n  data-composition-variables='[\n    {\"id\": \"text_top\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Top line\", \"description\": \"Line that drifts up.\", \"default\": \"Separate\"},\n    {\"id\": \"text_bottom\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Bottom line\", \"description\": \"Line that drifts down.\", \"default\": \"Away\"},\n    {\"id\": \"duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Time\", \"description\": \"Seconds the fade and drift take.\", \"default\": 1.5, \"min\": 0.3, \"max\": 5, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Drift\", \"description\": \"How far each line moves from the centre. Scales with font size (72px = source).\", \"default\": 5, \"min\": 0, \"max\": 60, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start\", \"description\": \"Seconds before the fade.\", \"default\": 0.2, \"min\": 0, \"max\": 5, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels. The source is built for 72px type; its pixel offsets scale with this size.\", \"default\": 130, \"min\": 12, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Separate Away Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, \"Geist\", system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .saw-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .saw-box { display: flex; flex-direction: column; align-items: center; }\n        .saw-line { text-align: center; line-height: 1.2; letter-spacing: -0.02em; opacity: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.12); max-width: 92%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"separate-away-text\" data-duration=\"3.5\" data-fps=\"30\">\n        <div id=\"saw-clip\" class=\"saw-stage clip\" data-start=\"0\" data-duration=\"3.5\" data-track-index=\"0\">\n          <div class=\"saw-box\"><div id=\"saw-a\" class=\"saw-line\"></div><div id=\"saw-b\" class=\"saw-line\"></div></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function pick(v, l, f) { return l.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { if (typeof v === \"boolean\") return v; if (v === \"true\") return true; if (v === \"false\") return false; return f; }\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            gsap.registerPlugin(CustomEase);\n            var total = parseFloat(root.dataset.duration || \"3.5\");\n            // Motion tweens with no easing named run easeInOut.\n            var EIO = CustomEase.create(\"saw-eio\", \"M0,0 C0.42,0 0.58,1 1,1\");\n            // Unit step response of a damped spring (semi-implicit Euler at 480 Hz), sampled once.\n            function springTable(k, c, m, dur) {\n              var dt = 1 / 480, x = 0, v = 0, out = [0];\n              for (var t = 0; t < dur; t += dt) { v += ((-k * (x - 1) - c * v) / m) * dt; x += v * dt; out.push(x); }\n              return out;\n            }\n            function springAt(tab, tau) {\n              if (tau <= 0) return 0;\n              var i = tau * 480; if (i >= tab.length - 1) return tab[tab.length - 1];\n              var j = Math.floor(i); return tab[j] + (tab[j + 1] - tab[j]) * (i - j);\n            }\n            var clock = { t: 0 };\n            function finish(tl, draw) {\n              if (draw) { tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0); draw(0); }\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"separate-away-text\"] = tl;\n            }\n\n\n            var a = document.getElementById(\"saw-a\"), b = document.getElementById(\"saw-b\");\n            var size = num(vars.font_size, 72, 12, 260), f = size / 72;\nvar dur = num(vars.duration, 1.5, 0.3, 5), start = num(vars.start, 0.2, 0, 5), dist = num(vars.distance, 5, 0, 60) * f;\n            [a, b].forEach(function (el) { el.style.fontSize = size + \"px\"; el.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\", \"800\"], \"700\"); });\n            a.textContent = str(vars.text_top, \"Separate\"); b.textContent = str(vars.text_bottom, \"Away\");\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(a, { opacity: 0, y: 0 }, { opacity: 1, y: -dist, duration: dur, ease: EIO, immediateRender: true }, start);\n            tl.fromTo(b, { opacity: 0, y: 0 }, { opacity: 1, y: dist, duration: dur, ease: EIO, immediateRender: true }, start);\n            finish(tl, null);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "89819afc781c53f37a99c3e32d31475f56c9158b2bd28e2105feceb94b16a09a",
+ "duration": 3.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 190,
+  "distance": 14
+ },
+ "variables": [
+  {
+   "id": "text_top",
+   "type": "string",
+   "role": "content",
+   "label": "Top line",
+   "default": "Separate"
+  },
+  {
+   "id": "text_bottom",
+   "type": "string",
+   "role": "content",
+   "label": "Bottom line",
+   "default": "Away"
+  },
+  {
+   "id": "duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Time",
+   "default": 1.5,
+   "min": 0.3,
+   "max": 5
+  },
+  {
+   "id": "distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Drift",
+   "default": 5,
+   "min": 0,
+   "max": 60
+  },
+  {
+   "id": "start",
+   "type": "number",
+   "role": "motion",
+   "label": "Start",
+   "default": 0.2,
+   "min": 0,
+   "max": 5
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 130,
+   "min": 12,
+   "max": 260
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://www.eldoraui.site"
+}

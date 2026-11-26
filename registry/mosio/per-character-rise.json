@@ -1,0 +1,77 @@
+{
+ "name": "per-character-rise",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/per-character-rise/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Per Character Rise\n\nLetters slide up from below with no blur, one after another: crisp and kinetic.\n\nCategory: typography. Length: 2 s. WebGL: no.\n\nUse when:\n- A short word or phrase needs a crisp, character-by-character entrance with an even, readable stagger.\n- The tone is clean and precise: no blur, no dramatic staircase.\n\nAvoid when:\n- You want a pronounced staircase where each letter visibly lags: use bottom-up-letters.\n- The text is several lines that should reveal line by line: use mask-reveal-up or line-by-line-slide.\n- The reveal should be soft or blurred: use focus-blur-resolve or soft-blur-in.\n\nVariables:\n- text (string): Text, default \"One more thing.\"\n- font_size (number, 12-220): Font size, default 72\n- distance (number, 0-120): Distance, default 32\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"600\"\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Per Character Rise\n\n  Letters slide up from below with no blur, one character after another.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/per-character-rise/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"per-character-rise\"\n  data-composition-duration=\"2\"\n  data-composition-variables='[\n    { \"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Word or short phrase that rises in.\", \"default\": \"One more thing.\" },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 72, \"min\": 12, \"max\": 220, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Distance\", \"description\": \"How far below its place each letter starts.\", \"default\": 32, \"min\": 0, \"max\": 120, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{ \"value\": \"400\", \"label\": \"Regular\" }, { \"value\": \"500\", \"label\": \"Medium\" }, { \"value\": \"600\", \"label\": \"Semibold\" }, { \"value\": \"700\", \"label\": \"Bold\" }] }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Per Character Rise</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .pcr-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .pcr-line {\n          letter-spacing: -0.05em;\n          line-height: 1;\n          white-space: pre;\n        }\n        .pcr-char {\n          display: inline-block;\n          white-space: pre;\n          opacity: 0;\n          backface-visibility: hidden;\n          transform-origin: 50% 55%;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"per-character-rise\" data-duration=\"2\" data-fps=\"30\">\n        <div id=\"pcr-clip\" class=\"pcr-stage clip\" data-start=\"0\" data-duration=\"2\" data-track-index=\"0\">\n          <span id=\"pcr-line\" class=\"pcr-line\" role=\"img\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var line = document.getElementById(\"pcr-line\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            var text = typeof vars.text === \"string\" && vars.text.trim() ? vars.text : \"One more thing.\";\n            var distance = num(vars.distance, 32, 0, 120);\n            var weight = [\"400\", \"500\", \"600\", \"700\"].indexOf(String(vars.font_weight)) >= 0 ? String(vars.font_weight) : \"600\";\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n\n            line.style.fontWeight = weight;\n            line.setAttribute(\"aria-label\", text);\n            var chars = Array.from(text).map(function (ch, i) {\n              var span = document.createElement(\"span\");\n              span.id = \"pcr-char-\" + i;\n              span.className = \"pcr-char\";\n              span.textContent = ch;\n              line.appendChild(span);\n              return span;\n            });\n\n            // Shrink to 90 % of the frame width when the text is wider.\n            var size = num(vars.font_size, 72, 12, 220);\n            line.style.fontSize = size + \"px\";\n            var maxWidth = Math.max(1, root.clientWidth * 0.9);\n            if (line.scrollWidth > maxWidth) {\n              size = Math.max(12, size * (maxWidth / line.scrollWidth));\n              line.style.fontSize = size + \"px\";\n            }\n\n            // the source framework frames at 30 fps: each letter fades over 21 frames and\n            // travels over 10, one frame after the previous letter.\n            gsap.registerPlugin(CustomEase);\n            var fadeEase = CustomEase.create(\"pcr-fade\", \"M0,0 C0.2,0.8 0.2,1 1,1\");\n            var travelEase = CustomEase.create(\"pcr-travel\", \"M0,0 C0.2,0.8 0.6,0.85 1,1\");\n            var tl = gsap.timeline({ paused: true });\n            chars.forEach(function (span, i) {\n              var at = i / 30;\n              tl.fromTo(span, { opacity: 0 }, { opacity: 1, duration: 21 / 30, ease: fadeEase, immediateRender: true }, at);\n              tl.fromTo(span, { y: distance }, { y: 0, duration: 10 / 30, ease: travelEase, immediateRender: true }, at);\n            });\n            var total = parseFloat(root.dataset.duration || \"2\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"per-character-rise\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "a7f8cf9d20d539c46c5efefb9813534b228dcc2b975d8cabd2972adc3e1e548b",
+ "duration": 2,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "text": "One more thing.",
+  "font_size": 120
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "One more thing."
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 12,
+   "max": 220
+  },
+  {
+   "id": "distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Distance",
+   "default": 32,
+   "min": 0,
+   "max": 120
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

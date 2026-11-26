@@ -1,0 +1,73 @@
+{
+ "name": "shrink-burst-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Animata",
+ "source": {
+  "repo": "https://github.com/codse/animata",
+  "path": "animata/text/text-explode-imessage.tsx",
+  "commit": "25c27e5a874c60a56dcc1609df3b2c4f5f8456f8"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Shrink Burst Text\n\nA word squeezes tight and trembles, then bursts into letters that fly outward, spin and fade; the word slides back up into place and the cycle repeats.\n\nCategory: typography. Length: 7.4 s. WebGL: no.\n\nUse when:\n- A word or message should be built up, shaken and blown apart as an impact beat.\n- A looping 'send' or 'boom' moment on a short phrase.\n\nAvoid when:\n- The text must stay readable throughout: it is fully gone for about a second each cycle.\n- Long sentences.\n\nVariables:\n- text (string): Text, default \"Hello there\"\n- font_size (number, 12-300): Font size, default 110\n- spread (number, 0.2-2): Spread, default 1\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"700\"\n\nSource: https://github.com/codse/animata. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Shrink Burst Text\n\n  A word squeezes tight and trembles, then bursts into letters that fly outward, spin and fade; the word slides back up into place and the cycle repeats.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/codse/animata/blob/25c27e5a874c60a56dcc1609df3b2c4f5f8456f8/animata/text/text-explode-imessage.tsx\n\n  MIT License\n\n  Copyright (c) Animata\n\n  Permission is hereby granted, free of charge, to any person obtaining\n  a copy of this software and associated documentation files (the\n  \"Software\"), to deal in the Software without restriction, including\n  without limitation the rights to use, copy, modify, merge, publish,\n  distribute, sublicense, and/or sell copies of the Software, and to\n  permit persons to whom the Software is furnished to do so, subject to\n  the following conditions:\n\n  The above copyright notice and this permission notice shall be\n  included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"shrink-burst-text\"\n  data-composition-duration=\"7.4\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Short phrase that bursts.\", \"default\": \"Hello there\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 110, \"min\": 12, \"max\": 300, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"spread\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Spread\", \"description\": \"Multiplier for how far the letters fly.\", \"default\": 1, \"min\": 0.2, \"max\": 2, \"step\": 0.1},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"900\", \"label\": \"Black\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Shrink Burst Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .sb-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .sb-row { display: inline-flex; align-items: center; justify-content: center; line-height: 1.1; white-space: pre; transform-origin: 50% 50%; }\n        .sb-ch { display: inline-block; white-space: pre; transform-origin: 50% 50%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"shrink-burst-text\" data-duration=\"7.4\" data-fps=\"30\">\n        <div id=\"sb-clip\" class=\"sb-stage clip\" data-start=\"0\" data-duration=\"7.4\" data-track-index=\"0\">\n          <div id=\"sb-row\" class=\"sb-row\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        \n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function opt(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : v === \"true\" ? true : v === \"false\" ? false : f; }\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > max) { size = Math.max(12, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            function spring(t, k, c, m) {\n              if (t <= 0) return 0;\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t)); }\n              if (z === 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n              return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n            }\n            var row = document.getElementById(\"sb-row\");\n            var text = str(vars.text, \"Hello there\");\n            var spreadK = num(vars.spread, 1, 0.2, 2);\n            root.style.color = col(vars.color, \"#171717\");\n            root.style.fontWeight = opt(vars.font_weight, [\"300\",\"400\",\"500\",\"600\",\"700\",\"900\"], \"700\");\n            row.setAttribute(\"aria-label\", text);\n            var chars = Array.from(text).map(function (c) {\n              var s = document.createElement(\"span\"); s.className = \"sb-ch\"; s.textContent = c; row.appendChild(s); return s;\n            });\n            var n = chars.length;\n            var size = fit(row, num(vars.font_size, 110, 12, 300), 0.8);\n            var k = size / 30, CYCLE = 3.7;\n            function rng(seed) { return function () { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; var t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function sm(u) { return u * u * (3 - 2 * u); }\n            function kf(a, p, times) {\n              p = Math.min(1, Math.max(0, p));\n              if (!times) { times = a.map(function (_, i) { return i / (a.length - 1); }); }\n              for (var i = 0; i < a.length - 1; i++) {\n                if (p <= times[i + 1] || i === a.length - 2) {\n                  var u = (p - times[i]) / (times[i + 1] - times[i]); u = Math.min(1, Math.max(0, u));\n                  return a[i] + (a[i + 1] - a[i]) * sm(u);\n                }\n              }\n              return a[a.length - 1];\n            }\n            function params(cycle) {\n              var out = [];\n              for (var i = 0; i < n; i++) {\n                var r = rng(cycle * 7919 + i * 104729 + 17);\n                var j = [-3 + r() * 6, 3 - r() * 6, -2 + r() * 4, 2 - r() * 4];\n                var dir = r() > r() ? -1 : 1;\n                var x = r() * 10 * n * dir;\n                var radius = n * 4, ang = n > 1 ? (i / (n - 1)) * Math.PI : 0;\n                var y = radius * -Math.sin(ang) * r();\n                var rot = r() * 360 * dir;\n                out.push({ j: j, x: x * spreadK, y: y * spreadK, rot: rot, s3: 1 + r() + 0.2, s4: 1 + r() * 2 });\n              }\n              return out;\n            }\n            var cache = {};\n            function draw(t) {\n              var cycle = Math.floor(t / CYCLE), tc = t - cycle * CYCLE;\n              var P = cache[cycle] || (cache[cycle] = params(cycle));\n              var cx = 0, cy = 0, cs = 1, co = 1, ls = 0;\n              var A = {}; // per-letter state\n              chars.forEach(function (el, i) {\n                var p = P[i], x = 0, y = 0, rot = 0, sc = 1, op = 1;\n                if (tc < 1) {\n                  var u = 1 - Math.pow(1 - tc, 2);\n                  sc = 1 + 0.1 * u;\n                  if (tc >= 0.1 && tc <= 0.6) { var q = (tc - 0.1) / 0.5; x = kf([0, p.j[0], p.j[1], 0], q) * k; y = kf([0, p.j[2], p.j[3], 0], q) * k; }\n                } else if (tc < 1.8) {\n                  var e = (tc - 1) / 0.8;\n                  x = kf([0, p.x * 0.5, p.x * 0.7, p.x], e) * k; y = kf([0, p.y, -p.y / 5, 0, 5], e) * k;\n                  rot = kf([0, p.rot * 0.4, p.rot * 0.8, p.rot], e); sc = kf([0.9, 1.2, p.s3, p.s4], e); op = kf([1, 0.8, 0.5, 0], e);\n                } else if (tc < 2.65) { op = 0; }\n                else { op = Math.min(1, Math.max(0, spring(tc - 2.65, 39.48, 9.42, 1))); }\n                el.style.opacity = op;\n                el.style.transform = \"translate(\" + x + \"px,\" + y + \"px) rotate(\" + rot + \"deg) scale(\" + sc + \")\";\n              });\n              if (tc < 1) {\n                var u2 = 1 - Math.pow(1 - tc, 2);\n                cs = 1 - 0.2 * u2; ls = -0.05 * u2;\n                if (tc >= 0.1 && tc <= 0.6) { var q2 = (tc - 0.1) / 0.5; cx = kf([0, -3, 3, -3, 3, 0], q2) * k; cy = kf([0, -2, 2, -2, 2, 0], q2) * k; }\n              } else if (tc < 1.8) {\n                var e2 = (tc - 1) / 0.8;\n                cs = kf([0.7, 0.9, 1], e2, [0, 0.9, 1]); co = kf([1, 0.7, 0], e2, [0, 0.9, 1]);\n              } else if (tc < 2.65) { co = 0; cy = 50 * k; }\n              else { var s = spring(tc - 2.65, 39.48, 9.42, 1); cy = 50 * k * (1 - s); co = Math.min(1, Math.max(0, s)); }\n              row.style.opacity = co;\n              row.style.letterSpacing = ls + \"em\";\n              row.style.transform = \"translate(\" + cx + \"px,\" + cy + \"px) scale(\" + cs + \")\";\n            }\n            var clock = { t: 0 };\n            var total0 = parseFloat(root.dataset.duration || \"7.4\");\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, { t: total0, duration: total0, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            var total = parseFloat(root.dataset.duration || \"7.4\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"shrink-burst-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "2d824c78c5025e9b8723f5bda27006acf0241165cf8947718fda600905194c4b",
+ "duration": 7.4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 130
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Hello there"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 110,
+   "min": 12,
+   "max": 300
+  },
+  {
+   "id": "spread",
+   "type": "number",
+   "role": "motion",
+   "label": "Spread",
+   "default": 1,
+   "min": 0.2,
+   "max": 2
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  }
+ ],
+ "author_url": "https://animata.design"
+}

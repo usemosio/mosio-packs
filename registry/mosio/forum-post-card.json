@@ -1,0 +1,109 @@
+{
+ "name": "forum-post-card",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/reddit-post/reddit-post.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Forum Post Card\n\nA dark forum post card (community, author, title, body, vote and comment counts) rises in, gets an upvote with a spring and a count change, then drops out.\n\nCategory: social. Length: 5 s. WebGL: no.\n\nUse when:\n- A forum or community post needs to appear on screen as a quote, a reaction or social proof.\n- A like or upvote moment with a springy press should land inside five seconds.\n\nAvoid when:\n- It should look like one specific real site: this card is deliberately generic.\n- A thread with many replies: use a chat flow block.\n\nVariables:\n- community (string): Community, default \"Motion Design Club\"\n- author (string): Author line, default \"placeholder_user \\u00b7 3h\"\n- title (string): Post title, default \"I made my first animated promo in one afternoon\"\n- body (string): Post body, default \"No timeline, no keyframes: I wrote the scenes as text and the video appeared. Here is how it went and what I would change.\"\n- votes (string): Votes, default \"4.2k\"\n- votes_after (string): Votes after upvote, default \"4.3k\"\n- comments (string): Comments, default \"328\"\n- share_label (string): Share label, default \"Share\"\n- accent (color): Accent, default \"#f97316\"\n- icon_color (color): Community icon colour, default \"#4a90d9\"\n- card_color (color): Card colour, default \"#1a1a2e\"\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Forum Post Card\n\n  A dark forum post card with community, author, title, body and vote bar rises in, gets upvoted with a spring bounce and a count change, and drops out.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/reddit-post/reddit-post.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: adapted from a block that showed a real product's interface (a real forum site, its name in the sample text, its community prefix, its signature orange and its logo-style icon): it is now a generic forum post card with a monogram community icon and an accent colour variable; the vote count change is a cross-fade between two spans on the timeline instead of text swapped in a callback; fills the host frame (the card is sized from container units, so the same file fits a portrait and a landscape frame).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"forum-post-card\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\n      \"id\": \"community\",\n      \"type\": \"string\",\n      \"role\": \"content\",\n      \"label\": \"Community\",\n      \"description\": \"Name of the community or board.\",\n      \"default\": \"Motion Design Club\"\n    },\n    {\n      \"id\": \"author\",\n      \"type\": \"string\",\n      \"role\": \"content\",\n      \"label\": \"Author line\",\n      \"description\": \"Author and age under the community name.\",\n      \"default\": \"placeholder_user · 3h\"\n    },\n    {\n      \"id\": \"title\",\n      \"type\": \"string\",\n      \"role\": \"content\",\n      \"label\": \"Post title\",\n      \"description\": \"Headline of the post, three lines at most.\",\n      \"default\": \"I made my first animated promo in one afternoon\"\n    },\n    {\n      \"id\": \"body\",\n      \"type\": \"string\",\n      \"role\": \"content\",\n      \"label\": \"Post body\",\n      \"description\": \"Text under the title, three lines at most.\",\n      \"default\": \"No timeline, no keyframes: I wrote the scenes as text and the video appeared. Here is how it went and what I would change.\"\n    },\n    {\n      \"id\": \"votes\",\n      \"type\": \"string\",\n      \"role\": \"content\",\n      \"label\": \"Votes\",\n      \"description\": \"Vote count before the upvote.\",\n      \"default\": \"4.2k\"\n    },\n    {\n      \"id\": \"votes_after\",\n      \"type\": \"string\",\n      \"role\": \"content\",\n      \"label\": \"Votes after upvote\",\n      \"description\": \"Vote count after the upvote lands.\",\n      \"default\": \"4.3k\"\n    },\n    {\n      \"id\": \"comments\",\n      \"type\": \"string\",\n      \"role\": \"content\",\n      \"label\": \"Comments\",\n      \"description\": \"Comment count.\",\n      \"default\": \"328\"\n    },\n    {\n      \"id\": \"share_label\",\n      \"type\": \"string\",\n      \"role\": \"content\",\n      \"label\": \"Share label\",\n      \"description\": \"Text on the share button.\",\n      \"default\": \"Share\"\n    },\n    {\n      \"id\": \"accent\",\n      \"type\": \"color\",\n      \"role\": \"style\",\n      \"label\": \"Accent\",\n      \"description\": \"Colour of the upvoted arrow and count.\",\n      \"default\": \"#f97316\"\n    },\n    {\n      \"id\": \"icon_color\",\n      \"type\": \"color\",\n      \"role\": \"style\",\n      \"label\": \"Community icon colour\",\n      \"description\": \"Background of the round community icon.\",\n      \"default\": \"#4a90d9\"\n    },\n    {\n      \"id\": \"card_color\",\n      \"type\": \"color\",\n      \"role\": \"style\",\n      \"label\": \"Card colour\",\n      \"description\": \"Background of the card.\",\n      \"default\": \"#1a1a2e\"\n    }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Forum Post Card</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&amp;display=block\" />\n      <style>\n        #root { --u: min(0.107cqw, 0.1cqh); position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none; font-family: \"DM Sans\", system-ui, sans-serif; }\n        .fp-card {\n          position: absolute; inset: 0; margin: auto; height: fit-content; width: calc(860 * var(--u));\n          background: var(--card, #1a1a2e); border-radius: calc(16 * var(--u)); padding: calc(32 * var(--u));\n          box-shadow: 0 calc(12 * var(--u)) calc(60 * var(--u)) rgba(0, 0, 0, 0.6); opacity: 0;\n        }\n        .fp-head { display: flex; align-items: center; gap: calc(14 * var(--u)); margin-bottom: calc(24 * var(--u)); }\n        .fp-icon { width: calc(48 * var(--u)); height: calc(48 * var(--u)); border-radius: 50%; flex: none; background: var(--ic, #4a90d9); color: #fff; font-size: calc(22 * var(--u)); font-weight: 700; display: flex; align-items: center; justify-content: center; }\n        .fp-meta { display: flex; flex-direction: column; gap: calc(2 * var(--u)); min-width: 0; }\n        .fp-comm { font-size: calc(28 * var(--u)); font-weight: 700; color: #d7dadc; line-height: 1.3; }\n        .fp-auth { font-size: calc(24 * var(--u)); color: #818384; line-height: 1.3; }\n        .fp-title { font-size: calc(38 * var(--u)); font-weight: 700; color: #d7dadc; line-height: 1.35; margin-bottom: calc(16 * var(--u)); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }\n        .fp-body { font-size: calc(28 * var(--u)); color: #818384; line-height: 1.45; margin-bottom: calc(28 * var(--u)); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }\n        .fp-bar { display: flex; align-items: center; gap: calc(28 * var(--u)); padding-top: calc(20 * var(--u)); border-top: calc(1 * var(--u)) solid #343536; }\n        .fp-vote { display: flex; align-items: center; gap: calc(10 * var(--u)); background: #272729; border-radius: calc(24 * var(--u)); padding: calc(8 * var(--u)) calc(16 * var(--u)); }\n        .fp-vbtn { width: calc(32 * var(--u)); height: calc(32 * var(--u)); display: flex; align-items: center; justify-content: center; }\n        .fp-vbtn svg { width: calc(28 * var(--u)); height: calc(28 * var(--u)); display: block; }\n        .fp-count { position: relative; min-width: calc(62 * var(--u)); height: calc(34 * var(--u)); font-size: calc(26 * var(--u)); font-weight: 700; color: #d7dadc; }\n        .fp-count span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .fp-count .after { opacity: 0; color: var(--acc, #f97316); }\n        .fp-act { display: flex; align-items: center; gap: calc(8 * var(--u)); background: #272729; border-radius: calc(24 * var(--u)); padding: calc(10 * var(--u)) calc(20 * var(--u)); font-size: calc(24 * var(--u)); color: #818384; }\n        .fp-act svg { width: calc(26 * var(--u)); height: calc(26 * var(--u)); display: block; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"forum-post-card\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"fp-card\" class=\"fp-card clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <div class=\"fp-head\">\n            <div class=\"fp-icon\" id=\"fp-icon\"></div>\n            <div class=\"fp-meta\"><span class=\"fp-comm\" id=\"fp-comm\"></span><span class=\"fp-auth\" id=\"fp-auth\"></span></div>\n          </div>\n          <div class=\"fp-title\" id=\"fp-title\"></div>\n          <div class=\"fp-body\" id=\"fp-body\"></div>\n          <div class=\"fp-bar\">\n            <div class=\"fp-vote\">\n              <div class=\"fp-vbtn\" id=\"fp-up\"><svg viewBox=\"0 0 24 24\" fill=\"none\"><path id=\"fp-arrow\" d=\"M12 4L3 14h5v6h8v-6h5L12 4z\" fill=\"#818384\"/></svg></div>\n              <div class=\"fp-count\"><span class=\"before\" id=\"fp-v1\"></span><span class=\"after\" id=\"fp-v2\"></span></div>\n              <div class=\"fp-vbtn\"><svg viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M12 20l9-10h-5V4H8v6H3l9 10z\" fill=\"#818384\"/></svg></div>\n            </div>\n            <div class=\"fp-act\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#818384\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z\"/></svg><span id=\"fp-comments\"></span></div>\n            <div class=\"fp-act\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#818384\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8\"/><polyline points=\"16 6 12 2 8 6\"/><line x1=\"12\" y1=\"2\" x2=\"12\" y2=\"15\"/></svg><span id=\"fp-share\"></span></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n          \"use strict\";\n          var root = document.getElementById(\"root\");\n          var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n          function txt(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n          function hex(c, f) { c = String(c || \"\").trim().replace(\"#\", \"\"); if (c.length === 3) c = c[0] + c[0] + c[1] + c[1] + c[2] + c[2]; return /^[0-9a-fA-F]{6}$/.test(c) ? \"#\" + c : f; }\n          function $(id) { return document.getElementById(id); }\n          function finish(tl, name) {\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[name] = tl;\n          }\n          var comm = txt(vars.community, \"Motion Design Club\");\n          $(\"fp-comm\").textContent = comm;\n          $(\"fp-icon\").textContent = comm.charAt(0).toUpperCase();\n          $(\"fp-auth\").textContent = txt(vars.author, \"placeholder_user \\u00b7 3h\");\n          $(\"fp-title\").textContent = txt(vars.title, \"I made my first animated promo in one afternoon\");\n          $(\"fp-body\").textContent = txt(vars.body, \"No timeline, no keyframes: I wrote the scenes as text and the video appeared. Here is how it went and what I would change.\");\n          $(\"fp-v1\").textContent = txt(vars.votes, \"4.2k\");\n          $(\"fp-v2\").textContent = txt(vars.votes_after, \"4.3k\");\n          $(\"fp-comments\").textContent = txt(vars.comments, \"328\");\n          $(\"fp-share\").textContent = txt(vars.share_label, \"Share\");\n          var acc = hex(vars.accent, \"#f97316\");\n          root.style.setProperty(\"--acc\", acc);\n          root.style.setProperty(\"--ic\", hex(vars.icon_color, \"#4a90d9\"));\n          root.style.setProperty(\"--card\", hex(vars.card_color, \"#1a1a2e\"));\n          var card = $(\"fp-card\"), u = (card.offsetWidth || 860) / 860;\n          var tl = gsap.timeline({ paused: true });\n          gsap.set(card, { y: 400 * u, opacity: 0 });\n          tl.to(card, { y: 0, opacity: 1, duration: 0.6, ease: \"power3.out\" }, 0.1);\n          tl.to(\"#fp-up\", { scale: 0.85, duration: 0.12, ease: \"power2.out\" }, 1.5);\n          tl.to(\"#fp-up\", { scale: 1, duration: 0.4, ease: \"elastic.out(1, 0.4)\" }, 1.62);\n          tl.to(\"#fp-arrow\", { attr: { fill: acc }, duration: 0.12, ease: \"none\" }, 1.62);\n          tl.to(\"#fp-v1\", { opacity: 0, duration: 0.12, ease: \"none\" }, 1.62);\n          tl.to(\"#fp-v2\", { opacity: 1, duration: 0.12, ease: \"none\" }, 1.62);\n          tl.to(card, { y: 400 * u, opacity: 0, duration: 0.3, ease: \"power3.in\" }, 4.2);\n          finish(tl, \"forum-post-card\");\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "09b455c3bf45d340f6f4c01b2c17ea713ba8e3b9e0a1830a4eb09d13c3d69405",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#0b0b14",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "community",
+   "type": "string",
+   "role": "content",
+   "label": "Community",
+   "default": "Motion Design Club"
+  },
+  {
+   "id": "author",
+   "type": "string",
+   "role": "content",
+   "label": "Author line",
+   "default": "placeholder_user · 3h"
+  },
+  {
+   "id": "title",
+   "type": "string",
+   "role": "content",
+   "label": "Post title",
+   "default": "I made my first animated promo in one afternoon"
+  },
+  {
+   "id": "body",
+   "type": "string",
+   "role": "content",
+   "label": "Post body",
+   "default": "No timeline, no keyframes: I wrote the scenes as text and the video appeared. Here is how it went and what I would change."
+  },
+  {
+   "id": "votes",
+   "type": "string",
+   "role": "content",
+   "label": "Votes",
+   "default": "4.2k"
+  },
+  {
+   "id": "votes_after",
+   "type": "string",
+   "role": "content",
+   "label": "Votes after upvote",
+   "default": "4.3k"
+  },
+  {
+   "id": "comments",
+   "type": "string",
+   "role": "content",
+   "label": "Comments",
+   "default": "328"
+  },
+  {
+   "id": "share_label",
+   "type": "string",
+   "role": "content",
+   "label": "Share label",
+   "default": "Share"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#f97316"
+  },
+  {
+   "id": "icon_color",
+   "type": "color",
+   "role": "style",
+   "label": "Community icon colour",
+   "default": "#4a90d9"
+  },
+  {
+   "id": "card_color",
+   "type": "color",
+   "role": "style",
+   "label": "Card colour",
+   "default": "#1a1a2e"
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

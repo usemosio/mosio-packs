@@ -1,0 +1,104 @@
+{
+ "name": "beat-title-cards",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "beat-cut title cards"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Beat Title Cards\n\nKinetic title cards that cut on a beat. Every beat swaps the word with a crisp snap scale, every few beats a card is inverted for emphasis, and the last word stays on screen. The words cycle from one variable and the cut rate follows the bpm variable, so it can be laid on music.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- A hook or a list of selling points cut to a music beat.\n- A fast opener of 3 to 6 short words.\n\nAvoid when:\n- A sentence that must be read in one go: use a typewriter or per-character block.\n- A calm, slow product moment.\n\nVariables:\n- words (string): Words, default \"Segar|Murah|Cepat|Sampai|Rumahmu\"\n- bpm (number, 60-200): Beats per minute, default 120\n- invert_every (number, 0-8): Invert every, default 4\n- last_word (string): Last word, default \"Dapur Rina\"\n- bg_color (color): Background, default \"#ffffff\"\n- main_color (color): Main colour, default \"#2563eb\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#a3a3a3\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Beat Title Cards\n\n  Kinetic title cards that cut on a beat. Every beat swaps the word with a crisp snap scale, every few beats a card is inverted for emphasis, and the last word stays on screen. The words cycle from one variable and the cut rate follows the bpm variable, so it can be laid on music.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"beat-title-cards\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n  {\n    \"id\": \"words\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Words\",\n    \"description\": \"Words separated by | or new lines; they cycle, one per beat. Short words work best.\",\n    \"default\": \"Segar|Murah|Cepat|Sampai|Rumahmu\"\n  },\n  {\n    \"id\": \"bpm\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Beats per minute\",\n    \"description\": \"How fast the cards cut. 120 is one cut every half second.\",\n    \"default\": 120,\n    \"min\": 60,\n    \"max\": 200,\n    \"step\": 1,\n    \"unit\": \"bpm\"\n  },\n  {\n    \"id\": \"invert_every\",\n    \"type\": \"number\",\n    \"role\": \"style\",\n    \"label\": \"Invert every\",\n    \"description\": \"Every Nth card is inverted. 0 turns it off.\",\n    \"default\": 4,\n    \"min\": 0,\n    \"max\": 8,\n    \"step\": 1\n  },\n  {\n    \"id\": \"last_word\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Last word\",\n    \"description\": \"Optional word that replaces the final beat, e.g. a shop name. Empty keeps the cycle.\",\n    \"default\": \"Dapur Rina\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Card background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Main colour\",\n    \"description\": \"The final word and the current beat tick: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Words and inverted card background.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Counter and upcoming ticks.\",\n    \"default\": \"#a3a3a3\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Google Fonts family name; Geist is loaded, others only if the host loads them.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Beat Title Cards</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          background: var(--btc-bg); color: var(--btc-text); font-family: var(--btc-font);\n        }\n        #root * { box-sizing: border-box; }\n        .btc-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        .btc-card { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; visibility: hidden; }\n        .btc-word { display: block; font-weight: 700; letter-spacing: -0.055em; line-height: 1; white-space: nowrap; transform-origin: 50% 55%; }\n        .btc-hud { position: absolute; left: 0; right: 0; bottom: 0; }\n        .btc-ticks { position: absolute; display: flex; gap: calc(var(--u) * 10); left: 50%; transform: translateX(-50%); }\n        .btc-tick { height: calc(var(--u) * 8); width: calc(var(--u) * 38); border-radius: calc(var(--u) * 4); background: var(--btc-muted); opacity: 0.55; }\n        .btc-count { position: absolute; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; color: var(--btc-muted); }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"beat-title-cards\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"btc-clip\" class=\"btc-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <div id=\"btc-cards\"></div>\n          <div class=\"btc-count\" id=\"btc-count\"></div><div class=\"btc-ticks\" id=\"btc-ticks\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function lines(v, d) { var s = typeof v === \"string\" && v.trim() ? v : d; return s.split(/\\r?\\n/).map(function (l) { return l.trim(); }).filter(Boolean); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function ease(n, a, b) { return Math.min(1, Math.max(0, (n - a) / (b - a))); }\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            var PAL = [[\"bg\", \"bg_color\", \"#ffffff\"], [\"main\", \"main_color\", \"#2563eb\"], [\"text\", \"text_color\", \"#0a0a0a\"], [\"muted\", \"muted_color\", \"#a3a3a3\"]];\n            PAL.forEach(function (c) { root.style.setProperty(\"--btc-\" + c[0], colr(vars[c[1]], c[2])); });\n            root.style.setProperty(\"--btc-font\", '\"' + str(vars.font_family, \"Geist\") + '\", Geist, system-ui, sans-serif');\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n\n            var raw = typeof vars.words === \"string\" && vars.words.trim() ? vars.words : \"Segar|Murah|Cepat|Sampai|Rumahmu\";\n            var words = raw.split(/[|\\n]+/).map(function (w) { return w.trim(); }).filter(Boolean);\n            if (!words.length) words = [\"Segar\", \"Murah\", \"Cepat\"];\n            var bpm = num(vars.bpm, 120, 60, 200), beat = 60 / bpm, every = Math.round(num(vars.invert_every, 4, 0, 8));\n            var total = parseFloat(root.dataset.duration || \"5\"), t0 = 0.1, nb = Math.max(2, Math.floor((total - t0) / beat));\n            var lastW = typeof vars.last_word === \"string\" ? vars.last_word.trim() : \"Dapur Rina\";\n            var cards = document.getElementById(\"btc-cards\"), ticks = document.getElementById(\"btc-ticks\"), count = document.getElementById(\"btc-count\");\n            var pad = (PORTRAIT ? 60 : 40) * U;\n            count.style.left = pad + \"px\"; count.style.top = pad + \"px\"; count.style.fontSize = 30 * U + \"px\";\n            ticks.style.bottom = pad * 1.2 + \"px\";\n            var tl = gsap.timeline({ paused: true }), tickEls = [];\n            for (var i = 0; i < nb; i++) { var tk = el(\"span\", \"btc-tick\", ticks); tickEls.push(tk); }\n            function digits(n) { return (n < 10 ? \"0\" : \"\") + n; }\n            var cur = { i: -1 };\n            for (var b = 0; b < nb; b++) {\n              (function (b) {\n                var last = b === nb - 1, w = last && lastW ? lastW : words[b % words.length], inv = every > 0 && !last && (b + 1) % every === 0;\n                var card = el(\"div\", \"btc-card\", cards); card.style.background = inv ? \"var(--btc-text)\" : \"var(--btc-bg)\";\n                var wd = el(\"span\", \"btc-word\", card, esc(w));\n                wd.style.fontSize = Math.min((PORTRAIT ? 330 : 360) * U, W * (PORTRAIT ? 0.86 : 0.8) / Math.max(2, w.length * 0.58)) + \"px\";\n                wd.style.color = last ? \"var(--btc-main)\" : inv ? \"var(--btc-bg)\" : \"var(--btc-text)\";\n                var t = t0 + b * beat, end = last ? total + 1 : t0 + (b + 1) * beat;\n                tl.set(card, { visibility: \"visible\" }, t); if (!last) tl.set(card, { visibility: \"hidden\" }, end);\n                tl.fromTo(wd, { scale: last ? 1.3 : 1.14 }, { scale: 1, duration: last ? 0.35 : Math.min(0.22, beat * 0.6), ease: \"power4.out\", immediateRender: false }, t);\n                tl.call(function () { count.textContent = digits(b + 1) + \" / \" + digits(nb); count.style.color = inv ? \"var(--btc-bg)\" : \"var(--btc-muted)\"; tickEls.forEach(function (e, k) { e.style.background = k === b ? \"var(--btc-main)\" : k < b ? \"var(--btc-text)\" : \"var(--btc-muted)\"; e.style.opacity = k <= b ? 1 : 0.55; }); }, null, t);\n                if (inv) tl.call(function () { tickEls.forEach(function (e, k) { if (k < b) e.style.background = \"var(--btc-bg)\"; }); }, null, t + 0.001);\n              })(b);\n            }\n            tickEls.forEach(function (e) { ticks.appendChild(e); }); ticks.style.zIndex = 4; count.style.zIndex = 4;\n\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"beat-title-cards\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "49f411a371032e8db6f80006fa64dab1258b5ea7fdba4a947a3c1a8767a41b5a",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "words",
+   "type": "string",
+   "role": "content",
+   "label": "Words",
+   "default": "Segar|Murah|Cepat|Sampai|Rumahmu"
+  },
+  {
+   "id": "bpm",
+   "type": "number",
+   "role": "motion",
+   "label": "Beats per minute",
+   "default": 120,
+   "min": 60,
+   "max": 200
+  },
+  {
+   "id": "invert_every",
+   "type": "number",
+   "role": "style",
+   "label": "Invert every",
+   "default": 4,
+   "min": 0,
+   "max": 8
+  },
+  {
+   "id": "last_word",
+   "type": "string",
+   "role": "content",
+   "label": "Last word",
+   "default": "Dapur Rina"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Main colour",
+   "default": "#2563eb"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#a3a3a3"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

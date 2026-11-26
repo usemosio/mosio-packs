@@ -1,0 +1,104 @@
+{
+ "name": "mask-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Animata",
+ "source": {
+  "repo": "https://github.com/codse/animata",
+  "path": "animata/text/mask-text.tsx",
+  "commit": "25c27e5a874c60a56dcc1609df3b2c4f5f8456f8"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Mask Text\n\nA round spotlight follows an invisible pointer across one line of text and reveals a different line inside it; it swells from a dot to a wide disc and shrinks again.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- Two messages should share one spot: the plain one outside the light, the real one inside it.\n- A hidden line should be discovered by a roaming circle.\n\nAvoid when:\n- The second line must be read in full at a glance: the disc only shows part of it at a time.\n- A single text reveal with no second message: use mask-reveal-up.\n\nVariables:\n- original_text (string): Original text, default \"Bye World!\"\n- reveal_text (string): Reveal text, default \"Hello World!\"\n- font_size (number, 12-300): Font size, default 120\n- radius (number, 100-1200): Spotlight size, default 500\n- background (color): Background, default \"#ffffff\"\n- color (color): Original color, default \"#171717\"\n- reveal_background (color): Spotlight color, default \"#000000\"\n- reveal_color (color): Reveal color, default \"#ffffff\"\n- font_weight (enum): Font weight, default \"700\"\n\nSource: https://github.com/codse/animata. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Mask Text\n\n  A round spotlight follows an invisible pointer across one line of text and reveals a different line inside it; it swells from a dot to a wide disc and shrinks again.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/codse/animata/blob/25c27e5a874c60a56dcc1609df3b2c4f5f8456f8/animata/text/mask-text.tsx\n\n  MIT License\n\n  Copyright (c) Animata\n\n  Permission is hereby granted, free of charge, to any person obtaining\n  a copy of this software and associated documentation files (the\n  \"Software\"), to deal in the Software without restriction, including\n  without limitation the rights to use, copy, modify, merge, publish,\n  distribute, sublicense, and/or sell copies of the Software, and to\n  permit persons to whom the Software is furnished to do so, subject to\n  the following conditions:\n\n  The above copyright notice and this permission notice shall be\n  included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"mask-text\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"original_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Original text\", \"description\": \"Line shown everywhere outside the spotlight.\", \"default\": \"Bye World!\"},\n    {\"id\": \"reveal_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Reveal text\", \"description\": \"Line shown inside the spotlight.\", \"default\": \"Hello World!\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 120, \"min\": 12, \"max\": 300, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"radius\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Spotlight size\", \"description\": \"Diameter of the spotlight when swollen, at 1080 px on the short side.\", \"default\": 500, \"min\": 100, \"max\": 1200, \"step\": 10, \"unit\": \"px\"},\n    {\"id\": \"background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Color behind the original text.\", \"default\": \"#ffffff\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Original color\", \"description\": \"Color of the original text.\", \"default\": \"#171717\"},\n    {\"id\": \"reveal_background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Spotlight color\", \"description\": \"Color of the spotlight disc.\", \"default\": \"#000000\"},\n    {\"id\": \"reveal_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Reveal color\", \"description\": \"Color of the reveal text.\", \"default\": \"#ffffff\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"900\", \"label\": \"Black\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Mask Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .mk-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .mk-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 6%; line-height: 1.2; }\n        .mk-line { display: block; width: 100%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"mask-text\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"mk-clip\" class=\"mk-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <div id=\"mk-base\" class=\"mk-layer\"><span id=\"mk-a\" class=\"mk-line\"></span></div>\n          <div id=\"mk-reveal\" class=\"mk-layer\"><span id=\"mk-b\" class=\"mk-line\"></span></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function opt(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : v === \"true\" ? true : v === \"false\" ? false : f; }\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > max) { size = Math.max(12, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            \n            var base = document.getElementById(\"mk-base\"), reveal = document.getElementById(\"mk-reveal\");\n            var a = document.getElementById(\"mk-a\"), b = document.getElementById(\"mk-b\");\n            a.textContent = str(vars.original_text, \"Bye World!\");\n            b.textContent = str(vars.reveal_text, \"Hello World!\");\n            root.style.background = col(vars.background, \"#ffffff\");\n            root.style.fontWeight = opt(vars.font_weight, [\"300\",\"400\",\"500\",\"600\",\"700\",\"900\"], \"700\");\n            base.style.color = col(vars.color, \"#171717\");\n            reveal.style.background = col(vars.reveal_background, \"#000000\");\n            reveal.style.color = col(vars.reveal_color, \"#ffffff\");\n            var size = num(vars.font_size, 120, 12, 300);\n            a.style.fontSize = size + \"px\"; b.style.fontSize = size + \"px\";\n            var W = root.clientWidth, H = root.clientHeight, k = Math.min(W, H) / 1080;\n            var big = num(vars.radius, 500, 100, 1200) * k, small = 50 * k;\n            var m = { x: 0.12 * W, y: 0.3 * H, s: small };\n            function draw() {\n              var r = Math.max(0, m.s / 2);\n              var g = \"radial-gradient(circle at \" + m.x.toFixed(1) + \"px \" + m.y.toFixed(1) + \"px, #000 \" + r.toFixed(1) + \"px, transparent \" + (r + 0.6).toFixed(1) + \"px)\";\n              reveal.style.webkitMaskImage = g; reveal.style.maskImage = g;\n            }\n            var tl = gsap.timeline({ paused: true });\n            var move = { ease: \"power2.inOut\", onUpdate: draw };\n            tl.to(m, Object.assign({ x: 0.5 * W, y: 0.5 * H, duration: 1.0 }, move), 0.3);\n            tl.to(m, { s: big, duration: 0.5, ease: \"back.out(1.7)\", onUpdate: draw }, 1.3);\n            tl.to(m, Object.assign({ x: 0.34 * W, y: 0.48 * H, duration: 0.8 }, move), 1.9);\n            tl.to(m, Object.assign({ x: 0.66 * W, y: 0.52 * H, duration: 1.0 }, move), 2.7);\n            tl.to(m, { s: small, duration: 0.5, ease: \"power2.out\", onUpdate: draw }, 3.7);\n            tl.to(m, Object.assign({ x: 0.86 * W, y: 0.78 * H, duration: 1.0 }, move), 3.8);\n            draw();\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"mask-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "6558da9c663e39113fdc48f7d452fe53a580f6d255b1d43a3557e8840959cc95",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 150
+ },
+ "variables": [
+  {
+   "id": "original_text",
+   "type": "string",
+   "role": "content",
+   "label": "Original text",
+   "default": "Bye World!"
+  },
+  {
+   "id": "reveal_text",
+   "type": "string",
+   "role": "content",
+   "label": "Reveal text",
+   "default": "Hello World!"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 120,
+   "min": 12,
+   "max": 300
+  },
+  {
+   "id": "radius",
+   "type": "number",
+   "role": "motion",
+   "label": "Spotlight size",
+   "default": 500,
+   "min": 100,
+   "max": 1200
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Original color",
+   "default": "#171717"
+  },
+  {
+   "id": "reveal_background",
+   "type": "color",
+   "role": "style",
+   "label": "Spotlight color",
+   "default": "#000000"
+  },
+  {
+   "id": "reveal_color",
+   "type": "color",
+   "role": "style",
+   "label": "Reveal color",
+   "default": "#ffffff"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://animata.design"
+}

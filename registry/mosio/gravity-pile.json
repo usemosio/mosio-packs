@@ -1,0 +1,120 @@
+{
+ "name": "gravity-pile",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/gravity-pile/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Gravity Pile\n\nSeeded circles, squares and triangles rain down, bounce off the floor and each other, and settle into a heap, with optional words or emoji of your own landing on top.\n\nCategory: camera. Length: 3 s. WebGL: no.\n\nUse when:\n- A beat about volume should feel physical, such as a pile of tasks, tickets or features.\n- A playful transition beat or bumper needs real bounces rather than hand-keyed ones.\n\nAvoid when:\n- The moment is a celebration that should shower the frame with color: use confetti.\n- Pieces should fly together into a logo instead of falling into a heap: use puzzle-snap.\n\nVariables:\n- count (number, 1-80): Count, default 30\n- items (string): Items, default \"\"\n- seed (number, 1-999): Seed, default 7\n- gravity (number, 0.2-3): Gravity, default 1\n- background_color (color): Background, default \"#111111\"\n- shape_color_1 (color): Shape 1, default \"#FFFFFF\"\n- shape_color_2 (color): Shape 2, default \"#C9C9C9\"\n- shape_color_3 (color): Shape 3, default \"#7A7A7A\"\n- accent_color (color): Accent, default \"#E5322D\"\n- floor_color (color): Floor, default \"#FFFFFF\"\n- speed (number, 0.25-3): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Gravity Pile\n\n  Seeded circles, squares and triangles rain down, bounce off the floor and each other, and settle into a heap, with optional words or emoji of your own landing on top.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/gravity-pile/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"gravity-pile\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    {\"id\": \"count\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Count\", \"description\": \"Number of falling bodies.\", \"default\": 30, \"min\": 1, \"max\": 80, \"step\": 1},\n    {\"id\": \"items\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Items\", \"description\": \"Optional words or emoji, comma separated, dropped as round bodies that land on top of the heap.\", \"default\": \"\"},\n    {\"id\": \"seed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Seed\", \"description\": \"Seed for sizes, shapes and start positions.\", \"default\": 7, \"min\": 1, \"max\": 999, \"step\": 1},\n    {\"id\": \"gravity\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Gravity\", \"description\": \"Gravity multiplier.\", \"default\": 1, \"min\": 0.2, \"max\": 3, \"step\": 0.05},\n    {\"id\": \"background_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Background color.\", \"default\": \"#111111\"},\n    {\"id\": \"shape_color_1\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Shape 1\", \"description\": \"First shape color.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"shape_color_2\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Shape 2\", \"description\": \"Second shape color.\", \"default\": \"#C9C9C9\"},\n    {\"id\": \"shape_color_3\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Shape 3\", \"description\": \"Third shape color.\", \"default\": \"#7A7A7A\"},\n    {\"id\": \"accent_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Accent\", \"description\": \"Color of the single accent body.\", \"default\": \"#E5322D\"},\n    {\"id\": \"floor_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Floor\", \"description\": \"Floor line color.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 3, \"step\": 0.05}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Gravity Pile</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Inter:wght@800&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n\n        #root { background: var(--background); }\n        .gp-stage { position: absolute; inset: 0; overflow: hidden; }\n        .gp-svg { position: absolute; inset: 0; width: 100%; height: 100%; }\n        .gp-item { position: absolute; display: flex; align-items: center; justify-content: center; font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif; font-weight: 800; color: var(--item); line-height: 1; white-space: nowrap; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"gravity-pile\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"gp-clip\" class=\"gp-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <svg class=\"gp-svg\" id=\"gp-svg\"></svg>\n          <div id=\"gp-items\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var NAME = \"gravity-pile\";\n\nvar root = document.getElementById(\"root\");\nvar vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\nfunction num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : f; }\nfunction str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\nfunction col(v, f) { return typeof v === \"string\" && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v.trim()) ? v.trim() : f; }\nfunction bool(v, f) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : f; }\nvar FPS = 30;\nvar DUR = parseFloat(root.dataset.duration || \"2\");\nvar TOTAL = Math.round(DUR * FPS);\nfunction lerp(a, b, t) { return a + (b - a) * t; }\nfunction cl(x, a, b) { return Math.min(b, Math.max(a, x)); }\n// interpolate(x, [in...], [out...], easing): clamped on both sides, easing applied per segment.\nfunction interp(x, inp, out, easing) {\n  if (x <= inp[0]) return out[0];\n  if (x >= inp[inp.length - 1]) return out[out.length - 1];\n  var i = 0;\n  while (x > inp[i + 1]) i++;\n  var t = (x - inp[i]) / (inp[i + 1] - inp[i]);\n  if (easing) t = easing(t);\n  return out[i] + (out[i + 1] - out[i]) * t;\n}\nfunction bez(x1, y1, x2, y2) {\n  return function (x) {\n    if (x <= 0) return 0; if (x >= 1) return 1;\n    var t = x;\n    for (var i = 0; i < 8; i++) {\n      var cx = 3 * x1 * t * (1 - t) * (1 - t) + 3 * x2 * t * t * (1 - t) + t * t * t - x;\n      var d = 3 * x1 * (1 - t) * (1 - t) - 6 * x1 * t * (1 - t) + 6 * x2 * t * (1 - t) - 3 * x2 * t * t + 3 * t * t;\n      if (Math.abs(cx) < 1e-6 || Math.abs(d) < 1e-6) break;\n      t -= cx / d;\n    }\n    t = cl(t, 0, 1);\n    return 3 * y1 * t * (1 - t) * (1 - t) + 3 * y2 * t * t * (1 - t) + t * t * t;\n  };\n}\nvar E = {\n  lin: function (t) { return t; },\n  quad: function (t) { return t * t; },\n  cubic: function (t) { return t * t * t; },\n  sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); }\n};\nfunction eOut(f) { return function (t) { return 1 - f(1 - t); }; }\nfunction eInOut(f) { return function (t) { return t < 0.5 ? f(2 * t) / 2 : 1 - f(2 - 2 * t) / 2; }; }\nvar outCubic = eOut(E.cubic), outQuad = eOut(E.quad), inCubic = E.cubic, inQuad = E.quad;\nvar inOutCubic = eInOut(E.cubic), inOutQuad = eInOut(E.quad), inOutSin = eInOut(E.sin), outSin = eOut(E.sin);\n// Damped spring from 0 to 1 (rest at 1, no initial velocity), frames at 30 fps.\nfunction spring(frame, cfg) {\n  if (frame <= 0) return 0;\n  var m = cfg.mass || 1, k = cfg.stiffness, c = cfg.damping;\n  var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m)), t = frame / FPS;\n  if (z < 1) {\n    var wd = w0 * Math.sqrt(1 - z * z);\n    return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));\n  }\n  if (z === 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n  var s = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + s, r2 = -z * w0 - s;\n  return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n}\n// Seeded random: same string in, same number out.\nfunction rnd(seed) {\n  var sd = String(seed), h = 1779033703 ^ sd.length;\n  for (var i = 0; i < sd.length; i++) { h = Math.imul(h ^ sd.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }\n  h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); h ^= h >>> 16;\n  var a = (h >>> 0);\n  a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a);\n  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n}\nfunction rgb(h) {\n  h = h.replace(\"#\", \"\");\n  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];\n}\nfunction mixc(a, b, t) {\n  var x = rgb(a), y = rgb(b);\n  return \"rgb(\" + Math.round(lerp(x[0], y[0], t)) + \",\" + Math.round(lerp(x[1], y[1], t)) + \",\" + Math.round(lerp(x[2], y[2], t)) + \")\";\n}\nfunction rgba(h, a) { var x = rgb(h); return \"rgba(\" + x[0] + \",\" + x[1] + \",\" + x[2] + \",\" + a + \")\"; }\nvar SVGNS = \"http://www.w3.org/2000/svg\";\nfunction svgEl(tag, attrs, parent) {\n  var e = document.createElementNS(SVGNS, tag);\n  for (var k in attrs) e.setAttribute(k, attrs[k]);\n  if (parent) parent.appendChild(e);\n  return e;\n}\nfunction setA(e, attrs) { for (var k in attrs) e.setAttribute(k, attrs[k]); }\n// Drive draw(frame) from the timeline; frames run 0..frames over frames/30 seconds.\nfunction drive(draw, frames) {\n  var tl = gsap.timeline({ paused: true });\n  var clock = { frame: 0 };\n  tl.to(clock, { frame: frames, duration: frames / FPS, ease: \"none\", onUpdate: function () { draw(clock.frame); } }, 0);\n  draw(0);\n  return tl;\n}\nfunction finish(tl) {\n  if (tl.duration() < DUR) tl.to({}, { duration: DUR - tl.duration() });\n  tl.seek(0);\n  window.__timelines = window.__timelines || {};\n  window.__timelines[NAME] = tl;\n}\n\n\nvar svg = document.getElementById(\"gp-svg\"), itemsBox = document.getElementById(\"gp-items\");\nvar count = Math.max(1, Math.round(num(vars.count, 30, 1, 80))), seed = Math.round(num(vars.seed, 7, 1, 999)), gravity = num(vars.gravity, 1, 0.2, 3), speed = num(vars.speed, 1, 0, 4);\nvar bg = col(vars.background_color, \"#111111\"), accent = col(vars.accent_color, \"#E5322D\"), floorC = col(vars.floor_color, \"#FFFFFF\");\nvar shapes = [col(vars.shape_color_1, \"#FFFFFF\"), col(vars.shape_color_2, \"#C9C9C9\"), col(vars.shape_color_3, \"#7A7A7A\")];\n// Optional words or emoji dropped as round bodies that land on top of the heap, comma separated.\nvar itemTexts = (typeof vars.items === \"string\" ? vars.items : \"\").split(\",\").map(function (s) { return s.trim(); }).filter(Boolean);\nvar itemCount = Math.min(itemTexts.length, count);\nroot.style.setProperty(\"--background\", bg); root.style.setProperty(\"--item\", bg);\nvar W = root.clientWidth, H = root.clientHeight;\nsvg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\nvar FRAMES = 150, SUBSTEPS = 10, ITERATIONS = 4, BOUNCE = 0.42, FRICTION = 0.12, DAMPING = 0.999, GRIP = 0.45, SETTLE_FROM = 46, SETTLE_FRAMES = 18;\n// Verlet integration with position-based circle contacts, run once and recorded per frame.\nfunction simulate() {\n  function R(key, i) { return rnd(\"gravity-pile-\" + seed + \"-\" + key + \"-\" + i); }\n  var floor = H * 0.9, g = (H / 200) * gravity, dt = 1 / SUBSTEPS;\n  var settleFrom = SETTLE_FROM / Math.sqrt(Math.max(0.2, gravity));\n  var kinds = [\"circle\", \"square\", \"triangle\"], accentIndex = Math.max(0, count - itemCount - 3);\n  var bodies = [];\n  for (var i = 0; i < count; i++) bodies.push({ r: H * (0.036 + R(\"r\", i) * 0.032), kind: i >= count - itemCount ? \"item\" : kinds[Math.floor(R(\"k\", i) * 3)], color: Math.floor(R(\"c\", i) * 3), accent: i === accentIndex });\n  var n = bodies.length, x = [], y = [], px = [], py = [], angle = [], spin = [];\n  for (i = 0; i < n; i++) {\n    var r = bodies[i].r, band = H * (0.1 + (i / Math.max(1, n)) * 2);\n    for (var attempt = 0; attempt < 40; attempt++) {\n      x[i] = W * (0.5 + (R(\"x\" + attempt, i) - 0.5) * 0.26);\n      y[i] = -r - band - R(\"y\" + attempt, i) * H * 0.25;\n      var clear = true;\n      for (var j = 0; j < i && clear; j++) { var gap = bodies[i].r + bodies[j].r + 2; clear = Math.pow(x[i] - x[j], 2) + Math.pow(y[i] - y[j], 2) > gap * gap; }\n      if (clear) break;\n    }\n    px[i] = x[i] - (R(\"vx\", i) - 0.5) * 0.6 * dt;\n    py[i] = y[i] - H * 0.004 * dt;\n    angle[i] = R(\"a\", i) * Math.PI * 2;\n    spin[i] = (R(\"s\", i) - 0.5) * 0.02;\n  }\n  var frames = [];\n  function record() { var o = new Float32Array(n * 3); for (var q = 0; q < n; q++) { o[q * 3] = x[q]; o[q * 3 + 1] = y[q]; o[q * 3 + 2] = angle[q]; } frames.push(o); }\n  record();\n  for (var f = 1; f <= FRAMES; f++) {\n    if (f > settleFrom + SETTLE_FRAMES) { frames.push(frames[frames.length - 1]); continue; }\n    for (var s = 0; s < SUBSTEPS; s++) {\n      var settle = Math.min(1, Math.max(0, (f - settleFrom) / SETTLE_FRAMES)), damping = DAMPING - settle * 0.12;\n      for (i = 0; i < n; i++) {\n        var vx = (x[i] - px[i]) * damping, vy = (y[i] - py[i]) * damping;\n        px[i] = x[i]; py[i] = y[i]; x[i] += vx; y[i] += vy + g * dt * dt;\n      }\n      for (var it = 0; it < ITERATIONS; it++) {\n        for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) {\n          var dx = x[j] - x[i], dy = y[j] - y[i], min = bodies[i].r + bodies[j].r, d2 = dx * dx + dy * dy;\n          if (d2 >= min * min || d2 === 0) continue;\n          var d = Math.sqrt(d2), push = (min - d) / d, mi = bodies[i].r * bodies[i].r, mj = bodies[j].r * bodies[j].r, wi = mj / (mi + mj), wj = mi / (mi + mj);\n          x[i] -= dx * push * wi; y[i] -= dy * push * wi; x[j] += dx * push * wj; y[j] += dy * push * wj;\n        }\n        for (i = 0; i < n; i++) {\n          var rr = bodies[i].r;\n          if (y[i] + rr > floor) {\n            var vy2 = y[i] - py[i];\n            y[i] = floor - rr;\n            py[i] = vy2 > g * dt * 4 ? y[i] + vy2 * BOUNCE : y[i];\n            px[i] = x[i] - (x[i] - px[i]) * (1 - FRICTION);\n          }\n          if (x[i] - rr < 0) { x[i] = rr; px[i] = x[i] + (x[i] - px[i]) * BOUNCE; }\n          if (x[i] + rr > W) { x[i] = W - rr; px[i] = x[i] + (x[i] - px[i]) * BOUNCE; }\n        }\n      }\n      for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) {\n        var ex = x[j] - x[i], ey = y[j] - y[i], mn = bodies[i].r + bodies[j].r + 0.5, e2 = ex * ex + ey * ey;\n        if (e2 >= mn * mn || e2 === 0) continue;\n        var e = Math.sqrt(e2), tx = -ey / e, ty = ex / e;\n        var rel = (x[j] - px[j] - (x[i] - px[i])) * tx + (y[j] - py[j] - (y[i] - py[i])) * ty;\n        var m1 = bodies[i].r * bodies[i].r, m2 = bodies[j].r * bodies[j].r, kk = rel * GRIP;\n        px[i] -= tx * kk * (m2 / (m1 + m2)); py[i] -= ty * kk * (m2 / (m1 + m2));\n        px[j] += tx * kk * (m1 / (m1 + m2)); py[j] += ty * kk * (m1 / (m1 + m2));\n      }\n      for (i = 0; i < n; i++) {\n        var r3 = bodies[i].r, vx3 = x[i] - px[i];\n        var grounded = y[i] + r3 > floor - 1 || Math.abs(y[i] - py[i]) < g * dt;\n        if (grounded) spin[i] = Math.abs(vx3) > 0.05 ? vx3 / r3 : spin[i] * 0.8;\n        angle[i] += spin[i];\n      }\n    }\n    record();\n  }\n  return { bodies: bodies, frames: frames, floor: floor };\n}\nvar sim = simulate(), n = sim.bodies.length;\nsvgEl(\"line\", { x1: 0, x2: W, y1: sim.floor + 1, y2: sim.floor + 1, stroke: floorC, \"stroke-opacity\": 0.25, \"stroke-width\": 2 }, svg);\nsim.bodies.forEach(function (b, i) {\n  if (b.kind === \"item\") {\n    var d = document.createElement(\"div\"); d.className = \"gp-item\";\n    d.style.width = d.style.height = b.r * 2 + \"px\"; d.style.borderRadius = \"50%\"; d.style.background = shapes[b.color % 3];\n    d.style.fontSize = b.r * (itemTexts[i - (n - itemCount)].length > 2 ? 0.5 : 1) + \"px\";\n    d.textContent = itemTexts[i - (n - itemCount)];\n    itemsBox.appendChild(d); b.node = d; return;\n  }\n  var fill = b.accent ? accent : shapes[b.color % 3], r = b.r;\n  var g = svgEl(\"g\", {}, svg);\n  if (b.kind === \"circle\") svgEl(\"circle\", { r: r, fill: fill }, g);\n  else if (b.kind === \"square\") { var h = r * 0.84; svgEl(\"rect\", { x: -h, y: -h, width: h * 2, height: h * 2, rx: r * 0.12, fill: fill }, g); }\n  else {\n    var c = r * 1.12, pts = [0, 1, 2].map(function (k) { var a = -Math.PI / 2 + (k * Math.PI * 2) / 3; return (Math.cos(a) * c).toFixed(2) + \",\" + (Math.sin(a) * c + r * 0.12).toFixed(2); }).join(\" \");\n    svgEl(\"polygon\", { points: pts, fill: fill, \"stroke-linejoin\": \"round\", stroke: fill, \"stroke-width\": r * 0.14 }, g);\n  }\n  b.node = g;\n});\nfunction draw(frame) {\n  var t = Math.min(FRAMES, Math.max(0, frame * speed));\n  var f0 = Math.floor(t), f1 = Math.min(FRAMES, f0 + 1), mix = t - f0, a = sim.frames[f0], b = sim.frames[f1];\n  sim.bodies.forEach(function (body, i) {\n    var x = a[i * 3] + (b[i * 3] - a[i * 3]) * mix, y = a[i * 3 + 1] + (b[i * 3 + 1] - a[i * 3 + 1]) * mix, rot = a[i * 3 + 2] + (b[i * 3 + 2] - a[i * 3 + 2]) * mix;\n    if (body.kind === \"item\") { body.node.style.left = x - body.r + \"px\"; body.node.style.top = y - body.r + \"px\"; body.node.style.transform = \"rotate(\" + rot + \"rad)\"; }\n    else body.node.setAttribute(\"transform\", \"translate(\" + x.toFixed(2) + \" \" + y.toFixed(2) + \") rotate(\" + ((rot * 180) / Math.PI).toFixed(2) + \")\");\n  });\n}\nfinish(drive(draw, TOTAL));\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "124799811e60cd2176d70bfde7efa96771d1ac3a63e466d35de44f7b70827823",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#111111",
+ "demo_values": {
+  "count": 40,
+  "items": "Tasks,Tickets,Ideas"
+ },
+ "variables": [
+  {
+   "id": "count",
+   "type": "number",
+   "role": "style",
+   "label": "Count",
+   "default": 30,
+   "min": 1,
+   "max": 80
+  },
+  {
+   "id": "items",
+   "type": "string",
+   "role": "content",
+   "label": "Items",
+   "default": ""
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "motion",
+   "label": "Seed",
+   "default": 7,
+   "min": 1,
+   "max": 999
+  },
+  {
+   "id": "gravity",
+   "type": "number",
+   "role": "motion",
+   "label": "Gravity",
+   "default": 1,
+   "min": 0.2,
+   "max": 3
+  },
+  {
+   "id": "background_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#111111"
+  },
+  {
+   "id": "shape_color_1",
+   "type": "color",
+   "role": "style",
+   "label": "Shape 1",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "shape_color_2",
+   "type": "color",
+   "role": "style",
+   "label": "Shape 2",
+   "default": "#C9C9C9"
+  },
+  {
+   "id": "shape_color_3",
+   "type": "color",
+   "role": "style",
+   "label": "Shape 3",
+   "default": "#7A7A7A"
+  },
+  {
+   "id": "accent_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#E5322D"
+  },
+  {
+   "id": "floor_color",
+   "type": "color",
+   "role": "style",
+   "label": "Floor",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 3
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

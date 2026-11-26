@@ -1,0 +1,102 @@
+{
+ "name": "review-card-stack",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "card stack shuffle: layered cards cycling to the front"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Review Card Stack\n\nThree short customer review cards (name, stars, a one-line quote) arrive as a stack, then shuffle: the front card swings out and goes to the back so each review comes to the front in turn. Reviews are a variable.\n\nCategory: commerce. Length: 6.5 s. WebGL: no.\n\nUse when:\n- Letting a few real customers speak in a short quote each.\n- A social-proof moment that is more personal than an average rating.\n\nAvoid when:\n- An average score and how ratings split: use rating-summary.\n- One long review typed out: use chat-review-typed.\n\nVariables:\n- heading (string): Heading, default \"Kata pelanggan kami\"\n- reviews (string): Reviews, default \"Sari|5|Kopinya enak, harganya masuk akal. Langganan tiap minggu; Budi|5|Pesan lewat chat, 15 menit sudah sampai; Maya|4|Roti bakarnya renyah, porsinya pas\"\n- hold (number, 0.8-2.5): Hold on each card, default 1.5\n- card_color (color): Card colour, default \"#ffffff\"\n- bg_color (color): Background, default \"#ffffff\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- main_color (color): Accent, default \"#2563eb\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Review Card Stack\n\n  Three short customer review cards (name, stars, a one-line quote) arrive as a stack, then shuffle: the front card swings out and goes to the back so each review comes to the front in turn. Reviews are a variable.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"review-card-stack\"\n  data-composition-duration=\"6.5\"\n  data-composition-variables='[\n  {\n    \"id\": \"heading\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Heading\",\n    \"description\": \"Small line above the stack. Leave empty to hide it.\",\n    \"default\": \"Kata pelanggan kami\"\n  },\n  {\n    \"id\": \"reviews\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Reviews\",\n    \"description\": \"Two to four reviews separated by semicolons, each as name|stars|quote. Keep the quote free of semicolons.\",\n    \"default\": \"Sari|5|Kopinya enak, harganya masuk akal. Langganan tiap minggu; Budi|5|Pesan lewat chat, 15 menit sudah sampai; Maya|4|Roti bakarnya renyah, porsinya pas\"\n  },\n  {\n    \"id\": \"hold\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Hold on each card\",\n    \"description\": \"Seconds each review stays in front before the next comes up, at most.\",\n    \"default\": 1.5,\n    \"min\": 0.8,\n    \"max\": 2.5,\n    \"step\": 0.1\n  },\n  {\n    \"id\": \"card_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Card colour\",\n    \"description\": \"Review cards.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Main text and outlines.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Secondary text and hairlines.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent\",\n    \"description\": \"The stars: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Font family name. Geist is loaded by default; another family must be loaded by the host.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Review Card Stack</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          color: var(--rc-text); font-family: var(--FAM, Geist), system-ui, sans-serif; background: var(--rc-bg);\n        }\n        #root * { box-sizing: border-box; }\n        .rc-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        .rc-wrap { position: absolute; left: 50%; top: 50%; transform-origin: 50% 50%; }\n        .rc-head { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: calc(var(--u) * 44); font-weight: 600; letter-spacing: -0.02em; color: var(--rc-muted); }\n        .rc-card { position: absolute; left: 0; width: 100%; height: calc(var(--u) * 400); padding: calc(var(--u) * 46) calc(var(--u) * 52); border-radius: calc(var(--u) * 44); background: var(--rc-card); border: calc(var(--u) * 2) solid rgba(10,10,10,0.09); box-shadow: 0 calc(var(--u) * 12) calc(var(--u) * 28) rgba(0,0,0,0.09); display: flex; flex-direction: column; justify-content: space-between; transform-origin: 50% 100%; }\n        .rc-st { display: flex; gap: calc(var(--u) * 6); }\n        .rc-st svg { width: calc(var(--u) * 48); height: calc(var(--u) * 48); }\n        .rc-q { font-size: calc(var(--u) * 50); font-weight: 500; letter-spacing: -0.025em; line-height: 1.25; text-wrap: balance; }\n        .rc-who { display: flex; align-items: center; gap: calc(var(--u) * 20); font-size: calc(var(--u) * 38); font-weight: 600; }\n        .rc-av { width: calc(var(--u) * 64); height: calc(var(--u) * 64); border-radius: 50%; background: rgba(115,115,115,0.18); display: flex; align-items: center; justify-content: center; font-size: calc(var(--u) * 32); font-weight: 600; color: var(--rc-text); }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"review-card-stack\" data-duration=\"6.5\" data-fps=\"30\">\n        <div id=\"rc-clip\" class=\"rc-stage clip\" data-start=\"0\" data-duration=\"6.5\" data-track-index=\"0\">\n\n          <div class=\"rc-wrap\" id=\"rc-wrap\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function svg(tag, attrs, parent) { var e = document.createElementNS(\"http://www.w3.org/2000/svg\", tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function rp(n) { return \"Rp\" + dots(n); }\n            function money(s) { var d = String(s).replace(/[^\\d]/g, \"\"); return d ? parseInt(d, 10) : 0; }\n            function list(s, d) { var a = String(str(s, d)).split(\";\").map(function (x) { return x.trim(); }).filter(Boolean); return a.length ? a : String(d).split(\";\").map(function (x) { return x.trim(); }); }\n            function mulberry(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function setColors(p, c) { for (var k in c) root.style.setProperty(\"--\" + p + \"-\" + k, colr(vars[k + \"_color\"], c[k])); }\n            var fam = str(vars.font_family, \"Geist\");\n            root.style.setProperty(\"--FAM\", /^[\\w\\s-]+$/.test(fam) ? '\"' + fam + '\"' : \"Geist\");\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n            setColors(\"rc\", { bg: \"#ffffff\", text: \"#0a0a0a\", muted: \"#737373\", main: \"#2563eb\", card: \"#ffffff\" });\n\n\n            var u = U, wrap = document.getElementById(\"rc-wrap\");\n            root.style.setProperty(\"--rc-card\", colr(vars.card_color, \"#ffffff\"));\n            var raw = str(vars.reviews, \"Sari|5|Kopinya enak, harganya masuk akal. Langganan tiap minggu; Budi|5|Pesan lewat chat, 15 menit sudah sampai; Maya|4|Roti bakarnya renyah, porsinya pas\");\n            var revs = raw.split(/;|\\n/).map(function (x) { return x.trim(); }).filter(Boolean).slice(0, 4).map(function (s) {\n              var a = s.split(\"|\"); return { name: (a[0] || \"\").trim(), stars: Math.max(1, Math.min(5, Math.round(Number(a[1]) || 5))), quote: a.slice(2).join(\"|\").trim() };\n            });\n            if (revs.length < 2) revs = [{ name: \"Sari\", stars: 5, quote: \"Kopinya enak, harganya masuk akal.\" }, { name: \"Budi\", stars: 5, quote: \"Pesan lewat chat, 15 menit sudah sampai.\" }];\n            var n = revs.length, heading = typeof vars.heading === \"string\" ? vars.heading.trim() : \"Kata pelanggan kami\";\n            var hold = num(vars.hold, 1.5, 0.8, 2.5);\n            var STEP = 58 * u, cardH = 400 * u, headH = heading ? 110 * u : 0;\n            var gw = 860 * u, gh = headH + (n - 1) * STEP + cardH;\n            wrap.style.width = gw + \"px\"; wrap.style.height = gh + \"px\";\n            var S = Math.min(1.3, (H * 0.88) / gh, (W * 0.92) / gw);\n            gsap.set(wrap, { xPercent: -50, yPercent: -50, scale: S });\n            var hEl = el(\"div\", \"rc-head\", wrap); hEl.textContent = heading; if (!heading) hEl.style.display = \"none\";\n            var STAR = \"M50 6 L62.3 36.5 L95 39 L70 60.5 L77.8 92 L50 74.6 L22.2 92 L30 60.5 L5 39 L37.7 36.5 Z\";\n            var main = colr(vars.main_color, \"#2563eb\");\n            var cards = revs.map(function (r, i) {\n              var c = el(\"div\", \"rc-card\", wrap);\n              var st = el(\"div\", \"rc-st\", c);\n              for (var s = 0; s < 5; s++) { var sv = svg(\"svg\", { viewBox: \"0 0 100 100\" }, st); svg(\"path\", { d: STAR, fill: s < r.stars ? main : \"rgba(115,115,115,0.25)\" }, sv); }\n              el(\"div\", \"rc-q\", c).textContent = \"\\u201C\" + r.quote + \"\\u201D\";\n              var who = el(\"div\", \"rc-who\", c); el(\"div\", \"rc-av\", who).textContent = (r.name.charAt(0) || \"?\").toUpperCase(); el(\"span\", \"\", who).textContent = r.name;\n              c.style.top = headH + (n - 1) * STEP + \"px\";\n              return c;\n            });\n            function sy(k) { return -k * STEP; }\n            function ss(k) { return 1 - k * 0.055; }\n            cards.forEach(function (c, i) { gsap.set(c, { y: sy(i), scale: ss(i), zIndex: n - i }); });\n\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(hEl, { opacity: 0, y: -20 * u }, { opacity: 1, y: 0, duration: 0.5, ease: \"power3.out\" }, 0.1);\n            for (var k = n - 1; k >= 0; k--) {\n              tl.fromTo(cards[k], { y: sy(k) + 1100 * u, opacity: 0 }, { y: sy(k), opacity: 1, duration: 0.75, ease: \"expo.out\" }, 0.3 + (n - 1 - k) * 0.17);\n            }\n            var order = cards.slice(), total = parseFloat(root.dataset.duration || \"6.5\");\n            var gapS = Math.min(1.6, hold + 0.0, (total - 3.6) / Math.max(1, n - 1));\n            var t = 2.0 + 0.2;\n            for (var r = 1; r < n; r++) {\n              var front = order[0], rest = order.slice(1);\n              tl.to(front, { x: 560 * u, rotation: 6, duration: 0.32, ease: \"power2.in\" }, t);\n              tl.set(front, { zIndex: 0 }, t + 0.32);\n              tl.to(front, { x: 0, rotation: 0, y: sy(n - 1), scale: ss(n - 1), duration: 0.5, ease: \"power3.out\" }, t + 0.32);\n              rest.forEach(function (o, j) {\n                tl.to(o, { y: sy(j), scale: ss(j), duration: 0.55, ease: \"power3.inOut\" }, t + 0.18);\n                tl.set(o, { zIndex: n - j }, t + 0.3);\n              });\n              order = rest.concat([front]);\n              t += gapS + 0.8;\n            }\n\n            var total = parseFloat(root.dataset.duration || \"6.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"review-card-stack\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "28a5090b4e500a9dad3851e00e40cc3ab2a4dce2e3a1b023eef9007eaf59113f",
+ "duration": 6.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "heading",
+   "type": "string",
+   "role": "content",
+   "label": "Heading",
+   "default": "Kata pelanggan kami"
+  },
+  {
+   "id": "reviews",
+   "type": "string",
+   "role": "content",
+   "label": "Reviews",
+   "default": "Sari|5|Kopinya enak, harganya masuk akal. Langganan tiap minggu; Budi|5|Pesan lewat chat, 15 menit sudah sampai; Maya|4|Roti bakarnya renyah, porsinya pas"
+  },
+  {
+   "id": "hold",
+   "type": "number",
+   "role": "motion",
+   "label": "Hold on each card",
+   "default": 1.5,
+   "min": 0.8,
+   "max": 2.5
+  },
+  {
+   "id": "card_color",
+   "type": "color",
+   "role": "style",
+   "label": "Card colour",
+   "default": "#ffffff"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2563eb"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

@@ -1,0 +1,149 @@
+{
+ "name": "squiggle",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/squiggle/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Squiggle\n\nA wavy, zigzag, looping or coiled line draws itself with a springy swim, settles, holds and erases.\n\nCategory: shapes. Length: 2.7 s. WebGL: no.\n\nUse when:\n- A title or number needs a lively hand-drawn style underline or flourish.\n- A playful accent line should draw in, wiggle and clear out.\n\nAvoid when:\n- A clean, static divider is needed.\n- The line must connect two specific elements: it is placed at a fixed center and angle.\n\nVariables:\n- shape (enum): Shape, default \"wave\"\n- color (color): Line color, default \"#ffffff\"\n- weight (number, 1-12): Weight, default 3\n- amplitude (number, 0-60): Amplitude, default 14\n- wavelength (number, 12-160): Wavelength, default 48\n- length (number, 40-1200): Length, default 320\n- angle (number, -180-180): Angle, default 0\n- x (number, 0-1): X, default 0.375\n- y (number, 0-1): Y, default 0.5\n- settle (number, 0-1): Settle, default 0.5\n- hold (number, 0-90): Hold, default 12\n- erase (boolean): Erase, default true\n- delay (number, 0-60): Delay, default 0\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Squiggle\n\n  A wavy, zigzag, looping or coiled line draws itself with a springy swim, settles, holds and erases.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/squiggle/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"squiggle\"\n  data-composition-duration=\"2.7\"\n  data-composition-variables='[{\"id\":\"shape\",\"type\":\"enum\",\"role\":\"layout\",\"label\":\"Shape\",\"description\":\"Kind of line.\",\"default\":\"wave\",\"options\":[{\"value\":\"wave\",\"label\":\"Wave\"},{\"value\":\"zigzag\",\"label\":\"Zigzag\"},{\"value\":\"loops\",\"label\":\"Loops\"},{\"value\":\"coil\",\"label\":\"Coil\"}]},{\"id\":\"color\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Line color\",\"description\":\"Stroke color.\",\"default\":\"#ffffff\"},{\"id\":\"weight\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Weight\",\"description\":\"Stroke thickness at a 720 px frame height.\",\"default\":3,\"min\":1,\"max\":12,\"step\":0.5},{\"id\":\"amplitude\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Amplitude\",\"description\":\"Height of the waves.\",\"default\":14,\"min\":0,\"max\":60,\"step\":1,\"unit\":\"px\"},{\"id\":\"wavelength\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Wavelength\",\"description\":\"Distance between wave crests.\",\"default\":48,\"min\":12,\"max\":160,\"step\":1,\"unit\":\"px\"},{\"id\":\"length\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Length\",\"description\":\"Length of the line.\",\"default\":320,\"min\":40,\"max\":1200,\"step\":1,\"unit\":\"px\"},{\"id\":\"angle\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Angle\",\"description\":\"Rotation of the line in degrees.\",\"default\":0,\"min\":-180,\"max\":180,\"step\":1,\"unit\":\"deg\"},{\"id\":\"x\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"X\",\"description\":\"Line center across the frame, 0 to 1.\",\"default\":0.375,\"min\":0,\"max\":1,\"step\":0.01},{\"id\":\"y\",\"type\":\"number\",\"role\":\"layout\",\"label\":\"Y\",\"description\":\"Line center down the frame, 0 to 1.\",\"default\":0.5,\"min\":0,\"max\":1,\"step\":0.01},{\"id\":\"settle\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Settle\",\"description\":\"How much the line calms down while it holds, 0 to 1.\",\"default\":0.5,\"min\":0,\"max\":1,\"step\":0.05},{\"id\":\"hold\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Hold\",\"description\":\"Frames (30 fps) the finished line holds.\",\"default\":12,\"min\":0,\"max\":90,\"step\":1,\"unit\":\"frames\"},{\"id\":\"erase\",\"type\":\"boolean\",\"role\":\"motion\",\"label\":\"Erase\",\"description\":\"Erase the line at the end.\",\"default\":true},{\"id\":\"delay\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Delay\",\"description\":\"Frames (30 fps) before the line starts.\",\"default\":0,\"min\":0,\"max\":60,\"step\":1,\"unit\":\"frames\"}]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Squiggle</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n\n        }\n        .sqg-stage { position: absolute; inset: 0; }\n        .sqg-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"squiggle\" data-duration=\"2.7\" data-fps=\"30\">\n        <div id=\"sqg-clip\" class=\"sqg-stage clip\" data-start=\"0\" data-duration=\"2.7\" data-track-index=\"0\">\n          <svg id=\"sqg-svg\" class=\"sqg-svg\" role=\"img\" aria-label=\"Squiggle line\"><path id=\"sqg-path\" fill=\"none\" stroke-linecap=\"round\"></path></svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Frame-based helpers, written from their definitions.\n            var Easing = (function () {\n              function bezier(x1, y1, x2, y2) {\n                return function (x) {\n                  if (x <= 0) return 0;\n                  if (x >= 1) return 1;\n                  var lo = 0, hi = 1, t = x;\n                  for (var i = 0; i < 40; i++) {\n                    var u = 1 - t;\n                    var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                    if (Math.abs(cx - x) < 1e-6) break;\n                    if (cx < x) lo = t; else hi = t;\n                    t = (lo + hi) / 2;\n                  }\n                  var v = 1 - t;\n                  return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n                };\n              }\n              return {\n                bezier: bezier,\n                linear: function (t) { return t; },\n                quad: function (t) { return t * t; },\n                cubic: function (t) { return t * t * t; },\n                sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); },\n                poly: function (n) { return function (t) { return Math.pow(t, n); }; },\n                ease: bezier(0.42, 0, 1, 1),\n                out: function (f) { return function (t) { return 1 - f(1 - t); }; },\n                inOut: function (f) { return function (t) { return t < 0.5 ? f(t * 2) / 2 : 1 - f((1 - t) * 2) / 2; }; }\n              };\n            })();\n            function interpolate(input, inR, outR, o) {\n              o = o || {};\n              var n = inR.length;\n              var left = o.extrapolateLeft || \"extend\";\n              var right = o.extrapolateRight || \"extend\";\n              var i = 1;\n              while (i < n - 1 && input > inR[i]) i++;\n              var a = inR[i - 1], b = inR[i];\n              if (input < inR[0] && left === \"clamp\") return outR[0];\n              if (input > inR[n - 1] && right === \"clamp\") return outR[n - 1];\n              var t = b === a ? 0 : (input - a) / (b - a);\n              if (o.easing) t = o.easing(t);\n              return outR[i - 1] + (outR[i] - outR[i - 1]) * t;\n            }\n            // Damped spring from rest to 1. durationInFrames stretches time so the spring has settled by then.\n            function spring(o) {\n              var c = o.config || {};\n              var mass = c.mass != null ? c.mass : 1;\n              var k = c.stiffness != null ? c.stiffness : 100;\n              var damp = c.damping != null ? c.damping : 10;\n              function at(t) {\n                var w0 = Math.sqrt(k / mass);\n                var z = damp / (2 * Math.sqrt(k * mass));\n                if (z < 1) {\n                  var wd = w0 * Math.sqrt(1 - z * z);\n                  return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));\n                }\n                return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              }\n              var t = Math.max(0, o.frame) / o.fps;\n              if (o.durationInFrames) {\n                var settle = 4, step = 1 / o.fps;\n                for (var s = settle; s > 0.05; s -= step) {\n                  if (Math.abs(1 - at(s)) > 0.001) { settle = s + step; break; }\n                  settle = s;\n                }\n                t = (Math.max(0, o.frame) / o.durationInFrames) * settle;\n                if (o.frame >= o.durationInFrames) return 1;\n              }\n              return at(t);\n            }\n            function parseColor(c) {\n              var m;\n              c = String(c).trim();\n              if ((m = /^#([0-9a-f]{3,8})$/i.exec(c))) {\n                var h = m[1];\n                if (h.length <= 4) h = h.split(\"\").map(function (x) { return x + x; }).join(\"\");\n                return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16), h.length === 8 ? parseInt(h.slice(6, 8), 16) / 255 : 1];\n              }\n              if ((m = /^rgba?\\(([^)]+)\\)/i.exec(c))) {\n                var p = m[1].split(\",\").map(Number);\n                return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1];\n              }\n              return [0, 0, 0, 1];\n            }\n            function interpolateColors(t, inR, outR) {\n              var a = parseColor(outR[0]), b = parseColor(outR[1]);\n              var u = Math.min(1, Math.max(0, (t - inR[0]) / (inR[1] - inR[0])));\n              return \"rgba(\" + [0, 1, 2].map(function (i) { return Math.round(a[i] + (b[i] - a[i]) * u); }).join(\",\") + \",\" + (a[3] + (b[3] - a[3]) * u) + \")\";\n            }\n            // Seeded 0..1 value: the same seed always gives the same number.\n            function random(seed) {\n              var s = String(seed), h = 2166136261;\n              for (var i = 0; i < s.length; i++) {\n                h ^= s.charCodeAt(i);\n                h = Math.imul(h, 16777619);\n              }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              h = Math.imul(h ^ (h >>> 16), 3266489917);\n              return ((h ^ (h >>> 15)) >>> 0) / 4294967296;\n            }\n            // Fit a fixed-size design stage into the frame.\n            function fit(el, w, h, fill) {\n              var s = Math.min(root.clientWidth / w, root.clientHeight / h) * (fill || 1);\n              el.style.position = \"absolute\";\n              el.style.left = \"50%\";\n              el.style.top = \"50%\";\n              el.style.width = w + \"px\";\n              el.style.height = h + \"px\";\n              el.style.transform = \"translate(-50%, -50%) scale(\" + s + \")\";\n              return s;\n            }\n            // Drive draw(frame) from the timeline so seeking always draws the same picture.\n            function clockTween(tl, totalFrames, draw, rate) {\n              var clock = { frame: 0 };\n              tl.to(clock, { frame: totalFrames, duration: totalFrames / 30, ease: \"none\", onUpdate: function () { draw(clock.frame * (rate || 1)); } }, 0);\n              draw(0);\n            }\n            var SVGNS = \"http://www.w3.org/2000/svg\";\n            function svgEl(tag, attrs, parent) {\n              var e = document.createElementNS(SVGNS, tag);\n              for (var k in attrs) e.setAttribute(k, attrs[k]);\n              if (parent) parent.appendChild(e);\n              return e;\n            }\n\n\n            \n\n                                                                 \n                                             \n\n                                \n                        \n             \n             \n                  \n                 \n                     \n                      \n                  \n                 \n                  \n                \n                  \n                 \n                 \n                     \n \n\n                                   \n\n                                                                     \n                 \n                  \n               \n \n\n                                \n            \n            \n \n\n                                     \n                       \n                 \n                     \n                    \n                \n                \n \n\nconst squiggleDefaults                                             = {\n  shape: \"wave\",\n  x: 0.375,\n  y: 0.5,\n  length: 320,\n  angle: 0,\n  amplitude: 14,\n  wavelength: 48,\n  weight: 3,\n  color: \"#ffffff\",\n  settle: 0.5,\n  hold: 12,\n  erase: true,\n  delay: 0,\n  speed: 1,\n};\n\n                                                    \n\nconst DRAW = 24;\nconst SETTLE = 36;\nconst ERASE = 18;\nconst SWIM = 1.5;\nconst EXIT_SWIM = 0.5;\nconst TAIL = 14;\nconst REST = 24;\nconst MIN_WAVELENGTH = 8;\nconst LOOP_FLOOR = 3;\nconst MIN_POINTS = 24;\nconst MAX_POINTS = 4000;\nconst EPSILON = 0.01;\nconst SAMPLES                              = { wave: 32, loops: 64, coil: 80 };\nconst REACH                              = { wave: 0, loops: 2.4, coil: 4.2 };\n\nconst finite = (value                    , fallback        ) =>\n  typeof value === \"number\" && Number.isFinite(value) ? value : fallback;\nconst clamp = (value        , min        , max        ) =>\n  Math.min(max, Math.max(min, value));\nconst round = (value        ) => Math.round(value * 100) / 100;\nconst rateOf = (speed                    ) =>\n  Math.max(0, finite(speed, squiggleDefaults.speed));\nconst shapeOf = (value                    )                =>\n  value === \"zigzag\" || value === \"loops\" || value === \"coil\" ? value : \"wave\";\nconst joinOf = (shape               )               =>\n  shape === \"zigzag\" ? \"miter\" : \"round\";\nconst easeOutQuart = (t        ) => 1 - (1 - t) ** 4;\nconst easeOutCubic = (t        ) => 1 - (1 - t) ** 3;\nconst easeInOutCubic = (t        ) =>\n  t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;\nconst easeInOutSine = (t        ) => (1 - Math.cos(Math.PI * t)) / 2;\n\nfunction smoothstep(value        ) {\n  const t = clamp(value, 0, 1);\n  return t * t * (3 - 2 * t);\n}\n\nfunction getSquiggleTimeline(\n  options                                          = {},\n) {\n  const hold = Math.max(0, finite(options.hold, squiggleDefaults.hold));\n  const erase = options.erase !== false;\n  const eraseStart = SETTLE + hold;\n  const eraseEnd = eraseStart + ERASE;\n  const end = erase ? eraseEnd : SETTLE;\n  return {\n    draw: DRAW,\n    settle: SETTLE,\n    hold,\n    erase,\n    eraseStart,\n    eraseEnd,\n    end,\n    duration: end + (erase ? TAIL : REST),\n  };\n}\n\n                                                                      \n\nconst squiggleLength = getSquiggleTimeline().end;\n\nfunction getSquiggleDuration(\n  options                                                              = {},\n) {\n  const rate = rateOf(options.speed);\n  if (rate === 0) return 1;\n  const delay = Math.max(0, finite(options.delay, squiggleDefaults.delay));\n  const { duration } = getSquiggleTimeline(options);\n  return Math.max(1, Math.ceil(delay + duration / rate));\n}\n\nfunction getSquiggleTime(\n  frame        ,\n  options                                                   = {},\n) {\n  const fps = Math.max(1, finite(options.fps, 30));\n  const delay = Math.max(0, finite(options.delay, squiggleDefaults.delay));\n  const elapsed = Math.max(0, finite(frame, 0) - delay);\n  return (elapsed * 30 * rateOf(options.speed)) / fps;\n}\n\nfunction getSquiggleHead(time        ) {\n  if (!(time > 0)) return 0;\n  return easeOutQuart(Math.min(1, time / DRAW));\n}\n\nfunction getSquiggleTail(\n  time        ,\n  timeline                   = getSquiggleTimeline(),\n) {\n  if (!timeline.erase) return 0;\n  const progress = (time - timeline.eraseStart) / ERASE;\n  if (!(progress > 0)) return 0;\n  return easeInOutCubic(Math.min(1, progress));\n}\n\nfunction getSquiggleCalm(time        ) {\n  if (!(time > 0)) return 0;\n  return easeInOutSine(Math.min(1, time / SETTLE));\n}\n\nfunction getSquigglePhase(\n  time        ,\n  timeline                   = getSquiggleTimeline(),\n) {\n  const swim = time > 0 ? easeOutCubic(Math.min(1, time / SETTLE)) : 0;\n  return SWIM * swim + EXIT_SWIM * getSquiggleTail(time, timeline);\n}\n\nfunction getSquiggleEnvelope(\n  s        ,\n  length        ,\n  wavelength        ,\n) {\n  const taper = Math.min(wavelength, length / 3);\n  if (!(taper > 0)) return 0;\n  return smoothstep(s / taper) * smoothstep((length - s) / taper);\n}\n\nfunction getZigzagCurve(\n  length        ,\n  wavelength        ,\n  amplitude        ,\n  shift        ,\n) {\n  const k = (2 * Math.PI) / wavelength;\n  const points                  = [{ x: 0, y: 0 }];\n  const first = Math.floor(-(Math.PI / 2 + shift) / Math.PI) + 1;\n  for (let m = first; points.length < MAX_POINTS - 1; m++) {\n    const s = (Math.PI / 2 + m * Math.PI + shift) / k;\n    if (s >= length) break;\n    if (s <= 0) continue;\n    const side = m % 2 === 0 ? 1 : -1;\n    const w = getSquiggleEnvelope(s, length, wavelength);\n    points.push({ x: s, y: side * amplitude * w });\n  }\n  points.push({ x: length, y: 0 });\n  return points;\n}\n\nfunction getSquiggleCurve(input                    ) {\n  const shape = shapeOf(input.shape);\n  const length = Math.max(0, finite(input.length, 0));\n  const wavelength = Math.max(1e-3, finite(input.wavelength, 1));\n  const amplitude = Math.max(0, finite(input.amplitude, 0));\n  const unit = Math.max(1e-3, finite(input.unit, 1));\n  const shift = 2 * Math.PI * finite(input.phase, 0);\n  if (shape === \"zigzag\") {\n    return getZigzagCurve(length, wavelength, amplitude, shift);\n  }\n  const k = (2 * Math.PI) / wavelength;\n  const gate = smoothstep(amplitude / (LOOP_FLOOR * unit));\n  const reach = (REACH[shape] / k) * gate;\n  const fine = wavelength / (SAMPLES[shape] * Math.max(1, unit));\n  const coarsest = Math.max(length / MIN_POINTS, 1e-6);\n  const step = clamp(fine, length / (MAX_POINTS - 2), coarsest);\n  const sample = (s        )                => {\n    const w = getSquiggleEnvelope(s, length, wavelength);\n    const theta = k * s - shift;\n    if (shape === \"wave\") return { x: s, y: amplitude * w * Math.sin(theta) };\n    const along = s - reach * w * Math.sin(theta);\n    return { x: along, y: -amplitude * w * Math.cos(theta) };\n  };\n  const offset = (((shift / k) % step) + step) % step;\n  const points = [sample(0)];\n  for (let j = 0; points.length < MAX_POINTS - 1; j++) {\n    const s = offset + j * step;\n    if (s >= length) break;\n    if (s > 0) points.push(sample(s));\n  }\n  points.push(sample(length));\n  return points;\n}\n\nfunction getSquiggleTrim(\n  points                          ,\n  tail        ,\n  head        ,\n) {\n  const lengths = [0];\n  for (let i = 1; i < points.length; i++) {\n    const a = points[i - 1];\n    const b = points[i];\n    lengths.push(lengths[i - 1] + Math.hypot(b.x - a.x, b.y - a.y));\n  }\n  const last = points.length - 1;\n  const total = last > 0 ? lengths[last] : 0;\n  const from = clamp(finite(tail, 0), 0, 1) * total;\n  const to = clamp(finite(head, 0), 0, 1) * total;\n  const trimmed                  = [];\n  if (last < 1 || !(to - from > EPSILON)) return { total, points: trimmed };\n  const pointAt = (distance        , index        )                => {\n    const a = points[index - 1];\n    const b = points[index];\n    const span = lengths[index] - lengths[index - 1];\n    const t = span > 0 ? (distance - lengths[index - 1]) / span : 0;\n    return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };\n  };\n  let index = 1;\n  while (index < last && lengths[index] < from) index++;\n  trimmed.push(pointAt(from, index));\n  while (index < last && lengths[index] < to) {\n    trimmed.push(points[index]);\n    index++;\n  }\n  trimmed.push(pointAt(to, index));\n  return { total, points: trimmed };\n}\n\nfunction getSquigglePath(points                          ) {\n  let path = \"\";\n  let previous = \"\";\n  for (const point of points) {\n    const pair = `${round(point.x)} ${round(point.y)}`;\n    if (pair === previous) continue;\n    path += `${path === \"\" ? \"M\" : \"L\"}${pair}`;\n    previous = pair;\n  }\n  return path;\n}\n\nfunction getSquiggleState(frame        , options                  = {}) {\n  const width = Math.max(1, finite(options.width, 1280));\n  const height = Math.max(1, finite(options.height, 720));\n  const unit = height / 720;\n  const shape = shapeOf(options.shape);\n  const timeline = getSquiggleTimeline(options);\n  const time = getSquiggleTime(frame, options);\n  const head = getSquiggleHead(time);\n  const tail = getSquiggleTail(time, timeline);\n  const phase = getSquigglePhase(time, timeline);\n  const settle = clamp(finite(options.settle, squiggleDefaults.settle), 0, 1);\n  const lively = finite(options.amplitude, squiggleDefaults.amplitude);\n  const calm = 1 - settle * getSquiggleCalm(time);\n  const amplitude = Math.max(0, lively) * unit * calm;\n  const length = Math.max(0, finite(options.length, squiggleDefaults.length));\n  const course = length * unit;\n  const cycle = finite(options.wavelength, squiggleDefaults.wavelength);\n  const wavelength = Math.max(MIN_WAVELENGTH, cycle) * unit;\n  const weight = Math.max(0, finite(options.weight, squiggleDefaults.weight));\n  const angle = finite(options.angle, squiggleDefaults.angle);\n  const radians = (angle * Math.PI) / 180;\n  const cos = Math.cos(radians);\n  const sin = Math.sin(radians);\n  const start = {\n    x: finite(options.x, squiggleDefaults.x) * width,\n    y: finite(options.y, squiggleDefaults.y) * height,\n  };\n  const end = { x: start.x + course * cos, y: start.y + course * sin };\n  const drawn = head - tail > 0;\n  const curve                  = drawn\n    ? getSquiggleCurve({\n        shape,\n        length: course,\n        wavelength,\n        amplitude,\n        phase,\n        unit,\n      })\n    : [];\n  const placed = curve.map((point) => ({\n    x: start.x + point.x * cos - point.y * sin,\n    y: start.y + point.x * sin + point.y * cos,\n  }));\n  const trim = getSquiggleTrim(placed, tail, head);\n  const path = getSquigglePath(trim.points);\n  return {\n    width,\n    height,\n    unit,\n    shape,\n    time,\n    timeline,\n    head,\n    tail,\n    phase,\n    amplitude,\n    wavelength,\n    length: course,\n    strokeWidth: round(weight * unit),\n    join: joinOf(shape),\n    start,\n    end,\n    total: trim.total,\n    points: trim.points,\n    path,\n    visible: path.includes(\"L\"),\n  };\n}\n\n                                                                \n\n\n            var opt = {\n              shape: pick(vars.shape, [\"wave\", \"zigzag\", \"loops\", \"coil\"], \"wave\"), x: num(vars.x, 0.375, 0, 1), y: num(vars.y, 0.5, 0, 1),\n              length: num(vars.length, 320, 40, 1200), angle: num(vars.angle, 0, -180, 180), amplitude: num(vars.amplitude, 14, 0, 60),\n              wavelength: num(vars.wavelength, 48, 12, 160), weight: num(vars.weight, 3, 1, 12), settle: num(vars.settle, 0.5, 0, 1),\n              hold: num(vars.hold, 12, 0, 90), erase: bool(vars.erase, true), delay: num(vars.delay, 0, 0, 60), speed: 1,\n              width: root.clientWidth, height: root.clientHeight, fps: 30\n            };\n            var svg = document.getElementById(\"sqg-svg\"), pathEl = document.getElementById(\"sqg-path\");\n            svg.setAttribute(\"viewBox\", \"0 0 \" + opt.width + \" \" + opt.height);\n            pathEl.setAttribute(\"stroke\", str(vars.color, \"#ffffff\"));\n            function draw(frame) {\n              var s = getSquiggleState(frame, opt);\n              pathEl.style.display = s.visible ? \"block\" : \"none\";\n              if (s.visible) {\n                pathEl.setAttribute(\"d\", s.path);\n                pathEl.setAttribute(\"stroke-width\", s.strokeWidth);\n                pathEl.setAttribute(\"stroke-linejoin\", s.join);\n              }\n            }\n            var tl = gsap.timeline({ paused: true });\n            clockTween(tl, 81, draw, 1);\n\n            var total = parseFloat(root.dataset.duration || \"2.7\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"squiggle\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "8b1d35069b56a30988d2c8a4b33f8d67c582ff30e48ac67654f1f1bc4a5418d9",
+ "duration": 2.7,
+ "webgl": false,
+ "demo_background": "#002fa7",
+ "demo_values": {
+  "length": 240,
+  "amplitude": 18,
+  "wavelength": 56,
+  "weight": 4,
+  "x": 0.15
+ },
+ "variables": [
+  {
+   "id": "shape",
+   "type": "enum",
+   "role": "layout",
+   "label": "Shape",
+   "default": "wave"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Line color",
+   "default": "#ffffff"
+  },
+  {
+   "id": "weight",
+   "type": "number",
+   "role": "style",
+   "label": "Weight",
+   "default": 3,
+   "min": 1,
+   "max": 12
+  },
+  {
+   "id": "amplitude",
+   "type": "number",
+   "role": "layout",
+   "label": "Amplitude",
+   "default": 14,
+   "min": 0,
+   "max": 60
+  },
+  {
+   "id": "wavelength",
+   "type": "number",
+   "role": "layout",
+   "label": "Wavelength",
+   "default": 48,
+   "min": 12,
+   "max": 160
+  },
+  {
+   "id": "length",
+   "type": "number",
+   "role": "layout",
+   "label": "Length",
+   "default": 320,
+   "min": 40,
+   "max": 1200
+  },
+  {
+   "id": "angle",
+   "type": "number",
+   "role": "layout",
+   "label": "Angle",
+   "default": 0,
+   "min": -180,
+   "max": 180
+  },
+  {
+   "id": "x",
+   "type": "number",
+   "role": "layout",
+   "label": "X",
+   "default": 0.375,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "y",
+   "type": "number",
+   "role": "layout",
+   "label": "Y",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "settle",
+   "type": "number",
+   "role": "motion",
+   "label": "Settle",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "hold",
+   "type": "number",
+   "role": "motion",
+   "label": "Hold",
+   "default": 12,
+   "min": 0,
+   "max": 90
+  },
+  {
+   "id": "erase",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Erase",
+   "default": true
+  },
+  {
+   "id": "delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Delay",
+   "default": 0,
+   "min": 0,
+   "max": 60
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

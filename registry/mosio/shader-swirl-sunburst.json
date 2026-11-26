@@ -1,0 +1,163 @@
+{
+ "name": "shader-swirl-sunburst",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/shader-swirl-sunburst/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Shader Swirl Sunburst\n\nRetro cream and orange bands sweeping in from above. A WebGL shader backdrop; the sunburst preset of shader-swirl.\n\nCategory: shaders. Length: 5.0 s. WebGL: yes.\n\nUse when:\n- A retro, sunny burst sweeping in behind a title.\n- The frame is light, so dark foreground text and UI stay readable on top.\n- You want a finished Swirl look without tuning the palette and parameters yourself.\n\nAvoid when:\n- The video must use your brand colors: start from `shader-swirl` and set `colors`.\n- You want a darker, contrasting mood from the same shader: use `shader-swirl-neon`.\n\nVariables:\n- colors (string): Colors, default \"#fff4d6, #ffc98b, #ff7a3d\"\n- color_back (color): Background, default \"#ff7a3d\"\n- speed (number, 0-8): Speed, default 1\n- band_count (number, 1-12): Bands, default 2\n- twist (number, 0-1): Twist, default 0.3\n- softness (number, 0-1): Softness, default 0.2\n- center (number, 0-1): Center, default 0.2\n- proportion (number, 0-1): Proportion, default 0.5\n- noise (number, 0-1): Noise, default 0\n- noise_frequency (number, 0-1): Noise frequency, default 0.4\n- rotation (number, 0-360): Rotation, default 0\n- scale (number, 0.1-4): Scale, default 1\n- offset_x (number, -2-2): Offset X, default 0\n- offset_y (number, -2-2): Offset Y, default 0.9\n- resolution (number, 0.25-1): Resolution, default 0.75\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Shader Swirl Sunburst\n\n  Retro cream and orange bands sweeping in from above\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/shader-swirl-sunburst/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n\n  The vertex and fragment shaders below are from Paper Shaders\n  (@paper-design/shaders 0.0.82, dist/vertex-shader.js and dist/shaders/swirl.js),\n  https://github.com/paper-design/shaders\n\n  Copyright 2026 Paper. Licensed under the Apache License, Version 2.0 (the \"License\");\n  you may not use this file except in compliance with the License. You may obtain a copy\n  of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by\n  applicable law or agreed to in writing, software distributed under the License is\n  distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either\n  express or implied. See the License for the specific language governing permissions\n  and limitations under the License.\n\n  NOTICE: Paper Shaders. Copyright 2026 Paper. Powered by Paper Shaders:\n  https://shaders.paper.design\n\n  Changes by usemosio/blocks: the shared GLSL helpers are inlined, the vertex shader keeps\n  only the outputs the fragment shader reads, and the shader mount is rewritten: the canvas\n  is drawn at a reduced resolution (the `resolution` variable) and its time comes from the timeline.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"shader-swirl-sunburst\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"colors\", \"type\": \"string\", \"role\": \"style\", \"label\": \"Colors\", \"description\": \"Up to 10 colors, comma separated, for the bands from the outside in.\", \"default\": \"#fff4d6, #ffc98b, #ff7a3d\"},\n    {\"id\": \"color_back\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Color behind and between the bands.\", \"default\": \"#ff7a3d\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"How fast the bands spin. 0 holds still.\", \"default\": 1, \"min\": 0, \"max\": 8, \"step\": 0.05},\n    {\"id\": \"band_count\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Bands\", \"description\": \"How many bands wind around the center.\", \"default\": 2, \"min\": 1, \"max\": 12, \"step\": 1},\n    {\"id\": \"twist\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Twist\", \"description\": \"How strongly the bands curl toward the center.\", \"default\": 0.3, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"softness\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Softness\", \"description\": \"How softly the bands blend. 0 gives hard edges.\", \"default\": 0.2, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"center\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Center\", \"description\": \"Size of the clear area around the center point.\", \"default\": 0.2, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"proportion\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Proportion\", \"description\": \"Balance between the first color and the rest.\", \"default\": 0.5, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"noise\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Noise\", \"description\": \"Amount of noise that roughens the bands.\", \"default\": 0, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"noise_frequency\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Noise frequency\", \"description\": \"How fine the noise is.\", \"default\": 0.4, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"rotation\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Rotation\", \"description\": \"Turns the whole pattern.\", \"default\": 0, \"min\": 0, \"max\": 360, \"step\": 1, \"unit\": \"deg\"},\n    {\"id\": \"scale\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Scale\", \"description\": \"Zooms the pattern in or out.\", \"default\": 1, \"min\": 0.1, \"max\": 4, \"step\": 0.01},\n    {\"id\": \"offset_x\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Offset X\", \"description\": \"Moves the pattern sideways, in frame widths.\", \"default\": 0, \"min\": -2, \"max\": 2, \"step\": 0.01},\n    {\"id\": \"offset_y\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Offset Y\", \"description\": \"Moves the pattern up or down, in frame heights.\", \"default\": 0.9, \"min\": -2, \"max\": 2, \"step\": 0.01},\n    {\"id\": \"resolution\", \"type\": \"number\", \"role\": \"quality\", \"label\": \"Resolution\", \"description\": \"Share of the frame size the shader is drawn at, then scaled up. Lower renders faster but softens fine detail.\", \"default\": 0.75, \"min\": 0.25, \"max\": 1, \"step\": 0.05}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Shader Swirl Sunburst</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          background: var(--sswsunburst-fallback, #12121a);\n          pointer-events: none;\n        }\n        .sswsunburst-stage {\n          position: absolute;\n          inset: 0;\n        }\n        .sswsunburst-canvas {\n          position: absolute;\n          inset: 0;\n          width: 100%;\n          height: 100%;\n          display: block;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"shader-swirl-sunburst\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"sswsunburst-clip\" class=\"sswsunburst-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <canvas id=\"sswsunburst-canvas\" class=\"sswsunburst-canvas\"></canvas>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var canvas = document.getElementById(\"sswsunburst-canvas\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function pick(value, fallback, options) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function parseColor(s) {\n              var m = /^#?([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.exec(String(s).trim());\n              if (!m) return null;\n              var h = m[1];\n              if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n              var a = h.length === 8 ? parseInt(h.slice(6, 8), 16) / 255 : 1;\n              return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255, a];\n            }\n            function color(value, fallback) {\n              return (typeof value === \"string\" && parseColor(value)) || parseColor(fallback);\n            }\n            function list(value, fallback, max) {\n              var parsed = String(typeof value === \"string\" && value.trim() ? value : fallback).split(\",\").map(parseColor).filter(Boolean).slice(0, max);\n              return parsed.length ? parsed : String(fallback).split(\",\").map(parseColor).slice(0, max);\n            }\n            function css(c) {\n              return \"rgba(\" + Math.round(c[0] * 255) + \",\" + Math.round(c[1] * 255) + \",\" + Math.round(c[2] * 255) + \",\" + c[3] + \")\";\n            }\n\n            var colors = list(vars.colors, \"#fff4d6, #ffc98b, #ff7a3d\", 10);\n            var colorBack = color(vars.color_back, \"#ff7a3d\");\n            var speed = num(vars.speed, 1, 0, 8);\n            var bandCount = Math.round(num(vars.band_count, 2, 1, 12));\n            var twist = num(vars.twist, 0.3, 0, 1);\n            var softness = num(vars.softness, 0.2, 0, 1);\n            var center = num(vars.center, 0.2, 0, 1);\n            var proportion = num(vars.proportion, 0.5, 0, 1);\n            var noise = num(vars.noise, 0, 0, 1);\n            var noiseFrequency = num(vars.noise_frequency, 0.4, 0, 1);\n            var rotation = num(vars.rotation, 0, 0, 360);\n            var scale = num(vars.scale, 1, 0.1, 4);\n            var offsetX = num(vars.offset_x, 0, -2, 2);\n            var offsetY = num(vars.offset_y, 0.9, -2, 2);\n            var resolution = num(vars.resolution, 0.75, 0.25, 1);\n\n            // Without WebGL the block still shows the palette as a plain gradient.\n            root.style.setProperty(\"--ssw-fallback\", \"radial-gradient(circle at 50% 50%, \" + colors.map(css).join(\", \") + \", \" + css(colorBack) + \")\");\n\n            // Paper Shaders vertex shader, object outputs only.\n            var VERTEX = [\n              \"#version 300 es\",\n              \"precision mediump float;\",\n              \"layout(location = 0) in vec4 a_position;\",\n              \"uniform vec2 u_resolution;\",\n              \"uniform float u_pixelRatio;\",\n              \"uniform float u_originX;\",\n              \"uniform float u_originY;\",\n              \"uniform float u_worldWidth;\",\n              \"uniform float u_worldHeight;\",\n              \"uniform float u_fit;\",\n              \"uniform float u_scale;\",\n              \"uniform float u_rotation;\",\n              \"uniform float u_offsetX;\",\n              \"uniform float u_offsetY;\",\n              \"out vec2 v_objectUV;\",\n              \"out vec2 v_objectBoxSize;\",\n              \"vec3 getBoxSize(float boxRatio, vec2 givenBoxSize) {\",\n              \"vec2 box = vec2(0.);\",\n              \"box.x = boxRatio * min(givenBoxSize.x / boxRatio, givenBoxSize.y);\",\n              \"float noFitBoxWidth = box.x;\",\n              \"if (u_fit == 1.) { // fit = contain\",\n              \"box.x = boxRatio * min(u_resolution.x / boxRatio, u_resolution.y);\",\n              \"} else if (u_fit == 2.) { // fit = cover\",\n              \"box.x = boxRatio * max(u_resolution.x / boxRatio, u_resolution.y);\",\n              \"}\",\n              \"box.y = box.x / boxRatio;\",\n              \"return vec3(box, noFitBoxWidth);\",\n              \"}\",\n              \"void main() {\",\n              \"gl_Position = a_position;\",\n              \"vec2 uv = gl_Position.xy * .5;\",\n              \"vec2 boxOrigin = vec2(.5 - u_originX, u_originY - .5);\",\n              \"vec2 givenBoxSize = vec2(u_worldWidth, u_worldHeight);\",\n              \"givenBoxSize = max(givenBoxSize, vec2(1.)) * u_pixelRatio;\",\n              \"float r = u_rotation * 3.14159265358979323846 / 180.;\",\n              \"mat2 graphicRotation = mat2(cos(r), sin(r), -sin(r), cos(r));\",\n              \"vec2 graphicOffset = vec2(-u_offsetX, u_offsetY);\",\n              \"float fixedRatio = 1.;\",\n              \"vec2 fixedRatioBoxGivenSize = vec2(\",\n              \"(u_worldWidth == 0.) ? u_resolution.x : givenBoxSize.x,\",\n              \"(u_worldHeight == 0.) ? u_resolution.y : givenBoxSize.y\",\n              \");\",\n              \"v_objectBoxSize = getBoxSize(fixedRatio, fixedRatioBoxGivenSize).xy;\",\n              \"vec2 objectWorldScale = u_resolution.xy / v_objectBoxSize;\",\n              \"v_objectUV = uv;\",\n              \"v_objectUV *= objectWorldScale;\",\n              \"v_objectUV += boxOrigin * (objectWorldScale - 1.);\",\n              \"v_objectUV += graphicOffset;\",\n              \"v_objectUV /= u_scale;\",\n              \"v_objectUV = graphicRotation * v_objectUV;\",\n              \"}\"\n            ].join(\"\\n\");\n\n            // Paper Shaders swirl fragment shader.\n            var FRAGMENT = [\n              \"#version 300 es\",\n              \"precision mediump float;\",\n              \"uniform float u_time;\",\n              \"uniform vec4 u_colorBack;\",\n              \"uniform vec4 u_colors[10];\",\n              \"uniform float u_colorsCount;\",\n              \"uniform float u_bandCount;\",\n              \"uniform float u_twist;\",\n              \"uniform float u_center;\",\n              \"uniform float u_proportion;\",\n              \"uniform float u_softness;\",\n              \"uniform float u_noise;\",\n              \"uniform float u_noiseFrequency;\",\n              \"in vec2 v_objectUV;\",\n              \"out vec4 fragColor;\",\n              \"#define TWO_PI 6.28318530718\",\n              \"#define PI 3.14159265358979323846\",\n              \"vec3 permute(vec3 x) { return mod(((x * 34.0) + 1.0) * x, 289.0); }\",\n              \"float snoise(vec2 v) {\",\n              \"  const vec4 C = vec4(0.211324865405187, 0.366025403784439,\",\n              \"    -0.577350269189626, 0.024390243902439);\",\n              \"  vec2 i = floor(v + dot(v, C.yy));\",\n              \"  vec2 x0 = v - i + dot(i, C.xx);\",\n              \"  vec2 i1;\",\n              \"  i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);\",\n              \"  vec4 x12 = x0.xyxy + C.xxzz;\",\n              \"  x12.xy -= i1;\",\n              \"  i = mod(i, 289.0);\",\n              \"  vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0))\",\n              \"    + i.x + vec3(0.0, i1.x, 1.0));\",\n              \"  vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy),\",\n              \"      dot(x12.zw, x12.zw)), 0.0);\",\n              \"  m = m * m;\",\n              \"  m = m * m;\",\n              \"  vec3 x = 2.0 * fract(p * C.www) - 1.0;\",\n              \"  vec3 h = abs(x) - 0.5;\",\n              \"  vec3 ox = floor(x + 0.5);\",\n              \"  vec3 a0 = x - ox;\",\n              \"  m *= 1.79284291400159 - 0.85373472095314 * (a0 * a0 + h * h);\",\n              \"  vec3 g;\",\n              \"  g.x = a0.x * x0.x + h.x * x0.y;\",\n              \"  g.yz = a0.yz * x12.xz + h.yz * x12.yw;\",\n              \"  return 130.0 * dot(m, g);\",\n              \"}\",\n              \"vec2 rotate(vec2 uv, float th) {\",\n              \"  return mat2(cos(th), sin(th), -sin(th), cos(th)) * uv;\",\n              \"}\",\n              \"void main() {\",\n              \"  vec2 shape_uv = v_objectUV;\",\n              \"  float l = length(shape_uv);\",\n              \"  l = max(1e-4, l);\",\n              \"  float t = u_time;\",\n              \"  float angle = ceil(u_bandCount) * atan(shape_uv.y, shape_uv.x) + t;\",\n              \"  float angle_norm = angle / TWO_PI;\",\n              \"  float twist = 3. * clamp(u_twist, 0., 1.);\",\n              \"  float offset = pow(l, -twist) + angle_norm;\",\n              \"  float shape = fract(offset);\",\n              \"  shape = 1. - abs(2. * shape - 1.);\",\n              \"  if (u_noise > 0.) {\",\n              \"    shape += u_noise * snoise(15. * pow(u_noiseFrequency, 2.) * shape_uv);\",\n              \"  }\",\n              \"  float mid = smoothstep(.2, .2 + .8 * u_center, pow(l, twist));\",\n              \"  shape = mix(0., shape, mid);\",\n              \"  float proportion = clamp(u_proportion, 0., 1.);\",\n              \"  float exponent = mix(.25, 1., proportion * 2.);\",\n              \"  exponent = mix(exponent, 10., max(0., proportion * 2. - 1.));\",\n              \"  shape = pow(shape, exponent);\",\n              \"  float mixer = shape * u_colorsCount;\",\n              \"  vec4 gradient = u_colors[0];\",\n              \"  gradient.rgb *= gradient.a;\",\n              \"  float outerShape = 0.;\",\n              \"  for (int i = 1; i < 11; i++) {\",\n              \"    if (i > int(u_colorsCount)) break;\",\n              \"    float m = clamp(mixer - float(i - 1), 0., 1.);\",\n              \"    float aa = fwidth(m);\",\n              \"    m = smoothstep(.5 - .5 * u_softness - aa, .5 + .5 * u_softness + aa, m);\",\n              \"    if (i == 1) {\",\n              \"      outerShape = m;\",\n              \"    }\",\n              \"    vec4 c = u_colors[i - 1];\",\n              \"    c.rgb *= c.a;\",\n              \"    gradient = mix(gradient, c, m);\",\n              \"  }\",\n              \"  float midAA = .1 * fwidth(pow(l, -twist));\",\n              \"  float outerMid = smoothstep(.2, .2 + midAA, pow(l, twist));\",\n              \"  outerShape = mix(0., outerShape, outerMid);\",\n              \"  vec3 color = gradient.rgb * outerShape;\",\n              \"  float opacity = gradient.a * outerShape;\",\n              \"  vec3 bgColor = u_colorBack.rgb * u_colorBack.a;\",\n              \"  color = color + bgColor * (1.0 - opacity);\",\n              \"  opacity = opacity + u_colorBack.a * (1.0 - opacity);\",\n              \"  color += 1. / 256. * (fract(sin(dot(.014 * gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453123) - .5);\",\n              \"  fragColor = vec4(color, opacity);\",\n              \"}\"\n            ].join(\"\\n\");\n\n            // The canvas is drawn at `resolution` × the frame size and stretched to fill it.\n            var frameWidth = Math.max(2, root.clientWidth);\n            var frameHeight = Math.max(2, root.clientHeight);\n            var width = Math.max(2, Math.round(frameWidth * resolution));\n            var height = Math.max(2, Math.round(frameHeight * resolution));\n            canvas.width = width;\n            canvas.height = height;\n            var gl = canvas.getContext(\"webgl2\", { antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true });\n\n            function compile(type, source) {\n              var s = gl.createShader(type);\n              gl.shaderSource(s, source);\n              gl.compileShader(s);\n              if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) || \"shader compile failed\");\n              return s;\n            }\n            var draw = function () {};\n            try {\n              if (!gl) throw new Error(\"WebGL2 is not available\");\n              var program = gl.createProgram();\n              gl.attachShader(program, compile(gl.VERTEX_SHADER, VERTEX));\n              gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAGMENT));\n              gl.linkProgram(program);\n              if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program) || \"link failed\");\n              gl.useProgram(program);\n              var buffer = gl.createBuffer();\n              gl.bindBuffer(gl.ARRAY_BUFFER, buffer);\n              gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);\n              gl.enableVertexAttribArray(0);\n              gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);\n              gl.viewport(0, 0, width, height);\n              function u(name) { return gl.getUniformLocation(program, name); }\n              // Paper sizes the pattern in its own pixels, which are half a frame pixel (it draws at\n              // a pixel ratio of at least 2), so `resolution` changes how finely it is sampled, not\n              // how large it is.\n              gl.uniform2f(u(\"u_resolution\"), frameWidth * 2, frameHeight * 2);\n              gl.uniform1f(u(\"u_pixelRatio\"), 2);\n              gl.uniform1f(u(\"u_originX\"), 0.5);\n              gl.uniform1f(u(\"u_originY\"), 0.5);\n              gl.uniform1f(u(\"u_worldWidth\"), 0);\n              gl.uniform1f(u(\"u_worldHeight\"), 0);\n              gl.uniform1f(u(\"u_fit\"), 2); // cover, as remocn sets it\n              gl.uniform1f(u(\"u_scale\"), scale);\n              gl.uniform1f(u(\"u_rotation\"), rotation);\n              gl.uniform1f(u(\"u_offsetX\"), offsetX);\n              gl.uniform1f(u(\"u_offsetY\"), offsetY);\n              var flat = new Float32Array(10 * 4);\n              colors.forEach(function (c, i) { flat.set(c, i * 4); });\n              gl.uniform4fv(u(\"u_colors\"), flat);\n              gl.uniform1f(u(\"u_colorsCount\"), colors.length);\n              gl.uniform4fv(u(\"u_colorBack\"), colorBack);\n              gl.uniform1f(u(\"u_bandCount\"), bandCount);\n              gl.uniform1f(u(\"u_twist\"), twist);\n              gl.uniform1f(u(\"u_center\"), center);\n              gl.uniform1f(u(\"u_proportion\"), proportion);\n              gl.uniform1f(u(\"u_softness\"), softness);\n              gl.uniform1f(u(\"u_noise\"), noise);\n              gl.uniform1f(u(\"u_noiseFrequency\"), noiseFrequency);\n              var timeLoc = u(\"u_time\");\n              draw = function (frame) {\n                // remocn: frame = (frame / fps) * speed * 1000 ms; Paper's u_time is that in seconds.\n                gl.uniform1f(timeLoc, (frame / 30) * speed);\n                gl.clearColor(0, 0, 0, 0);\n                gl.clear(gl.COLOR_BUFFER_BIT);\n                gl.drawArrays(gl.TRIANGLES, 0, 6);\n              };\n            } catch (err) {\n              canvas.style.display = \"none\";\n              if (window.console) console.warn(\"shader-swirl-sunburst:\", err.message);\n            }\n\n            var total = parseFloat(root.dataset.duration || \"5\");\n            var totalFrames = Math.round(total * 30);\n            var clock = { frame: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, {\n              frame: totalFrames,\n              duration: total,\n              ease: \"none\",\n              onUpdate: function () { draw(clock.frame); }\n            }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"shader-swirl-sunburst\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "af6136cd35db37a8843e6a51afd2da186b3baca35c5078995b9bbb24f567871c",
+ "duration": 5.0,
+ "webgl": true,
+ "demo_background": "#ff7a3d",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "colors",
+   "type": "string",
+   "role": "style",
+   "label": "Colors",
+   "default": "#fff4d6, #ffc98b, #ff7a3d"
+  },
+  {
+   "id": "color_back",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ff7a3d"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0,
+   "max": 8
+  },
+  {
+   "id": "band_count",
+   "type": "number",
+   "role": "style",
+   "label": "Bands",
+   "default": 2,
+   "min": 1,
+   "max": 12
+  },
+  {
+   "id": "twist",
+   "type": "number",
+   "role": "style",
+   "label": "Twist",
+   "default": 0.3,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "softness",
+   "type": "number",
+   "role": "style",
+   "label": "Softness",
+   "default": 0.2,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "center",
+   "type": "number",
+   "role": "style",
+   "label": "Center",
+   "default": 0.2,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "proportion",
+   "type": "number",
+   "role": "style",
+   "label": "Proportion",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "noise",
+   "type": "number",
+   "role": "style",
+   "label": "Noise",
+   "default": 0,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "noise_frequency",
+   "type": "number",
+   "role": "style",
+   "label": "Noise frequency",
+   "default": 0.4,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "rotation",
+   "type": "number",
+   "role": "style",
+   "label": "Rotation",
+   "default": 0,
+   "min": 0,
+   "max": 360
+  },
+  {
+   "id": "scale",
+   "type": "number",
+   "role": "style",
+   "label": "Scale",
+   "default": 1,
+   "min": 0.1,
+   "max": 4
+  },
+  {
+   "id": "offset_x",
+   "type": "number",
+   "role": "style",
+   "label": "Offset X",
+   "default": 0,
+   "min": -2,
+   "max": 2
+  },
+  {
+   "id": "offset_y",
+   "type": "number",
+   "role": "style",
+   "label": "Offset Y",
+   "default": 0.9,
+   "min": -2,
+   "max": 2
+  },
+  {
+   "id": "resolution",
+   "type": "number",
+   "role": "quality",
+   "label": "Resolution",
+   "default": 0.75,
+   "min": 0.25,
+   "max": 1
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

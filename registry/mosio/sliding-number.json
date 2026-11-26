@@ -1,0 +1,93 @@
+{
+ "name": "sliding-number",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "ibelick",
+ "source": {
+  "repo": "https://github.com/ibelick/motion-primitives",
+  "path": "components/core/sliding-number.tsx",
+  "commit": "120f64f6ca60348e251f929e9c81f11ccbe45eda"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Sliding Number\n\nA number whose digits each slide on their own spring reel to the next value in a list, shortest way round, with places appearing and disappearing as the length changes.\n\nCategory: typography. Length: 4.5 s. WebGL: no.\n\nUse when:\n- A figure (price, count, score) changes value on screen and each digit should visibly slide to its new place.\n- Values of different lengths follow one another and the number should grow or shrink gracefully.\n\nAvoid when:\n- A smooth run-up from zero to a target: use number-wheel or rolling-number.\n- Characters other than digits are changing: use slot-machine-roll.\n\nVariables:\n- values (string): Values, default \"0, 128, 2049, 37\"\n- start (number, 0-5): First change, default 0.5\n- hold (number, 0.5-5): Time between changes, default 1.1\n- pad_start (boolean): Pad to two digits, default false\n- font_size (number, 12-240): Font size, default 180\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"600\"\n\nSource: https://github.com/ibelick/motion-primitives. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Sliding Number\n\n  A number whose digits each slide on their own spring reel to the next value in a list, shortest way round, with places appearing and disappearing as the length changes.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/ibelick/motion-primitives/blob/120f64f6ca60348e251f929e9c81f11ccbe45eda/components/core/sliding-number.tsx\n\n  MIT License\n\n  Copyright (c) 2024 ibelick\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n  app/page.tsx\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"sliding-number\"\n  data-composition-duration=\"4.5\"\n  data-composition-variables='[\n    {\"id\": \"values\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Values\", \"description\": \"Whole numbers separated by commas; the number slides from one to the next.\", \"default\": \"0, 128, 2049, 37\"},\n    {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"First change\", \"description\": \"Seconds before the first change.\", \"default\": 0.5, \"min\": 0, \"max\": 5, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"hold\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Time between changes\", \"description\": \"Seconds from one change to the next.\", \"default\": 1.1, \"min\": 0.5, \"max\": 5, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"pad_start\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Pad to two digits\", \"description\": \"Show single digits as 01, 02 and so on.\", \"default\": false},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 180, \"min\": 12, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Sliding Number</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, \"Geist\", system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .snn-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .snn-line { display: flex; align-items: center; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; white-space: nowrap; }\n        .snn-col { position: relative; display: inline-block; width: 1ch; height: 1em; overflow-x: visible; overflow-y: clip; }\n        .snn-n { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"sliding-number\" data-duration=\"4.5\" data-fps=\"30\">\n        <div id=\"snn-clip\" class=\"snn-stage clip\" data-start=\"0\" data-duration=\"4.5\" data-track-index=\"0\">\n          <div id=\"snn-line\" class=\"snn-line\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function pick(v, l, f) { return l.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { if (typeof v === \"boolean\") return v; if (v === \"true\") return true; if (v === \"false\") return false; return f; }\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            gsap.registerPlugin(CustomEase);\n            var total = parseFloat(root.dataset.duration || \"4.5\");\n            // Motion tweens with no easing named run easeInOut.\n            var EIO = CustomEase.create(\"snn-eio\", \"M0,0 C0.42,0 0.58,1 1,1\");\n            // Unit step response of a damped spring (semi-implicit Euler at 480 Hz), sampled once.\n            function springTable(k, c, m, dur) {\n              var dt = 1 / 480, x = 0, v = 0, out = [0];\n              for (var t = 0; t < dur; t += dt) { v += ((-k * (x - 1) - c * v) / m) * dt; x += v * dt; out.push(x); }\n              return out;\n            }\n            function springAt(tab, tau) {\n              if (tau <= 0) return 0;\n              var i = tau * 480; if (i >= tab.length - 1) return tab[tab.length - 1];\n              var j = Math.floor(i); return tab[j] + (tab[j + 1] - tab[j]) * (i - j);\n            }\n            var clock = { t: 0 };\n            function finish(tl, draw) {\n              if (draw) { tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0); draw(0); }\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"sliding-number\"] = tl;\n            }\n\n\n            var line = document.getElementById(\"snn-line\");\n            var padStart = bool(vars.pad_start, false);\n            var values = str(vars.values, \"0, 128, 2049, 37\").split(/[\\s,;]+/).map(Number).filter(function (n) { return Number.isFinite(n); }).map(function (n) { return Math.floor(Math.abs(n)); });\n            if (!values.length) values = [0, 128, 2049, 37];\n            var start = num(vars.start, 0.5, 0, 5), hold = num(vars.hold, 1.1, 0.5, 5);\n            function len(v) { return padStart && v < 10 ? 2 : String(v).length; }\n            function digit(v, p) { return Math.floor(v / Math.pow(10, p)) % 10; }\n            var maxLen = Math.max.apply(null, values.map(len));\n            line.setAttribute(\"aria-label\", values.join(\", \"));\n            line.style.fontSize = num(vars.font_size, 180, 12, 240) + \"px\";\n            line.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\", \"800\"], \"600\");\n            var cols = [];\n            for (var p = maxLen - 1; p >= 0; p--) {\n              var col = document.createElement(\"div\"); col.className = \"snn-col\"; col.id = \"snn-col-\" + p;\n              var ghost = document.createElement(\"div\"); ghost.style.visibility = \"hidden\"; ghost.textContent = \"0\"; col.appendChild(ghost);\n              var ns = [];\n              for (var n = 0; n < 10; n++) { var s = document.createElement(\"span\"); s.className = \"snn-n\"; s.textContent = String(n); col.appendChild(s); ns.push(s); }\n              line.appendChild(col); cols[p] = { el: col, ns: ns };\n            }\n            // Motion spring: stiffness 280, damping 18, mass 0.3.\n            var tab = springTable(280, 18, 0.3, 1.5);\n            function draw(t) {\n              for (var p = 0; p < maxLen; p++) {\n                var prevD = digit(values[0], p), prevV = len(values[0]) > p ? 1 : 0, cur = prevD, w = prevV;\n                for (var k = 1; k < values.length; k++) {\n                  var tau = t - (start + (k - 1) * hold);\n                  if (tau < 0) break;\n                  var d = digit(values[k], p), nv = len(values[k]) > p ? 1 : 0, s = springAt(tab, tau);\n                  cur = prevD + (d - prevD) * s;\n                  w = prevV + (nv - prevV) * Math.min(1, Math.max(0, s));\n                  prevD = d; prevV = nv;\n                }\n                var c = cols[p];\n                c.el.style.width = w + \"ch\"; c.el.style.opacity = String(w);\n                var pv = cur % 10;\n                for (var n = 0; n < 10; n++) {\n                  var off = (10 + n - pv) % 10, memo = off;\n                  if (off > 5) memo -= 10;\n                  c.ns[n].style.transform = \"translateY(\" + (memo * 100) + \"%)\";\n                }\n              }\n            }\n            finish(gsap.timeline({ paused: true }), draw);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "13d5897c32beb4a049725d7b44edc849d7c371542f12a1e03dea04c08ffa352e",
+ "duration": 4.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "values": "0, 128, 2049, 37",
+  "font_size": 260
+ },
+ "variables": [
+  {
+   "id": "values",
+   "type": "string",
+   "role": "content",
+   "label": "Values",
+   "default": "0, 128, 2049, 37"
+  },
+  {
+   "id": "start",
+   "type": "number",
+   "role": "motion",
+   "label": "First change",
+   "default": 0.5,
+   "min": 0,
+   "max": 5
+  },
+  {
+   "id": "hold",
+   "type": "number",
+   "role": "motion",
+   "label": "Time between changes",
+   "default": 1.1,
+   "min": 0.5,
+   "max": 5
+  },
+  {
+   "id": "pad_start",
+   "type": "boolean",
+   "role": "style",
+   "label": "Pad to two digits",
+   "default": false
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 180,
+   "min": 12,
+   "max": 240
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://motion-primitives.com"
+}

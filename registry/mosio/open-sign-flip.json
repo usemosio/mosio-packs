@@ -1,0 +1,116 @@
+{
+ "name": "open-sign-flip",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "card flip and a damped pendulum swing: a hanging object changing state"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Open Sign Flip\n\nA shop sign hangs from two cords and swings in, then flips from \"TUTUP\" to \"BUKA\" and settles with a little sway. The opening hours slide up below it. Shop, both words and the hours are variables.\n\nCategory: commerce. Length: 5 s. WebGL: no.\n\nUse when:\n- Announcing a shop is open, newly opened or open on new hours.\n- A grand opening or a \"buka lagi\" after a break.\n\nAvoid when:\n- A store address or map: use store-location-pin.\n- A countdown to the opening: use event-countdown-clock.\n\nVariables:\n- shop (string): Shop name, default \"Kopi Senja\"\n- closed (string): Closed word, default \"TUTUP\"\n- open (string): Open word, default \"BUKA\"\n- days (string): Days, default \"Setiap hari\"\n- hours (string): Opening hours, default \"08.00 \\u2013 21.00\"\n- flip_at (number, 1-3.5): Flip time, default 1.9\n- bg_color (color): Background, default \"#ffffff\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- main_color (color): Accent, default \"#2563eb\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Open Sign Flip\n\n  A shop sign hangs from two cords and swings in, then flips from \"TUTUP\" to \"BUKA\" and settles with a little sway. The opening hours slide up below it. Shop, both words and the hours are variables.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"open-sign-flip\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n  {\n    \"id\": \"shop\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Shop name\",\n    \"description\": \"Small line at the top of the sign.\",\n    \"default\": \"Kopi Senja\"\n  },\n  {\n    \"id\": \"closed\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Closed word\",\n    \"description\": \"Word on the front of the sign.\",\n    \"default\": \"TUTUP\"\n  },\n  {\n    \"id\": \"open\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Open word\",\n    \"description\": \"Word on the back of the sign, shown after the flip.\",\n    \"default\": \"BUKA\"\n  },\n  {\n    \"id\": \"days\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Days\",\n    \"description\": \"Small line above the hours. Leave empty to hide it.\",\n    \"default\": \"Setiap hari\"\n  },\n  {\n    \"id\": \"hours\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Opening hours\",\n    \"description\": \"Hours shown under the sign.\",\n    \"default\": \"08.00 – 21.00\"\n  },\n  {\n    \"id\": \"flip_at\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Flip time\",\n    \"description\": \"Second the sign flips.\",\n    \"default\": 1.9,\n    \"min\": 1,\n    \"max\": 3.5,\n    \"step\": 0.1\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Main text and outlines.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Secondary text and hairlines.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent\",\n    \"description\": \"The open side of the sign: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Font family name. Geist is loaded by default; another family must be loaded by the host.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Open Sign Flip</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          color: var(--os-text); font-family: var(--FAM, Geist), system-ui, sans-serif; background: var(--os-bg);\n        }\n        #root * { box-sizing: border-box; }\n        .os-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        .os-wrap { position: absolute; left: 50%; top: 50%; transform-origin: 50% 50%; }\n        .os-rail { position: absolute; left: 0; right: 0; top: 0; height: calc(var(--u) * 14); border-radius: calc(var(--u) * 7); background: var(--os-text); }\n        .os-swing { position: absolute; left: 0; top: calc(var(--u) * 7); width: 100%; transform-origin: 50% 0%; }\n        .os-cords { position: absolute; left: 0; top: 0; width: 100%; overflow: visible; }\n        .os-persp { position: absolute; left: 50%; top: calc(var(--u) * 200); width: calc(var(--u) * 760); height: calc(var(--u) * 340); margin-left: calc(var(--u) * -380); perspective: 1600px; }\n        .os-flip { position: absolute; inset: 0; transform-style: preserve-3d; }\n        .os-face { position: absolute; inset: 0; border-radius: calc(var(--u) * 40); backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; box-shadow: 0 calc(var(--u) * 14) calc(var(--u) * 28) rgba(0,0,0,0.16); }\n        .os-front { background: var(--os-text); }\n        .os-back { background: var(--os-main); transform: rotateY(180deg); }\n        .os-face::before, .os-face::after { content: \"\"; position: absolute; top: calc(var(--u) * 26); width: calc(var(--u) * 16); height: calc(var(--u) * 16); border-radius: 50%; background: rgba(255,255,255,0.85); }\n        .os-face::before { left: calc(var(--u) * 26); } .os-face::after { right: calc(var(--u) * 26); }\n        .os-shop { font-size: calc(var(--u) * 34); font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; margin-bottom: calc(var(--u) * 10); }\n        .os-word { font-size: calc(var(--u) * 190); font-weight: 700; letter-spacing: -0.04em; line-height: 1; white-space: nowrap; }\n        .os-hours { position: absolute; left: 0; right: 0; top: calc(var(--u) * 640); text-align: center; }\n        .os-mask { display: block; overflow: hidden; padding-bottom: calc(var(--u) * 10); }\n        .os-days { display: inline-block; font-size: calc(var(--u) * 40); font-weight: 500; color: var(--os-muted); }\n        .os-time { display: inline-block; font-size: calc(var(--u) * 100); font-weight: 700; letter-spacing: -0.045em; line-height: 1.1; font-variant-numeric: tabular-nums; white-space: nowrap; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"open-sign-flip\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"os-clip\" class=\"os-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n\n          <div class=\"os-wrap\" id=\"os-wrap\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function svg(tag, attrs, parent) { var e = document.createElementNS(\"http://www.w3.org/2000/svg\", tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function rp(n) { return \"Rp\" + dots(n); }\n            function money(s) { var d = String(s).replace(/[^\\d]/g, \"\"); return d ? parseInt(d, 10) : 0; }\n            function list(s, d) { var a = String(str(s, d)).split(\";\").map(function (x) { return x.trim(); }).filter(Boolean); return a.length ? a : String(d).split(\";\").map(function (x) { return x.trim(); }); }\n            function mulberry(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function setColors(p, c) { for (var k in c) root.style.setProperty(\"--\" + p + \"-\" + k, colr(vars[k + \"_color\"], c[k])); }\n            var fam = str(vars.font_family, \"Geist\");\n            root.style.setProperty(\"--FAM\", /^[\\w\\s-]+$/.test(fam) ? '\"' + fam + '\"' : \"Geist\");\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n            setColors(\"os\", { bg: \"#ffffff\", text: \"#0a0a0a\", muted: \"#737373\", main: \"#2563eb\" });\n\n\n            var u = U, wrap = document.getElementById(\"os-wrap\");\n            var shop = str(vars.shop, \"Kopi Senja\"), closed = str(vars.closed, \"TUTUP\"), open = str(vars.open, \"BUKA\");\n            var days = typeof vars.days === \"string\" ? vars.days.trim() : \"Setiap hari\", hours = str(vars.hours, \"08.00 – 21.00\");\n            var flipAt = num(vars.flip_at, 1.9, 1, 3.5);\n            var gw = 900 * u, gh = 640 * u + 100 * u + (days ? 70 * u : 0) + 30 * u;\n            wrap.style.width = gw + \"px\"; wrap.style.height = gh + \"px\";\n            var S = Math.min(1.25, (H * 0.88) / gh, (W * 0.94) / gw);\n            gsap.set(wrap, { xPercent: -50, yPercent: -50, scale: S });\n            el(\"div\", \"os-rail\", wrap);\n            var swing = el(\"div\", \"os-swing\", wrap); swing.style.height = 560 * u + \"px\";\n            var cs = svg(\"svg\", { width: gw, height: 220 * u, viewBox: \"0 0 \" + gw + \" \" + 220 * u, class: \"os-cords\" }, swing);\n            var cx = gw / 2, tcol = colr(vars.text_color, \"#0a0a0a\");\n            [-1, 1].forEach(function (s) { svg(\"line\", { x1: cx, y1: 0, x2: cx + s * 354 * u, y2: 193 * u + 34 * u, stroke: tcol, \"stroke-width\": 5 * u, \"stroke-linecap\": \"round\" }, cs); });\n            svg(\"circle\", { cx: cx, cy: 4 * u, r: 13 * u, fill: tcol }, cs);\n            var persp = el(\"div\", \"os-persp\", swing);\n            persp.style.top = 193 * u + \"px\";\n            var flip = el(\"div\", \"os-flip\", persp);\n            function face(cls, word) {\n              var f = el(\"div\", \"os-face \" + cls, flip);\n              el(\"div\", \"os-shop\", f).textContent = shop;\n              var w = el(\"div\", \"os-word\", f); w.textContent = word;\n              var avail = 760 * u - 90 * u;\n              if (w.offsetWidth > avail) w.style.fontSize = parseFloat(getComputedStyle(w).fontSize) * avail / w.offsetWidth + \"px\";\n              return f;\n            }\n            face(\"os-front\", closed); face(\"os-back\", open);\n            var hb = el(\"div\", \"os-hours\", wrap), dm, tm;\n            if (days) { dm = el(\"span\", \"os-mask\", hb); el(\"span\", \"os-days\", dm).textContent = days; }\n            var tmask = el(\"span\", \"os-mask\", hb); var tspan = el(\"span\", \"os-time\", tmask); tspan.textContent = hours;\n            if (tspan.offsetWidth > gw - 40 * u) tspan.style.fontSize = parseFloat(getComputedStyle(tspan).fontSize) * (gw - 40 * u) / tspan.offsetWidth + \"px\";\n            var swingEl = swing;\n            swingEl.style.transformOrigin = \"50% 0px\";\n\n            // Damped swing about the hook: a function of time only.\n            function angle(t) {\n              var a = 0;\n              if (t >= 0) a += 22 * Math.exp(-2.1 * t) * Math.cos(2 * Math.PI * 0.85 * t);\n              var t2 = t - (flipAt + 0.35);\n              if (t2 >= 0) a += 3.6 * Math.exp(-2.4 * t2) * Math.sin(2 * Math.PI * 0.95 * t2);\n              return a;\n            }\n            var clock = { t: 0 }, T0 = 0.1;\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(clock, { t: 0 }, { t: 4.5, duration: 4.5, ease: \"none\", onUpdate: function () { gsap.set(swingEl, { rotation: angle(clock.t) }); } }, T0);\n            tl.fromTo(wrap.querySelector(\".os-rail\"), { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: \"power3.out\" }, 0.05);\n            tl.fromTo(swingEl, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: \"none\" }, T0);\n            tl.fromTo(flip, { rotationY: 0, scale: 1 }, { rotationY: 180, duration: 0.8, ease: \"power3.inOut\" }, flipAt);\n            tl.fromTo(persp, { y: 0 }, { y: -16 * u, duration: 0.4, ease: \"power2.out\", yoyo: true, repeat: 1 }, flipAt);\n            var hs = flipAt + 0.75;\n            var masks = [tspan]; if (dm) masks.unshift(dm.firstChild);\n            tl.fromTo(masks, { yPercent: 115 }, { yPercent: 0, duration: 0.6, ease: \"expo.out\", stagger: 0.12 }, hs);\n            tl.set(masks, { yPercent: 115 }, 0);\n\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"open-sign-flip\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "c010ee440320a75150e0ca84732ce61be59f42cc63dc8c8638830dfa8545e5b5",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "shop",
+   "type": "string",
+   "role": "content",
+   "label": "Shop name",
+   "default": "Kopi Senja"
+  },
+  {
+   "id": "closed",
+   "type": "string",
+   "role": "content",
+   "label": "Closed word",
+   "default": "TUTUP"
+  },
+  {
+   "id": "open",
+   "type": "string",
+   "role": "content",
+   "label": "Open word",
+   "default": "BUKA"
+  },
+  {
+   "id": "days",
+   "type": "string",
+   "role": "content",
+   "label": "Days",
+   "default": "Setiap hari"
+  },
+  {
+   "id": "hours",
+   "type": "string",
+   "role": "content",
+   "label": "Opening hours",
+   "default": "08.00 – 21.00"
+  },
+  {
+   "id": "flip_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Flip time",
+   "default": 1.9,
+   "min": 1,
+   "max": 3.5
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2563eb"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

@@ -1,0 +1,92 @@
+{
+ "name": "jitter-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Animata",
+ "source": {
+  "repo": "https://github.com/codse/animata",
+  "path": "animata/text/jitter-text.tsx",
+  "commit": "25c27e5a874c60a56dcc1609df3b2c4f5f8456f8"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Jitter Text\n\nA line of text trembles in tiny steps of position and tilt, settles, rests, then trembles back.\n\nCategory: typography. Length: 4.4 s. WebGL: no.\n\nUse when:\n- A word should feel nervous, electric or on edge without moving away from its place.\n- A subtle always-alive texture is wanted on a title.\n\nAvoid when:\n- The text must read as calm or premium.\n- A heavy impact is wanted: use impact-shake.\n\nVariables:\n- text (string): Text, default \"Jitter Text\"\n- font_size (number, 12-260): Font size, default 72\n- intensity (number, 0-6): Intensity, default 1\n- duration (number, 0.2-2): Tremble duration, default 0.6\n- pause (number, 0-3): Pause, default 0.5\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"900\"\n\nSource: https://github.com/codse/animata. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Jitter Text\n\n  A line of text trembles in tiny steps of position and tilt, settles, rests, then trembles back.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/codse/animata/blob/25c27e5a874c60a56dcc1609df3b2c4f5f8456f8/animata/text/jitter-text.tsx\n\n  MIT License\n\n  Copyright (c) Animata\n\n  Permission is hereby granted, free of charge, to any person obtaining\n  a copy of this software and associated documentation files (the\n  \"Software\"), to deal in the Software without restriction, including\n  without limitation the rights to use, copy, modify, merge, publish,\n  distribute, sublicense, and/or sell copies of the Software, and to\n  permit persons to whom the Software is furnished to do so, subject to\n  the following conditions:\n\n  The above copyright notice and this permission notice shall be\n  included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"jitter-text\"\n  data-composition-duration=\"4.4\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Text that trembles.\", \"default\": \"Jitter Text\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 72, \"min\": 12, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"intensity\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Intensity\", \"description\": \"Multiplier for the size of the tremble (1 is the original, which is small).\", \"default\": 1, \"min\": 0, \"max\": 6, \"step\": 0.1},\n    {\"id\": \"duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Tremble duration\", \"description\": \"Seconds of one tremble.\", \"default\": 0.6, \"min\": 0.2, \"max\": 2, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"pause\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Pause\", \"description\": \"Seconds of rest between trembles.\", \"default\": 0.5, \"min\": 0, \"max\": 3, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"900\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"900\", \"label\": \"Black\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Jitter Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .jt-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .jt-text { display: inline-block; white-space: pre; line-height: 1.1; letter-spacing: -0.02em; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"jitter-text\" data-duration=\"4.4\" data-fps=\"30\">\n        <div id=\"jt-clip\" class=\"jt-stage clip\" data-start=\"0\" data-duration=\"4.4\" data-track-index=\"0\">\n          <span id=\"jt-text\" class=\"jt-text\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        \n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function opt(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : v === \"true\" ? true : v === \"false\" ? false : f; }\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > max) { size = Math.max(12, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            \n            var el = document.getElementById(\"jt-text\");\n            var text = str(vars.text, \"Jitter Text\");\n            var d = num(vars.duration, 0.6, 0.2, 2);\n            var pause = num(vars.pause, 0.5, 0, 3);\n            var intensity = num(vars.intensity, 1, 0, 6);\n            root.style.color = col(vars.color, \"#171717\");\n            root.style.fontWeight = opt(vars.font_weight, [\"300\",\"400\",\"500\",\"600\",\"700\",\"900\"], \"900\");\n            el.textContent = text;\n            var size = fit(el, num(vars.font_size, 72, 12, 260), 0.9);\n            // The original is tuned for 60 px text: offsets are in px at that size.\n            var k = (size / 60) * intensity;\n            var X = [0, -1, 1.5, -1.5, 1, -1, 0.5, 0], Y = [1.5, 1, -1, 1.5, -1.5, 1, -0.5, 0], R = [0.5, -1.5, 1, -1.5, 1, -1, 1, 0];\n            function kf(a, p) {\n              var pos = p * (a.length - 1), i = Math.min(a.length - 2, Math.floor(pos)), u = pos - i;\n              u = u * u * (3 - 2 * u);\n              return a[i] + (a[i + 1] - a[i]) * u;\n            }\n            function draw(t) {\n              var period = 2 * (d + pause), m = t % period, p;\n              if (m < d) p = m / d; else if (m < d + pause) p = 1; else if (m < 2 * d + pause) p = 1 - (m - d - pause) / d; else p = 0;\n              el.style.transform = \"translate(\" + kf(X, p) * k + \"px,\" + kf(Y, p) * k + \"px) rotate(\" + kf(R, p) * Math.min(3, intensity) + \"deg)\";\n            }\n            var clock = { t: 0 };\n            var total0 = parseFloat(root.dataset.duration || \"4.4\");\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, { t: total0, duration: total0, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            var total = parseFloat(root.dataset.duration || \"4.4\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"jitter-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "1253e267788f82170774b5d5da352021948c3592a4ea0369e4ba223f729dc118",
+ "duration": 4.4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 150,
+  "intensity": 2.5
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Jitter Text"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 12,
+   "max": 260
+  },
+  {
+   "id": "intensity",
+   "type": "number",
+   "role": "motion",
+   "label": "Intensity",
+   "default": 1,
+   "min": 0,
+   "max": 6
+  },
+  {
+   "id": "duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Tremble duration",
+   "default": 0.6,
+   "min": 0.2,
+   "max": 2
+  },
+  {
+   "id": "pause",
+   "type": "number",
+   "role": "motion",
+   "label": "Pause",
+   "default": 0.5,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "900"
+  }
+ ],
+ "author_url": "https://animata.design"
+}

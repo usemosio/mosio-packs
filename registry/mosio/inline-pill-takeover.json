@@ -1,0 +1,194 @@
+{
+ "name": "inline-pill-takeover",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/inline-pill-takeover/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Inline Pill Takeover\n\nA clipped pill expands inside a sentence, pushes the words apart, and takes over the frame.\n\nCategory: typography. Length: 1.5 s. WebGL: no.\n\nUse when:\n- A sentence should turn an inline placeholder into a CTA without cutting to a separate title card.\n- The inserted label should push the surrounding copy apart before taking visual control.\n\nAvoid when:\n- Only one phrase should change color without affecting layout: use inline-highlight.\n- The inserted copy should replace text rather than displace it: use caret-swap.\n\nVariables:\n- before (string): Before, default \"powering 20%\"\n- insert (string): Pill text, default \"Start building\"\n- after (string): After, default \"of the Internet.\"\n- font_size (number, 24-120): Font size, default 52\n- color (color): Color, default \"#fff3df\"\n- font_weight (enum): Font weight, default \"400\"\n- pill_width (number, 100-600): Pill width, default 260\n- pill_color (color): Pill color, default \"#fffaf0\"\n- pill_text_color (color): Pill text color, default \"#1c1210\"\n- expand_frames (number, 6-45): Expand frames, default 12\n- pill_reveal_height_scale (number, 0.05-1): Reveal height, default 0.35\n- pill_grow_at (number, 6-30): Grow at, default 12\n- pill_grow_frames (number, 6-36): Grow frames, default 24\n- pill_grow_width_scale (number, 1-1.3): Grow width, default 1.08\n- pill_grow_height_scale (number, 1-1.5): Grow height, default 1.16\n- outer_exit_frames (number, 6-30): Outer exit frames, default 18\n- takeover_at (number, 12-40): Takeover at, default 12\n- takeover_scale (number, 1-4): Takeover scale, default 2.15\n- blur (number, 0-30): Blur, default 12\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Inline Pill Takeover\n\n  A clipped pill expands inside a sentence, pushes the words apart, and takes over the frame.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/inline-pill-takeover/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"inline-pill-takeover\"\n  data-composition-duration=\"1.5\"\n  data-composition-variables='[\n    { \"id\": \"before\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Before\", \"description\": \"Copy to the left of the pill.\", \"default\": \"powering 20%\" },\n    { \"id\": \"insert\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Pill text\", \"description\": \"Label inside the pill.\", \"default\": \"Start building\" },\n    { \"id\": \"after\", \"type\": \"string\", \"role\": \"content\", \"label\": \"After\", \"description\": \"Copy to the right of the pill.\", \"default\": \"of the Internet.\" },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Type size in pixels.\", \"default\": 52, \"min\": 24, \"max\": 120, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#fff3df\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"400\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}] },\n    { \"id\": \"pill_width\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Pill width\", \"description\": \"Width of the pill once expanded.\", \"default\": 260, \"min\": 100, \"max\": 600, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"pill_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Pill color\", \"description\": \"Background of the pill.\", \"default\": \"#fffaf0\" },\n    { \"id\": \"pill_text_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Pill text color\", \"description\": \"Color of the label inside the pill.\", \"default\": \"#1c1210\" },\n    { \"id\": \"expand_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Expand frames\", \"description\": \"Frames the pill takes to open (30 fps).\", \"default\": 12, \"min\": 6, \"max\": 45, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"pill_reveal_height_scale\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Reveal height\", \"description\": \"Pill height at the start, as a fraction of its full height.\", \"default\": 0.35, \"min\": 0.05, \"max\": 1, \"step\": 0.05 },\n    { \"id\": \"pill_grow_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Grow at\", \"description\": \"Frame where the pill starts to grow.\", \"default\": 12, \"min\": 6, \"max\": 30, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"pill_grow_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Grow frames\", \"description\": \"Frames the pill growth takes.\", \"default\": 24, \"min\": 6, \"max\": 36, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"pill_grow_width_scale\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Grow width\", \"description\": \"Final extra width scale of the pill.\", \"default\": 1.08, \"min\": 1, \"max\": 1.3, \"step\": 0.01 },\n    { \"id\": \"pill_grow_height_scale\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Grow height\", \"description\": \"Final extra height scale of the pill.\", \"default\": 1.16, \"min\": 1, \"max\": 1.5, \"step\": 0.01 },\n    { \"id\": \"outer_exit_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Outer exit frames\", \"description\": \"Frames the surrounding copy takes to blur and fade.\", \"default\": 18, \"min\": 6, \"max\": 30, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"takeover_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Takeover at\", \"description\": \"Frame where the camera starts to push in.\", \"default\": 12, \"min\": 12, \"max\": 40, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"takeover_scale\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Takeover scale\", \"description\": \"Camera scale once the pill has taken over.\", \"default\": 2.15, \"min\": 1, \"max\": 4, \"step\": 0.05 },\n    { \"id\": \"blur\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Blur\", \"description\": \"Blur in pixels the surrounding copy ends at.\", \"default\": 12, \"min\": 0, \"max\": 30, \"step\": 1, \"unit\": \"px\" }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Inline Pill Takeover</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #fff3df);\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .ipt-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .ipt-cam { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; transform-origin: 50% 50%; }\n        .ipt-row { display: flex; align-items: center; justify-content: center; width: 100%; white-space: nowrap; letter-spacing: -0.02em; line-height: 1; }\n        .ipt-side { flex: 1; color: var(--color, #fff3df); }\n        .ipt-before { text-align: right; }\n        .ipt-after { text-align: left; }\n        .ipt-pill { position: relative; display: inline-block; flex-shrink: 0; overflow: hidden; }\n        .ipt-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); white-space: nowrap; opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"inline-pill-takeover\" data-duration=\"1.5\" data-fps=\"30\">\n        <div id=\"ipt-clip\" class=\"ipt-stage clip\" data-start=\"0\" data-duration=\"1.5\" data-track-index=\"0\">\n          <div id=\"ipt-cam\" class=\"ipt-cam\">\n            <div id=\"ipt-row\" class=\"ipt-row\">\n              <span id=\"ipt-before\" class=\"ipt-side ipt-before\"></span>\n              <span id=\"ipt-pill\" class=\"ipt-pill\"><span id=\"ipt-label\" class=\"ipt-label\"></span></span>\n              <span id=\"ipt-after\" class=\"ipt-side ipt-after\"></span>\n            </div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            gsap.registerPlugin(CustomEase);\n            function bz(id, a, b, c, d) {\n              return CustomEase.create(\"ipt-\" + id, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\");\n            }\n            // interpolate(frame, [a, b], [from, to], { easing }) as a tween (frames at 30 fps).\n            function tw(tl, el, from, to, a, b, ease, keep) {\n              var t = Object.assign({}, to, { duration: (b - a) / 30, ease: ease || \"none\", immediateRender: !keep });\n              tl.fromTo(el, from, t, a / 30);\n            }\n            // Shrink an element's font size so it fits a fraction of the frame width.\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            var TOTAL = parseFloat(root.dataset.duration || \"1.5\");\n            function finish(tl) {\n              if (tl.duration() < TOTAL) tl.to({}, { duration: TOTAL - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"inline-pill-takeover\"] = tl;\n            }\n            // interpolate() with clamping, easing given as a function of progress.\n            function ip(f, a, b, from, to, ease) {\n              var p = b === a ? 1 : Math.min(1, Math.max(0, (f - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n            var weight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"400\");\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            var size = num(vars.font_size, 52, 24, 120);\n            var pillWidth = num(vars.pill_width, 260, 100, 600);\n            var expandFrames = num(vars.expand_frames, 12, 6, 45);\n            var revealH = num(vars.pill_reveal_height_scale, 0.35, 0.05, 1);\n            var growAt = num(vars.pill_grow_at, 12, 6, 30);\n            var growFrames = num(vars.pill_grow_frames, 24, 6, 36);\n            var growW = num(vars.pill_grow_width_scale, 1.08, 1, 1.3);\n            var growH = num(vars.pill_grow_height_scale, 1.16, 1, 1.5);\n            var outerExitFrames = num(vars.outer_exit_frames, 18, 6, 30);\n            var takeoverAt = num(vars.takeover_at, 12, 12, 40);\n            var takeoverScale = num(vars.takeover_scale, 2.15, 1, 4);\n            var blurPx = num(vars.blur, 12, 0, 30);\n            var row = document.getElementById(\"ipt-row\");\n            var cam = document.getElementById(\"ipt-cam\");\n            var pill = document.getElementById(\"ipt-pill\");\n            var label = document.getElementById(\"ipt-label\");\n            var before = document.getElementById(\"ipt-before\");\n            var after = document.getElementById(\"ipt-after\");\n            before.textContent = str(vars.before, \"powering 20%\");\n            label.textContent = str(vars.insert, \"Start building\");\n            after.textContent = str(vars.after, \"of the Internet.\");\n            pill.style.background = str(vars.pill_color, \"#fffaf0\");\n            pill.style.color = str(vars.pill_text_color, \"#1c1210\");\n            row.style.fontSize = size + \"px\";\n            row.style.fontWeight = weight;\n            row.style.gap = size * 0.16 + \"px\";\n            label.style.fontSize = size * 0.84 + \"px\";\n\n            var expandEase = bz(\"expand\", 0.5, 1, 0.89, 1);      // out quad\n            var growEase = bz(\"grow\", 0.455, 0.03, 0.515, 0.955); // in-out quad\n            var fadeEase = bz(\"fade\", 0.55, 0.055, 0.675, 0.19);  // in cubic\n            var preEase = bz(\"pre\", 0.5, 1, 0.89, 1);\n            var settleEase = bz(\"settle\", 0.215, 0.61, 0.355, 1); // out cubic\n            var dash = size * 0.72, pillH = size * 1.22;\n            var cutAt = takeoverAt + 12;\n            var cutEntry = takeoverScale * 0.86;\n            var P = { f: 0 };\n            function apply() {\n              var f = P.f;\n              var expand = ip(f, 0, Math.max(expandFrames, 0.001), 0, 1, expandEase);\n              var grow = ip(f, growAt, growAt + Math.max(growFrames, 0.001), 0, 1, growEase);\n              var outer = ip(f, 2, Math.max(outerExitFrames, 2.001), 0, 1, fadeEase);\n              var w = (dash + (pillWidth - dash) * expand) * (1 + (growW - 1) * grow);\n              var h = pillH * (revealH + (1 - revealH) * expand) * (1 + (growH - 1) * grow);\n              pill.style.width = w + \"px\";\n              pill.style.height = h + \"px\";\n              pill.style.borderRadius = h / 2 + \"px\";\n              label.style.opacity = f >= 3 ? 1 : 0;\n              before.style.opacity = after.style.opacity = 1 - outer;\n              var b = outer > 0 ? \"blur(\" + blurPx * outer + \"px)\" : \"none\";\n              before.style.filter = after.style.filter = b;\n              var s = f < cutAt\n                ? ip(f, takeoverAt, cutAt - 1, 1, 1.25, preEase)\n                : ip(f, cutAt, cutAt + 6, cutEntry, takeoverScale, settleEase);\n              cam.style.transform = \"scale(\" + s + \")\";\n            }\n            apply();\n            var tl = gsap.timeline({ paused: true });\n            tl.to(P, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: apply }, 0);\n            finish(tl);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "837cf592c642e95fe9c120dc8503032db65dcbf5b9d7f4c47b9351f121088c18",
+ "duration": 1.5,
+ "webgl": false,
+ "demo_background": "radial-gradient(circle at 50% 108%, #ffd77a 0%, #ff6840 31%, #f13d21 78%)",
+ "demo_values": {
+  "font_size": 44
+ },
+ "variables": [
+  {
+   "id": "before",
+   "type": "string",
+   "role": "content",
+   "label": "Before",
+   "default": "powering 20%"
+  },
+  {
+   "id": "insert",
+   "type": "string",
+   "role": "content",
+   "label": "Pill text",
+   "default": "Start building"
+  },
+  {
+   "id": "after",
+   "type": "string",
+   "role": "content",
+   "label": "After",
+   "default": "of the Internet."
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 52,
+   "min": 24,
+   "max": 120
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#fff3df"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "400"
+  },
+  {
+   "id": "pill_width",
+   "type": "number",
+   "role": "style",
+   "label": "Pill width",
+   "default": 260,
+   "min": 100,
+   "max": 600
+  },
+  {
+   "id": "pill_color",
+   "type": "color",
+   "role": "style",
+   "label": "Pill color",
+   "default": "#fffaf0"
+  },
+  {
+   "id": "pill_text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Pill text color",
+   "default": "#1c1210"
+  },
+  {
+   "id": "expand_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Expand frames",
+   "default": 12,
+   "min": 6,
+   "max": 45
+  },
+  {
+   "id": "pill_reveal_height_scale",
+   "type": "number",
+   "role": "motion",
+   "label": "Reveal height",
+   "default": 0.35,
+   "min": 0.05,
+   "max": 1
+  },
+  {
+   "id": "pill_grow_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Grow at",
+   "default": 12,
+   "min": 6,
+   "max": 30
+  },
+  {
+   "id": "pill_grow_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Grow frames",
+   "default": 24,
+   "min": 6,
+   "max": 36
+  },
+  {
+   "id": "pill_grow_width_scale",
+   "type": "number",
+   "role": "motion",
+   "label": "Grow width",
+   "default": 1.08,
+   "min": 1,
+   "max": 1.3
+  },
+  {
+   "id": "pill_grow_height_scale",
+   "type": "number",
+   "role": "motion",
+   "label": "Grow height",
+   "default": 1.16,
+   "min": 1,
+   "max": 1.5
+  },
+  {
+   "id": "outer_exit_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Outer exit frames",
+   "default": 18,
+   "min": 6,
+   "max": 30
+  },
+  {
+   "id": "takeover_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Takeover at",
+   "default": 12,
+   "min": 12,
+   "max": 40
+  },
+  {
+   "id": "takeover_scale",
+   "type": "number",
+   "role": "motion",
+   "label": "Takeover scale",
+   "default": 2.15,
+   "min": 1,
+   "max": 4
+  },
+  {
+   "id": "blur",
+   "type": "number",
+   "role": "motion",
+   "label": "Blur",
+   "default": 12,
+   "min": 0,
+   "max": 30
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

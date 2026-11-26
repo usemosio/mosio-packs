@@ -1,0 +1,85 @@
+{
+ "name": "spring-scale-in",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/spring-scale-in/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Spring Scale In\n\nWords pop in with a soft overshoot scale, like a spring settling into place.\n\nCategory: typography. Length: 2 s. WebGL: no.\n\nUse when:\n- The scene calls for energy and bounce: product launches, celebration moments, fun CTAs.\n- You want each word to snap into place with a soft overshoot.\n\nAvoid when:\n- The brand is serious or premium: use scale-down-fade or soft-blur-in.\n- The text is long and many bouncing words would be noisy: use staggered-fade-up.\n\nVariables:\n- text (string): Text, default \"Fast. Crisp. Fluid.\"\n- stagger_delay (number, 1-12): Stagger, default 3\n- scale_from (number, 0.1-1): Scale from, default 0.7\n- font_size (number, 12-160): Font size, default 72\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"600\"\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Spring Scale In\n\n  Words pop in with a soft overshoot scale, like a spring settling into place.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/spring-scale-in/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"spring-scale-in\"\n  data-composition-duration=\"2\"\n  data-composition-variables='[\n    { \"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Words that pop in one after another.\", \"default\": \"Fast. Crisp. Fluid.\" },\n    { \"id\": \"stagger_delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Frames between each word popping in (30 fps).\", \"default\": 3, \"min\": 1, \"max\": 12, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"scale_from\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Scale from\", \"description\": \"Scale each word starts at before it springs to 1.\", \"default\": 0.7, \"min\": 0.1, \"max\": 1, \"step\": 0.05 },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 72, \"min\": 12, \"max\": 160, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}] }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Spring Scale In</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .ssi-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .ssi-line { letter-spacing: -0.03em; line-height: 1.1; white-space: nowrap; }\n        .ssi-word { display: inline-block; margin-right: 0.25em; transform-origin: 50% 50%; opacity: 0; white-space: pre; }\n        .ssi-word:last-child { margin-right: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"spring-scale-in\" data-duration=\"2\" data-fps=\"30\">\n        <div id=\"ssi-clip\" class=\"ssi-stage clip\" data-start=\"0\" data-duration=\"2\" data-track-index=\"0\">\n          <span id=\"ssi-line\" class=\"ssi-line\" role=\"img\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            gsap.registerPlugin(CustomEase);\n            function bz(id, a, b, c, d) {\n              return CustomEase.create(\"ssi-\" + id, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\");\n            }\n            // interpolate(frame, [a, b], [from, to], { easing }) as a tween (frames at 30 fps).\n            function tw(tl, el, from, to, a, b, ease, keep) {\n              var t = Object.assign({}, to, { duration: (b - a) / 30, ease: ease || \"none\", immediateRender: !keep });\n              tl.fromTo(el, from, t, a / 30);\n            }\n            // Shrink an element's font size so it fits a fraction of the frame width.\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            var TOTAL = parseFloat(root.dataset.duration || \"2\");\n            function finish(tl) {\n              if (tl.duration() < TOTAL) tl.to({}, { duration: TOTAL - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"spring-scale-in\"] = tl;\n            }\n            var text = str(vars.text, \"Fast. Crisp. Fluid.\");\n            var weight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"600\");\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n\n            var stagger = num(vars.stagger_delay, 3, 1, 12);\n            var scaleFrom = num(vars.scale_from, 0.7, 0.1, 1);\n            var line = document.getElementById(\"ssi-line\");\n            line.style.fontWeight = weight;\n            line.setAttribute(\"aria-label\", text);\n            var words = text.trim().split(/\\s+/).map(function (w, i) {\n              var s = document.createElement(\"span\");\n              s.id = \"ssi-word-\" + i;\n              s.className = \"ssi-word\";\n              s.textContent = w;\n              line.appendChild(s);\n              return s;\n            });\n            fit(line, num(vars.font_size, 72, 12, 160), 0.9);\n\n            var ease = bz(\"spring\", 0.34, 1.56, 0.64, 1);\n            var tl = gsap.timeline({ paused: true });\n            words.forEach(function (w, i) {\n              var a = i * stagger;\n              tw(tl, w, { opacity: 0 }, { opacity: 1 }, a, a + 11, ease);\n              tw(tl, w, { scale: scaleFrom }, { scale: 1 }, a, a + 11, ease);\n            });\n            finish(tl);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "ee5094cf69f121fef3d4bfe748f07b058c851dc101c6cad090d6f80970f99ce3",
+ "duration": 2,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 120
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Fast. Crisp. Fluid."
+  },
+  {
+   "id": "stagger_delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 3,
+   "min": 1,
+   "max": 12
+  },
+  {
+   "id": "scale_from",
+   "type": "number",
+   "role": "motion",
+   "label": "Scale from",
+   "default": 0.7,
+   "min": 0.1,
+   "max": 1
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 12,
+   "max": 160
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

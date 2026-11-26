@@ -1,0 +1,122 @@
+{
+ "name": "text-along-path",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Daniel Petho",
+ "source": {
+  "repo": "https://github.com/danielpetho/fancy",
+  "path": "src/fancy/components/text/text-along-path.tsx",
+  "commit": "f9f62c61207b2dd3210476dd98af3c9a5be24094"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Text Along Path\n\nLetters of a repeating phrase run endlessly along an SVG path, by default a rounded rectangle that frames the picture; supply your own path to make it follow any curve.\n\nCategory: typography. Length: 6 s. WebGL: no.\n\nUse when:\n- Text should circle the frame, a card or a shape like a ticker tape or a badge ring.\n- A repeating phrase needs to follow a curve, a circle or a custom outline.\n\nAvoid when:\n- The text should move in a straight line: use infinite-marquee.\n- The text should be read once, not repeated: use a reveal block.\n\nVariables:\n- text (string): Text, default \"JOIN THE WAITLIST \\u2022 \"\n- font_size (number, 8-200): Font size, default 34\n- font_weight (enum): Font weight, default \"600\"\n- color (color): Color, default \"#2f4bff\"\n- loop_seconds (number, 1-60): Loop seconds, default 6\n- reverse (boolean): Reverse, default false\n- margin (number, 0-40): Margin, default 9\n- corner_radius (number, 0-50): Corner radius, default 8\n- path (string): Custom path, default \"\"\n- view_box (string): Custom viewBox, default \"0 0 100 100\"\n- show_path (boolean): Show path, default false\n\nSource: https://github.com/danielpetho/fancy. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Text Along Path\n\n  Letters of a repeating phrase run endlessly along an SVG path, by default a rounded rectangle that frames the picture; supply your own path to make it follow any curve.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/danielpetho/fancy/blob/f9f62c61207b2dd3210476dd98af3c9a5be24094/src/fancy/components/text/text-along-path.tsx\n\n  MIT License\n\n  Copyright (c) 2024 Daniel Petho\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"text-along-path\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Phrase that repeats along the path.\", \"default\": \"JOIN THE WAITLIST • \"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels (or in viewBox units when a custom path is given).\", \"default\": 34, \"min\": 8, \"max\": 200, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#2f4bff\"},\n    {\"id\": \"loop_seconds\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Loop seconds\", \"description\": \"Seconds the text takes to travel once around the path. The block lasts 6 seconds, so 6 plays one full seamless loop. The letter spacing stretches slightly so whole phrases fill a closed path exactly.\", \"default\": 6, \"min\": 1, \"max\": 60, \"step\": 0.5, \"unit\": \"s\"},\n    {\"id\": \"reverse\", \"type\": \"boolean\", \"role\": \"motion\", \"label\": \"Reverse\", \"description\": \"Run the text the other way around.\", \"default\": false},\n    {\"id\": \"margin\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Margin\", \"description\": \"Distance of the default rectangle from the frame edge, as a percentage of the shorter side.\", \"default\": 9, \"min\": 0, \"max\": 40, \"step\": 1, \"unit\": \"%\"},\n    {\"id\": \"corner_radius\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Corner radius\", \"description\": \"Corner radius of the default rectangle, as a percentage of the shorter side.\", \"default\": 8, \"min\": 0, \"max\": 50, \"step\": 1, \"unit\": \"%\"},\n    {\"id\": \"path\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Custom path\", \"description\": \"SVG path data (the d attribute) to run the text on. Empty uses the rounded rectangle.\", \"default\": \"\"},\n    {\"id\": \"view_box\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Custom viewBox\", \"description\": \"viewBox of the custom path, for example 0 0 100 100. Ignored without a custom path.\", \"default\": \"0 0 100 100\"},\n    {\"id\": \"show_path\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Show path\", \"description\": \"Draw the path itself as a thin line.\", \"default\": false}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Text Along Path</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { font-family: \"Geist Mono\", ui-monospace, monospace; }\n        .tap-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"text-along-path\" data-duration=\"6\" data-fps=\"30\">\n        <svg id=\"tap-svg\" class=\"tap-svg clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\" xmlns=\"http://www.w3.org/2000/svg\">\n          <path id=\"tap-path\" fill=\"none\" stroke=\"none\" />\n        </svg>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var DEFS = [{\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Phrase that repeats along the path.\", \"default\": \"JOIN THE WAITLIST • \"}, {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels (or in viewBox units when a custom path is given).\", \"default\": 34, \"min\": 8, \"max\": 200, \"step\": 1, \"unit\": \"px\"}, {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]}, {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#2f4bff\"}, {\"id\": \"loop_seconds\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Loop seconds\", \"description\": \"Seconds the text takes to travel once around the path. The block lasts 6 seconds, so 6 plays one full seamless loop. The letter spacing stretches slightly so whole phrases fill a closed path exactly.\", \"default\": 6, \"min\": 1, \"max\": 60, \"step\": 0.5, \"unit\": \"s\"}, {\"id\": \"reverse\", \"type\": \"boolean\", \"role\": \"motion\", \"label\": \"Reverse\", \"description\": \"Run the text the other way around.\", \"default\": false}, {\"id\": \"margin\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Margin\", \"description\": \"Distance of the default rectangle from the frame edge, as a percentage of the shorter side.\", \"default\": 9, \"min\": 0, \"max\": 40, \"step\": 1, \"unit\": \"%\"}, {\"id\": \"corner_radius\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Corner radius\", \"description\": \"Corner radius of the default rectangle, as a percentage of the shorter side.\", \"default\": 8, \"min\": 0, \"max\": 50, \"step\": 1, \"unit\": \"%\"}, {\"id\": \"path\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Custom path\", \"description\": \"SVG path data (the d attribute) to run the text on. Empty uses the rounded rectangle.\", \"default\": \"\"}, {\"id\": \"view_box\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Custom viewBox\", \"description\": \"viewBox of the custom path, for example 0 0 100 100. Ignored without a custom path.\", \"default\": \"0 0 100 100\"}, {\"id\": \"show_path\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Show path\", \"description\": \"Draw the path itself as a thin line.\", \"default\": false}];\n            var root = document.getElementById(\"root\");\n            var raw = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            var D = parseFloat(root.dataset.duration || \"6\");\n            function V(id) {\n              var d = null;\n              for (var i = 0; i < DEFS.length; i++) if (DEFS[i].id === id) d = DEFS[i];\n              var v = raw[id];\n              if (v === undefined || v === null || (v === \"\" && d.type !== \"string\")) return d.default;\n              if (d.type === \"number\") { var n = Number(v); return Number.isFinite(n) ? Math.min(d.max, Math.max(d.min, n)) : d.default; }\n              if (d.type === \"boolean\") return v === true || v === \"true\";\n              if (d.type === \"enum\") { for (var j = 0; j < d.options.length; j++) if (String(d.options[j].value) === String(v)) return d.options[j].value; return d.default; }\n              if (d.type === \"string\") return typeof v === \"string\" ? v : d.default;\n              return typeof v === \"string\" && v ? v : d.default;\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function hash3(a, b, c) { return mulberry32((a * 7919 + b * 104729 + c * 1299709) | 0)(); }\n            // Stagger delays in seconds: \"first\", \"last\", \"center\", \"random\" (seeded shuffle) or an index.\n            function stagger(n, from, step, seed) {\n              var out = [], i;\n              if (from === \"random\") {\n                var rng = mulberry32(seed || 7), idx = [];\n                for (i = 0; i < n; i++) idx.push(i);\n                for (i = n - 1; i > 0; i--) { var j = Math.floor(rng() * (i + 1)); var tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp; }\n                for (i = 0; i < n; i++) out[idx[i]] = i * step;\n                return out;\n              }\n              for (i = 0; i < n; i++) {\n                var k = from === \"last\" ? n - 1 - i : from === \"center\" ? Math.abs(Math.floor(n / 2) - i) : typeof from === \"number\" ? Math.abs(from - i) : i;\n                out.push(k * step);\n              }\n              return out;\n            }\n            // Damped spring from 0 to 1 (stiffness/damping/mass or duration/bounce, as Motion defines them).\n            function spring(o) {\n              var m = o.mass || 1, k, c;\n              if (o.duration !== undefined) { var w = (2 * Math.PI) / o.duration; k = w * w * m; c = 2 * (1 - (o.bounce || 0)) * Math.sqrt(k * m); }\n              else { k = o.stiffness; c = o.damping; }\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              function at(t) {\n                if (t <= 0) return 0;\n                if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n                if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t)); }\n                var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n                return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n              }\n              var settle = 6;\n              for (var t = 0.02; t < 6; t += 0.02) {\n                var ok = true;\n                for (var u = t; u < Math.min(t + 0.3, 6); u += 0.05) if (Math.abs(1 - at(u)) > 0.002) { ok = false; break; }\n                if (ok) { settle = t; break; }\n              }\n              return { at: at, duration: settle };\n            }\n            function fitText(text) { return Array.from(text); }\n\n            var svg = document.getElementById(\"tap-svg\");\n            var path = document.getElementById(\"tap-path\");\n                        var W = root.clientWidth || 1080, H = root.clientHeight || 1920;\n            var custom = (V(\"path\") || \"\").trim();\n            var size = V(\"font_size\"), perimeter;\n            if (custom) {\n              svg.setAttribute(\"viewBox\", V(\"view_box\"));\n              svg.setAttribute(\"preserveAspectRatio\", \"xMidYMid meet\");\n              path.setAttribute(\"d\", custom);\n              perimeter = 0;\n            } else {\n              svg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n              var m = (Math.min(W, H) * V(\"margin\")) / 100, r = Math.min((Math.min(W, H) * V(\"corner_radius\")) / 100, (W - 2 * m) / 2, (H - 2 * m) / 2);\n              var x0 = m, y0 = m, x1 = W - m, y1 = H - m;\n              path.setAttribute(\"d\", \"M \" + (x0 + r) + \",\" + y0 + \" L \" + (x1 - r) + \",\" + y0 + \" A \" + r + \",\" + r + \" 0 0 1 \" + x1 + \",\" + (y0 + r) + \" L \" + x1 + \",\" + (y1 - r) + \" A \" + r + \",\" + r + \" 0 0 1 \" + (x1 - r) + \",\" + y1 + \" L \" + (x0 + r) + \",\" + y1 + \" A \" + r + \",\" + r + \" 0 0 1 \" + x0 + \",\" + (y1 - r) + \" L \" + x0 + \",\" + (y0 + r) + \" A \" + r + \",\" + r + \" 0 0 1 \" + (x0 + r) + \",\" + y0 + \" Z\");\n              perimeter = 2 * (x1 - x0 - 2 * r) + 2 * (y1 - y0 - 2 * r) + 2 * Math.PI * r;\n            }\n            var base = V(\"text\") || \"JOIN THE WAITLIST \";\n            var chars = Array.from(base), nch = Math.max(1, chars.length);\n            var total = path.getTotalLength ? path.getTotalLength() : perimeter;\n            if (!(total > 0)) total = perimeter || 1000;\n            // Whole phrases fill the closed path exactly, so the loop has no seam: the advance per letter is\n            // stretched slightly to make that true (exact for a monospace font, which is the default).\n            var fit = Math.max(1, Math.round(total / (nch * size * 0.6)));\n            var slots = fit * nch, adv = total / slots, unit = nch * adv;\n            var NS = \"http://www.w3.org/2000/svg\";\n            var glyphs = [];\n            for (var i = 0; i < slots; i++) {\n              var ch = chars[i % nch];\n              var g = document.createElementNS(NS, \"text\");\n              g.id = \"tap-g-\" + i;\n              g.setAttribute(\"text-anchor\", \"middle\"); g.setAttribute(\"font-size\", size); g.setAttribute(\"font-weight\", V(\"font_weight\")); g.setAttribute(\"fill\", V(\"color\"));\n              g.textContent = ch === \" \" ? \"\" : ch;\n              svg.appendChild(g); glyphs.push(g);\n            }\n            if (V(\"show_path\")) { path.setAttribute(\"stroke\", V(\"color\")); path.setAttribute(\"stroke-width\", Math.max(1, size / 20)); path.setAttribute(\"stroke-opacity\", \"0.5\"); }\n            var loop = V(\"loop_seconds\"), rev = V(\"reverse\") ? -1 : 1;\n            var tl = gsap.timeline({ paused: true });\n            function draw(t) {\n              var shift = ((t / loop) % 1) * unit * rev;\n              for (var i = 0; i < slots; i++) {\n                var s = (((i + 0.5) * adv + shift) % total + total) % total;\n                var p = path.getPointAtLength(s), a = path.getPointAtLength((s + 0.5) % total), b = path.getPointAtLength((s - 0.5 + total) % total);\n                var ang = (Math.atan2(a.y - b.y, a.x - b.x) * 180) / Math.PI;\n                glyphs[i].setAttribute(\"transform\", \"translate(\" + p.x.toFixed(2) + \" \" + p.y.toFixed(2) + \") rotate(\" + ang.toFixed(2) + \")\");\n              }\n            }\n\n            var clock = { t: 0 };\n            tl.to(clock, { t: D, duration: D, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"text-along-path\"] = tl;\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "d5c016f48da5fe75ae5ff318b5bfb970b52b682ec496838bf45615bea115be59",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 44
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "JOIN THE WAITLIST • "
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 34,
+   "min": 8,
+   "max": 200
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#2f4bff"
+  },
+  {
+   "id": "loop_seconds",
+   "type": "number",
+   "role": "motion",
+   "label": "Loop seconds",
+   "default": 6,
+   "min": 1,
+   "max": 60
+  },
+  {
+   "id": "reverse",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Reverse",
+   "default": false
+  },
+  {
+   "id": "margin",
+   "type": "number",
+   "role": "style",
+   "label": "Margin",
+   "default": 9,
+   "min": 0,
+   "max": 40
+  },
+  {
+   "id": "corner_radius",
+   "type": "number",
+   "role": "style",
+   "label": "Corner radius",
+   "default": 8,
+   "min": 0,
+   "max": 50
+  },
+  {
+   "id": "path",
+   "type": "string",
+   "role": "content",
+   "label": "Custom path",
+   "default": ""
+  },
+  {
+   "id": "view_box",
+   "type": "string",
+   "role": "content",
+   "label": "Custom viewBox",
+   "default": "0 0 100 100"
+  },
+  {
+   "id": "show_path",
+   "type": "boolean",
+   "role": "style",
+   "label": "Show path",
+   "default": false
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://fancycomponents.dev"
+}

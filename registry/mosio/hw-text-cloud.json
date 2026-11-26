@@ -1,0 +1,99 @@
+{
+ "name": "hw-text-cloud",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/hw-text-cloud/hw-text-cloud.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Hand-Drawn Speech Bubble\n\nA wobbly hand-drawn speech bubble: the outline draws on, the paper fill fades in and handwritten text types per character.\n\nCategory: motion-graphics. Length: 6 s. WebGL: no.\n\nUse when:\n- A short line of dialogue or a caption should pop up in a hand-drawn bubble.\n- The look should be hand-made and a little imperfect.\n\nAvoid when:\n- Long paragraphs of text: the bubble is meant for one short line.\n- A realistic chat interface: use a chat block.\n\nVariables:\n- text (string): Text, default \"what are you looking at?\"\n- tip_side (enum): Tail side, default \"bottom-left\"\n- text_scale (number, 0.4-2): Text size, default 1\n- ink_color (color): Ink, default \"#26241f\"\n- paper_color (color): Paper, default \"#f4f2ec\"\n- transparent (boolean): Transparent, default false\n- background (color): Background, default \"#2a4d6e\"\n- boil (boolean): Boil, default true\n- seed (number, 1-999): Seed, default 6\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Hand-Drawn Speech Bubble\n\n  A wobbly hand-drawn speech bubble: the outline draws on, the paper fill fades in and handwritten text types per character.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/hw-text-cloud/hw-text-cloud.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: fills the host frame (the bubble is sized from the frame, centered above the middle); text, tail side, colours, background, boil and seed are variables; Caveat comes from Google Fonts instead of a bundled file; the family helper functions are inlined.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"hw-text-cloud\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n  {\n    \"id\": \"text\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Text\",\n    \"description\": \"What the speech bubble says.\",\n    \"default\": \"what are you looking at?\"\n  },\n  {\n    \"id\": \"tip_side\",\n    \"type\": \"enum\",\n    \"role\": \"style\",\n    \"label\": \"Tail side\",\n    \"description\": \"Which bottom corner the tail points from.\",\n    \"default\": \"bottom-left\",\n    \"options\": [\n      {\n        \"value\": \"bottom-left\",\n        \"label\": \"Bottom left\"\n      },\n      {\n        \"value\": \"bottom-right\",\n        \"label\": \"Bottom right\"\n      }\n    ]\n  },\n  {\n    \"id\": \"text_scale\",\n    \"type\": \"number\",\n    \"role\": \"style\",\n    \"label\": \"Text size\",\n    \"description\": \"Multiplier on the text size, which follows the bubble size.\",\n    \"default\": 1,\n    \"min\": 0.4,\n    \"max\": 2,\n    \"step\": 0.05\n  },\n  {\n    \"id\": \"ink_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Ink\",\n    \"description\": \"Outline and text colour.\",\n    \"default\": \"#26241f\"\n  },\n  {\n    \"id\": \"paper_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Paper\",\n    \"description\": \"Bubble fill colour.\",\n    \"default\": \"#f4f2ec\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the bubble sits over your own scene.\",\n    \"default\": false\n  },\n  {\n    \"id\": \"background\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background colour when not transparent.\",\n    \"default\": \"#2a4d6e\"\n  },\n  {\n    \"id\": \"boil\",\n    \"type\": \"boolean\",\n    \"role\": \"motion\",\n    \"label\": \"Boil\",\n    \"description\": \"The bubble jitters slightly every third frame, like hand-redrawn animation.\",\n    \"default\": true\n  },\n  {\n    \"id\": \"seed\",\n    \"type\": \"number\",\n    \"role\": \"style\",\n    \"label\": \"Seed\",\n    \"description\": \"Changes the wobble of the outline.\",\n    \"default\": 6,\n    \"min\": 1,\n    \"max\": 999,\n    \"step\": 1\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Hand-Drawn Speech Bubble</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@700&amp;display=block\" />\n      <style>\n        #root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: \"Caveat\", cursive; pointer-events: none; }\n        #hwc-wrap { position: absolute; }\n        #hwc-wrap svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }\n        #hwc-fill { fill: var(--hwc-paper, #f4f2ec); opacity: 0; }\n        #hwc-stroke { fill: none; stroke: var(--hwc-ink, #26241f); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }\n        #hwc-text { position: absolute; display: flex; align-items: center; justify-content: center; text-align: center; font-weight: 700; color: var(--hwc-ink, #26241f); line-height: 1.05; }\n        #hwc-text .hwc-ch { opacity: 0; }\n      </style>\n      <div id=\"root\" data-composition-id=\"hw-text-cloud\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"hwc-clip\" class=\"clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\" style=\"position:absolute;inset:0\">\n          <div id=\"hwc-wrap\"><svg id=\"hwc-svg\"><path id=\"hwc-fill\"></path><path id=\"hwc-stroke\"></path></svg><div id=\"hwc-text\"></div></div>\n        </div>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(x, f, lo, hi) { var n = Number(x); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : f; }\n            function col(x, f) { return typeof x === \"string\" && x.trim() ? x.trim() : f; }\n            var text = typeof vars.text === \"string\" && vars.text.trim() ? vars.text : \"what are you looking at?\";\n            var seed = num(vars.seed, 6, 1, 999);\n            var side = vars.tip_side === \"bottom-right\" ? \"bottom-right\" : \"bottom-left\";\n            var boilOn = vars.boil !== false && vars.boil !== \"false\";\n            var DUR = 6;\n            root.style.setProperty(\"--hwc-ink\", col(vars.ink_color, \"#26241f\"));\n            root.style.setProperty(\"--hwc-paper\", col(vars.paper_color, \"#f4f2ec\"));\n            if (!(vars.transparent === true || vars.transparent === \"true\")) root.style.background = col(vars.background, \"#2a4d6e\");\n            function hash(n, s) { var x = Math.sin(n * 127.1 + s * 311.7) * 43758.5453; return (x - Math.floor(x)) * 2 - 1; }\n\n            // Bubble size: 0.52 of the frame height in landscape, 0.78 of the width in portrait (design: 560 x 300).\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920;\n            var bw = Math.min(W * 0.78, H * 0.52 * (W > H ? 1 : 2));\n            if (W > H) bw = H * 0.52;\n            var bh = bw * (300 / 560);\n            var tipLen = bw * (90 / 560);\n            var fontSize = bw * (58 / 560) * num(vars.text_scale, 1, 0.4, 2);\n            var wrap = document.getElementById(\"hwc-wrap\");\n            wrap.style.width = bw + \"px\"; wrap.style.height = bh + tipLen * 0.4 + \"px\";\n            wrap.style.left = (W - bw) / 2 + \"px\";\n            wrap.style.top = Math.max(0, H * 0.4 - bh / 2) + \"px\";\n\n            function cloudPath(Wd, Hd, len, s) {\n              var cx = Wd / 2, cy = Hd / 2 - 14 * Wd / 560, rx = Wd / 2 - 12 * Wd / 560, ry = Hd / 2 - 34 * Wd / 560;\n              var N = 16, pts = [];\n              for (var i = 0; i < N; i++) {\n                var a = (i / N) * Math.PI * 2, wr = 1 + hash(i * 11 + 3, s) * 0.06;\n                pts.push([cx + Math.cos(a) * rx * wr, cy + Math.sin(a) * ry * wr]);\n              }\n              var mx = (pts[0][0] + pts[N - 1][0]) / 2, my = (pts[0][1] + pts[N - 1][1]) / 2;\n              var d = \"M\" + mx.toFixed(1) + \" \" + my.toFixed(1);\n              for (var j = 0; j < N; j++) {\n                var p = pts[j], q = pts[(j + 1) % N];\n                d += \" Q\" + p[0].toFixed(1) + \" \" + p[1].toFixed(1) + \" \" + ((p[0] + q[0]) / 2).toFixed(1) + \" \" + ((p[1] + q[1]) / 2).toFixed(1);\n              }\n              d += \"Z\";\n              var left = side !== \"bottom-right\", u = Wd / 560;\n              var bx = cx + (left ? -rx * 0.45 : rx * 0.45), by = cy + ry * 0.92;\n              var tx = bx + (left ? -len * 0.5 : len * 0.5), ty = by + len;\n              d += \" M \" + (bx - 26 * u).toFixed(1) + \" \" + (by - 6 * u).toFixed(1) +\n                \" Q \" + (bx - 8 * u + hash(31, s) * 6 * u).toFixed(1) + \" \" + ((by + ty) / 2).toFixed(1) + \" \" + tx.toFixed(1) + \" \" + ty.toFixed(1) +\n                \" Q \" + (bx + 18 * u).toFixed(1) + \" \" + ((by + ty) / 2).toFixed(1) + \" \" + (bx + 30 * u).toFixed(1) + \" \" + (by - 2 * u).toFixed(1);\n              return d;\n            }\n            var svg = document.getElementById(\"hwc-svg\");\n            svg.setAttribute(\"viewBox\", \"0 0 \" + bw + \" \" + (bh + tipLen * 0.4));\n            var d = cloudPath(bw, bh, tipLen, seed);\n            var fillEl = document.getElementById(\"hwc-fill\"), stroke = document.getElementById(\"hwc-stroke\");\n            fillEl.setAttribute(\"d\", d); stroke.setAttribute(\"d\", d);\n            var tx = document.getElementById(\"hwc-text\");\n            tx.style.left = bw * 0.12 + \"px\"; tx.style.top = bh * 0.1 + \"px\";\n            tx.style.width = bw * 0.76 + \"px\"; tx.style.height = bh * 0.62 + \"px\";\n            tx.style.fontSize = fontSize + \"px\";\n            var inner = document.createElement(\"div\");\n            Array.from(text).forEach(function (ch) {\n              var s = document.createElement(\"span\"); s.className = \"hwc-ch\"; s.textContent = ch; inner.appendChild(s);\n            });\n            tx.appendChild(inner);\n\n            var tl = gsap.timeline({ paused: true });\n            var len = stroke.getTotalLength();\n            gsap.set(stroke, { strokeDasharray: len, strokeDashoffset: len });\n            tl.to(stroke, { strokeDashoffset: 0, duration: 0.8, ease: \"power2.inOut\" }, 0.3);\n            tl.to(fillEl, { opacity: 0.94, duration: 0.4, ease: \"power2.out\" }, 0.85);\n            var chars = tx.querySelectorAll(\".hwc-ch\");\n            var delay = Math.min(0.03, 1.8 / Math.max(1, chars.length));\n            tl.to(chars, { opacity: 1, duration: 0.02, stagger: delay, ease: \"none\" }, 1.2);\n            if (boilOn) {\n              var boil = function () {\n                var step = Math.floor((tl.time() * 30) / 3);\n                gsap.set(wrap, { x: hash(step * 3, seed) * 1.6, y: hash(step * 3 + 1, seed) * 1.6, rotation: hash(step * 3 + 2, seed) * 0.4 });\n              };\n              tl.eventCallback(\"onUpdate\", boil);\n              boil();\n            }\n            var OUT = Math.min(0.6, Math.max(0.25, DUR * 0.06));\n            tl.to(wrap, { opacity: 0, duration: OUT, ease: \"power2.in\" }, DUR - OUT - 0.05);\n            if (tl.duration() < DUR) tl.to({}, { duration: DUR - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"hw-text-cloud\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "35a0d5db84bba993b78247000f848cea0b049ab67241ee156d8e32cb8c6b0f43",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#2a4d6e",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "what are you looking at?"
+  },
+  {
+   "id": "tip_side",
+   "type": "enum",
+   "role": "style",
+   "label": "Tail side",
+   "default": "bottom-left"
+  },
+  {
+   "id": "text_scale",
+   "type": "number",
+   "role": "style",
+   "label": "Text size",
+   "default": 1,
+   "min": 0.4,
+   "max": 2
+  },
+  {
+   "id": "ink_color",
+   "type": "color",
+   "role": "style",
+   "label": "Ink",
+   "default": "#26241f"
+  },
+  {
+   "id": "paper_color",
+   "type": "color",
+   "role": "style",
+   "label": "Paper",
+   "default": "#f4f2ec"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#2a4d6e"
+  },
+  {
+   "id": "boil",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Boil",
+   "default": true
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "style",
+   "label": "Seed",
+   "default": 6,
+   "min": 1,
+   "max": 999
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

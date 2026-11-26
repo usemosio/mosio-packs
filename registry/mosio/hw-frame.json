@@ -1,0 +1,115 @@
+{
+ "name": "hw-frame",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/hw-frame/hw-frame.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Sketched Photo Frame\n\nA hand-drawn wobbly border draws itself around a photo panel with corner sparks and a handwritten caption; the whole unit tilts and boils like stop-motion.\n\nCategory: motion-graphics. Length: 8 s. WebGL: no.\n\nUse when:\n- A photo or clip needs a hand-drawn, scrapbook frame with a handwritten caption.\n- The look is playful or diary-like.\n\nAvoid when:\n- The frame should hold real footage inside this block: it draws a gradient panel, so place your media over the panel's area in the host.\n- The design is clean and corporate: use a rounded card instead.\n\nVariables:\n- caption (string): Caption, default \"our trip!\"\n- label (string): Placeholder label, default \"photo\"\n- ink (color): Ink, default \"#f4f2ec\"\n- accent (color): Doodle colour, default \"#ffb020\"\n- background (color): Background, default \"#1b1a1e\"\n- panel_from (color): Panel colour, top, default \"#35604a\"\n- panel_to (color): Panel colour, bottom, default \"#14231c\"\n- doodles (boolean): Corner sparks, default true\n- tilt (number, -8-8): Tilt, default -1.2\n- boil (boolean): Line boil, default true\n- seed (number, 1-99): Seed, default 14\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Sketched Photo Frame\n\n  A hand-drawn wobbly border draws itself around a photo panel with corner sparks and a handwritten caption; the whole unit tilts and boils like stop-motion.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/hw-frame/hw-frame.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License,\n  Version 2.0 (the \"License\"); you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless\n  required by applicable law or agreed to in writing, software distributed under the License is\n  distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express\n  or implied. See the License for the specific language governing permissions and limitations\n  under the License.\n\n  Changes by usemosio/blocks: fills the host frame (the frame, border weight and caption are sized from the frame's short side, so portrait and landscape both fit), variables for the caption, panel label, colours, tilt, boil and seed, Caveat from Google Fonts, the photo slot is a gradient panel with a label instead of an image, the shared hw runtime is inlined.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"hw-frame\"\n  data-composition-duration=\"8\"\n  data-composition-variables='[\n    {\"id\": \"caption\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Caption\", \"description\": \"Handwritten line under the frame.\", \"default\": \"our trip!\"},\n    {\"id\": \"label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Placeholder label\", \"description\": \"Text on the stand-in photo panel.\", \"default\": \"photo\"},\n    {\"id\": \"ink\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Ink\", \"description\": \"Border and caption colour.\", \"default\": \"#f4f2ec\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Doodle colour\", \"description\": \"Colour of the corner sparks.\", \"default\": \"#ffb020\"},\n    {\"id\": \"background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Backdrop behind the frame.\", \"default\": \"#1b1a1e\"},\n    {\"id\": \"panel_from\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel colour, top\", \"description\": \"Top of the stand-in photo gradient.\", \"default\": \"#35604a\"},\n    {\"id\": \"panel_to\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel colour, bottom\", \"description\": \"Bottom of the stand-in photo gradient.\", \"default\": \"#14231c\"},\n    {\"id\": \"doodles\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Corner sparks\", \"description\": \"Draw three small spark doodles at the corners.\", \"default\": true},\n    {\"id\": \"tilt\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Tilt\", \"description\": \"Slight rotation of the whole framed unit.\", \"default\": -1.2, \"min\": -8, \"max\": 8, \"step\": 0.1, \"unit\": \"deg\"},\n    {\"id\": \"boil\", \"type\": \"boolean\", \"role\": \"motion\", \"label\": \"Line boil\", \"description\": \"Redraw the hand-made jitter every third frame.\", \"default\": true},\n    {\"id\": \"seed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Seed\", \"description\": \"Changes the wobble of the hand-drawn border.\", \"default\": 14, \"min\": 1, \"max\": 99, \"step\": 1}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Sketched Photo Frame</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@700&amp;display=block\" />\n      <style>\n        #root { position: absolute; inset: 0; overflow: hidden; container-type: size; background: var(--hwf-bg, #1b1a1e); font-family: Caveat, cursive; pointer-events: none; }\n        #hwf-media { position: absolute; overflow: hidden; }\n        .hwf-fill { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: rgba(244, 242, 236, 0.9); }\n        #hwf-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }\n        #hwf-svg path { fill: none; stroke-linecap: round; stroke-linejoin: round; }\n        #hwf-caption { position: absolute; left: 0; width: 100%; text-align: center; font-weight: 700; opacity: 0; white-space: nowrap; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4); }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"hw-frame\" data-duration=\"8\" data-fps=\"30\">\n        <div id=\"hwf-clip\" class=\"clip\" data-start=\"0\" data-duration=\"8\" data-track-index=\"0\" style=\"position:absolute;inset:0\">\n          <div id=\"hwf-media\"><div class=\"hwf-fill\" id=\"hwf-fill\"></div></div>\n          <svg id=\"hwf-svg\"><path id=\"hwf-border\"></path></svg>\n          <div id=\"hwf-caption\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var NS = \"http://www.w3.org/2000/svg\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, lo, hi) { var n = Number(v); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : f; }\n            var caption = str(vars.caption, \"our trip!\");\n            var label = str(vars.label, \"photo\");\n            var ink = col(vars.ink, \"#f4f2ec\");\n            var accent = col(vars.accent, \"#ffb020\");\n            var doodlesOn = bool(vars.doodles, true);\n            var tilt = num(vars.tilt, -1.2, -8, 8);\n            var boilOn = bool(vars.boil, true);\n            var SEED = Math.round(num(vars.seed, 14, 1, 99));\n            root.style.setProperty(\"--hwf-bg\", col(vars.background, \"#1b1a1e\"));\n            var DUR = 8;\n\n            function hash(n, seed) {\n              var x = Math.sin(n * 127.1 + (seed || 1) * 311.7) * 43758.5453;\n              return (x - Math.floor(x)) * 2 - 1;\n            }\n            function wobbleRect(w, h, r, seed, amp) {\n              function wob(n) { return hash(n, seed) * amp; }\n              var d = \"M \" + (r + wob(1)) + \" \" + wob(2);\n              d += \" L \" + (w / 2 + wob(3)) + \" \" + wob(4);\n              d += \" L \" + (w - r + wob(5)) + \" \" + wob(6);\n              d += \" Q \" + (w + wob(7)) + \" \" + wob(8) + \" \" + (w + wob(9)) + \" \" + (r + wob(10));\n              d += \" L \" + (w + wob(11)) + \" \" + (h / 2 + wob(12));\n              d += \" L \" + (w + wob(13)) + \" \" + (h - r + wob(14));\n              d += \" Q \" + (w + wob(15)) + \" \" + (h + wob(16)) + \" \" + (w - r + wob(17)) + \" \" + (h + wob(18));\n              d += \" L \" + (w / 2 + wob(19)) + \" \" + (h + wob(20));\n              d += \" L \" + (r + wob(21)) + \" \" + (h + wob(22));\n              d += \" Q \" + wob(23) + \" \" + (h + wob(24)) + \" \" + wob(25) + \" \" + (h - r + wob(26));\n              d += \" L \" + wob(27) + \" \" + (h / 2 + wob(28));\n              d += \" L \" + wob(29) + \" \" + (r + wob(30));\n              d += \" Q \" + wob(31) + \" \" + wob(32) + \" \" + (r + wob(33)) + \" \" + wob(34);\n              return d;\n            }\n\n            /* Fill the host: the framed unit is sized from the frame, line weights from its short side. */\n            var W = root.clientWidth || 1920;\n            var H = root.clientHeight || 1080;\n            var k = Math.min(W, H) / 1080;\n            var ASPECT = 960 / 620;\n            var sw = Math.min(W * 0.8, H * 0.6 * ASPECT, 1100 * k);\n            var sh = sw / ASPECT;\n            var capSize = 58 * k;\n            var gapBelow = 42 * k;\n            var unitH = sh + gapBelow + capSize * 1.2;\n            var sx = (W - sw) / 2;\n            var sy = Math.max(60 * k, (H - unitH) / 2);\n\n            var media = document.getElementById(\"hwf-media\");\n            media.style.left = sx + \"px\"; media.style.top = sy + \"px\";\n            media.style.width = sw + \"px\"; media.style.height = sh + \"px\";\n            media.style.borderRadius = 10 * k + \"px\";\n            var fill = document.getElementById(\"hwf-fill\");\n            fill.textContent = label;\n            fill.style.fontSize = 110 * k + \"px\";\n            fill.style.background = \"linear-gradient(150deg, \" + col(vars.panel_from, \"#35604a\") + \" 0%, \" + col(vars.panel_to, \"#14231c\") + \" 100%)\";\n\n            var svg = document.getElementById(\"hwf-svg\");\n            svg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n            var border = document.getElementById(\"hwf-border\");\n            border.setAttribute(\"stroke\", ink);\n            border.setAttribute(\"stroke-width\", 7 * k);\n            var m = 16 * k;\n            border.setAttribute(\"d\", wobbleRect(sw + m * 2, sh + m * 2, 18 * k, SEED, 5 * k));\n            border.setAttribute(\"transform\", \"translate(\" + (sx - m) + \" \" + (sy - m) + \")\");\n\n            var doodles = [];\n            if (doodlesOn) {\n              [[sx - 40 * k, sy - 34 * k], [sx + sw + 40 * k, sy - 26 * k], [sx + sw + 36 * k, sy + sh + 30 * k]].forEach(function (pt, i) {\n                var p = document.createElementNS(NS, \"path\");\n                p.setAttribute(\"stroke\", accent);\n                p.setAttribute(\"stroke-width\", 5 * k);\n                var dd = \"\";\n                for (var j = 0; j < 3; j++) {\n                  var a = -0.6 - j * 0.5 + hash(i * 9 + j, SEED) * 0.2;\n                  var l = (26 + hash(i * 9 + j + 4, SEED) * 8) * k;\n                  dd += \"M \" + pt[0] + \" \" + pt[1] + \" l \" + (Math.cos(a) * l).toFixed(1) + \" \" + (Math.sin(a) * l).toFixed(1) + \" \";\n                }\n                p.setAttribute(\"d\", dd);\n                svg.appendChild(p);\n                doodles.push(p);\n              });\n            }\n\n            var cap = document.getElementById(\"hwf-caption\");\n            cap.textContent = caption;\n            cap.style.color = ink;\n            cap.style.fontSize = capSize + \"px\";\n            cap.style.top = sy + sh + gapBelow + \"px\";\n\n            var IN = Math.min(0.8, Math.max(0.3, DUR * 0.08));\n            var OUT = Math.min(0.6, Math.max(0.25, DUR * 0.06));\n            var tl = gsap.timeline({ paused: true });\n            gsap.set(media, { opacity: 0, scale: 0.96 });\n            tl.to(media, { opacity: 1, scale: 1, duration: IN * 1.4, ease: \"power2.out\" }, IN * 0.8);\n            var blen = border.getTotalLength();\n            gsap.set(border, { strokeDasharray: blen, strokeDashoffset: blen });\n            tl.to(border, { strokeDashoffset: 0, duration: 0.9, ease: \"power2.inOut\" }, 0.2);\n            doodles.forEach(function (p, i) {\n              var l = p.getTotalLength();\n              gsap.set(p, { strokeDasharray: l, strokeDashoffset: l });\n              tl.to(p, { strokeDashoffset: 0, duration: 0.3, ease: \"power2.out\" }, 1.1 + i * 0.12);\n            });\n            if (caption) tl.to(cap, { opacity: 1, duration: 0.4, ease: \"power2.out\" }, 1.4);\n\n            var unit = [media, svg, cap];\n            gsap.set(unit, { rotation: tilt, transformOrigin: \"50% 50%\" });\n            if (boilOn) {\n              var amp = 1.6 * k, rot = 0.35, fps = 30, drop = 3;\n              var boil = function () {\n                var step = Math.floor((tl.time() * fps) / drop);\n                for (var i = 0; i < unit.length; i++) {\n                  gsap.set(unit[i], {\n                    x: hash(step * 3 + i * 97, SEED) * amp,\n                    y: hash(step * 3 + 1 + i * 97, SEED) * amp,\n                    rotation: tilt + hash(step * 3 + 2 + i * 97, SEED) * rot,\n                  });\n                }\n              };\n              tl.eventCallback(\"onUpdate\", boil);\n              boil();\n            }\n            tl.to(unit, { opacity: 0, duration: OUT, ease: \"power2.in\" }, DUR - OUT - 0.05);\n            tl.set({}, {}, DUR);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"hw-frame\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "7e997e5137a7de60c656a7ccf9921a728b6c9d20e70c01e79befdb257d2bcdbc",
+ "duration": 8,
+ "webgl": false,
+ "demo_background": "#1b1a1e",
+ "demo_values": {
+  "caption": "our trip!"
+ },
+ "variables": [
+  {
+   "id": "caption",
+   "type": "string",
+   "role": "content",
+   "label": "Caption",
+   "default": "our trip!"
+  },
+  {
+   "id": "label",
+   "type": "string",
+   "role": "content",
+   "label": "Placeholder label",
+   "default": "photo"
+  },
+  {
+   "id": "ink",
+   "type": "color",
+   "role": "style",
+   "label": "Ink",
+   "default": "#f4f2ec"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Doodle colour",
+   "default": "#ffb020"
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#1b1a1e"
+  },
+  {
+   "id": "panel_from",
+   "type": "color",
+   "role": "style",
+   "label": "Panel colour, top",
+   "default": "#35604a"
+  },
+  {
+   "id": "panel_to",
+   "type": "color",
+   "role": "style",
+   "label": "Panel colour, bottom",
+   "default": "#14231c"
+  },
+  {
+   "id": "doodles",
+   "type": "boolean",
+   "role": "style",
+   "label": "Corner sparks",
+   "default": true
+  },
+  {
+   "id": "tilt",
+   "type": "number",
+   "role": "style",
+   "label": "Tilt",
+   "default": -1.2,
+   "min": -8,
+   "max": 8
+  },
+  {
+   "id": "boil",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Line boil",
+   "default": true
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "motion",
+   "label": "Seed",
+   "default": 14,
+   "min": 1,
+   "max": 99
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

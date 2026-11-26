@@ -1,0 +1,80 @@
+{
+ "name": "shared-axis-y",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/shared-axis-y/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Shared Axis Y\n\nA per-word hard-cut staircase: the old phrase snaps off word by word, then the new phrase snaps on word by word, with no fade or motion. A sharp editorial swap.\n\nCategory: typography. Length: 3 s. WebGL: no.\n\nUse when:\n- Swapping two related phrases (before/after, old/new, step N to step N+1) in a slide-deck style cut.\n- You want a crisp, confident replacement with no blur or scale.\n\nAvoid when:\n- The text only needs to come in, with nothing going out: use short-slide-down or staggered-fade-up.\n- You want a depth or focus shift between the two phrases: use shared-axis-z.\n- The swap should feel playful or bouncy: use spring-scale-in.\n\nVariables:\n- from_text (string): From text, default \"Layered navigation.\"\n- to_text (string): To text, default \"Hierarchy made clear.\"\n- font_size (number, 12-220): Font size, default 72\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"600\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Shared Axis Y\n\n  Per-word hard-cut staircase: the outgoing phrase snaps off word by word, then the incoming\n  phrase snaps on word by word. No fade, no motion: a sharp editorial swap.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/shared-axis-y/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"shared-axis-y\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    { \"id\": \"from_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"From text\", \"description\": \"Outgoing phrase, shown first, then cut off word by word.\", \"default\": \"Layered navigation.\" },\n    { \"id\": \"to_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"To text\", \"description\": \"Incoming phrase that snaps in word by word.\", \"default\": \"Hierarchy made clear.\" },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 72, \"min\": 12, \"max\": 220, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{ \"value\": \"400\", \"label\": \"Regular\" }, { \"value\": \"500\", \"label\": \"Medium\" }, { \"value\": \"600\", \"label\": \"Semibold\" }, { \"value\": \"700\", \"label\": \"Bold\" }] },\n    { \"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\" }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Shared Axis Y</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, Geist, -apple-system, BlinkMacSystemFont, sans-serif);\n          pointer-events: none;\n        }\n        .say-stage { position: absolute; inset: 0; }\n        .say-layer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .say-line { letter-spacing: -0.03em; white-space: nowrap; line-height: 1.2; }\n        .say-word { display: inline-block; margin-right: 0.25em; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"shared-axis-y\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"say-clip\" class=\"say-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <div class=\"say-layer\"><span id=\"say-from\" class=\"say-line\"></span></div>\n          <div class=\"say-layer\"><span id=\"say-to\" class=\"say-line\"></span></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // interpolate(frame, [a, b], [from, to]) with clamping and the source framework's Easing.step1:\n            // the value jumps to `to` only once the frame reaches b.\n            function step1(f, a, b, from, to) {\n              return f >= b ? to : from;\n            }\n\n            var fromText = str(vars.from_text, \"Layered navigation.\");\n            var toText = str(vars.to_text, \"Hierarchy made clear.\");\n            var weight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"600\");\n            var speed = num(vars.speed, 1, 0.25, 4);\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n\n            function build(line, text, prefix) {\n              line.style.fontWeight = weight;\n              line.setAttribute(\"aria-label\", text);\n              return text.split(\" \").map(function (word, i) {\n                var s = document.createElement(\"span\");\n                s.id = prefix + i;\n                s.className = \"say-word\";\n                s.textContent = word;\n                line.appendChild(s);\n                return s;\n              });\n            }\n            var fromLine = document.getElementById(\"say-from\");\n            var toLine = document.getElementById(\"say-to\");\n            var fromWords = build(fromLine, fromText, \"say-from-\");\n            var toWords = build(toLine, toText, \"say-to-\");\n\n            // Both phrases share one size: shrink so the wider fits 90 % of the frame width.\n            var size = num(vars.font_size, 72, 12, 220);\n            fromLine.style.fontSize = toLine.style.fontSize = size + \"px\";\n            var widest = Math.max(fromLine.scrollWidth, toLine.scrollWidth);\n            var maxWidth = Math.max(1, root.clientWidth * 0.9);\n            if (widest > maxWidth) {\n              size = Math.max(12, size * (maxWidth / widest));\n              fromLine.style.fontSize = toLine.style.fontSize = size + \"px\";\n            }\n\n            // remocn timings (frames at 30 fps): each outgoing word cuts 4 frames after its turn,\n            // turns 2 frames apart; the incoming phrase starts one frame after the last cut and each\n            // word snaps on 5 frames after its turn, 2 frames apart.\n            var ENTER = 5, EXIT = 4, ENTER_STAGGER = 2, EXIT_STAGGER = 2, OVERLAP = 0, MICRO_DELAY = 1;\n            var exitTotal = EXIT + (fromWords.length - 1) * EXIT_STAGGER;\n            var newStart = Math.max(0, exitTotal - OVERLAP + MICRO_DELAY);\n\n            function draw(frame) {\n              fromWords.forEach(function (el, i) {\n                var local = frame - i * EXIT_STAGGER;\n                el.style.opacity = step1(local, 0, EXIT, 1, 0);\n              });\n              toWords.forEach(function (el, j) {\n                var local = frame - newStart - j * ENTER_STAGGER;\n                el.style.opacity = step1(local, 0, ENTER, 0, 1);\n              });\n            }\n\n            var total = parseFloat(root.dataset.duration || \"3\");\n            var clock = { t: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t * 30 * speed); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"shared-axis-y\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "ee086d442b1989e02da887ad4cfa24e82fbf63925158cc53d4499f8923202a34",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 120
+ },
+ "variables": [
+  {
+   "id": "from_text",
+   "type": "string",
+   "role": "content",
+   "label": "From text",
+   "default": "Layered navigation."
+  },
+  {
+   "id": "to_text",
+   "type": "string",
+   "role": "content",
+   "label": "To text",
+   "default": "Hierarchy made clear."
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 12,
+   "max": 220
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

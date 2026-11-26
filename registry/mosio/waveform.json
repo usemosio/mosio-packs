@@ -1,0 +1,91 @@
+{
+ "name": "waveform",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/waveform/waveform.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Waveform Bars\n\nEqualizer bars in a blue to pink gradient pulse across the middle of the frame, like an audio visualizer.\n\nCategory: shaders. Length: 5 s. WebGL: yes.\n\nUse when:\n- A music, podcast or voice moment needs an audio-visualizer look with no audio analysis.\n- A tech backdrop of pulsing bars in two brand colors.\n\nAvoid when:\n- The bars must follow a real audio track: this one is generated from time, not from sound.\n- You need a single flowing line: use sine-wave.\n\nVariables:\n- color_a (color): Left color, default \"#2563eb\"\n- color_b (color): Right color, default \"#93c5fd\"\n- speed (number, 0-4): Speed, default 1\n- bars (number, 6-96): Bars, default 32\n- max_height (number, 0.1-0.9): Max height, default 0.55\n- glow (number, 0-1): Glow, default 0.5\n- resolution (number, 0.25-1): Resolution, default 0.75\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Waveform Bars\n\n  Equalizer bars in a blue to pink gradient pulse across the middle of the frame, like an audio visualizer.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/waveform/waveform.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: upstream mounts a WebGPU shader from the shaders.com library (MIT, a\n  1.4 MB bundled script). This block draws the same look with a small hand-written WebGL2 fragment\n  shader instead (no bundled files), fills whatever frame the host gives it, takes its colors and\n  settings from variables, draws at a reduced resolution (the `resolution` variable) and takes its\n  time from the timeline.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"waveform\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    { \"id\":\"color_a\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Left color\",\"description\":\"Color of the bars at the left edge.\",\"default\":\"#2563eb\" },\n    { \"id\":\"color_b\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Right color\",\"description\":\"Color of the bars at the right edge.\",\"default\":\"#93c5fd\" },\n    { \"id\":\"speed\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Speed\",\"description\":\"How fast it moves. 0 holds still.\",\"default\":1,\"min\":0,\"max\":4,\"step\":0.05 },\n    { \"id\":\"bars\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Bars\",\"description\":\"How many bars span the frame.\",\"default\":32,\"min\":6,\"max\":96,\"step\":1 },\n    { \"id\":\"max_height\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Max height\",\"description\":\"Tallest a bar gets, as a share of the shorter side of the frame.\",\"default\":0.55,\"min\":0.1,\"max\":0.9,\"step\":0.01 },\n    { \"id\":\"glow\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Glow\",\"description\":\"Soft halo around the bars.\",\"default\":0.5,\"min\":0,\"max\":1,\"step\":0.01 },\n    { \"id\":\"resolution\",\"type\":\"number\",\"role\":\"quality\",\"label\":\"Resolution\",\"description\":\"Share of the frame size the shader is drawn at, then scaled up. Lower renders faster; raise it if edges look soft.\",\"default\":0.75,\"min\":0.25,\"max\":1,\"step\":0.05 }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Waveform Bars</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          background: var(--wvf-fallback, #05060d);\n          pointer-events: none;\n        }\n        .wvf-stage {\n          position: absolute;\n          inset: 0;\n        }\n        .wvf-canvas {\n          position: absolute;\n          inset: 0;\n          width: 100%;\n          height: 100%;\n          display: block;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"waveform\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"wvf-clip\" class=\"wvf-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <canvas id=\"wvf-canvas\" class=\"wvf-canvas\"></canvas>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var canvas = document.getElementById(\"wvf-canvas\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            var DEFAULTS = {\"color_a\":\"#2563eb\",\"color_b\":\"#93c5fd\",\"speed\":1,\"bars\":32,\"max_height\":0.55,\"glow\":0.5,\"resolution\":0.75};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function parseColor(s, fallback) {\n              var m = /^#?([0-9a-f]{6}|[0-9a-f]{3})$/i.exec(String(s == null ? \"\" : s).trim());\n              if (!m) return fallback;\n              var h = m[1];\n              if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n              return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255];\n            }\n            var P = {};\n            P.color_a = parseColor(vars.color_a, parseColor(DEFAULTS.color_a));\n            P.color_b = parseColor(vars.color_b, parseColor(DEFAULTS.color_b));\n            P.speed = num(vars.speed, DEFAULTS.speed, 0, 4);\n            P.bars = num(vars.bars, DEFAULTS.bars, 6, 96);\n            P.max_height = num(vars.max_height, DEFAULTS.max_height, 0.1, 0.9);\n            P.glow = num(vars.glow, DEFAULTS.glow, 0, 1);\n            P.resolution = num(vars.resolution, DEFAULTS.resolution, 0.25, 1);\n            function css(c) { return \"rgb(\" + Math.round(c[0] * 255) + \",\" + Math.round(c[1] * 255) + \",\" + Math.round(c[2] * 255) + \")\"; }\n            // Without WebGL the block still shows a plain backdrop.\n            root.style.setProperty(\"--wvf-fallback\", css(P.color_a));\n\n            var VERTEX = [\n              \"#version 300 es\",\n              \"layout(location = 0) in vec2 a_position;\",\n              \"void main() { gl_Position = vec4(a_position, 0.0, 1.0); }\"\n            ].join(\"\\n\");\n\n            var FRAGMENT = [\n              \"#version 300 es\",\n              \"precision highp float;\",\n              \"uniform vec2 u_res; uniform float u_time;\",\n              \"out vec4 o;\",\n              \"float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}\",\n              \"float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1,0)),f.x),mix(h21(i+vec2(0,1)),h21(i+vec2(1,1)),f.x),f.y);}\",\n              \"float fbm(vec2 p){float a=.5,s=0.;for(int i=0;i<5;i++){s+=a*vn(p);p=p*2.03+vec2(17.1,9.2);a*=.5;}return s;}\",\n              \"vec3 pal(float x){return .5+.5*cos(6.28318*(x+vec3(0.,.33,.67)));}\",\n              \"uniform vec3 u_color_a,u_color_b; uniform float u_speed,u_bars,u_max_height,u_glow;\",\n              \"void main(){\",\n              \"  vec2 fc=gl_FragCoord.xy; float t=u_time*u_speed;\",\n              \"  float cw=u_res.x/u_bars; float cell=floor(fc.x/cw);\",\n              \"  float px=(fc.x-(cell+.5)*cw); float py=fc.y-.5*u_res.y;\",\n              \"  float ph=h21(vec2(cell,3.7))*6.283;\",\n              \"  float a=.5+.5*sin(t*3.1+ph+cell*.35);\",\n              \"  float b=.5+.5*sin(t*1.7+ph*1.9-cell*.21);\",\n              \"  float c=.5+.5*sin(t*5.3+ph*.6);\",\n              \"  float lvl=.08+.92*(.5*a*b+.3*b*c+.2*a);\",\n              \"  float env=.55+.45*sin(cell/u_bars*3.14159); lvl*=mix(.6,1.,env);\",\n              \"  float m=min(u_res.x,u_res.y);\",\n              \"  float hh=max(lvl*u_max_height*m*.5,cw*.3);\",\n              \"  float hw=cw*.3;\",\n              \"  float sd=length(vec2(px,max(abs(py)-(hh-hw),0.)))-hw;\",\n              \"  float mask=smoothstep(1.,-1.,sd);\",\n              \"  vec3 g=mix(u_color_a,u_color_b,fc.x/u_res.x);\",\n              \"  vec3 bg=vec3(.02,.025,.05);\",\n              \"  float halo=exp(-max(sd,0.)/(cw*.9))*.35*u_glow;\",\n              \"  vec3 col=bg+g*halo+g*mask*(1.-.35*smoothstep(0.,hh,abs(py)));\",\n              \"  o=vec4(col,1.);\",\n              \"}\",\n            ].join(\"\\n\");\n\n            // The canvas is drawn at `resolution` × the frame size and stretched to fill it.\n            var width = Math.max(2, Math.round(root.clientWidth * P.resolution));\n            var height = Math.max(2, Math.round(root.clientHeight * P.resolution));\n            canvas.width = width;\n            canvas.height = height;\n            var gl = canvas.getContext(\"webgl2\", { antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true });\n\n            function compile(type, source) {\n              var s = gl.createShader(type);\n              gl.shaderSource(s, source);\n              gl.compileShader(s);\n              if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s) || \"shader compile failed\");\n              return s;\n            }\n            var draw = function () {};\n            try {\n              if (!gl) throw new Error(\"WebGL2 is not available\");\n              var program = gl.createProgram();\n              gl.attachShader(program, compile(gl.VERTEX_SHADER, VERTEX));\n              gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAGMENT));\n              gl.linkProgram(program);\n              if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program) || \"link failed\");\n              gl.useProgram(program);\n              var buffer = gl.createBuffer();\n              gl.bindBuffer(gl.ARRAY_BUFFER, buffer);\n              gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);\n              gl.enableVertexAttribArray(0);\n              gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);\n              gl.viewport(0, 0, width, height);\n              function u(name) { return gl.getUniformLocation(program, name); }\n              gl.uniform2f(u(\"u_res\"), width, height);\n              gl.uniform3fv(u(\"u_color_a\"), P.color_a);\n              gl.uniform3fv(u(\"u_color_b\"), P.color_b);\n              gl.uniform1f(u(\"u_speed\"), P.speed);\n              gl.uniform1f(u(\"u_bars\"), P.bars);\n              gl.uniform1f(u(\"u_max_height\"), P.max_height);\n              gl.uniform1f(u(\"u_glow\"), P.glow);\n              var timeLoc = u(\"u_time\");\n              draw = function (frame) {\n                gl.uniform1f(timeLoc, frame / 30);\n                gl.drawArrays(gl.TRIANGLES, 0, 6);\n              };\n            } catch (err) {\n              canvas.style.display = \"none\";\n              if (window.console) console.warn(\"waveform:\", err.message);\n            }\n\n            var total = parseFloat(root.dataset.duration || \"5\");\n            var totalFrames = Math.round(total * 30);\n            var clock = { frame: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, {\n              frame: totalFrames,\n              duration: total,\n              ease: \"none\",\n              onUpdate: function () { draw(clock.frame); }\n            }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"waveform\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "2704e56c954c37f7780955b4f2f42bacb6905e19f8367602d50acecc27790dc7",
+ "duration": 5,
+ "webgl": true,
+ "demo_background": "#05060d",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "color_a",
+   "type": "color",
+   "role": "style",
+   "label": "Left color",
+   "default": "#2563eb"
+  },
+  {
+   "id": "color_b",
+   "type": "color",
+   "role": "style",
+   "label": "Right color",
+   "default": "#93c5fd"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0,
+   "max": 4
+  },
+  {
+   "id": "bars",
+   "type": "number",
+   "role": "style",
+   "label": "Bars",
+   "default": 32,
+   "min": 6,
+   "max": 96
+  },
+  {
+   "id": "max_height",
+   "type": "number",
+   "role": "style",
+   "label": "Max height",
+   "default": 0.55,
+   "min": 0.1,
+   "max": 0.9
+  },
+  {
+   "id": "glow",
+   "type": "number",
+   "role": "style",
+   "label": "Glow",
+   "default": 0.5,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "resolution",
+   "type": "number",
+   "role": "quality",
+   "label": "Resolution",
+   "default": 0.75,
+   "min": 0.25,
+   "max": 1
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

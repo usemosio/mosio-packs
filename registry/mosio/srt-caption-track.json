@@ -1,0 +1,135 @@
+{
+ "name": "srt-caption-track",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "RemotionUI",
+ "source": {
+  "repo": "https://github.com/riaz37/remotion-ui",
+  "path": "apps/web/registry/bases/default/primitives/srt-caption-track.tsx",
+  "commit": "0aecaca2b61a167992e1205d10e4da16d8a71331"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# SRT Caption Track\n\nRenders captions straight from SubRip or WebVTT text: each cue is spread across its words, grouped into pages, and the spoken word is highlighted.\n\nCategory: captions. Length: 9.5 s. WebGL: no.\n\nUse when:\n- You have an .srt or .vtt subtitle export and want styled, highlighted captions without word timestamps: paste the file text into the variable.\n- Subtitles come from a translator or an editor, not from a word-timed transcript.\n\nAvoid when:\n- You have word-level timings (a transcript): use a word-timed caption block such as caption-karaoke, which is exact.\n- You need speaker names or two languages: use speaker-label-captions or subtitle-translate.\n\nVariables:\n- srt (string): Subtitles, default \"1\\n00:00:00,300 --> 00:00:02,600\\nGood captions are easy to read.\\n\\n2\\n00:00:03,000 --> 00:00:05,800\\nTiming is split across the words of each line.\\n\\n3\\n00:00:06,200 --> 00:00:08,600\\nSo the highlight follows along.\"\n- word_timing (enum): Word timing, default \"distribute\"\n- combine_ms (number, 200-6000): Page window, default 3000\n- offset_ms (number, -5000-5000): Offset, default 0\n- hold_pages (boolean): Hold pages, default true\n- font_size (number, 16-160): Font size, default 64\n- font_weight (number, 100-900): Font weight, default 650\n- active_weight (number, 100-900): Active weight, default 800\n- active_color (color): Active color, default \"#ff6b00\"\n- inactive_color (color): Resting color, default \"#ffffff\"\n- text_align (enum): Align, default \"center\"\n- shadow (boolean): Shadow, default true\n- font (enum): Font, default \"geist\"\n\nSource: https://github.com/riaz37/remotion-ui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  SRT Caption Track\n\n  Render captions straight from an SRT or WebVTT file.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/riaz37/remotion-ui/blob/0aecaca2b61a167992e1205d10e4da16d8a71331/apps/web/registry/bases/default/primitives/srt-caption-track.tsx\n\n  MIT License\n\n  Copyright (c) 2026 RemotionUI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"srt-caption-track\"\n  data-composition-duration=\"9.5\"\n  data-composition-variables='[\n    [\n      {\n        \"id\": \"srt\",\n        \"type\": \"string\",\n        \"role\": \"content\",\n        \"label\": \"Subtitles\",\n        \"description\": \"SubRip (.srt) or WebVTT (.vtt) text, timestamps included.\",\n        \"default\": \"1\\n00:00:00,300 --&gt; 00:00:02,600\\nGood captions are easy to read.\\n\\n2\\n00:00:03,000 --&gt; 00:00:05,800\\nTiming is split across the words of each line.\\n\\n3\\n00:00:06,200 --&gt; 00:00:08,600\\nSo the highlight follows along.\"\n      },\n      {\n        \"id\": \"word_timing\",\n        \"type\": \"enum\",\n        \"role\": \"motion\",\n        \"label\": \"Word timing\",\n        \"description\": \"SRT has no word times: distribute spreads a cue over its words by length; cue keeps each cue as one token and shows it whole.\",\n        \"default\": \"distribute\",\n        \"options\": [\n          {\n            \"value\": \"distribute\",\n            \"label\": \"Distribute across words\"\n          },\n          {\n            \"value\": \"cue\",\n            \"label\": \"Whole cue\"\n          }\n        ]\n      },\n      {\n        \"id\": \"combine_ms\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Page window\",\n        \"description\": \"Words of one cue that start within this window share one page; a page never spans two cues. 3000 keeps a typical cue on one page, lower splits it into shorter pages.\",\n        \"default\": 3000,\n        \"min\": 200,\n        \"max\": 6000,\n        \"step\": 100,\n        \"unit\": \"ms\"\n      },\n      {\n        \"id\": \"offset_ms\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Offset\",\n        \"description\": \"Shift every caption later (positive) or earlier (negative).\",\n        \"default\": 0,\n        \"min\": -5000,\n        \"max\": 5000,\n        \"step\": 50,\n        \"unit\": \"ms\"\n      },\n      {\n        \"id\": \"hold_pages\",\n        \"type\": \"boolean\",\n        \"role\": \"motion\",\n        \"label\": \"Hold pages\",\n        \"description\": \"Keep a page on screen until the next one starts.\",\n        \"default\": true\n      },\n      {\n        \"id\": \"font_size\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font size\",\n        \"description\": \"Caption size in pixels.\",\n        \"default\": 64,\n        \"min\": 16,\n        \"max\": 160,\n        \"step\": 1,\n        \"unit\": \"px\"\n      },\n      {\n        \"id\": \"font_weight\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font weight\",\n        \"description\": \"Weight of the resting words.\",\n        \"default\": 650,\n        \"min\": 100,\n        \"max\": 900,\n        \"step\": 50\n      },\n      {\n        \"id\": \"active_weight\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Active weight\",\n        \"description\": \"Weight of the word being spoken.\",\n        \"default\": 800,\n        \"min\": 100,\n        \"max\": 900,\n        \"step\": 50\n      },\n      {\n        \"id\": \"active_color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Active color\",\n        \"description\": \"Colour of the word being spoken.\",\n        \"default\": \"#ff6b00\"\n      },\n      {\n        \"id\": \"inactive_color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Resting color\",\n        \"description\": \"Colour of the other words.\",\n        \"default\": \"#ffffff\"\n      },\n      {\n        \"id\": \"text_align\",\n        \"type\": \"enum\",\n        \"role\": \"style\",\n        \"label\": \"Align\",\n        \"description\": \"Text alignment.\",\n        \"default\": \"center\",\n        \"options\": [\n          {\n            \"value\": \"center\",\n            \"label\": \"Center\"\n          },\n          {\n            \"value\": \"left\",\n            \"label\": \"Left\"\n          }\n        ]\n      },\n      {\n        \"id\": \"shadow\",\n        \"type\": \"boolean\",\n        \"role\": \"style\",\n        \"label\": \"Shadow\",\n        \"description\": \"Soft shadow for legibility over footage.\",\n        \"default\": true\n      },\n      {\n        \"id\": \"font\",\n        \"type\": \"enum\",\n        \"role\": \"style\",\n        \"label\": \"Font\",\n        \"description\": \"Typeface.\",\n        \"default\": \"geist\",\n        \"options\": [\n          {\n            \"value\": \"geist\",\n            \"label\": \"Geist\"\n          },\n          {\n            \"value\": \"poppins\",\n            \"label\": \"Poppins\"\n          },\n          {\n            \"value\": \"playfair\",\n            \"label\": \"Playfair Display\"\n          },\n          {\n            \"value\": \"grotesk\",\n            \"label\": \"Space Grotesk\"\n          }\n        ]\n      }\n    ]\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>SRT Caption Track</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Poppins:wght@400;600;800&amp;family=Playfair+Display:wght@400..900&amp;family=Space+Grotesk:wght@300..700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #fff; }\n        .srt-stage { position: absolute; left: 6%; right: 6%; bottom: 14%; display: flex; justify-content: center; }\n        .srt-page { display: none; width: 100%; white-space: pre-wrap; line-height: 1.12; word-spacing: 0.12em; }\n        .srt-word { display: inline-block; transform-origin: 50% 100%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"srt-caption-track\" data-duration=\"9.5\" data-fps=\"30\">\n        <div id=\"srt-clip\" class=\"srt-stage clip\" data-start=\"0\" data-duration=\"9.5\" data-track-index=\"0\">\n          <div id=\"srt-host\" style=\"width:100%\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) && v !== \"\" && v !== null ? Math.min(max, Math.max(min, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function bool(v, f) { if (v === undefined || v === null || v === \"\") return f; return !(v === false || v === \"false\" || v === 0 || v === \"0\"); }\n            function pick(v, list, f) { v = String(v); return list.indexOf(v) >= 0 ? v : f; }\n            function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }\n            function lerp(a, b, t) { return a + (b - a) * t; }\n            function ramp(v, a, b, from, to, ease) { var p = b === a ? 1 : clamp01((v - a) / (b - a)); if (ease) p = ease(p); return from + (to - from) * p; }\n            function bez(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 30; i++) {\n                  var cx = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;\n              };\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function mk(tag, parent, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; if (parent) parent.appendChild(e); return e; }\n            var TOTAL = parseFloat(root.dataset.duration || \"9.5\");\n            // Every frame is drawn from the frame number alone, so seeking anywhere draws the same frame.\n            function drive(name, frameFn) {\n              var clock = { f: 0 };\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: function () { frameFn(clock.f); } }, 0);\n              frameFn(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[name] = tl;\n            }\n\n            var FONTS = { geist: \"Geist, system-ui, sans-serif\", poppins: \"Poppins, system-ui, sans-serif\", playfair: '\"Playfair Display\", Georgia, serif', grotesk: '\"Space Grotesk\", system-ui, sans-serif' };\n            var fontKey = pick(vars.font, [\"geist\", \"poppins\", \"playfair\", \"grotesk\"], \"geist\");\n            root.style.fontFamily = FONTS[fontKey];\n            // ---- Cues: a JSON list, or SubRip / WebVTT text ----\n            var TS = \"(?:(\\\\d+):)?(\\\\d{1,2}):(\\\\d{1,2})[.,](\\\\d{1,3})\";\n            var CUE_RE = new RegExp(TS + \"\\\\s*-->\\\\s*\" + TS);\n            function tsMs(m, o) {\n              var frac = (m[o + 3] || \"0\");\n              return (Number(m[o] || 0) || 0) * 3600000 + (Number(m[o + 1]) || 0) * 60000 + (Number(m[o + 2]) || 0) * 1000 + (Number((\"\" + frac + \"00\").slice(0, 3)) || 0);\n            }\n            function cleanCue(text) {\n              var voice = /<v(?:\\.[^\\s>]+)*\\s+([^>]+)>/.exec(text);\n              return { speaker: voice ? voice[1].trim() : undefined, text: text.replace(/<[^>]*>/g, \"\").replace(/\\{\\\\an?\\d\\}/g, \"\").replace(/\\s+/g, \" \").trim() };\n            }\n            function parseSubtitles(src) {\n              var cues = [];\n              String(src).replace(/^﻿/, \"\").replace(/\\r\\n?/g, \"\\n\").split(/\\n{2,}/).forEach(function (block) {\n                var lines = block.split(\"\\n\").filter(function (l) { return l.trim().length > 0; });\n                if (!lines.length) return;\n                var ti = -1;\n                lines.forEach(function (l, i) { if (ti < 0 && CUE_RE.test(l)) ti = i; });\n                if (ti < 0) return;\n                var m = CUE_RE.exec(lines[ti]);\n                var c = cleanCue(lines.slice(ti + 1).join(\" \"));\n                var s = tsMs(m, 1), e = tsMs(m, 5);\n                if (!c.text || e <= s) return;\n                cues.push({ text: c.text, startMs: s, endMs: e, speaker: c.speaker });\n              });\n              return cues.sort(function (a, b) { return a.startMs - b.startMs; });\n            }\n            function parseCues(raw) {\n              var data = raw;\n              if (typeof raw === \"string\") {\n                var t = raw.trim();\n                if (t.charAt(0) === \"[\") { try { data = JSON.parse(t); } catch (e) { data = null; } }\n                else return parseSubtitles(t);\n              }\n              if (!Array.isArray(data)) return null;\n              var out = [];\n              data.forEach(function (c) {\n                if (!c || typeof c.text !== \"string\") return;\n                var s = c.startMs !== undefined ? Number(c.startMs) : Number(c.start) * 1000;\n                var e = c.endMs !== undefined ? Number(c.endMs) : Number(c.end) * 1000;\n                if (!Number.isFinite(s) || !Number.isFinite(e) || e <= s) return;\n                out.push({ text: c.text, startMs: s, endMs: e, speaker: typeof c.speaker === \"string\" ? c.speaker : undefined, translation: typeof c.translation === \"string\" ? c.translation : \"\" });\n              });\n              return out.length ? out.sort(function (a, b) { return a.startMs - b.startMs; }) : null;\n            }\n            function mixColor(a, b, t) { return \"color-mix(in srgb, \" + b + \" \" + (Math.round(clamp01(t) * 10000) / 100) + \"%, \" + a + \")\"; }\n            var ENTER = bez(0.16, 1, 0.3, 1);\n\n            var DEFAULT_SRT = \"1\\n00:00:00,300 --> 00:00:02,600\\nGood captions are easy to read.\\n\\n2\\n00:00:03,000 --> 00:00:05,800\\nTiming is split across the words of each line.\\n\\n3\\n00:00:06,200 --> 00:00:08,600\\nSo the highlight follows along.\";\n            var timing = pick(vars.word_timing, [\"distribute\", \"cue\"], \"distribute\");\n            var combine = num(vars.combine_ms, 3000, 200, 6000), offset = num(vars.offset_ms, 0, -5000, 5000), hold = bool(vars.hold_pages, true);\n            var cues = parseSubtitles(str(vars.srt, DEFAULT_SRT));\n            if (!cues.length) cues = parseSubtitles(DEFAULT_SRT);\n            // SRT has no word timestamps: distribute spreads a cue over its words, weighted by length.\n            var caps = [];\n            cues.forEach(function (c, ci) {\n              var s0 = c.startMs + offset, e0 = c.endMs + offset;\n              if (timing === \"cue\") { caps.push({ text: \" \" + c.text, startMs: s0, endMs: e0, cue: ci }); return; }\n              var words = c.text.split(/\\s+/).filter(Boolean);\n              if (!words.length) return;\n              var weights = words.map(function (w) { return w.length + 1; }), total = weights.reduce(function (a, b) { return a + b; }, 0), span = e0 - s0, el = 0;\n              words.forEach(function (w, i) {\n                var s = s0 + (el / total) * span; el += weights[i];\n                caps.push({ text: \" \" + w, startMs: Math.round(s), endMs: Math.round(s0 + (el / total) * span), cue: ci });\n              });\n            });\n            var pages = [], cur = null;\n            caps.forEach(function (c) {\n              // A page never spans two cues; inside a cue it breaks after the page window.\n              if (cur && /^\\s/.test(c.text) && (c.cue !== cur.cue || c.startMs - cur.startMs >= combine)) { pages.push(cur); cur = null; }\n              if (!cur) cur = { startMs: c.startMs, tokens: [], cue: c.cue };\n              cur.tokens.push({ text: c.text, fromMs: c.startMs, toMs: c.endMs });\n            });\n            if (cur) pages.push(cur);\n            pages.forEach(function (p, i) {\n              p.durationMs = p.tokens[p.tokens.length - 1].toMs - p.startMs;\n              var next = pages[i + 1];\n              var end = next ? (hold ? next.startMs : Math.min(next.startMs, p.startMs + combine)) : p.startMs + p.durationMs;\n              p.endMs = end;\n            });\n            var fontSize = num(vars.font_size, 64, 16, 160), fw = String(num(vars.font_weight, 650, 100, 900)), aw = String(num(vars.active_weight, 800, 100, 900));\n            var activeColor = str(vars.active_color, \"#ff6b00\"), inactiveColor = str(vars.inactive_color, \"#ffffff\");\n            var SHADOW = \"0 1px 2px rgba(0,0,0,0.55), 0 6px 18px rgba(0,0,0,0.45)\";\n            var align = pick(vars.text_align, [\"center\", \"left\"], \"center\"), shadow = bool(vars.shadow, true);\n            var host = document.getElementById(\"srt-host\");\n            pages.forEach(function (p) {\n              var el = mk(\"div\", host, \"srt-page\");\n              el.style.fontSize = fontSize + \"px\"; el.style.textAlign = align; el.style.color = inactiveColor;\n              if (shadow) el.style.textShadow = SHADOW;\n              p.el = el;\n              p.tokens.forEach(function (tk) {\n                el.appendChild(document.createTextNode(\" \"));\n                tk.el = mk(\"span\", el, \"srt-word\", tk.text.trim());\n              });\n            });\n            var popEase = bez(0.34, 1.56, 0.64, 1), holdEase = bez(0.45, 0, 0.55, 1);\n            // Emphasis arrives in 4 frames and releases in 9, as in the source library's caption helpers.\n            function draw(frame) {\n              var t = (frame / 30) * 1000, shown = -1;\n              pages.forEach(function (p, i) { if (p.startMs <= t && t < p.endMs) shown = i; });\n              pages.forEach(function (p, i) { p.el.style.display = i === shown ? \"block\" : \"none\"; });\n              if (shown < 0) return;\n              var p = pages[shown], f = frame; // absolute frame; token times are absolute too\n              p.tokens.forEach(function (tk) {\n                var sf = (tk.fromMs / 1000) * 30, ef = (tk.toMs / 1000) * 30;\n                var active = tk.fromMs <= t && t < tk.toMs, e;\n                if (active) e = ramp(f, sf, sf + 4, 0, 1, ENTER);\n                else e = f < sf ? 0 : ramp(f, ef, ef + 9, 1, 0, holdEase);\n                var st = tk.el.style;\n                st.color = mixColor(inactiveColor, activeColor, e);\n                st.fontWeight = e > 0.5 ? aw : fw;\n                st.opacity = String(ramp(e, 0, 1, 0.78, 1, ENTER));\n                st.transform = \"translateY(\" + (-0.025 * e).toFixed(4) + \"em) scale(\" + Math.pow(1.05, popEase(e)).toFixed(4) + \")\";\n              });\n            }\n            drive(\"srt-caption-track\", draw);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "2330daacac2f2e30c4d5d4aefb849f3adda4f2325e5fd17f87237aa26433a5f9",
+ "duration": 9.5,
+ "webgl": false,
+ "demo_background": "#262626",
+ "demo_values": {
+  "font_size": 78
+ },
+ "variables": [
+  {
+   "id": "srt",
+   "type": "string",
+   "role": "content",
+   "label": "Subtitles",
+   "default": "1\n00:00:00,300 --> 00:00:02,600\nGood captions are easy to read.\n\n2\n00:00:03,000 --> 00:00:05,800\nTiming is split across the words of each line.\n\n3\n00:00:06,200 --> 00:00:08,600\nSo the highlight follows along."
+  },
+  {
+   "id": "word_timing",
+   "type": "enum",
+   "role": "motion",
+   "label": "Word timing",
+   "default": "distribute"
+  },
+  {
+   "id": "combine_ms",
+   "type": "number",
+   "role": "motion",
+   "label": "Page window",
+   "default": 3000,
+   "min": 200,
+   "max": 6000
+  },
+  {
+   "id": "offset_ms",
+   "type": "number",
+   "role": "motion",
+   "label": "Offset",
+   "default": 0,
+   "min": -5000,
+   "max": 5000
+  },
+  {
+   "id": "hold_pages",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Hold pages",
+   "default": true
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 64,
+   "min": 16,
+   "max": 160
+  },
+  {
+   "id": "font_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Font weight",
+   "default": 650,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "active_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Active weight",
+   "default": 800,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "active_color",
+   "type": "color",
+   "role": "style",
+   "label": "Active color",
+   "default": "#ff6b00"
+  },
+  {
+   "id": "inactive_color",
+   "type": "color",
+   "role": "style",
+   "label": "Resting color",
+   "default": "#ffffff"
+  },
+  {
+   "id": "text_align",
+   "type": "enum",
+   "role": "style",
+   "label": "Align",
+   "default": "center"
+  },
+  {
+   "id": "shadow",
+   "type": "boolean",
+   "role": "style",
+   "label": "Shadow",
+   "default": true
+  },
+  {
+   "id": "font",
+   "type": "enum",
+   "role": "style",
+   "label": "Font",
+   "default": "geist"
+  }
+ ],
+ "author_url": "https://remotionui.com"
+}

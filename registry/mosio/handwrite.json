@@ -1,0 +1,101 @@
+{
+ "name": "handwrite",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/handwrite/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Handwrite\n\nHandwritten text laid down letter by letter on a quantized stop-motion clock.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- Captions, labels, and headlines should read as pen-written on paper, the text voice of stop-motion scrapbook scenes.\n- The scene already ticks on the stop-motion clock and the text must share its tempo.\n- You need the writing time up front: it is about ceil(letters / letters per pose) × frames per pose.\n\nAvoid when:\n- You are simulating a terminal or an input being typed into: use typewriter.\n- The reveal should be smooth on the real 30 fps clock: use soft-blur-in or per-character-rise.\n- The whole sheet should wobble too: that is paper-wobble around this.\n\nVariables:\n- text (string): Text, default \"Made by hand\"\n- font_size (number, 24-200): Font size, default 72\n- per_step (number, 0.5-4): Letters per pose, default 1.6\n- step (number, 1-6): Frames per pose, default 3\n- delay (number, 0-120): Delay, default 0\n- weight (enum): Font weight, default \"600\"\n- color (color): Color, default \"#26242c\"\n- align (enum): Align, default \"center\"\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Handwrite\n\n  Handwritten text laid down letter by letter on a quantized stop-motion clock.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/handwrite/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"handwrite\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Text that is written out.\", \"default\": \"Made by hand\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit.\", \"default\": 72, \"min\": 24, \"max\": 200, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"per_step\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Letters per pose\", \"description\": \"Letters added at each stop-motion pose.\", \"default\": 1.6, \"min\": 0.5, \"max\": 4, \"step\": 0.1},\n    {\"id\": \"step\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Frames per pose\", \"description\": \"Stop-motion clock, in frames at 30 fps.\", \"default\": 3, \"min\": 1, \"max\": 6, \"step\": 1, \"unit\": \"frames\"},\n    {\"id\": \"delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Delay\", \"description\": \"Frames before writing starts (30 fps).\", \"default\": 0, \"min\": 0, \"max\": 120, \"step\": 1, \"unit\": \"frames\"},\n    {\"id\": \"weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the handwriting.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Ink color.\", \"default\": \"#26242c\"},\n    {\"id\": \"align\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Align\", \"description\": \"Where the text sits.\", \"default\": \"center\", \"options\": [{\"value\": \"center\", \"label\": \"Center\"}, {\"value\": \"left\", \"label\": \"Left\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Handwrite</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .hw-stage { position: absolute; inset: 0; display: flex; align-items: center; }\n        .hw-line { display: inline-block; font-family: Caveat, cursive; line-height: 1.15; white-space: pre-wrap; max-width: 92%; }\n        .hw-char { display: inline-block; white-space: pre; opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"handwrite\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"hw-clip\" class=\"hw-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <span id=\"hw-line\" class=\"hw-line\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            function fit(el, maxPx, size, ratio) {\n              // Shrink el's font size until its scrollWidth fits ratio of the frame width.\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * (ratio || 0.9));\n              if (el.scrollWidth > max) { size = Math.max(10, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            gsap.registerPlugin(CustomEase);\n            function ease(name, a, b, c, d) { return CustomEase.create(name, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\"); }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            var tl = gsap.timeline({ paused: true });\n            var TOTAL = parseFloat(root.dataset.duration || \"4\");\n            function ip(t, a, b, from, to, e) {\n              var p = b === a ? 1 : (t - a) / (b - a);\n              p = Math.min(1, Math.max(0, p));\n              if (e) p = e(p);\n              return from + (to - from) * p;\n            }\n            function hash01(seed) {\n              var h = 2166136261;\n              for (var i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              return ((h ^ (h >>> 16)) >>> 0) / 4294967296;\n            }\n            function hashRange(seed, lo, hi) { return lo + hash01(seed) * (hi - lo); }\n            // Snap a frame number down to a stop-motion pose.\n            function qf(frame, step) { return Math.floor(frame / step + 1e-6) * step; }\n            function kf(t, keys, vals, e) {\n              if (t <= keys[0]) return vals[0];\n              for (var i = 0; i < keys.length - 1; i++) if (t <= keys[i + 1]) return ip(t, keys[i], keys[i + 1], vals[i], vals[i + 1], e);\n              return vals[vals.length - 1];\n            }\n            // Per-frame drawing: a pure function of the timeline time, run from a tween's onUpdate.\n            function tick(draw) {\n              tl.to({}, { duration: TOTAL, ease: \"none\", onUpdate: function () { draw(tl.time()); } }, 0);\n              draw(0);\n            }\n            var cubOut = ease(\"cub-out\", 0.215, 0.61, 0.355, 1);\n            var cubIn = ease(\"cub-in\", 0.55, 0.055, 0.675, 0.19);\n            var cubInOut = ease(\"cub-io\", 0.645, 0.045, 0.355, 1);\n\n            var stage = document.getElementById(\"hw-clip\");\n            var line = document.getElementById(\"hw-line\");\n            var text = str(vars.text, \"Made by hand\");\n            var perStep = num(vars.per_step, 1.6, 0.5, 4);\n            var step = num(vars.step, 3, 1, 6);\n            var delay = num(vars.delay, 0, 0, 120);\n            var align = pick(vars.align, [\"center\", \"left\"], \"center\");\n            stage.style.justifyContent = align === \"center\" ? \"center\" : \"flex-start\";\n            if (align === \"left\") stage.style.paddingLeft = \"4%\";\n            line.style.color = col(vars.color, \"#26242c\");\n            line.style.fontWeight = pick(vars.weight, [\"400\", \"500\", \"600\", \"700\"], \"600\");\n            line.style.textAlign = align;\n            var chars = Array.from(text).map(function (ch, i) {\n              var s = document.createElement(\"span\");\n              s.id = \"hw-char-\" + i; s.className = \"hw-char\"; s.textContent = ch;\n              line.appendChild(s);\n              return s;\n            });\n            fit(line, 0, num(vars.font_size, 72, 24, 200), 0.9);\n            var jit = chars.map(function (_, i) {\n              return { slant: hashRange(\"hw:\" + text + \":\" + i + \":r\", -3.2, 3.2), dy: hashRange(\"hw:\" + text + \":\" + i + \":y\", -1.8, 1.8) };\n            });\n            tick(function (t) {\n              var f = Math.floor(t * 30 + 1e-6);\n              var steps = Math.max(0, Math.floor(Math.max(0, qf(f, step) - delay) / step + 1e-6));\n              var shown = Math.floor(steps * perStep);\n              var freshFrom = shown - Math.ceil(perStep);\n              chars.forEach(function (el, i) {\n                var visible = i < shown;\n                el.style.opacity = visible ? 1 : 0;\n                el.style.transform = visible ? \"translateY(\" + jit[i].dy + \"px) rotate(\" + jit[i].slant + \"deg) scale(\" + (i >= freshFrom ? 1.06 : 1) + \")\" : \"none\";\n              });\n            });\n            var total = parseFloat(root.dataset.duration || \"4\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"handwrite\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "a9415785ec7560cd10b26b59dcdbf801cade730e7c60f20ad014054f65f39d5d",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#f1eee7",
+ "demo_values": {
+  "font_size": 150
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Made by hand"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 24,
+   "max": 200
+  },
+  {
+   "id": "per_step",
+   "type": "number",
+   "role": "motion",
+   "label": "Letters per pose",
+   "default": 1.6,
+   "min": 0.5,
+   "max": 4
+  },
+  {
+   "id": "step",
+   "type": "number",
+   "role": "motion",
+   "label": "Frames per pose",
+   "default": 3,
+   "min": 1,
+   "max": 6
+  },
+  {
+   "id": "delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Delay",
+   "default": 0,
+   "min": 0,
+   "max": 120
+  },
+  {
+   "id": "weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#26242c"
+  },
+  {
+   "id": "align",
+   "type": "enum",
+   "role": "style",
+   "label": "Align",
+   "default": "center"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

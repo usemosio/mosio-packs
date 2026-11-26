@@ -1,0 +1,90 @@
+{
+ "name": "animated-gradient-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Animata",
+ "source": {
+  "repo": "https://github.com/codse/animata",
+  "path": "animata/text/animated-gradient-text.tsx",
+  "commit": "25c27e5a874c60a56dcc1609df3b2c4f5f8456f8"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Animated Gradient Text\n\nText filled with a wide three-colour gradient that drifts slowly from one end to the other and back, so the colours flow through the letters.\n\nCategory: typography. Length: 6 s. WebGL: no.\n\nUse when:\n- A headline or tagline should shimmer with moving colour, not a single sweep.\n- A calm, always-alive colour flow on a hero word.\n\nAvoid when:\n- One quick highlight pass over plain text: use text-shimmer or shimmer-sweep.\n- The text must hold a single brand colour.\n\nVariables:\n- text (string): Text, default \"Hello, world!\"\n- font_size (number, 12-320): Font size, default 130\n- color_from (color): Start color, default \"#eab308\"\n- color_via (color): Middle color, default \"#a16207\"\n- color_to (color): End color, default \"#ec4899\"\n- leg (number, 0.5-10): Leg duration, default 3\n- font_weight (enum): Font weight, default \"700\"\n\nSource: https://github.com/codse/animata. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Animated Gradient Text\n\n  Text filled with a wide three-colour gradient that drifts slowly from one end to the other and back, so the colours flow through the letters.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/codse/animata/blob/25c27e5a874c60a56dcc1609df3b2c4f5f8456f8/animata/text/animated-gradient-text.tsx\n  and animata/styles/globals.css (the bg-position keyframes: 3 s, alternating)\n  MIT License\n\n  Copyright (c) Animata\n\n  Permission is hereby granted, free of charge, to any person obtaining\n  a copy of this software and associated documentation files (the\n  \"Software\"), to deal in the Software without restriction, including\n  without limitation the rights to use, copy, modify, merge, publish,\n  distribute, sublicense, and/or sell copies of the Software, and to\n  permit persons to whom the Software is furnished to do so, subject to\n  the following conditions:\n\n  The above copyright notice and this permission notice shall be\n  included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"animated-gradient-text\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Text filled with the gradient.\", \"default\": \"Hello, world!\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 130, \"min\": 12, \"max\": 320, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color_from\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Start color\", \"description\": \"Gradient colour at 30 %.\", \"default\": \"#eab308\"},\n    {\"id\": \"color_via\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Middle color\", \"description\": \"Gradient colour at 50 %.\", \"default\": \"#a16207\"},\n    {\"id\": \"color_to\", \"type\": \"color\", \"role\": \"style\", \"label\": \"End color\", \"description\": \"Gradient colour at 80 %.\", \"default\": \"#ec4899\"},\n    {\"id\": \"leg\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Leg duration\", \"description\": \"Seconds for the gradient to drift from one end to the other.\", \"default\": 3, \"min\": 0.5, \"max\": 10, \"step\": 0.5, \"unit\": \"s\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"900\", \"label\": \"Black\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Animated Gradient Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .agt-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .agt-text { display: inline-block; line-height: 1.15; white-space: pre; padding: 0 0.04em; color: transparent; -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text; background-size: 200% auto; background-position: 0% 50%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"animated-gradient-text\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"agt-clip\" class=\"agt-stage clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\">\n          <span id=\"agt-text\" class=\"agt-text\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function opt(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : v === \"true\" ? true : v === \"false\" ? false : f; }\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > max) { size = Math.max(12, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            \n            var el = document.getElementById(\"agt-text\");\n            el.textContent = str(vars.text, \"Hello, world!\");\n            root.style.fontWeight = opt(vars.font_weight, [\"300\",\"400\",\"500\",\"600\",\"700\",\"900\"], \"700\");\n            el.style.backgroundImage = \"linear-gradient(to right, \" + col(vars.color_from, \"#eab308\") + \" 30%, \" + col(vars.color_via, \"#a16207\") + \" 50%, \" + col(vars.color_to, \"#ec4899\") + \" 80%)\";\n            fit(el, num(vars.font_size, 130, 12, 320), 0.9);\n            var leg = num(vars.leg, 3, 0.5, 10);\n            gsap.registerPlugin(CustomEase);\n            var ease = CustomEase.create(\"agt-ease\", \"M0,0 C0.25,0.1 0.25,1 1,1\");\n            var st = { p: 0 };\n            function draw() { el.style.backgroundPosition = (st.p * 100).toFixed(2) + \"% 50%\"; }\n            var tl = gsap.timeline({ paused: true });\n            var total0 = parseFloat(root.dataset.duration || \"6\");\n            for (var t = 0, up = true; t < total0 - 0.001; t += leg, up = !up) {\n              tl.fromTo(st, { p: up ? 0 : 1 }, { p: up ? 1 : 0, duration: leg, ease: ease, onUpdate: draw, immediateRender: false }, t);\n            }\n            draw();\n            var total = parseFloat(root.dataset.duration || \"6\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"animated-gradient-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "2ddcbe5ff687930515e5d13ed1660663f60b970044184aee7027896412da3b71",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 170
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Hello, world!"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 130,
+   "min": 12,
+   "max": 320
+  },
+  {
+   "id": "color_from",
+   "type": "color",
+   "role": "style",
+   "label": "Start color",
+   "default": "#eab308"
+  },
+  {
+   "id": "color_via",
+   "type": "color",
+   "role": "style",
+   "label": "Middle color",
+   "default": "#a16207"
+  },
+  {
+   "id": "color_to",
+   "type": "color",
+   "role": "style",
+   "label": "End color",
+   "default": "#ec4899"
+  },
+  {
+   "id": "leg",
+   "type": "number",
+   "role": "motion",
+   "label": "Leg duration",
+   "default": 3,
+   "min": 0.5,
+   "max": 10
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://animata.design"
+}

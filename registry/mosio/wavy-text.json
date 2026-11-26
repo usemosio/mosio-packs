@@ -1,0 +1,95 @@
+{
+ "name": "wavy-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Eldora UI",
+ "source": {
+  "repo": "https://github.com/karthikmudunuri/eldoraui",
+  "path": "apps/www/registry/eldoraui/wavy-text.tsx",
+  "commit": "6bb8fd211ecbdfa983f5780bead27d9f3890f20a"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Wavy Text\n\nLetters bob up and down in a continuous wave, each starting a beat after the one before, like a ripple running along the word.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- A playful word or title should keep gently moving while it is on screen.\n- A looping accent for a short label.\n\nAvoid when:\n- A one-shot reveal: use per-character-rise.\n- Serious or dense copy.\n\nVariables:\n- text (string): Text, default \"Wavy Text\"\n- amplitude (number, 0-80): Amplitude, default 10\n- duration (number, 0.15-2): Half-wave time, default 0.5\n- stagger (number, 0.02-0.6): Stagger, default 0.2\n- font_size (number, 12-260): Font size, default 120\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"700\"\n\nSource: https://github.com/karthikmudunuri/eldoraui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Wavy Text\n\n  Letters bob up and down in a continuous wave, each starting a beat after the one before, like a ripple running along the word.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/karthikmudunuri/eldoraui/blob/6bb8fd211ecbdfa983f5780bead27d9f3890f20a/apps/www/registry/eldoraui/wavy-text.tsx\n\n  MIT License\n\n  Copyright (c) Mudunuri Bhaskara Karthikeya Varma\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"wavy-text\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Word or short phrase.\", \"default\": \"Wavy Text\"},\n    {\"id\": \"amplitude\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Amplitude\", \"description\": \"How far each letter travels up and down from centre. Scales with font size (72px = source).\", \"default\": 10, \"min\": 0, \"max\": 80, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Half-wave time\", \"description\": \"Seconds for a letter to go from bottom to top.\", \"default\": 0.5, \"min\": 0.15, \"max\": 2, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"stagger\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Seconds between one letter and the next.\", \"default\": 0.2, \"min\": 0.02, \"max\": 0.6, \"step\": 0.01, \"unit\": \"s\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels. The source is built for 72px type; its pixel offsets scale with this size.\", \"default\": 120, \"min\": 12, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Wavy Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, \"Geist\", system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .wvt-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .wvt-line { display: flex; justify-content: center; gap: 0.11em; line-height: 1.3; letter-spacing: -0.02em; white-space: pre; text-shadow: 0 1px 2px rgba(0,0,0,0.12); }\n        .wvt-ch { display: inline-block; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"wavy-text\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"wvt-clip\" class=\"wvt-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <div id=\"wvt-line\" class=\"wvt-line\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function pick(v, l, f) { return l.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { if (typeof v === \"boolean\") return v; if (v === \"true\") return true; if (v === \"false\") return false; return f; }\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            gsap.registerPlugin(CustomEase);\n            var total = parseFloat(root.dataset.duration || \"4\");\n            // Motion tweens with no easing named run easeInOut.\n            var EIO = CustomEase.create(\"wvt-eio\", \"M0,0 C0.42,0 0.58,1 1,1\");\n            // Unit step response of a damped spring (semi-implicit Euler at 480 Hz), sampled once.\n            function springTable(k, c, m, dur) {\n              var dt = 1 / 480, x = 0, v = 0, out = [0];\n              for (var t = 0; t < dur; t += dt) { v += ((-k * (x - 1) - c * v) / m) * dt; x += v * dt; out.push(x); }\n              return out;\n            }\n            function springAt(tab, tau) {\n              if (tau <= 0) return 0;\n              var i = tau * 480; if (i >= tab.length - 1) return tab[tab.length - 1];\n              var j = Math.floor(i); return tab[j] + (tab[j + 1] - tab[j]) * (i - j);\n            }\n            var clock = { t: 0 };\n            function finish(tl, draw) {\n              if (draw) { tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0); draw(0); }\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"wavy-text\"] = tl;\n            }\n\n\n            var line = document.getElementById(\"wvt-line\");\n            var text = str(vars.text, \"Wavy Text\");\n            var size = num(vars.font_size, 72, 12, 260), f = size / 72;\nvar amp = num(vars.amplitude, 10, 0, 80) * f, dur = num(vars.duration, 0.5, 0.15, 2), stg = num(vars.stagger, 0.2, 0.02, 0.6);\n            line.style.fontSize = size + \"px\"; line.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\", \"800\"], \"700\");\n            line.setAttribute(\"aria-label\", text);\n            var spans = Array.from(text).map(function (ch) { var s = document.createElement(\"span\"); s.className = \"wvt-ch\"; s.textContent = ch === \" \" ? \" \" : ch; line.appendChild(s); return s; });\n            var maxW = root.clientWidth * 0.92;\n            if (line.scrollWidth > maxW) { var r = maxW / line.scrollWidth; size *= r; amp *= r; line.style.fontSize = size + \"px\"; }\n            var tl = gsap.timeline({ paused: true });\n            spans.forEach(function (s, i) {\n              var t0 = i * stg, reps = Math.max(0, Math.floor((total - t0) / dur) - 1);\n              gsap.set(s, { y: amp });\n              tl.fromTo(s, { y: amp }, { y: -amp, duration: dur, ease: EIO, repeat: reps, yoyo: true, immediateRender: true }, t0);\n            });\n            finish(tl, null);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "287c876569b8e024fd8bb90c6d25501a15b3fde544d43c30ae85db22a976bc69",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 150,
+  "amplitude": 22
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Wavy Text"
+  },
+  {
+   "id": "amplitude",
+   "type": "number",
+   "role": "motion",
+   "label": "Amplitude",
+   "default": 10,
+   "min": 0,
+   "max": 80
+  },
+  {
+   "id": "duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Half-wave time",
+   "default": 0.5,
+   "min": 0.15,
+   "max": 2
+  },
+  {
+   "id": "stagger",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 0.2,
+   "min": 0.02,
+   "max": 0.6
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 120,
+   "min": 12,
+   "max": 260
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://www.eldoraui.site"
+}

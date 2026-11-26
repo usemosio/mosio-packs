@@ -1,0 +1,111 @@
+{
+ "name": "order-tracker",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "UI animation: a progress line with a travelling marker and check-offs"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Order Tracker\n\nA four-step order progress line (Pesanan diterima, Dikemas, Dikirim, Sampai): a dot travels along the line, each step checks off as it passes, and the current step's label grows. Vertical in portrait, horizontal in landscape. The steps and the current step are variables.\n\nCategory: commerce. Length: 6 s. WebGL: no.\n\nUse when:\n- Telling customers how an order moves from received to delivered.\n- An online shop or home-delivery promo that wants to show the process is simple.\n\nAvoid when:\n- A checkout or payment form: use checkout-flow.\n- A to-do list of tasks being completed: use check-list.\n\nVariables:\n- title (string): Title, default \"Pesanan #A-1048\"\n- subtitle (string): Subtitle, default \"Kopi Senja \\u00b7 2 item\"\n- steps (string): Steps, default \"Pesanan diterima; Dikemas; Dikirim; Sampai\"\n- current (number, 1-5): Current step, default 3\n- step_seconds (number, 0.3-1.5): Seconds per step, default 0.7\n- bg_color (color): Background, default \"#ffffff\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- main_color (color): Accent, default \"#2563eb\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Order Tracker\n\n  A four-step order progress line (Pesanan diterima, Dikemas, Dikirim, Sampai): a dot travels along the line, each step checks off as it passes, and the current step's label grows. Vertical in portrait, horizontal in landscape. The steps and the current step are variables.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"order-tracker\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n  {\n    \"id\": \"title\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Title\",\n    \"description\": \"Headline above the line, for example the order number.\",\n    \"default\": \"Pesanan #A-1048\"\n  },\n  {\n    \"id\": \"subtitle\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Subtitle\",\n    \"description\": \"Small line under the title. Leave empty to hide it.\",\n    \"default\": \"Kopi Senja · 2 item\"\n  },\n  {\n    \"id\": \"steps\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Steps\",\n    \"description\": \"Steps separated by semicolons, two to five of them.\",\n    \"default\": \"Pesanan diterima; Dikemas; Dikirim; Sampai\"\n  },\n  {\n    \"id\": \"current\",\n    \"type\": \"number\",\n    \"role\": \"content\",\n    \"label\": \"Current step\",\n    \"description\": \"Step the dot travels to (1 is the first). Earlier steps are checked off, later ones stay grey.\",\n    \"default\": 3,\n    \"min\": 1,\n    \"max\": 5,\n    \"step\": 1\n  },\n  {\n    \"id\": \"step_seconds\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Seconds per step\",\n    \"description\": \"How long the dot takes between two steps.\",\n    \"default\": 0.7,\n    \"min\": 0.3,\n    \"max\": 1.5,\n    \"step\": 0.05\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Main text and outlines.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Secondary text and hairlines.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent\",\n    \"description\": \"Progress line, dot and checks: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Font family name. Geist is loaded by default; another family must be loaded by the host.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Order Tracker</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          color: var(--ot-text); font-family: var(--FAM, Geist), system-ui, sans-serif; background: var(--ot-bg);\n        }\n        #root * { box-sizing: border-box; }\n        .ot-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        .ot-wrap { position: absolute; left: 50%; top: 50%; transform-origin: 50% 50%; }\n        .ot-title { position: absolute; left: 0; font-size: calc(var(--u) * 70); font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; white-space: nowrap; }\n        .ot-sub { position: absolute; left: 0; font-size: calc(var(--u) * 34); font-weight: 500; color: var(--ot-muted); white-space: nowrap; }\n        .ot-base, .ot-fill { position: absolute; border-radius: calc(var(--u) * 4); }\n        .ot-base { background: rgba(115,115,115,0.28); }\n        .ot-fill { background: var(--ot-main); }\n        .ot-node { position: absolute; width: calc(var(--u) * 64); height: calc(var(--u) * 64); margin: calc(var(--u) * -32) 0 0 calc(var(--u) * -32); border-radius: 50%; border: calc(var(--u) * 5) solid rgba(115,115,115,0.45); background: var(--ot-bg); }\n        .ot-node i { position: absolute; inset: calc(var(--u) * -5); border-radius: 50%; background: var(--ot-main); }\n        .ot-node svg { position: absolute; inset: calc(var(--u) * -5); width: calc(100% + var(--u) * 10); height: calc(100% + var(--u) * 10); }\n        .ot-lab { position: absolute; white-space: nowrap; font-size: calc(var(--u) * 44); font-weight: 600; letter-spacing: -0.025em; line-height: 1.1; color: var(--ot-muted); }\n        .ot-dot { position: absolute; width: calc(var(--u) * 30); height: calc(var(--u) * 30); margin: calc(var(--u) * -15) 0 0 calc(var(--u) * -15); border-radius: 50%; background: var(--ot-bg); border: calc(var(--u) * 7) solid var(--ot-main); z-index: 3; }\n        .ot-ring { position: absolute; width: calc(var(--u) * 90); height: calc(var(--u) * 90); margin: calc(var(--u) * -45) 0 0 calc(var(--u) * -45); border-radius: 50%; border: calc(var(--u) * 4) solid var(--ot-main); z-index: 2; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"order-tracker\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"ot-clip\" class=\"ot-stage clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\">\n\n          <div class=\"ot-wrap\" id=\"ot-wrap\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function svg(tag, attrs, parent) { var e = document.createElementNS(\"http://www.w3.org/2000/svg\", tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function rp(n) { return \"Rp\" + dots(n); }\n            function money(s) { var d = String(s).replace(/[^\\d]/g, \"\"); return d ? parseInt(d, 10) : 0; }\n            function list(s, d) { var a = String(str(s, d)).split(\";\").map(function (x) { return x.trim(); }).filter(Boolean); return a.length ? a : String(d).split(\";\").map(function (x) { return x.trim(); }); }\n            function mulberry(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function setColors(p, c) { for (var k in c) root.style.setProperty(\"--\" + p + \"-\" + k, colr(vars[k + \"_color\"], c[k])); }\n            var fam = str(vars.font_family, \"Geist\");\n            root.style.setProperty(\"--FAM\", /^[\\w\\s-]+$/.test(fam) ? '\"' + fam + '\"' : \"Geist\");\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n            setColors(\"ot\", { bg: \"#ffffff\", text: \"#0a0a0a\", muted: \"#737373\", main: \"#2563eb\" });\n\n\n            var title = str(vars.title, \"Pesanan #A-1048\");\n            var sub = typeof vars.subtitle === \"string\" ? vars.subtitle.trim() : \"Kopi Senja · 2 item\";\n            var steps = list(vars.steps, \"Pesanan diterima; Dikemas; Dikirim; Sampai\").slice(0, 5);\n            if (steps.length < 2) steps = [\"Pesanan diterima\", \"Sampai\"];\n            var n = steps.length;\n            var cur = Math.round(num(vars.current, 3, 1, 5)); cur = Math.min(cur, n);\n            var seg = num(vars.step_seconds, 0.7, 0.3, 1.5);\n            var cText = colr(vars.text_color, \"#0a0a0a\"), cMuted = colr(vars.muted_color, \"#737373\"), cMain = colr(vars.main_color, \"#2563eb\");\n            var wrap = document.getElementById(\"ot-wrap\");\n            var u = U;\n            var gap = PORTRAIT ? 250 * u : 440 * u;\n            var titleH = (sub ? 190 : 120) * u;\n            var gw, gh, pos = [];\n            var tEl = el(\"div\", \"ot-title\", wrap); tEl.textContent = title;\n            var sEl = el(\"div\", \"ot-sub\", wrap); sEl.textContent = sub; if (!sub) sEl.style.display = \"none\";\n            if (PORTRAIT) {\n              var maxw = Math.max(tEl.offsetWidth, sEl.offsetWidth);\n              steps.forEach(function (t) { var probe = el(\"div\", \"ot-lab\", wrap); probe.textContent = t; maxw = Math.max(maxw, 62 * u + probe.offsetWidth * 1.3 + 32 * u); wrap.removeChild(probe); });\n              gw = maxw; gh = titleH + 80 * u + (n - 1) * gap + 40 * u;\n              tEl.style.top = \"0px\"; sEl.style.top = 90 * u + \"px\";\n              for (var i = 0; i < n; i++) pos.push({ x: 32 * u, y: titleH + 80 * u + i * gap });\n            } else {\n              gw = (n - 1) * gap + 440 * u; gh = titleH + 80 * u + 140 * u;\n              tEl.style.left = \"50%\"; tEl.style.transform = \"translateX(-50%)\"; tEl.style.top = \"0px\";\n              sEl.style.left = \"50%\"; sEl.style.transform = \"translateX(-50%)\"; sEl.style.top = 90 * u + \"px\";\n              for (var j = 0; j < n; j++) pos.push({ x: 220 * u + j * gap, y: titleH + 40 * u });\n            }\n            wrap.style.width = gw + \"px\"; wrap.style.height = gh + \"px\";\n            var S = Math.min(1.35, (H * 0.9) / gh, (W * 0.92) / gw);\n            gsap.set(wrap, { xPercent: -50, yPercent: -50, scale: S });\n            var tk = 6 * u;\n            var base = el(\"div\", \"ot-base\", wrap), fill = el(\"div\", \"ot-fill\", wrap);\n            var a = pos[0], z = pos[n - 1];\n            if (PORTRAIT) { [base, fill].forEach(function (e) { e.style.left = a.x - tk / 2 + \"px\"; e.style.top = a.y + \"px\"; e.style.width = tk + \"px\"; e.style.height = z.y - a.y + \"px\"; }); fill.style.transformOrigin = \"50% 0%\"; }\n            else { [base, fill].forEach(function (e) { e.style.left = a.x + \"px\"; e.style.top = a.y - tk / 2 + \"px\"; e.style.height = tk + \"px\"; e.style.width = z.x - a.x + \"px\"; }); fill.style.transformOrigin = \"0% 50%\"; }\n            var nodes = [], labs = [], ticks = [], discs = [];\n            for (var k = 0; k < n; k++) {\n              var nd = el(\"div\", \"ot-node\", wrap); nd.style.left = pos[k].x + \"px\"; nd.style.top = pos[k].y + \"px\";\n              var disc = el(\"i\", \"\", nd);\n              var sv = svg(\"svg\", { viewBox: \"0 0 64 64\" }, nd);\n              var pth = svg(\"path\", { d: \"M19 33 L28 42 L45 23\", fill: \"none\", stroke: \"#fff\", \"stroke-width\": 6, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\", pathLength: 1 }, sv);\n              pth.style.strokeDasharray = \"1\"; pth.style.strokeDashoffset = \"1\";\n              var lb = el(\"div\", \"ot-lab\", wrap); lb.textContent = steps[k];\n              if (PORTRAIT) { lb.style.left = pos[k].x + 62 * u + \"px\"; lb.style.top = pos[k].y + \"px\"; lb.style.transformOrigin = \"0% 50%\"; lb.style.transform = \"translateY(-50%)\"; }\n              else { lb.style.left = pos[k].x + \"px\"; lb.style.top = pos[k].y + 62 * u + \"px\"; lb.style.fontSize = 38 * u + \"px\"; lb.style.transformOrigin = \"50% 0%\"; lb.style.transform = \"translateX(-50%)\"; }\n              nodes.push(nd); labs.push(lb); ticks.push(pth); discs.push(disc);\n            }\n            var dot = el(\"div\", \"ot-dot\", wrap), ring = el(\"div\", \"ot-ring\", wrap);\n            [dot, ring].forEach(function (e) { e.style.left = pos[0].x + \"px\"; e.style.top = pos[0].y + \"px\"; });\n\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo([tEl, sEl], { opacity: 0, y: 24 * u }, { opacity: 1, y: 0, duration: 0.55, ease: \"power3.out\", stagger: 0.08 }, 0.1);\n            tl.fromTo(base, { scaleY: PORTRAIT ? 0 : 1, scaleX: PORTRAIT ? 1 : 0 }, { scaleY: 1, scaleX: 1, duration: 0.7, ease: \"power3.out\", transformOrigin: PORTRAIT ? \"50% 0%\" : \"0% 50%\" }, 0.35);\n            nodes.forEach(function (nd, i) { tl.fromTo([nd, labs[i]], { opacity: 0 }, { opacity: 1, duration: 0.4, ease: \"power2.out\" }, 0.45 + i * 0.08); });\n            tl.fromTo(discs, { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);\n            var t0 = 1.0;\n            function arrive(i, t) {\n              tl.fromTo(discs[i], { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.3, ease: \"back.out(1.8)\" }, t);\n              tl.fromTo(ticks[i], { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.28, ease: \"power2.out\" }, t + 0.08);\n              tl.fromTo(labs[i], { color: cMuted }, { color: cText, duration: 0.3, ease: \"power2.out\" }, t);\n            }\n            tl.fromTo(dot, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: \"back.out(1.8)\" }, t0 - 0.2);\n            arrive(0, t0);\n            var tt = t0 + 0.35;\n            for (var m = 1; m < cur; m++) {\n              var dx = pos[m].x - pos[m - 1].x, dy = pos[m].y - pos[m - 1].y;\n              tl.to(dot, { x: \"+=\" + dx, y: \"+=\" + dy, duration: seg, ease: \"power2.inOut\" }, tt);\n              if (PORTRAIT) tl.fromTo(fill, { scaleY: (m - 1) / (n - 1) }, { scaleY: m / (n - 1), duration: seg, ease: \"power2.inOut\" }, tt);\n              else tl.fromTo(fill, { scaleX: (m - 1) / (n - 1) }, { scaleX: m / (n - 1), duration: seg, ease: \"power2.inOut\" }, tt);\n              arrive(m, tt + seg - 0.05);\n              tt += seg + 0.12;\n            }\n            if (cur === 1) { if (PORTRAIT) tl.set(fill, { scaleY: 0 }, 0); else tl.set(fill, { scaleX: 0 }, 0); }\n            else { if (PORTRAIT) tl.set(fill, { scaleY: 0 }, 0); else tl.set(fill, { scaleX: 0 }, 0); }\n            var tg = tt - 0.1;\n            tl.fromTo(labs[cur - 1], { scale: 1 }, { scale: 1.3, duration: 0.5, ease: \"back.out(1.6)\", transformOrigin: PORTRAIT ? \"0% 50%\" : \"50% 0%\" }, tg);\n            tl.fromTo(ring, { scale: 0.5, opacity: 0.6 }, { scale: 1.6, opacity: 0, duration: 0.7, ease: \"power2.out\" }, tg - 0.05);\n\n            var total = parseFloat(root.dataset.duration || \"6\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"order-tracker\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "b0ce1ba7f2aff160617aeda59c955569ecb67641189d20fdebc1c83b45106d6b",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "title",
+   "type": "string",
+   "role": "content",
+   "label": "Title",
+   "default": "Pesanan #A-1048"
+  },
+  {
+   "id": "subtitle",
+   "type": "string",
+   "role": "content",
+   "label": "Subtitle",
+   "default": "Kopi Senja · 2 item"
+  },
+  {
+   "id": "steps",
+   "type": "string",
+   "role": "content",
+   "label": "Steps",
+   "default": "Pesanan diterima; Dikemas; Dikirim; Sampai"
+  },
+  {
+   "id": "current",
+   "type": "number",
+   "role": "content",
+   "label": "Current step",
+   "default": 3,
+   "min": 1,
+   "max": 5
+  },
+  {
+   "id": "step_seconds",
+   "type": "number",
+   "role": "motion",
+   "label": "Seconds per step",
+   "default": 0.7,
+   "min": 0.3,
+   "max": 1.5
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2563eb"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

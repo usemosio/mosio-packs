@@ -1,0 +1,112 @@
+{
+ "name": "zoom-words",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/zoom-words/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Zoom Words\n\nHuge words fade into a long line while the camera rides the write head.\n\nCategory: typography. Length: 2.5 s. WebGL: no.\n\nUse when:\n- An intro should open uncomfortably close: huge words appear one by one while the camera tracks the growing line off-frame.\n- The shot starts slightly defocused and sharpens while the reveal runs.\n\nAvoid when:\n- The whole phrase must fit the frame at rest: use per-word-crossfade or word-stream.\n- You need character-by-character typing with a caret: use typewriter.\n\nVariables:\n- text (string): Text, default \"Still piecing together tools\"\n- font_size (number, 12-160): Font size, default 64\n- zoom (number, 1-4): Zoom, default 2.2\n- color (color): Color, default \"#cfc2ff\"\n- font_weight (enum): Font weight, default \"400\"\n- word_gap (number, 4-24): Word gap, default 12\n- anchor (number, 0.2-0.9): Anchor, default 0.5\n- blur (number, 0-0.3): Blur, default 0.04\n- blur_frames (number, 10-120): Blur frames, default 60\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Zoom Words\n\n  Huge words fade into a long line while the camera rides the write head.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/zoom-words/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"zoom-words\"\n  data-composition-duration=\"2.5\"\n  data-composition-variables='[\n    { \"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Phrase written word by word while the camera follows.\", \"default\": \"Still piecing together tools\" },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Type size in pixels, before the camera zoom.\", \"default\": 64, \"min\": 12, \"max\": 160, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"zoom\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Zoom\", \"description\": \"Camera zoom on the whole line.\", \"default\": 2.2, \"min\": 1, \"max\": 4, \"step\": 0.1 },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#cfc2ff\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"400\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}] },\n    { \"id\": \"word_gap\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Word gap\", \"description\": \"Frames per word across the whole phrase (30 fps).\", \"default\": 12, \"min\": 4, \"max\": 24, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"anchor\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Anchor\", \"description\": \"Horizontal position of the write head, 0 left to 1 right.\", \"default\": 0.5, \"min\": 0.2, \"max\": 0.9, \"step\": 0.05 },\n    { \"id\": \"blur\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Blur\", \"description\": \"Starting defocus as a fraction of the zoomed font size.\", \"default\": 0.04, \"min\": 0, \"max\": 0.3, \"step\": 0.01 },\n    { \"id\": \"blur_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Blur frames\", \"description\": \"Frames the defocus takes to sharpen (30 fps).\", \"default\": 60, \"min\": 10, \"max\": 120, \"step\": 1, \"unit\": \"frames\" }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Zoom Words</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #cfc2ff);\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .zmw-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .zmw-world { position: absolute; inset: 0; }\n        .zmw-head { position: absolute; top: 50%; transform: translateY(-50%); white-space: pre; }\n        .zmw-line { display: inline-flex; align-items: baseline; letter-spacing: -0.02em; line-height: 1.15; white-space: pre; }\n        .zmw-word { display: inline-block; white-space: pre; opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"zoom-words\" data-duration=\"2.5\" data-fps=\"30\">\n        <div id=\"zmw-clip\" class=\"zmw-stage clip\" data-start=\"0\" data-duration=\"2.5\" data-track-index=\"0\">\n          <div id=\"zmw-world\" class=\"zmw-world\">\n            <div id=\"zmw-head\" class=\"zmw-head\"><span id=\"zmw-line\" class=\"zmw-line\"></span></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            gsap.registerPlugin(CustomEase);\n            function bz(id, a, b, c, d) {\n              return CustomEase.create(\"zmw-\" + id, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\");\n            }\n            // interpolate(frame, [a, b], [from, to], { easing }) as a tween (frames at 30 fps).\n            function tw(tl, el, from, to, a, b, ease, keep) {\n              var t = Object.assign({}, to, { duration: (b - a) / 30, ease: ease || \"none\", immediateRender: !keep });\n              tl.fromTo(el, from, t, a / 30);\n            }\n            // Shrink an element's font size so it fits a fraction of the frame width.\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            var TOTAL = parseFloat(root.dataset.duration || \"2.5\");\n            function finish(tl) {\n              if (tl.duration() < TOTAL) tl.to({}, { duration: TOTAL - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"zoom-words\"] = tl;\n            }\n            var text = str(vars.text, \"Still piecing together tools\");\n            var weight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"400\");\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            // interpolate() with clamping, easing given as a function of progress.\n            function ip(f, a, b, from, to, ease) {\n              var p = b === a ? 1 : Math.min(1, Math.max(0, (f - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n\n            var size = num(vars.font_size, 64, 12, 160);\n            var zoom = num(vars.zoom, 2.2, 1, 4);\n            var gap = num(vars.word_gap, 12, 4, 24);\n            var anchor = num(vars.anchor, 0.5, 0.2, 0.9);\n            var blur = num(vars.blur, 0.04, 0, 0.3);\n            var blurFrames = num(vars.blur_frames, 60, 10, 120);\n            var world = document.getElementById(\"zmw-world\");\n            var head = document.getElementById(\"zmw-head\");\n            var line = document.getElementById(\"zmw-line\");\n            line.style.fontWeight = weight;\n            line.style.fontSize = size + \"px\";\n            head.style.left = anchor * 100 + \"%\";\n            world.style.transform = \"scale(\" + zoom + \")\";\n            var words = text.trim().split(/\\s+/).filter(Boolean);\n            var spans = words.map(function (w, i) {\n              var s = document.createElement(\"span\");\n              s.id = \"zmw-word-\" + i;\n              s.className = \"zmw-word\";\n              s.textContent = w + (i < words.length - 1 ? \" \" : \"\");\n              line.appendChild(s);\n              return s;\n            });\n\n            function smooth(t) { var x = Math.min(Math.max(t, 0), 1); return x * x * (3 - 2 * x); }\n            function wEm(w) { return Array.from(w).length * 0.52 + 0.3; }\n            var phraseEase = bz(\"phrase\", 0.5, 0, 0.7, 0.7);\n            var phraseFrames = words.length * gap;\n            var totalEm = words.reduce(function (s, w) { return s + wEm(w); }, 0);\n            var firstHalf = wEm(words[0]) / 2;\n            var lastHalf = wEm(words[words.length - 1]) / 2;\n            var travelMax = Math.max(totalEm - lastHalf - firstHalf, 0.001);\n            var P = { f: 0 };\n            function apply() {\n              var f = P.f;\n              var wp = words.length * ip(f, 0, phraseFrames, 0, 1, phraseEase);\n              var revealed = 0;\n              words.forEach(function (w, i) { revealed += wEm(w) * smooth((wp - i + 0.5) / 2); });\n              var raw = Math.min(Math.max(revealed, 0), travelMax);\n              var cam = firstHalf + travelMax * smooth(raw / travelMax);\n              line.style.transform = \"translateX(-\" + ((cam / totalEm) * 100).toFixed(3) + \"%)\";\n              var b = blur * size * zoom * ip(f, 0, blurFrames, 1, 0);\n              world.style.filter = b > 0.05 ? \"blur(\" + b + \"px)\" : \"none\";\n              spans.forEach(function (s, i) {\n                var p = smooth((wp - i + 0.5) / 2);\n                var wb = 0.05 * size * (1 - p);\n                var arrive = 1 - smooth(p * 1.6);\n                s.style.opacity = smooth(p * 1.2);\n                s.style.filter = wb > 0.05 ? \"blur(\" + wb + \"px)\" : \"none\";\n                s.style.transform = \"translate(\" + 0.16 * size * arrive + \"px, \" + 0.12 * size * arrive + \"px)\";\n              });\n            }\n            apply();\n            var tl = gsap.timeline({ paused: true });\n            tl.to(P, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: apply }, 0);\n            finish(tl);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "0e28712ba00b4a096130883f520050a7407e431ac6f6a4d0ac6f21845b757279",
+ "duration": 2.5,
+ "webgl": false,
+ "demo_background": "linear-gradient(180deg, #0a0612 25%, #6a3fd6 100%)",
+ "demo_values": {
+  "font_size": 72
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Still piecing together tools"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 64,
+   "min": 12,
+   "max": 160
+  },
+  {
+   "id": "zoom",
+   "type": "number",
+   "role": "motion",
+   "label": "Zoom",
+   "default": 2.2,
+   "min": 1,
+   "max": 4
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#cfc2ff"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "400"
+  },
+  {
+   "id": "word_gap",
+   "type": "number",
+   "role": "motion",
+   "label": "Word gap",
+   "default": 12,
+   "min": 4,
+   "max": 24
+  },
+  {
+   "id": "anchor",
+   "type": "number",
+   "role": "motion",
+   "label": "Anchor",
+   "default": 0.5,
+   "min": 0.2,
+   "max": 0.9
+  },
+  {
+   "id": "blur",
+   "type": "number",
+   "role": "motion",
+   "label": "Blur",
+   "default": 0.04,
+   "min": 0,
+   "max": 0.3
+  },
+  {
+   "id": "blur_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Blur frames",
+   "default": 60,
+   "min": 10,
+   "max": 120
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

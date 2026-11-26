@@ -1,0 +1,83 @@
+{
+ "name": "animated-bar-chart",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/animated-bar-chart/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Animated Bar Chart\n\nBars spring up from the baseline with a staggered cascade.\n\nCategory: ui-blocks. Length: 3 s. WebGL: no.\n\nUse when:\n- Showing comparative categorical metrics in a product demo: feature usage, plan distribution, benchmark scores.\n- A results slide needs a data-revealed moment; the stagger draws attention to the tallest bar last.\n\nAvoid when:\n- The data is change over time: use animated-line-chart.\n- You have a single data point: use a number counter.\n\nVariables:\n- data (string): Data, default \"35, 60, 45, 80, 55, 70, 90, 65\"\n- labels (string): Labels, default \"\"\n- bar_color (color): Bar color, default \"#0ea5e9\"\n- gap (number, 0-80): Gap, default 16\n- stagger_frames (number, 0-30): Stagger frames, default 6\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Animated Bar Chart\n\n  Bars spring up from the baseline with a staggered cascade.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/animated-bar-chart/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"animated-bar-chart\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    {\"id\": \"data\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Data\", \"description\": \"Comma-separated bar values.\", \"default\": \"35, 60, 45, 80, 55, 70, 90, 65\"},\n    {\"id\": \"labels\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Labels\", \"description\": \"Optional comma-separated labels under the bars.\", \"default\": \"\"},\n    {\"id\": \"bar_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Bar color\", \"description\": \"Bar color.\", \"default\": \"#0ea5e9\"},\n    {\"id\": \"gap\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Gap\", \"description\": \"Gap between bars (in a 1000 px wide chart).\", \"default\": 16, \"min\": 0, \"max\": 80, \"step\": 2, \"unit\": \"px\"},\n    {\"id\": \"stagger_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger frames\", \"description\": \"Frames between one bar and the next.\", \"default\": 6, \"min\": 0, \"max\": 30, \"step\": 1, \"unit\": \"frames\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Animated Bar Chart</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { font-family: Geist, -apple-system, BlinkMacSystemFont, sans-serif; }\n        .abc-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .abc-svg { display: block; overflow: visible; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"animated-bar-chart\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"abc-clip\" class=\"abc-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <svg id=\"abc-svg\" class=\"abc-svg\" xmlns=\"http://www.w3.org/2000/svg\"></svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return value !== \"\" && value !== null && Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function bezier(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 32; i++) {\n                  var u = 1 - t;\n                  var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                var v = 1 - t;\n                return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n              };\n            }\n            function clamp01(p) { return Math.min(1, Math.max(0, p)); }\n            function ip(x, a, b, from, to, ease) {\n              var p = b === a ? (x >= b ? 1 : 0) : clamp01((x - a) / (b - a));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n            // Damped spring from 0 to 1, rest at 0 velocity (mass, stiffness, damping), at `frame` of 30 fps.\n            function spring(frame, cfg) {\n              if (frame <= 0) return 0;\n              var t = frame / 30, m = cfg.mass, k = cfg.stiffness, c = cfg.damping;\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              if (z < 1) {\n                var wd = w0 * Math.sqrt(1 - z * z);\n                return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t));\n              }\n              return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n            }\n            // Seeded generator (mulberry32).\n            function rng(seed) {\n              var a = seed >>> 0;\n              return function () {\n                a = (a + 0x6d2b79f5) >>> 0;\n                var t = a;\n                t = Math.imul(t ^ (t >>> 15), t | 1);\n                t ^= t + Math.imul(t ^ (t >>> 7), t | 61);\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            var TOTAL = 3;\n            var FRAMES = Math.round(TOTAL * 30);\n            var clock = { frame: 0 };\n            function frameNow() { return Math.round(clock.frame * 1000) / 1000; }\n            function start(draw) {\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { frame: FRAMES, duration: TOTAL, ease: \"none\", onUpdate: function () { draw(frameNow()); } }, 0);\n              draw(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"animated-bar-chart\"] = tl;\n            }\n            function onFonts(fn) {\n              if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn, function () {});\n            }\n            function fit(el, size, frac, hfrac) {\n              el.style.fontSize = size + \"px\";\n              var maxW = Math.max(1, root.clientWidth * frac);\n              var maxH = Math.max(1, root.clientHeight * (hfrac || 0.9));\n              var k = Math.min(1, maxW / Math.max(1, el.scrollWidth), maxH / Math.max(1, el.scrollHeight));\n              if (k < 1) { size = Math.max(8, size * k); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n\n\n            var data = String(str(vars.data, \"35, 60, 45, 80, 55, 70, 90, 65\")).split(\",\").map(function (s) { return Number(s.trim()); }).filter(function (n) { return Number.isFinite(n) && n >= 0; });\n            if (!data.length) data = [35, 60, 45, 80, 55, 70, 90, 65];\n            var labels = typeof vars.labels === \"string\" && vars.labels.trim() ? vars.labels.split(\",\").map(function (s) { return s.trim(); }) : null;\n            var barColor = str(vars.bar_color, \"#0ea5e9\");\n            var gapV = num(vars.gap, 16, 0, 80);\n            var stagger = num(vars.stagger_frames, 6, 0, 30);\n            var speed = num(vars.speed, 1, 0.25, 4);\n            var NS = \"http://www.w3.org/2000/svg\";\n            // remocn draws a 1000 x 500 chart; it is scaled up to fill the host frame.\n            var W = root.clientWidth, H = root.clientHeight;\n            var s = Math.min(W * 0.92, H * 0.85 * 2) / 1000;\n            var width = 1000, height = 500;\n            var svg = document.getElementById(\"abc-svg\");\n            svg.setAttribute(\"width\", width * s);\n            svg.setAttribute(\"height\", height * s);\n            svg.setAttribute(\"viewBox\", \"0 0 \" + width + \" \" + height);\n            var padding = 60, labelSpace = labels ? 40 : 0;\n            var innerW = width - padding * 2, innerH = height - padding * 2 - labelSpace;\n            var max = Math.max.apply(null, data) || 1;\n            var barW = (innerW - gapV * (data.length - 1)) / data.length;\n            var baseY = padding + innerH;\n            function el(tag, attrs) {\n              var e = document.createElementNS(NS, tag);\n              for (var k in attrs) e.setAttribute(k, attrs[k]);\n              svg.appendChild(e);\n              return e;\n            }\n            el(\"line\", { x1: padding, x2: padding + innerW, y1: baseY, y2: baseY, stroke: \"#27272a\", \"stroke-width\": 2 });\n            var bars = data.map(function (v, i) {\n              var th = (v / max) * innerH, x = padding + i * (barW + gapV), y = baseY - th;\n              var rect = el(\"rect\", { id: \"abc-bar-\" + i, x: x, y: y, width: barW, height: th, rx: 6, fill: barColor });\n              rect.style.filter = \"drop-shadow(0 4px 16px \" + barColor + \"55)\";\n              var text = null;\n              if (labels && labels[i]) {\n                text = el(\"text\", { x: x + barW / 2, y: baseY + 28, fill: \"#a1a1aa\", \"font-size\": 16, \"text-anchor\": \"middle\" });\n                text.textContent = labels[i];\n              }\n              return { rect: rect, text: text, cx: x + barW / 2 };\n            });\n            var cfg = { damping: 12, stiffness: 100, mass: 0.8 };\n            start(function (raw) {\n              var frame = raw * speed;\n              bars.forEach(function (b, i) {\n                var sc = spring(frame - i * stagger, cfg);\n                b.rect.setAttribute(\"transform\", \"translate(0 \" + baseY * (1 - sc) + \") scale(1 \" + sc + \")\");\n                if (b.text) b.text.style.opacity = sc;\n              });\n            });\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "686f83bda4cf0507a796707fdee37aff2464c0492443b2f0a96d221125d7da56",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#0a0a0a",
+ "demo_values": {
+  "data": "35, 60, 45, 80, 55, 70, 90, 65",
+  "labels": "Mon, Tue, Wed, Thu, Fri, Sat, Sun, Next"
+ },
+ "variables": [
+  {
+   "id": "data",
+   "type": "string",
+   "role": "content",
+   "label": "Data",
+   "default": "35, 60, 45, 80, 55, 70, 90, 65"
+  },
+  {
+   "id": "labels",
+   "type": "string",
+   "role": "content",
+   "label": "Labels",
+   "default": ""
+  },
+  {
+   "id": "bar_color",
+   "type": "color",
+   "role": "style",
+   "label": "Bar color",
+   "default": "#0ea5e9"
+  },
+  {
+   "id": "gap",
+   "type": "number",
+   "role": "style",
+   "label": "Gap",
+   "default": 16,
+   "min": 0,
+   "max": 80
+  },
+  {
+   "id": "stagger_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger frames",
+   "default": 6,
+   "min": 0,
+   "max": 30
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

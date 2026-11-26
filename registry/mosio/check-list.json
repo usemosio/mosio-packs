@@ -1,0 +1,147 @@
+{
+ "name": "check-list",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/check-list/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Check List\n\nA handwritten checklist that writes itself out, then ticks and strikes through every done item.\n\nCategory: ui-blocks. Length: 4.1 s. WebGL: no.\n\nUse when:\n- A list of features, steps, or done-items should be read in full and then crossed off in a hand-made scene.\n- One line in the list has not landed yet: mark it checked false and it stays clean.\n\nAvoid when:\n- Labels need to wrap across lines, or the list needs numbering or nesting. One label, one line.\n- The list should sit at an angle or wobble: wrap it in paper-wobble.\n\nVariables:\n- items (string): Items, default \"[\\\"Render on your own machine\\\",\\\"No watermark, ever\\\",\\\"Every component MIT\\\",{\\\"text\\\":\\\"Ships as source\\\",\\\"checked\\\":false}]\"\n- font_size (number, 24-120): Font size, default 40\n- list_width (number, 300-1600): List width, default 820\n- item_gap (number, 6-48): Item gap, default 18\n- close_gap (number, 3-24): Close gap, default 9\n- per_step (number, 0.5-6): Letters per step, default 1.6\n- step (number, 1-6): Frame step, default 3\n- stroke_width (number, 1-8): Stroke width, default 3\n- font_weight (enum): Font weight, default \"600\"\n- color (color): Text, default \"#26242c\"\n- box_color (color): Box, default \"#26242c\"\n- tick_color (color): Tick, default \"#6f7f35\"\n- background_color (color): Background, default \"#f1eee7\"\n- seed (string): Seed, default \"checklist\"\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Check List\n\n  A handwritten checklist that writes itself out, then ticks and strikes through every done item. The clip is as long as the schedule of the default list (3.7 s); a longer list needs a longer data-duration.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/check-list/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"check-list\"\n  data-composition-duration=\"4.1\"\n  data-composition-variables='[\n    {\"id\": \"items\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Items\", \"description\": \"JSON array of list items: a string (ticked) or an object with text and checked. One line per label.\", \"default\": \"[\\\"Render on your own machine\\\",\\\"No watermark, ever\\\",\\\"Every component MIT\\\",{\\\"text\\\":\\\"Ships as source\\\",\\\"checked\\\":false}]\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Label size in px on a 1280 by 720 layout; the whole list scales to fit the frame.\", \"default\": 40, \"min\": 24, \"max\": 120, \"step\": 2, \"unit\": \"px\"},\n    {\"id\": \"list_width\", \"type\": \"number\", \"role\": \"style\", \"label\": \"List width\", \"description\": \"Row width in px on the 1280 by 720 layout.\", \"default\": 820, \"min\": 300, \"max\": 1600, \"step\": 10, \"unit\": \"px\"},\n    {\"id\": \"item_gap\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Item gap\", \"description\": \"Frames between items starting to write.\", \"default\": 18, \"min\": 6, \"max\": 48, \"step\": 3},\n    {\"id\": \"close_gap\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Close gap\", \"description\": \"Frames between ticks when the done items are crossed off.\", \"default\": 9, \"min\": 3, \"max\": 24, \"step\": 3},\n    {\"id\": \"per_step\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Letters per step\", \"description\": \"Letters written per stepped frame.\", \"default\": 1.6, \"min\": 0.5, \"max\": 6, \"step\": 0.1},\n    {\"id\": \"step\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Frame step\", \"description\": \"Stop-motion step: motion updates every this many frames.\", \"default\": 3, \"min\": 1, \"max\": 6, \"step\": 1},\n    {\"id\": \"stroke_width\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Stroke width\", \"description\": \"Pen stroke width.\", \"default\": 3, \"min\": 1, \"max\": 8, \"step\": 0.5},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the handwriting.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text\", \"description\": \"Handwriting color.\", \"default\": \"#26242c\"},\n    {\"id\": \"box_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Box\", \"description\": \"Checkbox outline color.\", \"default\": \"#26242c\"},\n    {\"id\": \"tick_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Tick\", \"description\": \"Tick and strike-through color.\", \"default\": \"#6f7f35\"},\n    {\"id\": \"background_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Paper color.\", \"default\": \"#f1eee7\"},\n    {\"id\": \"seed\", \"type\": \"string\", \"role\": \"motion\", \"label\": \"Seed\", \"description\": \"Seed for the hand-drawn wobble.\", \"default\": \"checklist\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Check List</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n\n        #root { background: var(--bg); }\n        .cl-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .cl-list { display: flex; flex-direction: column; flex-shrink: 0; transform-origin: 50% 50%; }\n        .cl-row { display: flex; align-items: center; }\n        .cl-box { display: block; overflow: visible; flex-shrink: 0; }\n        .cl-label { position: relative; flex-shrink: 0; }\n        .cl-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: flex-start; font-family: Caveat, cursive; line-height: 1.15; color: var(--ink); }\n        .cl-text > span { display: inline-block; white-space: pre; }\n        .cl-char { display: inline-block; white-space: pre; opacity: 0; }\n        .cl-strike { position: absolute; inset: 0; display: block; overflow: visible; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"check-list\" data-duration=\"4.1\" data-fps=\"30\">\n        <div id=\"cl-clip\" class=\"cl-stage clip\" data-start=\"0\" data-duration=\"4.1\" data-track-index=\"0\">\n          <div class=\"cl-list\" id=\"cl-list\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var NAME = \"check-list\";\n\nvar root = document.getElementById(\"root\");\nvar vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\nfunction num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : f; }\nfunction str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\nfunction col(v, f) { return typeof v === \"string\" && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v.trim()) ? v.trim() : f; }\nfunction bool(v, f) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : f; }\nvar FPS = 30;\nvar DUR = parseFloat(root.dataset.duration || \"2\");\nvar TOTAL = Math.round(DUR * FPS);\nfunction lerp(a, b, t) { return a + (b - a) * t; }\nfunction cl(x, a, b) { return Math.min(b, Math.max(a, x)); }\n// interpolate(x, [in...], [out...], easing): clamped on both sides, easing applied per segment.\nfunction interp(x, inp, out, easing) {\n  if (x <= inp[0]) return out[0];\n  if (x >= inp[inp.length - 1]) return out[out.length - 1];\n  var i = 0;\n  while (x > inp[i + 1]) i++;\n  var t = (x - inp[i]) / (inp[i + 1] - inp[i]);\n  if (easing) t = easing(t);\n  return out[i] + (out[i + 1] - out[i]) * t;\n}\nfunction bez(x1, y1, x2, y2) {\n  return function (x) {\n    if (x <= 0) return 0; if (x >= 1) return 1;\n    var t = x;\n    for (var i = 0; i < 8; i++) {\n      var cx = 3 * x1 * t * (1 - t) * (1 - t) + 3 * x2 * t * t * (1 - t) + t * t * t - x;\n      var d = 3 * x1 * (1 - t) * (1 - t) - 6 * x1 * t * (1 - t) + 6 * x2 * t * (1 - t) - 3 * x2 * t * t + 3 * t * t;\n      if (Math.abs(cx) < 1e-6 || Math.abs(d) < 1e-6) break;\n      t -= cx / d;\n    }\n    t = cl(t, 0, 1);\n    return 3 * y1 * t * (1 - t) * (1 - t) + 3 * y2 * t * t * (1 - t) + t * t * t;\n  };\n}\nvar E = {\n  lin: function (t) { return t; },\n  quad: function (t) { return t * t; },\n  cubic: function (t) { return t * t * t; },\n  sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); }\n};\nfunction eOut(f) { return function (t) { return 1 - f(1 - t); }; }\nfunction eInOut(f) { return function (t) { return t < 0.5 ? f(2 * t) / 2 : 1 - f(2 - 2 * t) / 2; }; }\nvar outCubic = eOut(E.cubic), outQuad = eOut(E.quad), inCubic = E.cubic, inQuad = E.quad;\nvar inOutCubic = eInOut(E.cubic), inOutQuad = eInOut(E.quad), inOutSin = eInOut(E.sin), outSin = eOut(E.sin);\n// Damped spring from 0 to 1 (rest at 1, no initial velocity), frames at 30 fps.\nfunction spring(frame, cfg) {\n  if (frame <= 0) return 0;\n  var m = cfg.mass || 1, k = cfg.stiffness, c = cfg.damping;\n  var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m)), t = frame / FPS;\n  if (z < 1) {\n    var wd = w0 * Math.sqrt(1 - z * z);\n    return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));\n  }\n  if (z === 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n  var s = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + s, r2 = -z * w0 - s;\n  return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n}\n// Seeded random: same string in, same number out.\nfunction rnd(seed) {\n  var sd = String(seed), h = 1779033703 ^ sd.length;\n  for (var i = 0; i < sd.length; i++) { h = Math.imul(h ^ sd.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }\n  h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); h ^= h >>> 16;\n  var a = (h >>> 0);\n  a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a);\n  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n}\nfunction rgb(h) {\n  h = h.replace(\"#\", \"\");\n  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];\n}\nfunction mixc(a, b, t) {\n  var x = rgb(a), y = rgb(b);\n  return \"rgb(\" + Math.round(lerp(x[0], y[0], t)) + \",\" + Math.round(lerp(x[1], y[1], t)) + \",\" + Math.round(lerp(x[2], y[2], t)) + \")\";\n}\nfunction rgba(h, a) { var x = rgb(h); return \"rgba(\" + x[0] + \",\" + x[1] + \",\" + x[2] + \",\" + a + \")\"; }\nvar SVGNS = \"http://www.w3.org/2000/svg\";\nfunction svgEl(tag, attrs, parent) {\n  var e = document.createElementNS(SVGNS, tag);\n  for (var k in attrs) e.setAttribute(k, attrs[k]);\n  if (parent) parent.appendChild(e);\n  return e;\n}\nfunction setA(e, attrs) { for (var k in attrs) e.setAttribute(k, attrs[k]); }\n// Drive draw(frame) from the timeline; frames run 0..frames over frames/30 seconds.\nfunction drive(draw, frames) {\n  var tl = gsap.timeline({ paused: true });\n  var clock = { frame: 0 };\n  tl.to(clock, { frame: frames, duration: frames / FPS, ease: \"none\", onUpdate: function () { draw(clock.frame); } }, 0);\n  draw(0);\n  return tl;\n}\nfunction finish(tl) {\n  if (tl.duration() < DUR) tl.to({}, { duration: DUR - tl.duration() });\n  tl.seek(0);\n  window.__timelines = window.__timelines || {};\n  window.__timelines[NAME] = tl;\n}\n\n\nvar list = document.getElementById(\"cl-list\");\nvar DEFAULT_ITEMS = [{ text: \"Render on your own machine\", checked: true }, { text: \"No watermark, ever\", checked: true }, { text: \"Every component MIT\", checked: true }, { text: \"Ships as source\", checked: false }];\nvar items = DEFAULT_ITEMS;\ntry {\n  var parsed = typeof vars.items === \"string\" ? JSON.parse(vars.items) : Array.isArray(vars.items) ? vars.items : null;\n  if (Array.isArray(parsed) && parsed.length) items = parsed.map(function (it) { return typeof it === \"string\" ? { text: it, checked: true } : { text: String(it.text), checked: it.checked !== false }; });\n} catch (e) {}\nvar fontSize = num(vars.font_size, 40, 24, 120), listWidth = num(vars.list_width, 820, 300, 1600), step = Math.round(num(vars.step, 3, 1, 6));\nvar itemGap = num(vars.item_gap, 18, 6, 48), closeGap = num(vars.close_gap, 9, 3, 24), strokeW = num(vars.stroke_width, 3, 1, 8), perStep = num(vars.per_step, 1.6, 0.5, 6);\nvar weight = [\"400\", \"500\", \"600\", \"700\"].indexOf(String(vars.font_weight)) >= 0 ? String(vars.font_weight) : \"600\";\nvar seed = str(vars.seed, \"checklist\");\nvar ink = col(vars.color, \"#26242c\"), boxC = col(vars.box_color, \"#26242c\"), tickC = col(vars.tick_color, \"#6f7f35\"), bg = col(vars.background_color, \"#f1eee7\");\nvar LIST_FROM = 0;\nroot.style.setProperty(\"--bg\", bg); root.style.setProperty(\"--ink\", ink);\nvar W = root.clientWidth, H = root.clientHeight;\n// The list is laid out for a 1280 by 720 frame and scaled to fit the real one.\nvar scale = Math.min(W / 1280, H / 720);\nfunction hash01(sd) { var h = 2166136261; for (var i = 0; i < sd.length; i++) { h ^= sd.charCodeAt(i); h = Math.imul(h, 16777619); } h = Math.imul(h ^ (h >>> 13), 2246822519); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }\nfunction hashRange(sd, lo, hi) { return lo + hash01(sd) * (hi - lo); }\nfunction qf(f) { return Math.floor(f / step) * step; }\nfunction qstep(f) { return Math.floor(f / step); }\nfunction ramp(frame, from, to) { var f = qf(frame); if (f <= from) return 0; if (f >= to) return 1; return outCubic((f - from) / (to - from)); }\nfunction hwDuration(text) { return Math.ceil(Array.from(text).length / perStep) * step + step; }\nvar boxSize = Math.round(fontSize * 0.62), boxGap = Math.round(fontSize * 0.4), rowHeight = Math.round(fontSize * 1.15), labelWidth = Math.max(fontSize * 2, listWidth - boxSize - boxGap);\nlist.style.width = boxSize + boxGap + labelWidth + \"px\"; list.style.gap = fontSize * 0.55 + \"px\"; list.style.transform = \"scale(\" + scale + \")\";\n// Schedule: each box draws, its label is written, then the ticked rows are closed in order.\nvar enterEnd = 0;\nitems.forEach(function (it, i) { enterEnd = Math.max(enterEnd, i * itemGap + step * 2 + hwDuration(it.text)); });\nvar closeIdx = 0, end = 0;\nvar rows = items.map(function (it, i) {\n  var b = { boxFrom: i * itemGap }; b.boxTo = b.boxFrom + step * 2; b.labelAt = b.boxTo; b.labelEnd = b.boxTo + hwDuration(it.text);\n  end = Math.max(end, b.labelEnd);\n  if (it.checked) { b.tickFrom = enterEnd + closeIdx++ * closeGap; b.tickTo = b.tickFrom + step * 2; b.strikeFrom = b.tickTo; b.strikeTo = b.tickTo + step * 2; end = Math.max(end, b.strikeTo); }\n  var row = document.createElement(\"div\"); row.className = \"cl-row\"; row.style.gap = boxGap + \"px\"; row.style.height = rowHeight + \"px\";\n  var bs = svgEl(\"svg\", { width: boxSize, height: boxSize, viewBox: \"0 0 \" + boxSize + \" \" + boxSize }, row); bs.setAttribute(\"class\", \"cl-box\");\n  var nudge = function (n) { return hashRange(seed + \":\" + i + \":c\" + n, -1.5, 1.5); };\n  var lo = boxSize * 0.08, hi = boxSize - lo;\n  var cs = [[lo + nudge(0), lo + nudge(1)], [hi + nudge(2), lo + nudge(3)], [hi + nudge(4), hi + nudge(5)], [lo + nudge(6), hi + nudge(7)]];\n  b.box = svgEl(\"path\", { d: \"M \" + cs[0][0] + \" \" + cs[0][1] + \" \" + cs.slice(1).map(function (c) { return \"L \" + c[0] + \" \" + c[1]; }).join(\" \") + \" Z\", stroke: boxC, \"stroke-width\": strokeW, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\", fill: \"none\", pathLength: 1, \"stroke-dasharray\": 1 }, bs);\n  if (it.checked) b.tick = svgEl(\"path\", { d: \"M \" + boxSize * 0.2 + \" \" + boxSize * 0.52 + \" L \" + boxSize * 0.42 + \" \" + boxSize * 0.78 + \" L \" + boxSize * 0.88 + \" \" + boxSize * 0.14, stroke: tickC, \"stroke-width\": strokeW + 1, \"stroke-linecap\": \"round\", \"stroke-linejoin\": \"round\", fill: \"none\", pathLength: 1, \"stroke-dasharray\": 1 }, bs);\n  var label = document.createElement(\"div\"); label.className = \"cl-label\"; label.style.width = labelWidth + \"px\"; label.style.height = rowHeight + \"px\";\n  var tx = document.createElement(\"div\"); tx.className = \"cl-text\"; tx.style.fontSize = fontSize + \"px\"; tx.style.fontWeight = weight;\n  var sp = document.createElement(\"span\"); tx.appendChild(sp);\n  var chars = Array.from(it.text);\n  b.chars = chars.map(function (ch, k) {\n    var c = document.createElement(\"span\"); c.className = \"cl-char\"; c.textContent = ch; sp.appendChild(c);\n    return { el: c, rot: hashRange(\"hw:\" + it.text + \":\" + k + \":r\", -3.2, 3.2), dy: hashRange(\"hw:\" + it.text + \":\" + k + \":y\", -1.8, 1.8) };\n  });\n  label.appendChild(tx);\n  if (it.checked) {\n    var ss = svgEl(\"svg\", { width: labelWidth, height: rowHeight, viewBox: \"0 0 \" + labelWidth + \" \" + rowHeight }, label); ss.setAttribute(\"class\", \"cl-strike\");\n    var reach = Math.min(labelWidth, chars.length * fontSize * 0.36), ov = fontSize * 0.07, mid = rowHeight / 2;\n    var lift = function (n) { return hashRange(seed + \":\" + i + \":s\" + n, -1.6, 1.6); };\n    b.strike = svgEl(\"path\", { d: \"M \" + -ov + \" \" + (mid + lift(0)) + \" C \" + reach * 0.35 + \" \" + (mid + lift(1)) + \", \" + reach * 0.7 + \" \" + (mid + lift(2)) + \", \" + (reach + ov) + \" \" + (mid + lift(3)), stroke: tickC, \"stroke-width\": strokeW, \"stroke-linecap\": \"round\", fill: \"none\", pathLength: 1, \"stroke-dasharray\": 1 }, ss);\n  }\n  row.appendChild(label); list.appendChild(row);\n  return b;\n});\nvar total = Math.ceil(LIST_FROM + end);\nfunction draw(frame) {\n  var local = Math.max(0, frame - LIST_FROM);\n  rows.forEach(function (b) {\n    var bp = ramp(local, b.boxFrom, b.boxTo);\n    setA(b.box, { \"stroke-dashoffset\": 1 - bp, opacity: bp > 0 ? 0.9 : 0 });\n    if (b.tick) { var tp = ramp(local, b.tickFrom, b.tickTo); setA(b.tick, { \"stroke-dashoffset\": 1 - tp, opacity: tp > 0 ? 1 : 0 }); }\n    if (b.strike) { var sp2 = ramp(local, b.strikeFrom, b.strikeTo); setA(b.strike, { \"stroke-dashoffset\": 1 - sp2, opacity: sp2 > 0 ? 0.85 : 0 }); }\n    var steps = Math.max(0, qstep(Math.max(0, qf(local) - b.labelAt))), shown = Math.floor(steps * perStep), fresh0 = shown - Math.ceil(perStep);\n    b.chars.forEach(function (c, k) {\n      var vis = k < shown;\n      c.el.style.opacity = vis ? 1 : 0;\n      c.el.style.transform = vis ? \"translateY(\" + c.dy + \"px) rotate(\" + c.rot + \"deg) scale(\" + (k >= fresh0 ? 1.06 : 1) + \")\" : \"none\";\n    });\n  });\n}\nfinish(drive(draw, Math.max(TOTAL, total)));\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "1438d4901dab3404e46219ef2f4ac1ce7dd4ada5ca9f8b1f4aa96581d739d3fc",
+ "duration": 4.1,
+ "webgl": false,
+ "demo_background": "#f1eee7",
+ "demo_values": {
+  "font_size": 56,
+  "list_width": 900
+ },
+ "variables": [
+  {
+   "id": "items",
+   "type": "string",
+   "role": "content",
+   "label": "Items",
+   "default": "[\"Render on your own machine\",\"No watermark, ever\",\"Every component MIT\",{\"text\":\"Ships as source\",\"checked\":false}]"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 40,
+   "min": 24,
+   "max": 120
+  },
+  {
+   "id": "list_width",
+   "type": "number",
+   "role": "style",
+   "label": "List width",
+   "default": 820,
+   "min": 300,
+   "max": 1600
+  },
+  {
+   "id": "item_gap",
+   "type": "number",
+   "role": "motion",
+   "label": "Item gap",
+   "default": 18,
+   "min": 6,
+   "max": 48
+  },
+  {
+   "id": "close_gap",
+   "type": "number",
+   "role": "motion",
+   "label": "Close gap",
+   "default": 9,
+   "min": 3,
+   "max": 24
+  },
+  {
+   "id": "per_step",
+   "type": "number",
+   "role": "motion",
+   "label": "Letters per step",
+   "default": 1.6,
+   "min": 0.5,
+   "max": 6
+  },
+  {
+   "id": "step",
+   "type": "number",
+   "role": "motion",
+   "label": "Frame step",
+   "default": 3,
+   "min": 1,
+   "max": 6
+  },
+  {
+   "id": "stroke_width",
+   "type": "number",
+   "role": "style",
+   "label": "Stroke width",
+   "default": 3,
+   "min": 1,
+   "max": 8
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text",
+   "default": "#26242c"
+  },
+  {
+   "id": "box_color",
+   "type": "color",
+   "role": "style",
+   "label": "Box",
+   "default": "#26242c"
+  },
+  {
+   "id": "tick_color",
+   "type": "color",
+   "role": "style",
+   "label": "Tick",
+   "default": "#6f7f35"
+  },
+  {
+   "id": "background_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#f1eee7"
+  },
+  {
+   "id": "seed",
+   "type": "string",
+   "role": "motion",
+   "label": "Seed",
+   "default": "checklist"
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

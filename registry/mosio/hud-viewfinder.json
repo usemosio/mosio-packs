@@ -1,0 +1,118 @@
+{
+ "name": "hud-viewfinder",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "HUD overlay"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# HUD Viewfinder\n\nA transparent camera-viewfinder overlay for footage: a blinking REC dot, corner brackets, a running timecode, a battery and mode readout, an exposure line, and a focus box that hunts and snaps onto a point. The background is clear by default, so a host lays it over a clip; set the background colour and turn Transparent off to preview it alone.\n\nCategory: motion-graphics. Length: 6 s. WebGL: no.\n\nUse when:\n- Over a clip of a product, a workshop or a place so it reads as shot on a camera.\n- An opening moment of a behind-the-scenes or unboxing video.\n\nAvoid when:\n- Over bright white footage: the thin white lines vanish; set the text colour to dark.\n- A standalone scene: it is only an overlay.\n\nVariables:\n- timecode (string): Start timecode, default \"00:00:00:00\"\n- mode_label (string): Mode label, default \"4K 30\"\n- readout (string): Readout, default \"ISO 400   1/60   f/2.8\"\n- af_label (string): Focus tag, default \"AF\"\n- focus_x (number, 5-95): Focus x, default 62\n- focus_y (number, 5-95): Focus y, default 44\n- bg_color (color): Background, default \"#111111\"\n- main_color (color): Main colour, default \"#ef4444\"\n- text_color (color): Text colour, default \"#ffffff\"\n- muted_color (color): Muted colour, default \"#d4d4d4\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default true\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  HUD Viewfinder\n\n  A transparent camera-viewfinder overlay for footage: a blinking REC dot, corner brackets, a running timecode, a battery and mode readout, an exposure line, and a focus box that hunts and snaps onto a point. The background is clear by default, so a host lays it over a clip; set the background colour and turn Transparent off to preview it alone.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"hud-viewfinder\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n  {\n    \"id\": \"timecode\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Start timecode\",\n    \"description\": \"Where the running timecode starts, HH:MM:SS:FF at 30 fps.\",\n    \"default\": \"00:00:00:00\"\n  },\n  {\n    \"id\": \"mode_label\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Mode label\",\n    \"description\": \"Top right, next to the battery.\",\n    \"default\": \"4K 30\"\n  },\n  {\n    \"id\": \"readout\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Readout\",\n    \"description\": \"Bottom left camera settings. Empty hides it.\",\n    \"default\": \"ISO 400   1/60   f/2.8\"\n  },\n  {\n    \"id\": \"af_label\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Focus tag\",\n    \"description\": \"Small tag over the focus box once it locks.\",\n    \"default\": \"AF\"\n  },\n  {\n    \"id\": \"focus_x\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Focus x\",\n    \"description\": \"Where the focus box locks, 0 left to 100 right.\",\n    \"default\": 62,\n    \"min\": 5,\n    \"max\": 95,\n    \"step\": 1,\n    \"unit\": \"%\"\n  },\n  {\n    \"id\": \"focus_y\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Focus y\",\n    \"description\": \"Where the focus box locks, 0 top to 100 bottom.\",\n    \"default\": 44,\n    \"min\": 5,\n    \"max\": 95,\n    \"step\": 1,\n    \"unit\": \"%\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Shown only when Transparent is off.\",\n    \"default\": \"#111111\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Main colour\",\n    \"description\": \"REC dot and the locked focus box: the one accent.\",\n    \"default\": \"#ef4444\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Brackets, timecode and readouts.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Secondary readouts.\",\n    \"default\": \"#d4d4d4\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Google Fonts family name; Geist is loaded, others only if the host loads them.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": true\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>HUD Viewfinder</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          background: var(--hv-bg); color: var(--hv-text); font-family: var(--hv-font);\n        }\n        #root * { box-sizing: border-box; }\n        .hv-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        #root { text-shadow: 0 calc(var(--u) * 1) calc(var(--u) * 3) rgba(0,0,0,0.45); }\n        .hv-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }\n        .hv-rec { position: absolute; display: flex; align-items: center; gap: calc(var(--u) * 16); font-weight: 600; letter-spacing: 0.08em; }\n        .hv-dot { width: calc(var(--u) * 26); height: calc(var(--u) * 26); border-radius: 50%; background: var(--hv-main); }\n        .hv-tc { position: absolute; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }\n        .hv-tr { position: absolute; display: flex; align-items: center; gap: calc(var(--u) * 16); font-weight: 600; letter-spacing: 0.06em; }\n        .hv-bl { position: absolute; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: 0.06em; color: var(--hv-muted); white-space: pre; }\n        .hv-focus { position: absolute; left: 0; top: 0; color: var(--hv-text); opacity: 0; }\n        .hv-fc { position: absolute; width: 30%; height: 30%; border: 0 solid currentColor; }\n        .hv-tag { position: absolute; left: 0; top: 100%; font-weight: 700; letter-spacing: 0.08em; opacity: 0; white-space: nowrap; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"hud-viewfinder\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"hv-clip\" class=\"hv-stage clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\">\n          <svg class=\"hv-svg\" id=\"hv-svg\"></svg>\n          <div class=\"hv-rec\" id=\"hv-rec\"><span class=\"hv-dot\" id=\"hv-dot\"></span><span>REC</span></div>\n          <div class=\"hv-tc\" id=\"hv-tc\"></div>\n          <div class=\"hv-tr\" id=\"hv-tr\"></div>\n          <div class=\"hv-bl\" id=\"hv-bl\"></div>\n          <div class=\"hv-focus\" id=\"hv-focus\"><i class=\"hv-fc\" style=\"left:0;top:0;border-width:3px 0 0 3px\"></i><i class=\"hv-fc\" style=\"right:0;top:0;border-width:3px 3px 0 0\"></i><i class=\"hv-fc\" style=\"left:0;bottom:0;border-width:0 0 3px 3px\"></i><i class=\"hv-fc\" style=\"right:0;bottom:0;border-width:0 3px 3px 0\"></i><span class=\"hv-tag\" id=\"hv-tag\"></span></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function lines(v, d) { var s = typeof v === \"string\" && v.trim() ? v : d; return s.split(/\\r?\\n/).map(function (l) { return l.trim(); }).filter(Boolean); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function ease(n, a, b) { return Math.min(1, Math.max(0, (n - a) / (b - a))); }\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            var PAL = [[\"bg\", \"bg_color\", \"#111111\"], [\"main\", \"main_color\", \"#ef4444\"], [\"text\", \"text_color\", \"#ffffff\"], [\"muted\", \"muted_color\", \"#d4d4d4\"]];\n            PAL.forEach(function (c) { root.style.setProperty(\"--hv-\" + c[0], colr(vars[c[1]], c[2])); });\n            root.style.setProperty(\"--hv-font\", '\"' + str(vars.font_family, \"Geist\") + '\", Geist, system-ui, sans-serif');\n            if (bool(vars.transparent, true)) root.style.background = \"transparent\";\n\n\n            var NS = \"http://www.w3.org/2000/svg\", fps = 30, total = parseFloat(root.dataset.duration || \"6\");\n            var m = (PORTRAIT ? 64 : 70) * U, arm = 96 * U, sw = 4 * U;\n            var svg = document.getElementById(\"hv-svg\"); svg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n            function mk(tag, attrs, parent) { var e = document.createElementNS(NS, tag); Object.keys(attrs).forEach(function (k) { e.setAttribute(k, attrs[k]); }); (parent || svg).appendChild(e); return e; }\n            var corners = [[m, m, 1, 1], [W - m, m, -1, 1], [m, H - m, 1, -1], [W - m, H - m, -1, -1]].map(function (c) {\n              return mk(\"path\", { d: \"M\" + (c[0] + c[2] * arm) + \" \" + c[1] + \" L\" + c[0] + \" \" + c[1] + \" L\" + c[0] + \" \" + (c[1] + c[3] * arm), fill: \"none\", stroke: \"var(--hv-text)\", \"stroke-width\": sw, \"stroke-linecap\": \"square\", pathLength: 1, \"stroke-dasharray\": 1, \"stroke-dashoffset\": 1 });\n            });\n            // exposure line (bottom centre)\n            var ey = H - m - 20 * U, ew = (PORTRAIT ? 300 : 360) * U, ex = W / 2 - ew / 2, tks = [];\n            mk(\"line\", { x1: ex, x2: ex + ew, y1: ey, y2: ey, stroke: \"var(--hv-text)\", \"stroke-width\": 2 * U, opacity: 0.8 });\n            for (var k = 0; k <= 6; k++) tks.push(mk(\"line\", { x1: ex + ew * k / 6, x2: ex + ew * k / 6, y1: ey - (k % 3 === 0 ? 14 : 8) * U, y2: ey + (k % 3 === 0 ? 14 : 8) * U, stroke: \"var(--hv-text)\", \"stroke-width\": 2 * U, opacity: 0.8 }));\n            var mark = mk(\"path\", { d: \"M0 \" + (ey - 26 * U) + \" l\" + 9 * U + \" \" + -14 * U + \" l\" + -18 * U + \" 0 Z\", fill: \"var(--hv-text)\" });\n            var fs = (PORTRAIT ? 36 : 34) * U;\n            var rec = document.getElementById(\"hv-rec\"); rec.style.left = m + 30 * U + \"px\"; rec.style.top = m + 28 * U + \"px\"; rec.style.fontSize = fs + \"px\";\n            var tc = document.getElementById(\"hv-tc\"); tc.style.left = m + 30 * U + \"px\"; tc.style.top = m + 28 * U + fs * 1.6 + \"px\"; tc.style.fontSize = fs * 1.1 + \"px\";\n            var tr = document.getElementById(\"hv-tr\"); tr.style.right = m + 30 * U + \"px\"; tr.style.top = m + 28 * U + \"px\"; tr.style.fontSize = fs + \"px\";\n            tr.innerHTML = \"<span>\" + esc(str(vars.mode_label, \"4K 30\")) + '</span><svg width=\"' + 62 * U + '\" height=\"' + 28 * U + '\" viewBox=\"0 0 62 28\"><rect x=\"1.5\" y=\"1.5\" width=\"53\" height=\"25\" rx=\"5\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\"/><rect x=\"5\" y=\"5\" width=\"36\" height=\"18\" rx=\"2.5\" fill=\"#fff\"/><rect x=\"57\" y=\"9\" width=\"4\" height=\"10\" rx=\"1.5\" fill=\"#fff\"/></svg>';\n            var bl = document.getElementById(\"hv-bl\"), rd = typeof vars.readout === \"string\" ? vars.readout : \"ISO 400   1/60   f/2.8\";\n            bl.textContent = rd; bl.style.left = m + 30 * U + \"px\"; bl.style.bottom = m + 28 * U + \"px\"; bl.style.fontSize = fs * 0.9 + \"px\"; if (!rd.trim()) bl.style.display = \"none\";\n            var ps = String(vars.timecode || \"00:00:00:00\").split(\":\").map(function (x) { return parseInt(x, 10) || 0; });\n            while (ps.length < 4) ps.unshift(0);\n            var startF = ((ps[0] * 60 + ps[1]) * 60 + ps[2]) * fps + ps[3];\n            function pad(n) { return (n < 10 ? \"0\" : \"\") + n; }\n            function tcs(f) { var ff = f % fps, s = Math.floor(f / fps), mm = Math.floor(s / 60) % 60, hh = Math.floor(s / 3600) % 100; return pad(hh) + \":\" + pad(mm) + \":\" + pad(s % 60) + \":\" + pad(ff); }\n            var clock = { t: 0 };\n            function drawClock() { tc.textContent = tcs(startF + Math.floor(clock.t * fps)); }\n            var fx = num(vars.focus_x, 62, 5, 95) / 100 * W, fy = num(vars.focus_y, 44, 5, 95) / 100 * H;\n            var fz = (PORTRAIT ? 230 : 210) * U, big = fz * 1.9, focus = document.getElementById(\"hv-focus\"), tag = document.getElementById(\"hv-tag\");\n            focus.style.width = focus.style.height = fz + \"px\"; focus.style.marginLeft = focus.style.marginTop = -fz / 2 + \"px\";\n            [].forEach.call(focus.querySelectorAll(\".hv-fc\"), function (c) { var b = 4 * U + \"px\"; c.style.borderWidth = c.style.borderWidth.split(\" \").map(function (x) { return x === \"0px\" ? \"0px\" : b; }).join(\" \"); });\n            var afl = typeof vars.af_label === \"string\" ? vars.af_label.trim() : \"AF\"; tag.textContent = afl; tag.style.fontSize = fs * 0.8 + \"px\"; tag.style.marginTop = 10 * U + \"px\"; if (!afl) tag.style.display = \"none\";\n            var tl = gsap.timeline({ paused: true });\n            corners.forEach(function (c, i) { tl.to(c, { strokeDashoffset: 0, duration: 0.55, ease: \"power2.out\" }, 0.1 + i * 0.06); });\n            tl.fromTo(\"#hv-rec,#hv-tc,#hv-tr,#hv-bl\", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: \"power2.out\" }, 0.35);\n            tl.fromTo(svg.querySelectorAll(\"line,path:not([pathLength])\"), { opacity: 0 }, { opacity: 0.85, duration: 0.4 }, 0.5);\n            for (var b = 0; b < Math.floor(total / 0.5); b++) tl.set(\"#hv-dot\", { opacity: b % 2 ? 0.12 : 1 }, 0.4 + b * 0.5);\n            tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: drawClock }, 0);\n            tl.to(mark, { x: W / 2 - 0, duration: 0.01 }, 0);\n            tl.fromTo(mark, { x: W / 2 - 40 * U }, { x: W / 2 + 28 * U, duration: 1.2, ease: \"sine.inOut\" }, 1.0);\n            tl.to(mark, { x: W / 2, duration: 0.6, ease: \"power3.out\" }, 2.4);\n            tl.set(focus, { x: W * 0.5, y: H * 0.5, scale: 1.9, opacity: 0 }, 0);\n            tl.to(focus, { opacity: 0.85, duration: 0.25 }, 0.9);\n            tl.to(focus, { x: W * 0.38, y: H * 0.56, duration: 0.5, ease: \"power2.inOut\" }, 1.0);\n            tl.to(focus, { x: W * 0.7, y: H * 0.36, scale: 2.2, duration: 0.5, ease: \"power2.inOut\" }, 1.6);\n            tl.to(focus, { x: fx, y: fy, scale: 1, duration: 0.45, ease: \"back.out(1.5)\" }, 2.25);\n            tl.to(focus, { color: \"var(--hv-main)\", opacity: 1, duration: 0.12 }, 2.7);\n            tl.to(focus, { opacity: 0.35, duration: 0.07 }, 2.9); tl.to(focus, { opacity: 1, duration: 0.07 }, 2.97);\n            tl.fromTo(tag, { opacity: 0, y: -6 * U }, { opacity: 1, y: 0, duration: 0.25, ease: \"power3.out\" }, 2.75);\n            drawClock();\n\n            var total = parseFloat(root.dataset.duration || \"6\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"hud-viewfinder\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "cfb911f8521d07b1c69e6b4f9bb8de79fd8d787b2da01b517c2e5bc398fbe312",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#1a1c1f",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "timecode",
+   "type": "string",
+   "role": "content",
+   "label": "Start timecode",
+   "default": "00:00:00:00"
+  },
+  {
+   "id": "mode_label",
+   "type": "string",
+   "role": "content",
+   "label": "Mode label",
+   "default": "4K 30"
+  },
+  {
+   "id": "readout",
+   "type": "string",
+   "role": "content",
+   "label": "Readout",
+   "default": "ISO 400   1/60   f/2.8"
+  },
+  {
+   "id": "af_label",
+   "type": "string",
+   "role": "content",
+   "label": "Focus tag",
+   "default": "AF"
+  },
+  {
+   "id": "focus_x",
+   "type": "number",
+   "role": "motion",
+   "label": "Focus x",
+   "default": 62,
+   "min": 5,
+   "max": 95
+  },
+  {
+   "id": "focus_y",
+   "type": "number",
+   "role": "motion",
+   "label": "Focus y",
+   "default": 44,
+   "min": 5,
+   "max": 95
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#111111"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Main colour",
+   "default": "#ef4444"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#ffffff"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#d4d4d4"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": true
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

@@ -1,0 +1,130 @@
+{
+ "name": "centered-word-build",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/centered-word-build/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Centered Word Build\n\nWords appear sharply from below while the centered phrase pushes closer on every beat.\n\nCategory: typography. Length: 2.5 s. WebGL: no.\n\nUse when:\n- A short statement should assemble one word at a time while every visible prefix stays centered and pushes closer.\n- Beat-synced typography where words appear sharply but still travel up into place.\n\nAvoid when:\n- Each new word should drive the existing line aside: use word-push.\n- Words should replace one another in the same fixed slot: use per-word-crossfade.\n\nVariables:\n- text (string): Text, default \"everything we learn from\"\n- font_size (number, 12-160): Font size, default 52\n- color (color): Color, default \"#fff3df\"\n- font_weight (enum): Font weight, default \"400\"\n- word_gap (number, 4-24): Word gap, default 11\n- accel (number, 0.4-1): Acceleration, default 0.75\n- rise (number, 0-0.5): Rise, default 0.18\n- zoom_step (number, 0-0.1): Zoom step, default 0.035\n- settle_frames (number, 2-20): Settle frames, default 9\n- exit_at (number, 20-100): Exit at, default 51\n- exit_frames (number, 4-30): Exit frames, default 12\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Centered Word Build\n\n  Words appear sharply from below while the centered phrase pushes closer on every beat.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/centered-word-build/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"centered-word-build\"\n  data-composition-duration=\"2.5\"\n  data-composition-variables='[\n    { \"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Short statement assembled one word at a time.\", \"default\": \"everything we learn from\" },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 52, \"min\": 12, \"max\": 160, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#fff3df\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"400\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}] },\n    { \"id\": \"word_gap\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Word gap\", \"description\": \"Frames before the second and third words (30 fps).\", \"default\": 11, \"min\": 4, \"max\": 24, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"accel\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Acceleration\", \"description\": \"Each later gap is this fraction of the previous one.\", \"default\": 0.75, \"min\": 0.4, \"max\": 1, \"step\": 0.05 },\n    { \"id\": \"rise\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Rise\", \"description\": \"How far below its place each word starts, in font sizes.\", \"default\": 0.18, \"min\": 0, \"max\": 0.5, \"step\": 0.01 },\n    { \"id\": \"zoom_step\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Zoom step\", \"description\": \"Extra scale the camera pushes in on every new word.\", \"default\": 0.035, \"min\": 0, \"max\": 0.1, \"step\": 0.005 },\n    { \"id\": \"settle_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Settle frames\", \"description\": \"Frames each word takes to settle (30 fps).\", \"default\": 9, \"min\": 2, \"max\": 20, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"exit_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Exit at\", \"description\": \"Frame where the soft left-to-right wipe starts (30 fps).\", \"default\": 51, \"min\": 20, \"max\": 100, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"exit_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Exit frames\", \"description\": \"Frames the exit wipe takes.\", \"default\": 12, \"min\": 4, \"max\": 30, \"step\": 1, \"unit\": \"frames\" }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Centered Word Build</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #fff3df);\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .cwb-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .cwb-line { display: inline-block; letter-spacing: -0.02em; line-height: 1.1; white-space: nowrap; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }\n        .cwb-word { display: none; white-space: pre; }\n        .cwb-word + .cwb-word { margin-left: 0.25em; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"centered-word-build\" data-duration=\"2.5\" data-fps=\"30\">\n        <div id=\"cwb-clip\" class=\"cwb-stage clip\" data-start=\"0\" data-duration=\"2.5\" data-track-index=\"0\">\n          <span id=\"cwb-line\" class=\"cwb-line\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            gsap.registerPlugin(CustomEase);\n            function bz(id, a, b, c, d) {\n              return CustomEase.create(\"cwb-\" + id, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\");\n            }\n            // interpolate(frame, [a, b], [from, to], { easing }) as a tween (frames at 30 fps).\n            function tw(tl, el, from, to, a, b, ease, keep) {\n              var t = Object.assign({}, to, { duration: (b - a) / 30, ease: ease || \"none\", immediateRender: !keep });\n              tl.fromTo(el, from, t, a / 30);\n            }\n            // Shrink an element's font size so it fits a fraction of the frame width.\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            var TOTAL = parseFloat(root.dataset.duration || \"2.5\");\n            function finish(tl) {\n              if (tl.duration() < TOTAL) tl.to({}, { duration: TOTAL - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"centered-word-build\"] = tl;\n            }\n            var text = str(vars.text, \"everything we learn from\");\n            var weight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"400\");\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            // interpolate() with clamping, easing given as a function of progress.\n            function ip(f, a, b, from, to, ease) {\n              var p = b === a ? 1 : Math.min(1, Math.max(0, (f - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n\n            var gap = num(vars.word_gap, 11, 4, 24);\n            var accel = num(vars.accel, 0.75, 0.4, 1);\n            var rise = num(vars.rise, 0.18, 0, 0.5);\n            var zoomStep = num(vars.zoom_step, 0.035, 0, 0.1);\n            var settle = num(vars.settle_frames, 9, 2, 20);\n            var exitAt = num(vars.exit_at, 51, 20, 100);\n            var exitFrames = num(vars.exit_frames, 12, 4, 30);\n            var line = document.getElementById(\"cwb-line\");\n            line.style.fontWeight = weight;\n            var words = text.trim().split(/\\s+/).filter(Boolean);\n            var spans = words.map(function (w, i) {\n              var s = document.createElement(\"span\");\n              s.id = \"cwb-word-\" + i;\n              s.className = \"cwb-word\";\n              s.textContent = w;\n              line.appendChild(s);\n              return s;\n            });\n            var size = fit(line, num(vars.font_size, 52, 12, 160), 0.8);\n            // Leave room for the camera push (words * zoom step).\n            var push = 1 + zoomStep * words.length;\n            if (line.scrollWidth * push > root.clientWidth * 0.95) {\n              size = Math.max(12, size * (root.clientWidth * 0.95) / (line.scrollWidth * push));\n              line.style.fontSize = size + \"px\";\n            }\n\n            function revealFrame(index) {\n              var f = 0;\n              for (var step = 1; step <= index; step++) f += gap * Math.pow(accel, Math.max(step - 2, 0));\n              return Math.round(f);\n            }\n            var settleEase = bz(\"settle\", 0.16, 1, 0.3, 1);\n            var P = { f: 0 };\n            function apply() {\n              var f = P.f;\n              var visible = 0;\n              spans.forEach(function (s, i) {\n                var at = revealFrame(i);\n                var on = f >= at;\n                if (on) visible = i + 1;\n                s.style.display = on ? \"inline-block\" : \"none\";\n                if (on) s.style.transform = \"translateY(\" + ip(f, at, at + settle, rise * size, 0, settleEase) + \"px)\";\n              });\n              var scale = 1;\n              for (var i = 1; i < visible; i++) scale += zoomStep * ip(f, revealFrame(i), revealFrame(i) + settle, 0, 1, settleEase);\n              var exitP = ip(f, exitAt, exitAt + exitFrames, 0, 1);\n              line.style.transform = \"scale(\" + scale + \")\";\n              line.style.opacity = exitP >= 1 ? 0 : 1;\n              var start = -35 + exitP * 135;\n              var mask = exitP > 0 ? \"linear-gradient(90deg, transparent \" + start + \"%, black \" + (start + 35) + \"%)\" : \"none\";\n              line.style.webkitMaskImage = mask;\n              line.style.maskImage = mask;\n            }\n            apply();\n            var last = revealFrame(spans.length - 1) + settle;\n            var end = Math.max(last, exitAt + exitFrames, TOTAL * 30);\n            var tl = gsap.timeline({ paused: true });\n            tl.to(P, { f: end, duration: end / 30, ease: \"none\", onUpdate: apply }, 0);\n            finish(tl);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "a5a342dae2ae2a6b53b0687d8eb91ac2e8f72d12e22841c098d9c148d5d5a645",
+ "duration": 2.5,
+ "webgl": false,
+ "demo_background": "radial-gradient(circle at 50% 108%, #ffd77a 0%, #ff6840 31%, #f13d21 78%)",
+ "demo_values": {
+  "font_size": 72
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "everything we learn from"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 52,
+   "min": 12,
+   "max": 160
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#fff3df"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "400"
+  },
+  {
+   "id": "word_gap",
+   "type": "number",
+   "role": "motion",
+   "label": "Word gap",
+   "default": 11,
+   "min": 4,
+   "max": 24
+  },
+  {
+   "id": "accel",
+   "type": "number",
+   "role": "motion",
+   "label": "Acceleration",
+   "default": 0.75,
+   "min": 0.4,
+   "max": 1
+  },
+  {
+   "id": "rise",
+   "type": "number",
+   "role": "motion",
+   "label": "Rise",
+   "default": 0.18,
+   "min": 0,
+   "max": 0.5
+  },
+  {
+   "id": "zoom_step",
+   "type": "number",
+   "role": "motion",
+   "label": "Zoom step",
+   "default": 0.035,
+   "min": 0,
+   "max": 0.1
+  },
+  {
+   "id": "settle_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Settle frames",
+   "default": 9,
+   "min": 2,
+   "max": 20
+  },
+  {
+   "id": "exit_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Exit at",
+   "default": 51,
+   "min": 20,
+   "max": 100
+  },
+  {
+   "id": "exit_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Exit frames",
+   "default": 12,
+   "min": 4,
+   "max": 30
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

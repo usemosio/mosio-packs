@@ -1,0 +1,112 @@
+{
+ "name": "text-roll",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "ibelick",
+ "source": {
+  "repo": "https://github.com/ibelick/motion-primitives",
+  "path": "components/core/text-roll.tsx",
+  "commit": "120f64f6ca60348e251f929e9c81f11ccbe45eda"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Text Roll\n\nEvery letter rolls over like a rotating drum: the front face tips away on the X axis while the same letter swings in from below, one letter after another, then the roll repeats.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- A word or short phrase should flip letter by letter with a physical, ticker-like roll.\n- A button or label style flourish for one line of text.\n\nAvoid when:\n- The text should be replaced by different text: use slot-machine-roll or text-loop.\n- A flat, quiet entrance: use per-character-rise.\n\nVariables:\n- text (string): Text, default \"Roll the text\"\n- duration (number, 0.1-2): Roll time, default 0.5\n- stagger (number, 0.02-0.5): Stagger, default 0.1\n- exit_offset (number, 0-1): Exit offset, default 0.2\n- repeats (number, 1-6): Rolls, default 2\n- start (number, 0-5): Start, default 0.3\n- font_size (number, 12-240): Font size, default 110\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"700\"\n\nSource: https://github.com/ibelick/motion-primitives. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Text Roll\n\n  Every letter rolls over like a rotating drum: the front face tips away on the X axis while the same letter swings in from below, one letter after another, then the roll repeats.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/ibelick/motion-primitives/blob/120f64f6ca60348e251f929e9c81f11ccbe45eda/components/core/text-roll.tsx\n\n  MIT License\n\n  Copyright (c) 2024 ibelick\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n  app/page.tsx\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"text-roll\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Word or short phrase that rolls.\", \"default\": \"Roll the text\"},\n    {\"id\": \"duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Roll time\", \"description\": \"Seconds each half-turn takes.\", \"default\": 0.5, \"min\": 0.1, \"max\": 2, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"stagger\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Seconds between one letter and the next.\", \"default\": 0.1, \"min\": 0.02, \"max\": 0.5, \"step\": 0.01, \"unit\": \"s\"},\n    {\"id\": \"exit_offset\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Exit offset\", \"description\": \"Seconds the incoming face waits after the outgoing one starts.\", \"default\": 0.2, \"min\": 0, \"max\": 1, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"repeats\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Rolls\", \"description\": \"How many times the roll plays.\", \"default\": 2, \"min\": 1, \"max\": 6, \"step\": 1},\n    {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start\", \"description\": \"Seconds before the first roll.\", \"default\": 0.3, \"min\": 0, \"max\": 5, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 110, \"min\": 12, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Text Roll</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, \"Geist\", system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .trl-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .trl-line { white-space: pre; line-height: 1.15; letter-spacing: -0.02em; text-align: center; }\n        .trl-letter { position: relative; display: inline-block; }\n        .trl-a, .trl-b { position: absolute; left: 0; top: 0; display: inline-block; backface-visibility: hidden; }\n        .trl-ghost { visibility: hidden; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"text-roll\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"trl-clip\" class=\"trl-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <div id=\"trl-line\" class=\"trl-line\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function pick(v, l, f) { return l.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { if (typeof v === \"boolean\") return v; if (v === \"true\") return true; if (v === \"false\") return false; return f; }\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            gsap.registerPlugin(CustomEase);\n            var total = parseFloat(root.dataset.duration || \"5\");\n            // Motion tweens with no easing named run easeInOut.\n            var EIO = CustomEase.create(\"trl-eio\", \"M0,0 C0.42,0 0.58,1 1,1\");\n            // Unit step response of a damped spring (semi-implicit Euler at 480 Hz), sampled once.\n            function springTable(k, c, m, dur) {\n              var dt = 1 / 480, x = 0, v = 0, out = [0];\n              for (var t = 0; t < dur; t += dt) { v += ((-k * (x - 1) - c * v) / m) * dt; x += v * dt; out.push(x); }\n              return out;\n            }\n            function springAt(tab, tau) {\n              if (tau <= 0) return 0;\n              var i = tau * 480; if (i >= tab.length - 1) return tab[tab.length - 1];\n              var j = Math.floor(i); return tab[j] + (tab[j + 1] - tab[j]) * (i - j);\n            }\n            var clock = { t: 0 };\n            function finish(tl, draw) {\n              if (draw) { tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0); draw(0); }\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"text-roll\"] = tl;\n            }\n\n\n            var line = document.getElementById(\"trl-line\");\n            var text = str(vars.text, \"Roll the text\");\n            var dur = num(vars.duration, 0.5, 0.1, 2), stg = num(vars.stagger, 0.1, 0.02, 0.5), off = num(vars.exit_offset, 0.2, 0, 1);\n            var reps = Math.round(num(vars.repeats, 2, 1, 6)), start = num(vars.start, 0.3, 0, 5);\n            var size = num(vars.font_size, 110, 12, 240);\n            line.style.fontSize = size + \"px\";\n            line.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\", \"800\"], \"700\");\n            line.setAttribute(\"aria-label\", text);\n            var A = [], Bs = [];\n            Array.from(text).forEach(function (ch) {\n              var g = ch === \" \" ? \" \" : ch;\n              var w = document.createElement(\"span\"); w.className = \"trl-letter\";\n              var a = document.createElement(\"span\"); a.className = \"trl-a\"; a.textContent = g; a.style.transformOrigin = \"50% 25%\";\n              var b = document.createElement(\"span\"); b.className = \"trl-b\"; b.textContent = g; b.style.transformOrigin = \"50% 100%\";\n              var gh = document.createElement(\"span\"); gh.className = \"trl-ghost\"; gh.textContent = g;\n              w.appendChild(a); w.appendChild(b); w.appendChild(gh); line.appendChild(w); A.push(a); Bs.push(b);\n            });\n            var maxW = root.clientWidth * 0.92;\n            if (line.scrollWidth > maxW) line.style.fontSize = (size * maxW / line.scrollWidth) + \"px\";\n            gsap.set(A.concat(Bs), { transformPerspective: 10000 });\n            // Motion easeIn.\n            var EIN = CustomEase.create(\"trl-ein\", \"M0,0 C0.42,0 1,1 1,1\");\n            var n = A.length, run = (n - 1) * stg + off + dur, gap = 0.4;\n            var tl = gsap.timeline({ paused: true });\n            for (var r = 0; r < reps; r++) {\n              var t0 = start + r * (run + gap);\n              if (t0 > total) break;\n              tl.set(A, { rotationX: 0 }, t0); tl.set(Bs, { rotationX: 90 }, t0);\n              for (var i = 0; i < n; i++) {\n                tl.fromTo(A[i], { rotationX: 0 }, { rotationX: 90, duration: dur, ease: EIN, immediateRender: r === 0 }, t0 + i * stg);\n                tl.fromTo(Bs[i], { rotationX: 90 }, { rotationX: 0, duration: dur, ease: EIN, immediateRender: r === 0 }, t0 + i * stg + off);\n              }\n            }\n            finish(tl, null);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "fc8308c3f206c6cd0b0cf0f2ecb9b6daafb9b07c06eef2128487b3be959dca2c",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 130
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Roll the text"
+  },
+  {
+   "id": "duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Roll time",
+   "default": 0.5,
+   "min": 0.1,
+   "max": 2
+  },
+  {
+   "id": "stagger",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 0.1,
+   "min": 0.02,
+   "max": 0.5
+  },
+  {
+   "id": "exit_offset",
+   "type": "number",
+   "role": "motion",
+   "label": "Exit offset",
+   "default": 0.2,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "repeats",
+   "type": "number",
+   "role": "motion",
+   "label": "Rolls",
+   "default": 2,
+   "min": 1,
+   "max": 6
+  },
+  {
+   "id": "start",
+   "type": "number",
+   "role": "motion",
+   "label": "Start",
+   "default": 0.3,
+   "min": 0,
+   "max": 5
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 110,
+   "min": 12,
+   "max": 240
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://motion-primitives.com"
+}

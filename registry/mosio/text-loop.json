@@ -1,0 +1,95 @@
+{
+ "name": "text-loop",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "ibelick",
+ "source": {
+  "repo": "https://github.com/ibelick/motion-primitives",
+  "path": "components/core/text-loop.tsx",
+  "commit": "120f64f6ca60348e251f929e9c81f11ccbe45eda"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Text Loop\n\nA list of words or phrases takes turns in one spot: the current one slides up and fades out while the next slides in from below, on a fixed interval, round and round.\n\nCategory: typography. Length: 6.5 s. WebGL: no.\n\nUse when:\n- Several short words (benefits, services, languages) should rotate in one place.\n- A calm, even swap with no spring or blur.\n\nAvoid when:\n- A rotating word sits beside a fixed prefix and the line must recentre: use inline-word-roll.\n- The swap should be a gooey or letter-by-letter change: use morph-text or text-morph.\n\nVariables:\n- items (string): Items, default \"Design, Motion, Story, Craft\"\n- interval (number, 0.5-8): Interval, default 2\n- transition (number, 0.1-1.5): Swap time, default 0.3\n- distance (number, 0-200): Distance, default 40\n- font_size (number, 12-240): Font size, default 120\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"600\"\n\nSource: https://github.com/ibelick/motion-primitives. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Text Loop\n\n  A list of words or phrases takes turns in one spot: the current one slides up and fades out while the next slides in from below, on a fixed interval, round and round.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/ibelick/motion-primitives/blob/120f64f6ca60348e251f929e9c81f11ccbe45eda/components/core/text-loop.tsx\n\n  MIT License\n\n  Copyright (c) 2024 ibelick\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n  app/page.tsx\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"text-loop\"\n  data-composition-duration=\"6.5\"\n  data-composition-variables='[\n    {\"id\": \"items\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Items\", \"description\": \"Words or phrases separated by commas.\", \"default\": \"Design, Motion, Story, Craft\"},\n    {\"id\": \"interval\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Interval\", \"description\": \"Seconds between swaps.\", \"default\": 2, \"min\": 0.5, \"max\": 8, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"transition\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Swap time\", \"description\": \"Seconds each slide takes.\", \"default\": 0.3, \"min\": 0.1, \"max\": 1.5, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Distance\", \"description\": \"How far the text travels while it swaps.\", \"default\": 40, \"min\": 0, \"max\": 200, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 120, \"min\": 12, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Text Loop</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, \"Geist\", system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .tlp-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .tlp-wrap { display: grid; place-items: center; white-space: nowrap; line-height: 1.15; letter-spacing: -0.03em; }\n        .tlp-item { grid-area: 1 / 1; opacity: 0; will-change: transform, opacity; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"text-loop\" data-duration=\"6.5\" data-fps=\"30\">\n        <div id=\"tlp-clip\" class=\"tlp-stage clip\" data-start=\"0\" data-duration=\"6.5\" data-track-index=\"0\">\n          <div id=\"tlp-wrap\" class=\"tlp-wrap\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function pick(v, l, f) { return l.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { if (typeof v === \"boolean\") return v; if (v === \"true\") return true; if (v === \"false\") return false; return f; }\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            gsap.registerPlugin(CustomEase);\n            var total = parseFloat(root.dataset.duration || \"6.5\");\n            // Motion tweens with no easing named run easeInOut.\n            var EIO = CustomEase.create(\"tlp-eio\", \"M0,0 C0.42,0 0.58,1 1,1\");\n            // Unit step response of a damped spring (semi-implicit Euler at 480 Hz), sampled once.\n            function springTable(k, c, m, dur) {\n              var dt = 1 / 480, x = 0, v = 0, out = [0];\n              for (var t = 0; t < dur; t += dt) { v += ((-k * (x - 1) - c * v) / m) * dt; x += v * dt; out.push(x); }\n              return out;\n            }\n            function springAt(tab, tau) {\n              if (tau <= 0) return 0;\n              var i = tau * 480; if (i >= tab.length - 1) return tab[tab.length - 1];\n              var j = Math.floor(i); return tab[j] + (tab[j + 1] - tab[j]) * (i - j);\n            }\n            var clock = { t: 0 };\n            function finish(tl, draw) {\n              if (draw) { tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0); draw(0); }\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"text-loop\"] = tl;\n            }\n\n\n            var wrap = document.getElementById(\"tlp-wrap\");\n            var items = str(vars.items, \"Design, Motion, Story, Craft\").split(\",\").map(function (s) { return s.trim(); }).filter(Boolean);\n            if (items.length < 2) items = [\"Design\", \"Motion\"];\n            var interval = num(vars.interval, 2, 0.5, 8), dur = num(vars.transition, 0.3, 0.1, 1.5), dist = num(vars.distance, 40, 0, 200);\n            wrap.style.fontSize = num(vars.font_size, 120, 12, 240) + \"px\";\n            wrap.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\", \"800\"], \"600\");\n            wrap.setAttribute(\"aria-label\", items.join(\", \"));\n            var els = items.map(function (t, i) { var s = document.createElement(\"div\"); s.className = \"tlp-item\"; s.textContent = t; wrap.appendChild(s); return s; });\n            var maxW = root.clientWidth * 0.9;\n            if (wrap.scrollWidth > maxW) wrap.style.fontSize = (parseFloat(wrap.style.fontSize) * maxW / wrap.scrollWidth) + \"px\";\n            var tl = gsap.timeline({ paused: true });\n            gsap.set(els[0], { opacity: 1 });\n            for (var k = 1; k * interval + dur <= total + 0.001; k++) {\n              var out = els[(k - 1) % els.length], inn = els[k % els.length], at = k * interval;\n              tl.fromTo(out, { y: 0, opacity: 1 }, { y: -dist, opacity: 0, duration: dur, ease: EIO, immediateRender: false }, at);\n              tl.fromTo(inn, { y: dist, opacity: 0 }, { y: 0, opacity: 1, duration: dur, ease: EIO, immediateRender: false }, at);\n            }\n            finish(tl, null);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "24a0c48afdc82ff548c8f293ec80dbbd31ef6607f6e552400d845f00763f12be",
+ "duration": 6.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 170,
+  "distance": 60
+ },
+ "variables": [
+  {
+   "id": "items",
+   "type": "string",
+   "role": "content",
+   "label": "Items",
+   "default": "Design, Motion, Story, Craft"
+  },
+  {
+   "id": "interval",
+   "type": "number",
+   "role": "motion",
+   "label": "Interval",
+   "default": 2,
+   "min": 0.5,
+   "max": 8
+  },
+  {
+   "id": "transition",
+   "type": "number",
+   "role": "motion",
+   "label": "Swap time",
+   "default": 0.3,
+   "min": 0.1,
+   "max": 1.5
+  },
+  {
+   "id": "distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Distance",
+   "default": 40,
+   "min": 0,
+   "max": 200
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 120,
+   "min": 12,
+   "max": 240
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://motion-primitives.com"
+}

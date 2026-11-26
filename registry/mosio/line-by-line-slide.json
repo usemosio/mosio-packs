@@ -1,0 +1,82 @@
+{
+ "name": "line-by-line-slide",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/line-by-line-slide/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Line by Line Slide\n\nLines of text slide in from the left one after another, then slide out to the right in turn.\n\nCategory: typography. Length: 3 s. WebGL: no.\n\nUse when:\n- A multi-line statement should arrive line by line with a calm lateral glide and leave the same way.\n- Taglines, quotes and short stanzas where each line has its own beat.\n\nAvoid when:\n- A single short word: use a letter or word effect.\n- The lines should rise from below: use a mask or rise reveal.\n\nVariables:\n- text (string): Text, default \"Think different.\\nDo more.\"\n- distance (number, 0-300): Distance, default 48\n- font_size (number, 12-240): Font size, default 72\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"600\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Line by Line Slide\n\n  Lines of text slide in from the left one after another, then slide out to the right in turn.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/line-by-line-slide/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"line-by-line-slide\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Lines of text; a new line starts a new row.\", \"default\": \"Think different.\\nDo more.\"},\n    {\"id\": \"distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Distance\", \"description\": \"How far left of its place each line starts and how far right it leaves.\", \"default\": 48, \"min\": 0, \"max\": 300, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 72, \"min\": 12, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Line by Line Slide</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: var(--color, #171717); font-family: Geist, -apple-system, BlinkMacSystemFont, sans-serif; }\n        .lbls-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .lbls-block { letter-spacing: -0.03em; line-height: 1.1; text-align: left; }\n        .lbls-line { display: block; transform-origin: 0% 50%; opacity: 0; white-space: pre; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"line-by-line-slide\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"lbls-clip\" class=\"lbls-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <span id=\"lbls-block\" class=\"lbls-block\" role=\"img\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return value !== \"\" && value !== null && Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function bezier(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 32; i++) {\n                  var u = 1 - t;\n                  var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                var v = 1 - t;\n                return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n              };\n            }\n            function clamp01(p) { return Math.min(1, Math.max(0, p)); }\n            function ip(x, a, b, from, to, ease) {\n              var p = b === a ? (x >= b ? 1 : 0) : clamp01((x - a) / (b - a));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n            // Damped spring from 0 to 1, rest at 0 velocity (mass, stiffness, damping), at `frame` of 30 fps.\n            function spring(frame, cfg) {\n              if (frame <= 0) return 0;\n              var t = frame / 30, m = cfg.mass, k = cfg.stiffness, c = cfg.damping;\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              if (z < 1) {\n                var wd = w0 * Math.sqrt(1 - z * z);\n                return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t));\n              }\n              return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n            }\n            // Seeded generator (mulberry32).\n            function rng(seed) {\n              var a = seed >>> 0;\n              return function () {\n                a = (a + 0x6d2b79f5) >>> 0;\n                var t = a;\n                t = Math.imul(t ^ (t >>> 15), t | 1);\n                t ^= t + Math.imul(t ^ (t >>> 7), t | 61);\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            var TOTAL = 3;\n            var FRAMES = Math.round(TOTAL * 30);\n            var clock = { frame: 0 };\n            function frameNow() { return Math.round(clock.frame * 1000) / 1000; }\n            function start(draw) {\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { frame: FRAMES, duration: TOTAL, ease: \"none\", onUpdate: function () { draw(frameNow()); } }, 0);\n              draw(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"line-by-line-slide\"] = tl;\n            }\n            function onFonts(fn) {\n              if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn, function () {});\n            }\n            function fit(el, size, frac, hfrac) {\n              el.style.fontSize = size + \"px\";\n              var maxW = Math.max(1, root.clientWidth * frac);\n              var maxH = Math.max(1, root.clientHeight * (hfrac || 0.9));\n              var k = Math.min(1, maxW / Math.max(1, el.scrollWidth), maxH / Math.max(1, el.scrollHeight));\n              if (k < 1) { size = Math.max(8, size * k); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n\n\n            var text = typeof vars.text === \"string\" && vars.text.trim() ? vars.text : \"Think different.\\nDo more.\";\n            var lines = text.replace(/\\\\n/g, \"\\n\").split(\"\\n\");\n            var distance = num(vars.distance, 48, 0, 300), size = num(vars.font_size, 72, 12, 240), speed = num(vars.speed, 1, 0.25, 4);\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            var block = document.getElementById(\"lbls-block\");\n            block.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"600\");\n            block.setAttribute(\"aria-label\", lines.join(\" \"));\n            var spans = lines.map(function (l, i) {\n              var sp = document.createElement(\"span\");\n              sp.id = \"lbls-line-\" + i; sp.className = \"lbls-line\"; sp.textContent = l;\n              block.appendChild(sp); return sp;\n            });\n            fit(block, size, 0.9); onFonts(function () { fit(block, size, 0.9); });\n            var enterDur = 27, enterTravel = 14, exitDur = 18, exitTravelFrom = 8, enterStagger = 4, exitStagger = 2;\n            var enterE = bezier(0.22, 1, 0.36, 1), exitE = bezier(0.64, 0, 0.78, 0);\n            var enterEnd = enterDur + (lines.length - 1) * enterStagger;\n            var exitStart = Math.max(enterEnd, FRAMES - exitDur - (lines.length - 1) * exitStagger);\n            start(function (raw) {\n              var f = raw * speed;\n              spans.forEach(function (sp, i) {\n                var en = f - i * enterStagger, ex = f - exitStart - i * exitStagger;\n                var enP = ip(en, 0, enterDur, 0, 1, enterE), exP = ip(ex, 0, exitDur, 0, 1, exitE);\n                var x = ip(en, 0, enterTravel, -distance, 0, enterE) + ip(ex, exitTravelFrom, exitDur, 0, distance, exitE);\n                sp.style.opacity = enP * (1 - exP);\n                sp.style.transform = \"translateX(\" + x + \"px)\";\n              });\n            });\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "ad36225815e3f6055de14c16692f9fba4cd8087ec43d99102fcb39b34fb77d68",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 130
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Think different.\nDo more."
+  },
+  {
+   "id": "distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Distance",
+   "default": 48,
+   "min": 0,
+   "max": 300
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 12,
+   "max": 240
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

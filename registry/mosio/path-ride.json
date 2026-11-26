@@ -1,0 +1,102 @@
+{
+ "name": "path-ride",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/path-ride/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Path Ride\n\nA line draws itself along a curve with the text riding behind its head, then the curve pulls taut and the text settles on a straight, centered baseline.\n\nCategory: typography. Length: 3.2 s. WebGL: no.\n\nUse when:\n- A tagline or a short phrase should travel across the frame before it settles, leading the eye from one side to the other.\n- You want text on a path, with each letter turned to the curve, and a clean readable line at the end.\n- The motion should follow a custom route: pass any SVG path in 1280×720 space.\n\nAvoid when:\n- The line should be an accent on its own, with no text riding it: use squiggle.\n- The text should loop around a closed ring: use ring-text.\n- The text should scroll in a straight strip: use infinite-marquee.\n\nVariables:\n- text (string): Text, default \"Follow the line\"\n- path (string): Path (1280×720), default \"M 120 560 C 360 120 560 120 640 360 S 920 600 1160 160\"\n- color (color): Text color, default \"#111111\"\n- line_color (color): Line color, default \"#fafafa\"\n- font_size (number, 16-120): Font size, default 44\n- font_weight (number, 100-900): Weight, default 700\n- line_width (number, 1-12): Line width, default 3\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Path Ride\n\n  A line draws itself along a curve with the text riding behind its head, then the curve pulls taut and the text settles on a straight, centered baseline.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/path-ride/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"path-ride\"\n  data-composition-duration=\"3.2\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Short phrase that rides the line.\", \"default\": \"Follow the line\"},\n    {\"id\": \"path\", \"type\": \"string\", \"role\": \"style\", \"label\": \"Path (1280×720)\", \"description\": \"SVG path data in a 1280×720 space, drawn left to right works best.\", \"default\": \"M 120 560 C 360 120 560 120 640 360 S 920 600 1160 160\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Color of the letters.\", \"default\": \"#111111\"},\n    {\"id\": \"line_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Line color\", \"description\": \"Color of the line and its head.\", \"default\": \"#fafafa\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in reference pixels (1280×720 space).\", \"default\": 44, \"min\": 16, \"max\": 120, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_weight\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Weight\", \"description\": \"Font weight, 100 to 900.\", \"default\": 700, \"min\": 100, \"max\": 900, \"step\": 100},\n    {\"id\": \"line_width\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Line width\", \"description\": \"Line thickness in reference pixels.\", \"default\": 3, \"min\": 1, \"max\": 12, \"step\": 0.5, \"unit\": \"px\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Path Ride</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .pr-stage { position: absolute; inset: 0; overflow: hidden; font-family: Inter, system-ui, sans-serif; }\n        .pr-svg { position: absolute; inset: 0; width: 100%; height: 100%; }\n        .pr-letter { position: absolute; left: 0; top: 0; line-height: 1; white-space: pre; transform-origin: 0 0; opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"path-ride\" data-duration=\"3.2\" data-fps=\"30\">\n        <div id=\"pr-clip\" class=\"pr-stage clip\" data-start=\"0\" data-duration=\"3.2\" data-track-index=\"0\">\n          <svg id=\"pr-svg\" class=\"pr-svg\">\n            <g id=\"pr-g\" fill=\"none\"><path id=\"pr-line\" stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"\" /><circle id=\"pr-tip\" opacity=\"0\" /></g>\n          </svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            function fit(el, maxPx, size, ratio) {\n              // Shrink el's font size until its scrollWidth fits ratio of the frame width.\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * (ratio || 0.9));\n              if (el.scrollWidth > max) { size = Math.max(10, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            gsap.registerPlugin(CustomEase);\n            function ease(name, a, b, c, d) { return CustomEase.create(name, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\"); }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            var tl = gsap.timeline({ paused: true });\n            var TOTAL = parseFloat(root.dataset.duration || \"3.2\");\n            function ip(t, a, b, from, to, e) {\n              var p = b === a ? 1 : (t - a) / (b - a);\n              p = Math.min(1, Math.max(0, p));\n              if (e) p = e(p);\n              return from + (to - from) * p;\n            }\n            function hash01(seed) {\n              var h = 2166136261;\n              for (var i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              return ((h ^ (h >>> 16)) >>> 0) / 4294967296;\n            }\n            function hashRange(seed, lo, hi) { return lo + hash01(seed) * (hi - lo); }\n            // Snap a frame number down to a stop-motion pose.\n            function qf(frame, step) { return Math.floor(frame / step + 1e-6) * step; }\n            function kf(t, keys, vals, e) {\n              if (t <= keys[0]) return vals[0];\n              for (var i = 0; i < keys.length - 1; i++) if (t <= keys[i + 1]) return ip(t, keys[i], keys[i + 1], vals[i], vals[i + 1], e);\n              return vals[vals.length - 1];\n            }\n            // Per-frame drawing: a pure function of the timeline time, run from a tween's onUpdate.\n            function tick(draw) {\n              tl.to({}, { duration: TOTAL, ease: \"none\", onUpdate: function () { draw(tl.time()); } }, 0);\n              draw(0);\n            }\n            var cubOut = ease(\"cub-out\", 0.215, 0.61, 0.355, 1);\n            var cubIn = ease(\"cub-in\", 0.55, 0.055, 0.675, 0.19);\n            var cubInOut = ease(\"cub-io\", 0.645, 0.045, 0.355, 1);\n\n            var NS = \"http://www.w3.org/2000/svg\";\n            var stage = document.getElementById(\"pr-clip\"), svg = document.getElementById(\"pr-svg\");\n            var text = str(vars.text, \"Follow the line\"), speed = num(vars.speed, 1, 0.25, 4);\n            var pathData = str(vars.path, \"M 120 560 C 360 120 560 120 640 360 S 920 600 1160 160\");\n            if (/[^MmLlHhVvCcSsQqTtAaZz0-9eE.,\\s+-]/.test(pathData)) pathData = \"M 120 560 C 360 120 560 120 640 360 S 920 600 1160 160\";\n            var fs = num(vars.font_size, 44, 16, 120), weight = num(vars.font_weight, 700, 100, 900), lw = num(vars.line_width, 3, 1, 12);\n            var color = col(vars.color, \"#111111\"), lineColor = col(vars.line_color, \"#fafafa\");\n            var W = root.clientWidth, H = root.clientHeight, unit = Math.min(W / 1280, H / 720);\n            svg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n            var g = document.getElementById(\"pr-g\"), lineEl = document.getElementById(\"pr-line\"), tipEl = document.getElementById(\"pr-tip\");\n            g.setAttribute(\"transform\", \"translate(\" + (W / 2 - 640 * unit) + \" \" + (H / 2 - 360 * unit) + \") scale(\" + unit + \")\");\n            lineEl.setAttribute(\"stroke\", lineColor); lineEl.setAttribute(\"stroke-width\", lw);\n            tipEl.setAttribute(\"fill\", lineColor); tipEl.setAttribute(\"r\", lw * 1.6);\n            // Sample the path at 400 evenly spaced arc lengths: points and unit tangents.\n            var probe = document.createElementNS(NS, \"path\"); probe.setAttribute(\"d\", pathData); svg.appendChild(probe);\n            var length = probe.getTotalLength(), NS_ = 400, pts = [], tans = [];\n            for (var i = 0; i < NS_; i++) {\n              var at = (length * i) / (NS_ - 1), p = probe.getPointAtLength(at);\n              var a = probe.getPointAtLength(Math.max(0, at - 0.5)), b = probe.getPointAtLength(Math.min(length, at + 0.5));\n              var tx = b.x - a.x, ty = b.y - a.y, nn = Math.hypot(tx, ty) || 1;\n              pts.push({ x: p.x, y: p.y }); tans.push({ x: tx / nn, y: ty / nn });\n            }\n            svg.removeChild(probe);\n            function sampleAt(s) {\n              var u = length > 0 ? (s / length) * (NS_ - 1) : 0, i = Math.min(NS_ - 2, Math.max(0, Math.floor(u))), f = Math.min(1, Math.max(0, u - i));\n              var a = pts[i], b = pts[i + 1], ta = tans[i], tb = tans[i + 1];\n              var tx = ta.x + (tb.x - ta.x) * f, ty = ta.y + (tb.y - ta.y) * f, nn = Math.hypot(tx, ty) || 1;\n              return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f, tx: tx / nn, ty: ty / nn };\n            }\n            // Pull the curve k of the way to a straight baseline; arc length maps to x one to one.\n            function pose(s, k, st, lift) {\n              var p = sampleAt(s);\n              var x = p.x + (st.left + (s - st.start) - p.x) * k, y = p.y + (st.baseline - p.y) * k;\n              var tx = p.tx + (1 - p.tx) * k, ty = p.ty * (1 - k), nn = Math.hypot(tx, ty) || 1;\n              return { x: x + (ty / nn) * (lift || 0), y: y - (tx / nn) * (lift || 0), angle: Math.atan2(ty, tx) };\n            }\n            var chars = Array.from(text), spans = chars.map(function (ch) {\n              var s = document.createElement(\"span\"); s.className = \"pr-letter\"; s.textContent = ch;\n              s.style.fontSize = fs * unit + \"px\"; s.style.fontWeight = weight; s.style.fontVariationSettings = '\"wght\" ' + weight; s.style.color = color;\n              stage.appendChild(s); return s;\n            });\n            var fontSpec = weight + \" 100px Inter\", ctx = document.createElement(\"canvas\").getContext(\"2d\");\n            var met = { adv: chars.map(function () { return 0.55; }), baseline: 0.8637, cap: 0.7275 }, real = false;\n            function measure() {\n              ctx.font = fontSpec;\n              var m = ctx.measureText(\"H\"), asc = m.fontBoundingBoxAscent / 100, desc = m.fontBoundingBoxDescent / 100;\n              met = { adv: chars.map(function (c) { return ctx.measureText(c).width / 100; }),\n                baseline: asc > 0 ? (1 - (asc + desc)) / 2 + asc : 0.8637, cap: m.actualBoundingBoxAscent > 0 ? m.actualBoundingBoxAscent / 100 : 0.7275 };\n            }\n            var inOut = cubInOut;\n            function polyline(from, to, k, st) {\n              if (to <= from) return \"\";\n              var step = length / (NS_ - 1), stops = [from];\n              for (var s = Math.ceil(from / step) * step; s < to; s += step) if (s > from) stops.push(s);\n              stops.push(to);\n              return stops.map(function (s, i) { var p = pose(s, k, st, 0); return (i === 0 ? \"M\" : \"L\") + p.x.toFixed(2) + \" \" + p.y.toFixed(2); }).join(\"\");\n            }\n            tick(function (tt) {\n              var t = tt * 30 * speed;\n              if (!real) { var ok = !document.fonts || document.fonts.check(fontSpec); measure(); real = ok; }\n              var adv = met.adv.map(function (a) { return a * fs; }), x = 0, centers = adv.map(function (a) { var c = x + a / 2; x += a; return c; }), tw = x;\n              var head = ip(t, 0, 40, 0, length, inOut), tail = ip(t, 52, 70, 0, length, inOut), k = ip(t, 50, 68, 0, 1, inOut);\n              var lift = lw / 2 + 0.08 * fs;\n              var st = { start: length - 0.3 * fs - tw, left: 640 - tw / 2, baseline: 360 + (met.cap * fs) / 2 + lift };\n              var tip = pose(head, k, st, 0);\n              lineEl.setAttribute(\"d\", polyline(tail, head, k, st));\n              tipEl.setAttribute(\"cx\", tip.x); tipEl.setAttribute(\"cy\", tip.y);\n              tipEl.setAttribute(\"opacity\", ip(head, 0, length * 0.02, 0, 1) * ip(head, length * 0.98, length, 1, 0));\n              var size = fs * unit;\n              spans.forEach(function (sp, j) {\n                var arc = head - 0.3 * fs - (tw - centers[j]), fade = Math.min(1, Math.max(0, arc / (0.5 * fs)));\n                sp.style.opacity = fade;\n                if (fade <= 0) return;\n                var ps = pose(arc, k, st, lift);\n                var px = W / 2 + (ps.x - 640) * unit, py = H / 2 + (ps.y - 360) * unit;\n                sp.style.transform = \"translate(\" + px + \"px,\" + py + \"px) rotate(\" + ps.angle + \"rad) translate(-50%,\" + -met.baseline * size + \"px)\";\n              });\n            });\n            var total = parseFloat(root.dataset.duration || \"3.2\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"path-ride\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "63233845f855cddaedb35a4a91f14411871543a9bbbf4239cc63fec2efc06f4a",
+ "duration": 3.2,
+ "webgl": false,
+ "demo_background": "#ff4d1a",
+ "demo_values": {
+  "font_size": 80,
+  "line_width": 6
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Follow the line"
+  },
+  {
+   "id": "path",
+   "type": "string",
+   "role": "style",
+   "label": "Path (1280×720)",
+   "default": "M 120 560 C 360 120 560 120 640 360 S 920 600 1160 160"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#111111"
+  },
+  {
+   "id": "line_color",
+   "type": "color",
+   "role": "style",
+   "label": "Line color",
+   "default": "#fafafa"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 44,
+   "min": 16,
+   "max": 120
+  },
+  {
+   "id": "font_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Weight",
+   "default": 700,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "line_width",
+   "type": "number",
+   "role": "style",
+   "label": "Line width",
+   "default": 3,
+   "min": 1,
+   "max": 12
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

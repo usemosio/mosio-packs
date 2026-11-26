@@ -1,0 +1,114 @@
+{
+ "name": "life-grid",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/life-grid/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Life Grid\n\nConway's Game of Life runs on a seeded grid, newborn cells flashing in the accent and dying cells shrinking away.\n\nCategory: motion-graphics. Length: 10 s. WebGL: no.\n\nUse when:\n- A tech, AI or simulation story needs a background that visibly computes, with rule-based structures forming, colliding and dying.\n- A pixel-grid look should stay alive behind a title for as long as the shot runs.\n- A scene about emergence, growth or systems needs a literal, recognisable reference.\n\nAvoid when:\n- The grid should be a pattern that resolves into a clean structure.\n- The cells should rebuild a specific logo or image: use brick-mosaic.\n- The motion should feel organic and continuous rather than stepped: use flow-field.\n\nVariables:\n- cols (number, 12-96): Columns, default 48\n- density (number, 0.05-0.6): Density, default 0.24\n- frames_per_generation (number, 1-15): Frames per generation, default 5\n- gap (number, 0-0.4): Gap, default 0.16\n- show_grid (boolean): Lattice, default true\n- seed (number, 1-50): Seed, default 7\n- speed (number, 0.1-4): Speed, default 1\n- background (color): Background, default \"#111111\"\n- color (color): Cells, default \"#FFFFFF\"\n- accent (color): Newborns, default \"#E5322D\"\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Life Grid\n\n  Conway's Game of Life runs on a seeded grid, newborn cells flashing in the accent and dying cells shrinking away.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/life-grid/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"life-grid\"\n  data-composition-duration=\"10\"\n  data-composition-variables='[\n    {\"id\": \"cols\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Columns\", \"description\": \"Columns of cells; rows follow the frame aspect ratio.\", \"default\": 48, \"min\": 12, \"max\": 96, \"step\": 2},\n    {\"id\": \"density\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Density\", \"description\": \"Share of cells alive in the seeded first generation.\", \"default\": 0.24, \"min\": 0.05, \"max\": 0.6, \"step\": 0.01},\n    {\"id\": \"frames_per_generation\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Frames per generation\", \"description\": \"Frames each generation is held.\", \"default\": 5, \"min\": 1, \"max\": 15, \"step\": 1, \"unit\": \"frames\"},\n    {\"id\": \"gap\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Gap\", \"description\": \"Gap between tiles, as a fraction of the cell.\", \"default\": 0.16, \"min\": 0, \"max\": 0.4, \"step\": 0.01},\n    {\"id\": \"show_grid\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Lattice\", \"description\": \"Draw the faint lattice of empty cells.\", \"default\": true},\n    {\"id\": \"seed\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Seed\", \"description\": \"Changes the first generation.\", \"default\": 7, \"min\": 1, \"max\": 50, \"step\": 1},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed of the simulation.\", \"default\": 1, \"min\": 0.1, \"max\": 4, \"step\": 0.1},\n    {\"id\": \"background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Background color.\", \"default\": \"#111111\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Cells\", \"description\": \"Living cell color.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Newborns\", \"description\": \"Flash color for newborn cells.\", \"default\": \"#E5322D\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Life Grid</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { background: #111111; }\n        .lg-stage { position: absolute; inset: 0; }\n        .lg-stage svg { display: block; width: 100%; height: 100%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"life-grid\" data-duration=\"10\" data-fps=\"30\">\n        <div id=\"lg-clip\" class=\"lg-stage clip\" data-start=\"0\" data-duration=\"10\" data-track-index=\"0\">\n          <svg id=\"lg-svg\" role=\"img\" aria-label=\"Game of Life grid\">\n            <path id=\"lg-lattice\" />\n            <path id=\"lg-fresh\" />\n            <path id=\"lg-alive\" />\n          </svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            var FPS = 30;\n            var W = root.clientWidth || 1080;\n            var H = root.clientHeight || 1920;\n\n            // Seeded random in [0, 1): a string hash, so the same key always gives the same value.\n            function rnd(key) {\n              var h = 1779033703 ^ key.length;\n              for (var i = 0; i < key.length; i++) {\n                h = Math.imul(h ^ key.charCodeAt(i), 3432918353);\n                h = (h << 13) | (h >>> 19);\n              }\n              h = Math.imul(h ^ (h >>> 16), 2246822507);\n              h = Math.imul(h ^ (h >>> 13), 3266489909);\n              h ^= h >>> 16;\n              return (h >>> 0) / 4294967296;\n            }\n\n            // Piecewise-linear map of x from inR to outR, optionally eased per segment and clamped.\n            function interp(x, inR, outR, o) {\n              o = o || {};\n              var n = inR.length;\n              var i = 0;\n              if (x >= inR[n - 1]) i = n - 2;\n              else if (x > inR[0]) { while (x > inR[i + 1]) i++; }\n              var t = (x - inR[i]) / (inR[i + 1] - inR[i]);\n              if (o.clamp !== false) t = Math.min(1, Math.max(0, t));\n              if (o.easing) t = o.easing(t);\n              return outR[i] + (outR[i + 1] - outR[i]) * t;\n            }\n            function clamp01(t) { return Math.min(1, Math.max(0, t)); }\n\n            // Easings with the usual names; every one maps 0..1 to 0..1.\n            var E = {\n              linear: function (t) { return t; },\n              quad: function (t) { return t * t; },\n              cubic: function (t) { return t * t * t; },\n              sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); },\n              back: function (s) { return function (t) { return t * t * ((s + 1) * t - s); }; },\n              out: function (f) { return function (t) { return 1 - f(1 - t); }; },\n              inOut: function (f) { return function (t) { return t < 0.5 ? f(t * 2) / 2 : 1 - f((1 - t) * 2) / 2; }; },\n              bezier: function (x1, y1, x2, y2) {\n                return function (x) {\n                  if (x <= 0) return 0;\n                  if (x >= 1) return 1;\n                  var lo = 0, hi = 1, t = x;\n                  for (var k = 0; k < 24; k++) {\n                    var mt = 1 - t;\n                    var bx = 3 * mt * mt * t * x1 + 3 * mt * t * t * x2 + t * t * t;\n                    if (bx < x) lo = t; else hi = t;\n                    t = (lo + hi) / 2;\n                  }\n                  var m = 1 - t;\n                  return 3 * m * m * t * y1 + 3 * m * t * t * y2 + t * t * t;\n                };\n              }\n            };\n\n            function fmt(n) { return Math.round(n * 10) / 10; }\n\n            var SVGNS = \"http://www.w3.org/2000/svg\";\n            function el(tag, attrs, parent) {\n              var e = document.createElementNS(SVGNS, tag);\n              for (var k in attrs) e.setAttribute(k, attrs[k]);\n              if (parent) parent.appendChild(e);\n              return e;\n            }\n\n            var tl = gsap.timeline({ paused: true });\n            // Runs draw(frame) from the timeline so seeking to a time always draws the same picture.\n            function drive(frames, draw) {\n              var clock = { frame: 0 };\n              tl.to(clock, { frame: frames, duration: frames / FPS, ease: \"none\", onUpdate: function () { draw(clock.frame); } }, 0);\n              draw(0);\n            }\n\n            var cols = Math.round(num(vars.cols, 48, 12, 96));\n            var density = num(vars.density, 0.24, 0.05, 0.6);\n            var fpg = Math.max(1, Math.round(num(vars.frames_per_generation, 5, 1, 15)));\n            var gap = num(vars.gap, 0.16, 0, 0.4);\n            var showGrid = bool(vars.show_grid, true);\n            var seed = Math.round(num(vars.seed, 7, 1, 50));\n            var speed = num(vars.speed, 1, 0.1, 4);\n            root.style.background = str(vars.background, \"#111111\");\n            var color = str(vars.color, \"#FFFFFF\");\n            var accent = str(vars.accent, \"#E5322D\");\n\n            var svg = document.getElementById(\"lg-svg\");\n            svg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n            document.getElementById(\"lg-lattice\").setAttribute(\"fill\", color);\n            document.getElementById(\"lg-lattice\").setAttribute(\"fill-opacity\", \"0.05\");\n            document.getElementById(\"lg-fresh\").setAttribute(\"fill\", accent);\n            document.getElementById(\"lg-alive\").setAttribute(\"fill\", color);\n            var pLattice = document.getElementById(\"lg-lattice\"), pFresh = document.getElementById(\"lg-fresh\"), pAlive = document.getElementById(\"lg-alive\");\n\n            var nx = cols, ny = Math.max(4, Math.round((nx * H) / W));\n            var durationFrames = Math.round(parseFloat(root.dataset.duration || \"10\") * FPS);\n            var count = Math.ceil((durationFrames * speed) / fpg) + 2;\n\n            // Every generation, computed up front from the seed alone (the grid wraps around its edges).\n            var gens = [];\n            var first = new Uint8Array(nx * ny);\n            for (var i = 0; i < first.length; i++) first[i] = rnd(\"life-grid-\" + seed + \"-\" + i) < density ? 1 : 0;\n            gens.push(first);\n            while (gens.length < count) {\n              var prev = gens[gens.length - 1], next = new Uint8Array(nx * ny);\n              for (var y = 0; y < ny; y++) {\n                for (var x = 0; x < nx; x++) {\n                  var n = 0;\n                  for (var dy = -1; dy <= 1; dy++) {\n                    for (var dx = -1; dx <= 1; dx++) {\n                      if (dx === 0 && dy === 0) continue;\n                      n += prev[((y + dy + ny) % ny) * nx + ((x + dx + nx) % nx)];\n                    }\n                  }\n                  var alive = prev[y * nx + x] === 1;\n                  next[y * nx + x] = n === 3 || (alive && n === 2) ? 1 : 0;\n                }\n              }\n              gens.push(next);\n            }\n\n            var cell = Math.min(W / nx, H / ny);\n            var ox = (W - cell * nx) / 2, oy = (H - cell * ny) / 2;\n            var tile = cell * (1 - gap);\n            var grow = E.out(E.back(2)), shrink = E.cubic, settle = E.inOut(E.cubic);\n            function square(index, size) {\n              var x = ox + (index % nx) * cell + (cell - size) / 2;\n              var y = oy + Math.floor(index / nx) * cell + (cell - size) / 2;\n              var s = fmt(size);\n              return \"M \" + fmt(x) + \" \" + fmt(y) + \" h \" + s + \" v \" + s + \" h \" + -s + \" Z \";\n            }\n            var lattice = \"\";\n            if (showGrid) for (var c = 0; c < nx * ny; c++) lattice += square(c, tile);\n            pLattice.setAttribute(\"d\", lattice);\n\n            function draw(frame) {\n              var time = Math.max(0, frame * speed);\n              var g = Math.min(gens.length - 1, Math.floor(time / fpg));\n              var local = Math.min(1, (time - g * fpg) / fpg);\n              var now = gens[g], before = g > 0 ? gens[g - 1] : now;\n              var bornSize = tile * (0.35 + 0.65 * grow(local));\n              var dyingSize = tile * (1 - shrink(Math.min(1, local * 1.6)));\n              // Newborns pop in as accent tiles, then a tile in the cell color grows from their centre.\n              var coreSize = tile * settle(clamp01((local - 0.35) / 0.65));\n              var alivePath = \"\", fresh = \"\";\n              for (var i = 0; i < now.length; i++) {\n                if (now[i]) {\n                  if (!before[i] && g > 0) {\n                    fresh += square(i, bornSize);\n                    if (coreSize > 0.5) alivePath += square(i, coreSize);\n                  } else alivePath += square(i, tile);\n                } else if (before[i] && dyingSize > 0.5) alivePath += square(i, dyingSize);\n              }\n              pFresh.setAttribute(\"d\", fresh);\n              pAlive.setAttribute(\"d\", alivePath);\n            }\n            drive(durationFrames, draw);\n\n            var total = parseFloat(root.dataset.duration || \"10\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"life-grid\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "dc1839cfe015d97765c868b5fa3cfcdae28600b3fc774f7c91088235ba8fc5db",
+ "duration": 10,
+ "webgl": false,
+ "demo_background": "#111111",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "cols",
+   "type": "number",
+   "role": "style",
+   "label": "Columns",
+   "default": 48,
+   "min": 12,
+   "max": 96
+  },
+  {
+   "id": "density",
+   "type": "number",
+   "role": "style",
+   "label": "Density",
+   "default": 0.24,
+   "min": 0.05,
+   "max": 0.6
+  },
+  {
+   "id": "frames_per_generation",
+   "type": "number",
+   "role": "motion",
+   "label": "Frames per generation",
+   "default": 5,
+   "min": 1,
+   "max": 15
+  },
+  {
+   "id": "gap",
+   "type": "number",
+   "role": "style",
+   "label": "Gap",
+   "default": 0.16,
+   "min": 0,
+   "max": 0.4
+  },
+  {
+   "id": "show_grid",
+   "type": "boolean",
+   "role": "style",
+   "label": "Lattice",
+   "default": true
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "style",
+   "label": "Seed",
+   "default": 7,
+   "min": 1,
+   "max": 50
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.1,
+   "max": 4
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#111111"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Cells",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Newborns",
+   "default": "#E5322D"
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

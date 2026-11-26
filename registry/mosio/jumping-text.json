@@ -1,0 +1,89 @@
+{
+ "name": "jumping-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Animata",
+ "source": {
+  "repo": "https://github.com/codse/animata",
+  "path": "animata/text/jumping-text-instagram.tsx",
+  "commit": "25c27e5a874c60a56dcc1609df3b2c4f5f8456f8"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Jumping Text\n\nWords (or letters) hop in from below, tilted, and spring upright one after another with a little overshoot.\n\nCategory: typography. Length: 3.5 s. WebGL: no.\n\nUse when:\n- A sentence should pop in word by word with a playful, bouncy feel.\n- Captions or hooks for social-style videos that want a lively entrance.\n\nAvoid when:\n- The tone is calm or formal: use a blur or fade reveal.\n- A crisp, rigid entrance is wanted: use per-character-rise.\n\nVariables:\n- text (string): Text, default \"This is a jumping text effect\"\n- mode (enum): Mode, default \"word\"\n- font_size (number, 12-260): Font size, default 88\n- stagger_ms (number, 0-300): Stagger, default 0\n- damping (number, 2-40): Damping, default 10\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"700\"\n\nSource: https://github.com/codse/animata. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Jumping Text\n\n  Words (or letters) hop in from below, tilted, and spring upright one after another with a little overshoot.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/codse/animata/blob/25c27e5a874c60a56dcc1609df3b2c4f5f8456f8/animata/text/jumping-text-instagram.tsx\n\n  MIT License\n\n  Copyright (c) Animata\n\n  Permission is hereby granted, free of charge, to any person obtaining\n  a copy of this software and associated documentation files (the\n  \"Software\"), to deal in the Software without restriction, including\n  without limitation the rights to use, copy, modify, merge, publish,\n  distribute, sublicense, and/or sell copies of the Software, and to\n  permit persons to whom the Software is furnished to do so, subject to\n  the following conditions:\n\n  The above copyright notice and this permission notice shall be\n  included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"jumping-text\"\n  data-composition-duration=\"3.5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Sentence that jumps in.\", \"default\": \"This is a jumping text effect\"},\n    {\"id\": \"mode\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Mode\", \"description\": \"Jump word by word or letter by letter.\", \"default\": \"word\", \"options\": [{\"value\": \"word\", \"label\": \"Word\"}, {\"value\": \"character\", \"label\": \"Character\"}]},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 88, \"min\": 12, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"stagger_ms\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Milliseconds between units. 0 uses the original: 50 per word, 10 per letter.\", \"default\": 0, \"min\": 0, \"max\": 300, \"step\": 1, \"unit\": \"ms\"},\n    {\"id\": \"damping\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Damping\", \"description\": \"Spring damping: lower is bouncier.\", \"default\": 10, \"min\": 2, \"max\": 40, \"step\": 1},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"900\", \"label\": \"Black\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Jumping Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .jmp-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .jmp-line { width: 90%; text-align: center; line-height: 1.15; letter-spacing: -0.02em; }\n        .jmp-unit { display: inline-block; transform-origin: 50% 50%; opacity: 0; white-space: pre; }\n        .jmp-word { display: inline-block; white-space: nowrap; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"jumping-text\" data-duration=\"3.5\" data-fps=\"30\">\n        <div id=\"jmp-clip\" class=\"jmp-stage clip\" data-start=\"0\" data-duration=\"3.5\" data-track-index=\"0\">\n          <div id=\"jmp-line\" class=\"jmp-line\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        \n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function opt(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : v === \"true\" ? true : v === \"false\" ? false : f; }\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > max) { size = Math.max(12, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            function spring(t, k, c, m) {\n              if (t <= 0) return 0;\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t)); }\n              if (z === 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n              return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n            }\n            var line = document.getElementById(\"jmp-line\");\n            var text = str(vars.text, \"This is a jumping text effect\");\n            var mode = opt(vars.mode, [\"word\", \"character\"], \"word\");\n            var damping = num(vars.damping, 10, 2, 40);\n            var step = num(vars.stagger_ms, 0, 0, 300) / 1000 || (mode === \"word\" ? 0.05 : 0.01);\n            root.style.color = col(vars.color, \"#171717\");\n            root.style.fontWeight = opt(vars.font_weight, [\"300\",\"400\",\"500\",\"600\",\"700\",\"900\"], \"700\");\n            line.setAttribute(\"aria-label\", text);\n            var units = [], index = 0;\n            text.trim().split(/\\s+/).forEach(function (word, wi, all) {\n              var holder = line;\n              if (mode === \"character\") { holder = document.createElement(\"span\"); holder.className = \"jmp-word\"; line.appendChild(holder); }\n              if (mode === \"word\") {\n                var s = document.createElement(\"span\"); s.className = \"jmp-unit\"; s.textContent = word;\n                s.dataset.delay = index * step; units.push(s); line.appendChild(s); index += 2;\n              } else {\n                Array.from(word).forEach(function (ch) {\n                  var s = document.createElement(\"span\"); s.className = \"jmp-unit\"; s.textContent = ch;\n                  s.dataset.delay = index * step; units.push(s); holder.appendChild(s); index += 1;\n                });\n                index += 1;\n              }\n              if (wi < all.length - 1) line.appendChild(document.createTextNode(\" \"));\n            });\n            var size = fit(line, num(vars.font_size, 88, 12, 260), 0.9);\n            // fit() measures scrollWidth, which a wrapping block never exceeds; wrap is fine here.\n            line.style.fontSize = num(vars.font_size, 88, 12, 260) + \"px\";\n            var k = line.style.fontSize.replace(\"px\", \"\") / 60;\n            var total0 = parseFloat(root.dataset.duration || \"3.5\");\n            function draw(t) {\n              units.forEach(function (u) {\n                var s = spring(t - parseFloat(u.dataset.delay), 100, damping, 2);\n                var o = Math.min(1, Math.max(0, s));\n                u.style.opacity = o;\n                u.style.transform = \"translateY(\" + (30 * k * (1 - s)) + \"px) rotate(\" + (-30 * (1 - s)) + \"deg)\";\n              });\n            }\n            var clock = { t: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, { t: total0, duration: total0, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            var total = parseFloat(root.dataset.duration || \"3.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"jumping-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "0cf2a54e2475b53eb149e8881378dd7fb4ec925dee5d79ecd1e7bf1212f96d3e",
+ "duration": 3.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 120
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "This is a jumping text effect"
+  },
+  {
+   "id": "mode",
+   "type": "enum",
+   "role": "motion",
+   "label": "Mode",
+   "default": "word"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 88,
+   "min": 12,
+   "max": 260
+  },
+  {
+   "id": "stagger_ms",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 0,
+   "min": 0,
+   "max": 300
+  },
+  {
+   "id": "damping",
+   "type": "number",
+   "role": "motion",
+   "label": "Damping",
+   "default": 10,
+   "min": 2,
+   "max": 40
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  }
+ ],
+ "author_url": "https://animata.design"
+}

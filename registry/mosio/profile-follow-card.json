@@ -1,0 +1,146 @@
+{
+ "name": "profile-follow-card",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/x-follow-card/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Profile Follow Card\n\nA creator profile card springs in, its parts blur in one after another, then a cursor glides to the button and clicks it, flipping Follow to Following.\n\nCategory: social. Length: 5.5 s. WebGL: no.\n\nUse when:\n- Showcasing a single creator profile with a click-to-follow payoff as the action beat.\n- A social-proof or creator-intro scene needs one profile card with a cursor interaction.\n- You want an offline-safe card (gradient cover, initial avatar) with no image URLs.\n\nAvoid when:\n- You are showing follower growth or notifications rather than one profile: use followers-overview.\n- You need a testimonial or quote card: compose a plain card.\n- A count-up milestone is the point: use milestone-counter-list.\n\nVariables:\n- name (string): Name, default \"Studio Nova\"\n- handle (string): Handle, default \"studionova\"\n- bio (string): Bio, default \"Making small, useful tools for video teams.\\nShipping demos faster with ready-made motion.\"\n- location (string): Location, default \"Lisbon\"\n- website (string): Website, default \"studionova.example\"\n- joined (string): Joined, default \"January 2024\"\n- verified (boolean): Check mark, default true\n- follow_label (string): Follow label, default \"Follow\"\n- following_label (string): Following label, default \"Following\"\n- tabs (string): Tabs, default \"Posts, Media, About\"\n- post_text (string): Sample post, default \"Shipping something new today. Built entirely with a lot of coffee. More soon.\"\n- orientation (enum): Orientation, default \"auto\"\n- accent_color (color): Accent, default \"#7c5cff\"\n- theme (enum): Theme, default \"light\"\n- transparent (boolean): Transparent, default false\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Profile Follow Card\n\n  A creator profile card springs in, its parts blur in one after another, then a cursor glides to the button and clicks it, flipping Follow to Following.\n\n  Adapted as an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/x-follow-card/index.tsx\n  The motion follows the source (spring bounce-in, nine-step blur-in stagger, cursor path with a press and ripple, button flip). The look was made generic: no product name, logo, verified-badge shape, tab names or signature blue; every label, the sample post and the accent are variables and the avatar is an initial disc.\n\n  MIT License\n\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"profile-follow-card\"\n  data-composition-duration=\"5.5\"\n  data-composition-variables='[\n    {\"id\": \"name\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Name\", \"description\": \"Display name on the card.\", \"default\": \"Studio Nova\"},\n    {\"id\": \"handle\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Handle\", \"description\": \"Account handle (an @ is added).\", \"default\": \"studionova\"},\n    {\"id\": \"bio\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Bio\", \"description\": \"Short bio, two lines at most; a newline breaks the line.\", \"default\": \"Making small, useful tools for video teams.\\nShipping demos faster with ready-made motion.\"},\n    {\"id\": \"location\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Location\", \"description\": \"Location in the meta row. Leave empty to hide it.\", \"default\": \"Lisbon\"},\n    {\"id\": \"website\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Website\", \"description\": \"Link text in the meta row, in the accent colour. Leave empty to hide it.\", \"default\": \"studionova.example\"},\n    {\"id\": \"joined\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Joined\", \"description\": \"Date text after \\\"Joined\\\". Leave empty to hide it.\", \"default\": \"January 2024\"},\n    {\"id\": \"verified\", \"type\": \"boolean\", \"role\": \"content\", \"label\": \"Check mark\", \"description\": \"Show a check mark after the name.\", \"default\": true},\n    {\"id\": \"follow_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Follow label\", \"description\": \"Button text before the click.\", \"default\": \"Follow\"},\n    {\"id\": \"following_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Following label\", \"description\": \"Button text after the click.\", \"default\": \"Following\"},\n    {\"id\": \"tabs\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Tabs\", \"description\": \"Comma-separated tab labels; the first is active.\", \"default\": \"Posts, Media, About\"},\n    {\"id\": \"post_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Sample post\", \"description\": \"Text of the post under the tabs.\", \"default\": \"Shipping something new today. Built entirely with a lot of coffee. More soon.\"},\n    {\"id\": \"orientation\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Orientation\", \"description\": \"Auto follows the host&#39;s shape.\", \"default\": \"auto\", \"options\": [\n    {\"value\": \"auto\", \"label\": \"Auto\"},\n    {\"value\": \"horizontal\", \"label\": \"Horizontal\"},\n    {\"value\": \"vertical\", \"label\": \"Vertical\"}\n  ]},\n    {\"id\": \"accent_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Accent\", \"description\": \"Colour of the cover, button, check mark and link.\", \"default\": \"#7c5cff\"},\n    {\"id\": \"theme\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Theme\", \"description\": \"Light or dark neutral theme.\", \"default\": \"light\", \"options\": [\n    {\"value\": \"light\", \"label\": \"Light\"},\n    {\"value\": \"dark\", \"label\": \"Dark\"}\n  ]},\n    {\"id\": \"transparent\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Transparent\", \"description\": \"Leave the background clear so the card sits over your own scene.\", \"default\": false},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier; above 1 the scene plays faster and holds the end.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Profile Follow Card</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          background: var(--fc-page, #f3f4f7); color: var(--fc-fg, #14171c);\n          font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif;\n          -webkit-font-smoothing: antialiased;\n        }\n        #root * { box-sizing: border-box; }\n        .fc-clip { position: absolute; inset: 0; }\n        .fc-stage { position: absolute; left: 50%; top: 50%; transform-origin: 50% 50%; }\n        .fc-card { position: absolute; background: var(--fc-card); border: 1px solid var(--fc-border); border-radius: 24px; overflow: hidden; transform-origin: 50% 0; box-shadow: 0 12px 40px -16px var(--fc-shadow); }\n        .fc-pad { padding: 0 24px 24px; }\n        .fc-av { border-radius: 50%; border: 4px solid var(--fc-card); display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }\n        .fc-name { display: flex; align-items: center; gap: 6px; font-weight: 800; line-height: 1.2; letter-spacing: -0.01em; }\n        .fc-handle { color: var(--fc-muted); line-height: 1.3; }\n        .fc-bio { margin: 8px 0 0; line-height: 1.4; white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }\n        .fc-meta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px; }\n        .fc-meta span { display: flex; align-items: center; gap: 6px; font-size: 15px; color: var(--fc-muted); }\n        .fc-tabs { display: flex; column-gap: 32px; border-bottom: 1px solid var(--fc-divider); }\n        .fc-tab { position: relative; padding-bottom: 12px; }\n        .fc-ul { position: absolute; bottom: -1px; left: 0; height: 4px; width: 56px; border-radius: 2px; background: var(--fc-accent); }\n        .fc-post { display: flex; gap: 12px; margin-top: 16px; }\n        .fc-post p { margin: 4px 0 0; font-size: 15px; line-height: 1.4; }\n        .fc-stats { display: flex; gap: 40px; margin-top: 10px; color: var(--fc-muted); font-size: 13px; }\n        .fc-over { position: absolute; inset: 0; transform-origin: 50% 0; }\n        .fc-btn { position: absolute; border-radius: 9999px; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; }\n        .fc-btn > div { position: absolute; inset: 0; border-radius: 9999px; display: flex; align-items: center; justify-content: center; }\n        .fc-msg { position: absolute; border-radius: 50%; border: 1px solid var(--fc-border); background: var(--fc-card); display: flex; align-items: center; justify-content: center; color: var(--fc-fg); }\n        .fc-cur { position: absolute; left: 0; top: 0; width: 0; height: 0; }\n        .fc-ring { position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%; border: 3px solid var(--fc-accent); opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"profile-follow-card\" data-duration=\"5.5\" data-fps=\"30\">\n        <div id=\"fc-clip\" class=\"fc-clip clip\" data-start=\"0\" data-duration=\"5.5\" data-track-index=\"0\">\n          <div id=\"fc-stage\" class=\"fc-stage\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var stage = document.getElementById(\"fc-stage\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n\n            var FPS = 30;\n            function num(v, d, min, max) { var n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : d; }\n            function txt(v, d) { return typeof v === \"string\" ? v : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function clamp(x, a, b) { return Math.min(b, Math.max(a, x)); }\n            function spring(frame, c) {\n              var t = Math.max(0, frame) / FPS, w0 = Math.sqrt(c.stiffness / c.mass), z = c.damping / (2 * Math.sqrt(c.stiffness * c.mass));\n              if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t)); }\n              if (z === 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              var s = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + s, r2 = -z * w0 - s;\n              return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n            }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n\n            function bez(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0; if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 32; i++) {\n                  t = (lo + hi) / 2;\n                  var cx = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                }\n                return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;\n              };\n            }\n            var EASE_OUT = bez(0.22, 1, 0.36, 1), EASE_IN = bez(0.64, 0, 0.78, 0);\n            // the source framework-style interpolate on two points, clamped, with an easing.\n            function interp(x, a, b, from, to, ease) { var p = clamp((x - a) / (b - a), 0, 1); if (ease) p = ease(p); return from + (to - from) * p; }\n\n            var name = str(vars.name, \"Studio Nova\"), handle = str(vars.handle, \"studionova\");\n            var bio = txt(vars.bio, \"Making small, useful tools for video teams.\\nShipping demos faster with ready-made motion.\");\n            var location_ = txt(vars.location, \"Lisbon\").trim(), website = txt(vars.website, \"studionova.example\").trim(), joined = txt(vars.joined, \"January 2024\").trim();\n            var verified = bool(vars.verified, true);\n            var followL = str(vars.follow_label, \"Follow\"), followingL = str(vars.following_label, \"Following\");\n            var tabs = txt(vars.tabs, \"Posts, Media, About\").split(\",\").map(function (s) { return s.trim(); }).filter(Boolean);\n            if (!tabs.length) tabs = [\"Posts\"];\n            var postText = txt(vars.post_text, \"Shipping something new today. Built entirely with a lot of coffee. More soon.\");\n            var accent = colr(vars.accent_color, \"#7c5cff\");\n            var dark = String(vars.theme) === \"dark\";\n            var speed = num(vars.speed, 1, 0.25, 4);\n            var T = dark ? { page: \"#0b0c0f\", card: \"#16181c\", border: \"#2b2e34\", fg: \"#ececef\", muted: \"#8b8f98\", divider: \"#2b2e34\", shadow: \"rgba(0,0,0,0.6)\" }\n                         : { page: \"#f3f4f7\", card: \"#ffffff\", border: \"#e6e8ec\", fg: \"#14171c\", muted: \"#5b6470\", divider: \"#eceff2\", shadow: \"rgba(20,23,28,0.18)\" };\n            Object.keys(T).forEach(function (k) { root.style.setProperty(\"--fc-\" + k, T[k]); });\n            root.style.setProperty(\"--fc-accent\", accent);\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920;\n            var o = String(vars.orientation);\n            var vertical = o === \"vertical\" || (o !== \"horizontal\" && H > W);\n            var RW = vertical ? 720 : 1280, RH = vertical ? 1280 : 720, k = Math.min(W / RW, H / RH);\n            stage.style.width = RW + \"px\"; stage.style.height = RH + \"px\";\n            stage.style.marginLeft = -RW / 2 + \"px\"; stage.style.marginTop = -RH / 2 + \"px\";\n            stage.style.transform = \"scale(\" + k + \")\";\n            var cardW = vertical ? 660 : 600, cardL = (RW - cardW) / 2, cardT = vertical ? 140 : 70, coverH = vertical ? 180 : 150, avS = vertical ? 120 : 110;\n            var BTN = vertical ? { x: 542, y: 336, w: 124, h: 44 } : { x: 800, y: 240, w: 116, h: 40 };\n            var CLICK = 110;\n\n            function svgI(path, size, fill, stroke) { return '<svg width=\"' + size + '\" height=\"' + size + '\" viewBox=\"0 0 24 24\" fill=\"' + (fill || \"none\") + '\" stroke=\"' + (stroke || \"none\") + '\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">' + path + \"</svg>\"; }\n            function badge(size) { return '<svg viewBox=\"0 0 20 20\" width=\"' + size + '\" height=\"' + size + '\" style=\"flex-shrink:0\"><circle cx=\"10\" cy=\"10\" r=\"10\" fill=\"' + accent + '\"/><path d=\"M5.6 10.4l3 3 5.8-6.4\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>'; }\n            function avatar(parent, size, fs) { var d = el(\"div\", \"fc-av\", parent); d.style.width = d.style.height = size + \"px\"; d.style.fontSize = fs + \"px\"; d.style.background = accent + \"33\"; d.style.color = accent; d.textContent = Array.from(name)[0].toUpperCase(); return d; }\n\n            var card = el(\"div\", \"fc-card\", stage); card.style.cssText += \"left:\" + cardL + \"px;top:\" + cardT + \"px;width:\" + cardW + \"px\";\n            var groups = [];\n            function grp(parent) { var g = el(\"div\", \"\", parent); groups.push(g); return g; }\n            var g0 = grp(card);\n            var cover = el(\"div\", \"\", g0); cover.style.cssText = \"width:100%;height:\" + coverH + \"px;background:linear-gradient(135deg,\" + accent + \" 0%,\" + accent + \"99 55%,\" + accent + \"55 100%)\";\n            var pad = el(\"div\", \"fc-pad\", card);\n            var avRow = el(\"div\", \"\", pad); avRow.style.cssText = \"display:flex;justify-content:space-between;align-items:flex-end;position:relative;margin-top:\" + -(avS / 2) + \"px\";\n            var avBox = el(\"div\", \"\", avRow); avBox.style.cssText = \"width:\" + avS + \"px;height:\" + avS + \"px;border-radius:50%;background:var(--fc-card);flex-shrink:0\";\n            var g1 = grp(avBox); avatar(g1, avS, avS * 0.4);\n            var info = el(\"div\", \"\", pad); info.style.cssText = \"display:flex;flex-direction:column;gap:2px;margin-top:12px\";\n            var g2 = grp(info); var nm = el(\"div\", \"fc-name\", g2); nm.style.fontSize = (vertical ? 28 : 24) + \"px\";\n            el(\"span\", \"\", nm).textContent = name; if (verified) nm.insertAdjacentHTML(\"beforeend\", badge(vertical ? 24 : 22));\n            var g3 = grp(info); var hd = el(\"span\", \"fc-handle\", g3); hd.style.fontSize = (vertical ? 18 : 16) + \"px\"; hd.textContent = \"@\" + handle; g3.style.lineHeight = \"1.3\";\n            var g4 = grp(info); var bo = el(\"p\", \"fc-bio\", g4); bo.style.fontSize = (vertical ? 18 : 16) + \"px\"; bo.textContent = bio;\n            var g5 = grp(pad); var meta = el(\"div\", \"fc-meta\", g5);\n            var PIN = '<path d=\"M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0113 0c0 4.8-6.5 11-6.5 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.4\"/>';\n            var LINK = '<path d=\"M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1\"/><path d=\"M14 10a4 4 0 00-5.7 0l-3 3A4 4 0 0011 18.7l1-1\"/>';\n            var CAL = '<rect x=\"3.5\" y=\"5\" width=\"17\" height=\"15.5\" rx=\"2.5\"/><path d=\"M8 3v4M16 3v4M3.5 10h17\"/>';\n            if (location_) { var s1 = el(\"span\", \"\", meta, svgI(PIN, 16, \"none\", T.muted)); s1.appendChild(document.createTextNode(location_)); }\n            if (website) { var s2 = el(\"span\", \"\", meta, svgI(LINK, 16, \"none\", T.muted)); var w = el(\"span\", \"\", s2); w.style.color = accent; w.textContent = website; }\n            if (joined) { var s3 = el(\"span\", \"\", meta, svgI(CAL, 16, \"none\", T.muted)); s3.appendChild(document.createTextNode(\"Joined \" + joined)); }\n            var gap = el(\"div\", \"\", pad); gap.style.height = BTN.h - 8 + \"px\";\n            var g7 = grp(pad); var tb = el(\"div\", \"fc-tabs\", g7);\n            tabs.forEach(function (t, i) {\n              var tab = el(\"div\", \"fc-tab\", tb); var sp = el(\"span\", \"\", tab); sp.textContent = t; sp.style.fontSize = (vertical ? 17 : 15) + \"px\"; sp.style.fontWeight = i === 0 ? 700 : 500; sp.style.color = i === 0 ? T.fg : T.muted;\n              if (i === 0) el(\"div\", \"fc-ul\", tab);\n            });\n            var g8 = grp(pad); var post = el(\"div\", \"fc-post\", g8);\n            avatar(post, 44, 17);\n            var pb = el(\"div\", \"\", post); pb.style.cssText = \"flex:1;min-width:0\";\n            var ph = el(\"div\", \"\", pb); ph.style.cssText = \"display:flex;align-items:center;gap:6px;font-size:15px\";\n            var pn = el(\"span\", \"\", ph); pn.style.fontWeight = 700; pn.textContent = name;\n            var pm = el(\"span\", \"\", ph); pm.style.color = T.muted; pm.textContent = \"@\" + handle + \" · 2d\";\n            el(\"p\", \"\", pb).textContent = postText;\n            var st = el(\"div\", \"fc-stats\", pb); [\"12\", \"48\", \"312\"].forEach(function (n) { el(\"span\", \"\", st).textContent = n; });\n\n            var over = el(\"div\", \"fc-over\", stage);\n            var g6 = grp(over); g6.style.cssText += \";position:absolute;inset:0\";\n            var msg = el(\"div\", \"fc-msg\", g6, svgI('<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2.5\"/><path d=\"M3.5 7.5l8.5 6 8.5-6\"/>', 20, \"none\", T.fg));\n            msg.style.cssText += \"left:\" + (BTN.x - BTN.h - 8) + \"px;top:\" + BTN.y + \"px;width:\" + BTN.h + \"px;height:\" + BTN.h + \"px\";\n            var btn = el(\"div\", \"fc-btn\", g6); btn.style.cssText += \"left:\" + BTN.x + \"px;top:\" + BTN.y + \"px;width:\" + BTN.w + \"px;height:\" + BTN.h + \"px\";\n            var bA = el(\"div\", \"\", btn); bA.style.background = accent; bA.style.color = \"#fff\"; bA.textContent = followL;\n            var bB = el(\"div\", \"\", btn); bB.style.background = T.card; bB.style.border = \"1px solid \" + T.border; bB.style.color = T.fg; bB.textContent = followingL;\n\n            var cur = el(\"div\", \"fc-cur\", stage);\n            var ring = el(\"div\", \"fc-ring\", cur);\n            var arrow = el(\"div\", \"\", cur, '<svg width=\"30\" height=\"30\" viewBox=\"0 0 24 24\"><path d=\"M3 2l15.5 8.2-6.6 1.9-2.6 6.4z\" fill=\"#111\" stroke=\"#fff\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/></svg>');\n            arrow.style.cssText = \"position:absolute;left:-3px;top:-2px;transform-origin:3px 2px\";\n\n            var rest = vertical ? { x: 640, y: 1120 } : { x: 1120, y: 600 }, tx = BTN.x + BTN.w / 2, ty = BTN.y + BTN.h / 2;\n            var MOVE = 32;\n            function easeInOut(t) { function e(x) { return bez(0.42, 0, 1, 1)(x); } return t < 0.5 ? e(2 * t) / 2 : 1 - e(2 * (1 - t)) / 2; }\n            var SCH = [[20, 26], [22, 28], [24, 30], [26, 32], [28, 34], [30, 36], [32, 38], [34, 40], [36, 42]];\n            function draw(fc) {\n              var s = spring(fc, { damping: 12, stiffness: 120, mass: 0.8 });\n              var by = 60 * (1 - s), bs = 0.9 + 0.1 * s;\n              card.style.transform = \"translateY(\" + by + \"px) scale(\" + bs + \")\";\n              over.style.transform = \"translateY(\" + by + \"px) scale(\" + bs + \")\";\n              groups.forEach(function (g, i) {\n                var a = SCH[i][0], b = SCH[i][1];\n                var op = interp(fc, a, b, 0, 1), bl = interp(fc, a, b, 8, 0), ty2 = g === g6 ? 0 : interp(fc, a, b, 8, 0);\n                g.style.opacity = op; g.style.filter = bl > 0 ? \"blur(\" + bl + \"px)\" : \"none\"; g.style.transform = g === g6 ? \"none\" : \"translateY(\" + ty2 + \"px)\";\n              });\n              // cursor: rest until frame 78, glide to the button by 110, hold\n              var p = clamp((fc - (CLICK - MOVE)) / MOVE, 0, 1), e = easeInOut(p);\n              var cx = rest.x + (tx - rest.x) * e, cy = rest.y + (ty - rest.y) * e;\n              cur.style.transform = \"translate(\" + cx + \"px,\" + cy + \"px)\";\n              var press = fc < CLICK ? 1 : fc < CLICK + 5 ? 1 - 0.2 * ((fc - CLICK) / 5) : fc < CLICK + 12 ? 0.8 + 0.2 * ((fc - CLICK - 5) / 7) : 1;\n              arrow.style.transform = \"scale(\" + press + \")\";\n              var rp = clamp((fc - CLICK) / 18, 0, 1);\n              ring.style.opacity = rp > 0 && rp < 1 ? 0.5 * (1 - rp) : 0;\n              ring.style.transform = \"scale(\" + (0.3 + 0.9 * rp) + \")\";\n              var flip = interp(fc, CLICK, CLICK + 10, 0, 1);\n              bA.style.opacity = 1 - flip; bB.style.opacity = flip;\n              btn.style.transform = \"scale(\" + (0.9 + 0.1 * press) + \")\";\n            }\n\n            var seconds = parseFloat(root.dataset.duration || \"5.5\");\n            var clock = { f: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, { f: seconds * FPS * speed, duration: seconds, ease: \"none\", onUpdate: function () { draw(clock.f); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"profile-follow-card\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "fc51bb0bd99c7f1fcb1230c92a7feffda335ba7928a45834841858f3714de4ac",
+ "duration": 5.5,
+ "webgl": false,
+ "demo_background": "#f3f4f7",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "name",
+   "type": "string",
+   "role": "content",
+   "label": "Name",
+   "default": "Studio Nova"
+  },
+  {
+   "id": "handle",
+   "type": "string",
+   "role": "content",
+   "label": "Handle",
+   "default": "studionova"
+  },
+  {
+   "id": "bio",
+   "type": "string",
+   "role": "content",
+   "label": "Bio",
+   "default": "Making small, useful tools for video teams.\nShipping demos faster with ready-made motion."
+  },
+  {
+   "id": "location",
+   "type": "string",
+   "role": "content",
+   "label": "Location",
+   "default": "Lisbon"
+  },
+  {
+   "id": "website",
+   "type": "string",
+   "role": "content",
+   "label": "Website",
+   "default": "studionova.example"
+  },
+  {
+   "id": "joined",
+   "type": "string",
+   "role": "content",
+   "label": "Joined",
+   "default": "January 2024"
+  },
+  {
+   "id": "verified",
+   "type": "boolean",
+   "role": "content",
+   "label": "Check mark",
+   "default": true
+  },
+  {
+   "id": "follow_label",
+   "type": "string",
+   "role": "content",
+   "label": "Follow label",
+   "default": "Follow"
+  },
+  {
+   "id": "following_label",
+   "type": "string",
+   "role": "content",
+   "label": "Following label",
+   "default": "Following"
+  },
+  {
+   "id": "tabs",
+   "type": "string",
+   "role": "content",
+   "label": "Tabs",
+   "default": "Posts, Media, About"
+  },
+  {
+   "id": "post_text",
+   "type": "string",
+   "role": "content",
+   "label": "Sample post",
+   "default": "Shipping something new today. Built entirely with a lot of coffee. More soon."
+  },
+  {
+   "id": "orientation",
+   "type": "enum",
+   "role": "style",
+   "label": "Orientation",
+   "default": "auto"
+  },
+  {
+   "id": "accent_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#7c5cff"
+  },
+  {
+   "id": "theme",
+   "type": "enum",
+   "role": "style",
+   "label": "Theme",
+   "default": "light"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

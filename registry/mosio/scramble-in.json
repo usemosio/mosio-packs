@@ -1,0 +1,126 @@
+{
+ "name": "scramble-in",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Daniel Petho",
+ "source": {
+  "repo": "https://github.com/danielpetho/fancy",
+  "path": "src/fancy/components/text/scramble-in.tsx",
+  "commit": "f9f62c61207b2dd3210476dd98af3c9a5be24094"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Scramble In\n\nText types itself in left to right with a short run of random glyphs ahead of the cursor that resolve into the real letters; several lines can start in a quick cascade.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- A list, tracklist or block of text should decode onto the screen line by line with a hacker-style run of random glyphs.\n- You want a fixed-width layout that never reflows while the text appears.\n\nAvoid when:\n- Each word should scramble and lock in on its own: use scramble-reveal or caption-scramble.\n- The text should type with a caret: use typewriter.\n\nVariables:\n- text (string): Text, default \"1. Opening Titles - 2:14\\n2. Slow Motion - 3:27\\n3. Night Drive - 4:58\\n4. Paper Planes - 3:45\\n5. Interlude - 1:44\\n6. Golden Hour - 3:57\\n7. Open Road - 3:22\\n8. Something About Us - 3:51\\n9. Last Light - 5:44\\n10. Short Circuit - 3:26\"\n- font_size (number, 12-120): Font size, default 34\n- font_weight (enum): Font weight, default \"400\"\n- color (color): Color, default \"#111111\"\n- scrambled_color (color): Scrambled color, default \"#9ca3af\"\n- characters (string): Characters, default \"abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+\"\n- line_height (number, 1-3): Line height, default 1.6\n- scramble_speed (number, 10-200): Scramble speed, default 25\n- scrambled_letters (number, 0-16): Scrambled letters, default 5\n- line_delay (number, 0-1): Line delay, default 0.05\n- start (number, 0-3): Start, default 0.2\n\nSource: https://github.com/danielpetho/fancy. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Scramble In\n\n  Text types itself in left to right with a short run of random glyphs ahead of the cursor that resolve into the real letters; several lines can start in a quick cascade.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/danielpetho/fancy/blob/f9f62c61207b2dd3210476dd98af3c9a5be24094/src/fancy/components/text/scramble-in.tsx\n\n  MIT License\n\n  Copyright (c) 2024 Daniel Petho\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"scramble-in\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Lines of text, separated by a line break.\", \"default\": \"1. Opening Titles - 2:14\\n2. Slow Motion - 3:27\\n3. Night Drive - 4:58\\n4. Paper Planes - 3:45\\n5. Interlude - 1:44\\n6. Golden Hour - 3:57\\n7. Open Road - 3:22\\n8. Something About Us - 3:51\\n9. Last Light - 5:44\\n10. Short Circuit - 3:26\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Long lines shrink to fit the frame.\", \"default\": 34, \"min\": 12, \"max\": 120, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"400\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}]},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Color of the letters that have resolved.\", \"default\": \"#111111\"},\n    {\"id\": \"scrambled_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Scrambled color\", \"description\": \"Color of the random glyphs ahead of the cursor.\", \"default\": \"#9ca3af\"},\n    {\"id\": \"characters\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Characters\", \"description\": \"Pool the random glyphs come from.\", \"default\": \"abcdefghijklmnopqrstuvwxyz!@#$%^&amp;*()_+\"},\n    {\"id\": \"line_height\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Line height\", \"description\": \"Line height as a multiple of the font size.\", \"default\": 1.6, \"min\": 1, \"max\": 3, \"step\": 0.05},\n    {\"id\": \"scramble_speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Scramble speed\", \"description\": \"Milliseconds per step: each step reveals one more letter.\", \"default\": 25, \"min\": 10, \"max\": 200, \"step\": 5, \"unit\": \"ms\"},\n    {\"id\": \"scrambled_letters\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Scrambled letters\", \"description\": \"How many random glyphs run ahead of the cursor.\", \"default\": 5, \"min\": 0, \"max\": 16, \"step\": 1},\n    {\"id\": \"line_delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Line delay\", \"description\": \"Seconds between the start of one line and the next.\", \"default\": 0.05, \"min\": 0, \"max\": 1, \"step\": 0.01, \"unit\": \"s\"},\n    {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start\", \"description\": \"Seconds before the first line starts.\", \"default\": 0.2, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Scramble In</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #111111; font-family: \"Geist Mono\", ui-monospace, monospace; }\n        .si-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .si-block { text-align: left; }\n        .si-line { white-space: pre; }\n        .si-ch { display: inline-block; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"scramble-in\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"si-clip\" class=\"si-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <div id=\"si-block\" class=\"si-block\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var DEFS = [{\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Lines of text, separated by a line break.\", \"default\": \"1. Opening Titles - 2:14\\n2. Slow Motion - 3:27\\n3. Night Drive - 4:58\\n4. Paper Planes - 3:45\\n5. Interlude - 1:44\\n6. Golden Hour - 3:57\\n7. Open Road - 3:22\\n8. Something About Us - 3:51\\n9. Last Light - 5:44\\n10. Short Circuit - 3:26\"}, {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Long lines shrink to fit the frame.\", \"default\": 34, \"min\": 12, \"max\": 120, \"step\": 1, \"unit\": \"px\"}, {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"400\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}]}, {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Color of the letters that have resolved.\", \"default\": \"#111111\"}, {\"id\": \"scrambled_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Scrambled color\", \"description\": \"Color of the random glyphs ahead of the cursor.\", \"default\": \"#9ca3af\"}, {\"id\": \"characters\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Characters\", \"description\": \"Pool the random glyphs come from.\", \"default\": \"abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+\"}, {\"id\": \"line_height\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Line height\", \"description\": \"Line height as a multiple of the font size.\", \"default\": 1.6, \"min\": 1, \"max\": 3, \"step\": 0.05}, {\"id\": \"scramble_speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Scramble speed\", \"description\": \"Milliseconds per step: each step reveals one more letter.\", \"default\": 25, \"min\": 10, \"max\": 200, \"step\": 5, \"unit\": \"ms\"}, {\"id\": \"scrambled_letters\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Scrambled letters\", \"description\": \"How many random glyphs run ahead of the cursor.\", \"default\": 5, \"min\": 0, \"max\": 16, \"step\": 1}, {\"id\": \"line_delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Line delay\", \"description\": \"Seconds between the start of one line and the next.\", \"default\": 0.05, \"min\": 0, \"max\": 1, \"step\": 0.01, \"unit\": \"s\"}, {\"id\": \"start\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start\", \"description\": \"Seconds before the first line starts.\", \"default\": 0.2, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"}];\n            var root = document.getElementById(\"root\");\n            var raw = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            var D = parseFloat(root.dataset.duration || \"4\");\n            function V(id) {\n              var d = null;\n              for (var i = 0; i < DEFS.length; i++) if (DEFS[i].id === id) d = DEFS[i];\n              var v = raw[id];\n              if (v === undefined || v === null || (v === \"\" && d.type !== \"string\")) return d.default;\n              if (d.type === \"number\") { var n = Number(v); return Number.isFinite(n) ? Math.min(d.max, Math.max(d.min, n)) : d.default; }\n              if (d.type === \"boolean\") return v === true || v === \"true\";\n              if (d.type === \"enum\") { for (var j = 0; j < d.options.length; j++) if (String(d.options[j].value) === String(v)) return d.options[j].value; return d.default; }\n              if (d.type === \"string\") return typeof v === \"string\" ? v : d.default;\n              return typeof v === \"string\" && v ? v : d.default;\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function hash3(a, b, c) { return mulberry32((a * 7919 + b * 104729 + c * 1299709) | 0)(); }\n            // Stagger delays in seconds: \"first\", \"last\", \"center\", \"random\" (seeded shuffle) or an index.\n            function stagger(n, from, step, seed) {\n              var out = [], i;\n              if (from === \"random\") {\n                var rng = mulberry32(seed || 7), idx = [];\n                for (i = 0; i < n; i++) idx.push(i);\n                for (i = n - 1; i > 0; i--) { var j = Math.floor(rng() * (i + 1)); var tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp; }\n                for (i = 0; i < n; i++) out[idx[i]] = i * step;\n                return out;\n              }\n              for (i = 0; i < n; i++) {\n                var k = from === \"last\" ? n - 1 - i : from === \"center\" ? Math.abs(Math.floor(n / 2) - i) : typeof from === \"number\" ? Math.abs(from - i) : i;\n                out.push(k * step);\n              }\n              return out;\n            }\n            // Damped spring from 0 to 1 (stiffness/damping/mass or duration/bounce, as Motion defines them).\n            function spring(o) {\n              var m = o.mass || 1, k, c;\n              if (o.duration !== undefined) { var w = (2 * Math.PI) / o.duration; k = w * w * m; c = 2 * (1 - (o.bounce || 0)) * Math.sqrt(k * m); }\n              else { k = o.stiffness; c = o.damping; }\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              function at(t) {\n                if (t <= 0) return 0;\n                if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n                if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t)); }\n                var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n                return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n              }\n              var settle = 6;\n              for (var t = 0.02; t < 6; t += 0.02) {\n                var ok = true;\n                for (var u = t; u < Math.min(t + 0.3, 6); u += 0.05) if (Math.abs(1 - at(u)) > 0.002) { ok = false; break; }\n                if (ok) { settle = t; break; }\n              }\n              return { at: at, duration: settle };\n            }\n            function fitText(text) { return Array.from(text); }\n\n            var block = document.getElementById(\"si-block\");\n            var text = V(\"text\") || \"Scramble in\";\n            var lines = text.split(\"\\n\");\n            block.setAttribute(\"aria-label\", text);\n            var longest = 1;\n            lines.forEach(function (l) { longest = Math.max(longest, fitText(l).length); });\n            block.style.fontSize = \"min(\" + V(\"font_size\") + \"px, calc(88cqw / \" + (longest * 0.6).toFixed(2) + \"))\";\n            block.style.fontWeight = V(\"font_weight\");\n            block.style.lineHeight = V(\"line_height\");\n            block.style.color = V(\"color\");\n            var scrambledColor = V(\"scrambled_color\");\n            var pool = Array.from(V(\"characters\") || \"abc\");\n            var rows = lines.map(function (l, li) {\n              var row = document.createElement(\"div\"); row.className = \"si-line\"; row.id = \"si-line-\" + li; row.setAttribute(\"aria-hidden\", \"true\");\n              var chars = fitText(l).map(function (ch, j) {\n                var s = document.createElement(\"span\"); s.className = \"si-ch\"; s.id = \"si-ch-\" + li + \"-\" + j;\n                s.textContent = ch; s.style.visibility = \"hidden\";\n                row.appendChild(s); return { el: s, ch: ch };\n              });\n              if (!chars.length) row.textContent = \" \";\n              block.appendChild(row);\n              return chars;\n            });\n            var count = V(\"scrambled_letters\"), step = V(\"scramble_speed\") / 1000, lineDelay = V(\"line_delay\"), start = V(\"start\");\n            var tl = gsap.timeline({ paused: true });\n            function draw(t) {\n              for (var li = 0; li < rows.length; li++) {\n                var chars = rows[li], L = chars.length;\n                var n = Math.floor((t - start - li * lineDelay) / step + 1e-6);\n                var v = Math.max(0, Math.min(n, L));\n                var scr = n < 0 ? 0 : Math.min(L - v, count);\n                for (var j = 0; j < L; j++) {\n                  var c = chars[j].el;\n                  if (n >= 0 && j < v) { c.style.visibility = \"visible\"; c.style.color = \"\"; c.textContent = chars[j].ch; }\n                  else if (j < v + scr) { c.style.visibility = \"visible\"; c.style.color = scrambledColor; c.textContent = pool[Math.floor(hash3(li, j, n) * pool.length)]; }\n                  else c.style.visibility = \"hidden\";\n                }\n              }\n            }\n\n            var clock = { t: 0 };\n            tl.to(clock, { t: D, duration: D, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"scramble-in\"] = tl;\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "e1d009fd695fffa74b286be836ac26e83af2c4864b00069f93d1cb73db54b0c9",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 40
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "1. Opening Titles - 2:14\n2. Slow Motion - 3:27\n3. Night Drive - 4:58\n4. Paper Planes - 3:45\n5. Interlude - 1:44\n6. Golden Hour - 3:57\n7. Open Road - 3:22\n8. Something About Us - 3:51\n9. Last Light - 5:44\n10. Short Circuit - 3:26"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 34,
+   "min": 12,
+   "max": 120
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "400"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#111111"
+  },
+  {
+   "id": "scrambled_color",
+   "type": "color",
+   "role": "style",
+   "label": "Scrambled color",
+   "default": "#9ca3af"
+  },
+  {
+   "id": "characters",
+   "type": "string",
+   "role": "content",
+   "label": "Characters",
+   "default": "abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+"
+  },
+  {
+   "id": "line_height",
+   "type": "number",
+   "role": "style",
+   "label": "Line height",
+   "default": 1.6,
+   "min": 1,
+   "max": 3
+  },
+  {
+   "id": "scramble_speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Scramble speed",
+   "default": 25,
+   "min": 10,
+   "max": 200
+  },
+  {
+   "id": "scrambled_letters",
+   "type": "number",
+   "role": "motion",
+   "label": "Scrambled letters",
+   "default": 5,
+   "min": 0,
+   "max": 16
+  },
+  {
+   "id": "line_delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Line delay",
+   "default": 0.05,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "start",
+   "type": "number",
+   "role": "motion",
+   "label": "Start",
+   "default": 0.2,
+   "min": 0,
+   "max": 3
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://fancycomponents.dev"
+}

@@ -1,0 +1,118 @@
+{
+ "name": "cosmic-orb",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/cosmic-orb/cosmic-orb.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Cosmic Orb\n\nAn iridescent soap-bubble planet: a slowly spinning sphere of nebula bands, dust lanes and twinkling stars wrapped in a refracting glass limb with chromatic aberration at the edge. A single WebGL fragment shader.\n\nCategory: shaders. Length: 10 s. WebGL: yes.\n\nUse when:\n- A hero backdrop with a glowing planet or crystal ball, a music or space video, an intro card that needs a centrepiece.\n- A beat-reactive centrepiece: feed `pulseEnvelope` a 0-1 envelope sampled from the track.\n\nAvoid when:\n- The shot is a clean product or UI scene where a cosmic look is out of place.\n- The render budget is tight and the frame is large: WebGL runs in software on CPU render machines, keep `resolution` low.\n\nVariables:\n- hue (number, 0-360): Nebula hue, default 268\n- accent (number, 0-360): Accent hue, default 196\n- spin (number, 0-0.5): Spin rate, default 0.035\n- stars (number, 0-2): Star density, default 1\n- glow (number, 0-2): Glow intensity, default 1\n- size (number, 0.2-1.2): Orb size, default 0.86\n- pulse (number, 0-1): Beat pulse, default 0\n- pulseEnvelope (string): Beat pulse envelope, default \"\"\n- backdrop (color): Backdrop, default \"#04040a\"\n- resolution (number, 0.25-1): Resolution, default 0.5\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Cosmic Orb\n\n  An iridescent soap-bubble planet: a slowly spinning sphere of nebula bands, dust lanes and twinkling stars wrapped in a refracting glass limb with chromatic aberration at the edge. A single WebGL fragment shader.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/cosmic-orb/cosmic-orb.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: fills the host frame (the orb is sized from the shorter side) instead of a fixed 1920×1080 scene; the shader is WebGL2 (GLSL ES 3.0 syntax, otherwise unchanged); the canvas is drawn at the `resolution` variable and the clock comes from the timeline; without WebGL the backdrop colour shows.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"cosmic-orb\"\n  data-composition-duration=\"10\"\n  data-composition-variables='[{\"id\": \"hue\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Nebula hue\", \"default\": 268, \"min\": 0, \"max\": 360, \"step\": 1, \"unit\": \"deg\"},\n    {\"id\": \"accent\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Accent hue\", \"default\": 196, \"min\": 0, \"max\": 360, \"step\": 1, \"unit\": \"deg\"},\n    {\"id\": \"spin\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Spin rate\", \"default\": 0.035, \"min\": 0, \"max\": 0.5, \"step\": 0.005, \"unit\": \"turns/s\"},\n    {\"id\": \"stars\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Star density\", \"default\": 1, \"min\": 0, \"max\": 2, \"step\": 0.05},\n    {\"id\": \"glow\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Glow intensity\", \"default\": 1, \"min\": 0, \"max\": 2, \"step\": 0.05},\n    {\"id\": \"size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Orb size\", \"description\": \"Orb diameter as a share of the shorter side of the frame.\", \"default\": 0.86, \"min\": 0.2, \"max\": 1.2, \"step\": 0.01},\n    {\"id\": \"pulse\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Beat pulse\", \"default\": 0, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"pulseEnvelope\", \"type\": \"string\", \"role\": \"motion\", \"label\": \"Beat pulse envelope\", \"description\": \"Comma-separated 0-1 samples spread evenly across the block, for example 0,0.2,1,0.4,0. Empty uses the flat pulse value.\", \"default\": \"\"},\n    {\"id\": \"backdrop\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Backdrop\", \"default\": \"#04040a\"},\n    {\"id\": \"resolution\", \"type\": \"number\", \"role\": \"quality\", \"label\": \"Resolution\", \"description\": \"Share of the frame size the shader is drawn at, then scaled up. The orb is soft; 0.5 matches 1 in the stills.\", \"default\": 0.5, \"min\": 0.25, \"max\": 1, \"step\": 0.05}]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Cosmic Orb</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          background: #000;\n          pointer-events: none;\n        }\n        .cor-stage {\n          position: absolute;\n          inset: 0;\n        }\n        .cor-canvas {\n          position: absolute;\n          inset: 0;\n          width: 100%;\n          height: 100%;\n          display: block;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"cosmic-orb\" data-duration=\"10\" data-fps=\"30\">\n        <div id=\"cor-clip\" class=\"cor-stage clip\" data-start=\"0\" data-duration=\"10\" data-track-index=\"0\">\n          <canvas id=\"cor-canvas\" class=\"cor-canvas\"></canvas>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var NAME = \"cosmic-orb\";\n            var DUR = 10;\n            var root = document.getElementById(\"root\");\n            var canvas = document.getElementById(\"cor-canvas\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function clampNum(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function hex(value, fallback) {\n              var m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(value || \"\").trim());\n              if (!m) return fallback;\n              var h = m[1].length === 3 ? m[1].replace(/./g, \"$&$&\") : m[1];\n              return \"#\" + h.toLowerCase();\n            }\n            function rgb(value) {\n              var h = hex(value, \"#000000\").slice(1);\n              return [parseInt(h.slice(0, 2), 16) / 255, parseInt(h.slice(2, 4), 16) / 255, parseInt(h.slice(4, 6), 16) / 255];\n            }\n            var DEFS = [{\"id\": \"hue\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Nebula hue\", \"default\": 268, \"min\": 0, \"max\": 360, \"step\": 1, \"unit\": \"deg\"}, {\"id\": \"accent\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Accent hue\", \"default\": 196, \"min\": 0, \"max\": 360, \"step\": 1, \"unit\": \"deg\"}, {\"id\": \"spin\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Spin rate\", \"default\": 0.035, \"min\": 0, \"max\": 0.5, \"step\": 0.005, \"unit\": \"turns/s\"}, {\"id\": \"stars\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Star density\", \"default\": 1, \"min\": 0, \"max\": 2, \"step\": 0.05}, {\"id\": \"glow\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Glow intensity\", \"default\": 1, \"min\": 0, \"max\": 2, \"step\": 0.05}, {\"id\": \"size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Orb size\", \"description\": \"Orb diameter as a share of the shorter side of the frame.\", \"default\": 0.86, \"min\": 0.2, \"max\": 1.2, \"step\": 0.01}, {\"id\": \"pulse\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Beat pulse\", \"default\": 0, \"min\": 0, \"max\": 1, \"step\": 0.01}, {\"id\": \"pulseEnvelope\", \"type\": \"string\", \"role\": \"motion\", \"label\": \"Beat pulse envelope\", \"description\": \"Comma-separated 0-1 samples spread evenly across the block, for example 0,0.2,1,0.4,0. Empty uses the flat pulse value.\", \"default\": \"\"}, {\"id\": \"backdrop\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Backdrop\", \"default\": \"#04040a\"}, {\"id\": \"resolution\", \"type\": \"number\", \"role\": \"quality\", \"label\": \"Resolution\", \"description\": \"Share of the frame size the shader is drawn at, then scaled up. The orb is soft; 0.5 matches 1 in the stills.\", \"default\": 0.5, \"min\": 0.25, \"max\": 1, \"step\": 0.05}];\n            var V = {};\n            DEFS.forEach(function (d) {\n              var raw = vars[d.id];\n              if (d.type === \"number\") V[d.id] = clampNum(raw, d.default, d.min, d.max);\n              else if (d.type === \"color\") V[d.id] = hex(raw, d.default);\n              else if (d.type === \"boolean\") V[d.id] = typeof raw === \"boolean\" ? raw : raw === \"true\" ? true : raw === \"false\" ? false : d.default;\n              else V[d.id] = typeof raw === \"string\" ? raw.trim() : d.default;\n            });\n\n            var W = Math.max(2, root.clientWidth);\n            var H = Math.max(2, root.clientHeight);\n            var cw = Math.max(2, Math.round(W * V.resolution));\n            var ch = Math.max(2, Math.round(H * V.resolution));\n            root.style.background = V.backdrop;\n            canvas.width = cw;\n            canvas.height = ch;\n            var ENV = String(V.pulseEnvelope).split(\",\").map(function (s) { return parseFloat(s); }).filter(function (n) { return isFinite(n); });\n            function pulseAt(t) {\n              if (ENV.length === 0) return V.pulse;\n              if (ENV.length === 1) return ENV[0];\n              var x = Math.min(1, Math.max(0, t / DUR)) * (ENV.length - 1);\n              var i = Math.floor(x);\n              var j = Math.min(i + 1, ENV.length - 1);\n              return ENV[i] + (ENV[j] - ENV[i]) * (x - i);\n            }\n\n            var VERTEX = [\n              \"#version 300 es\",\n              \"in vec2 aPos;\",\n              \"out vec2 v_uv;\",\n              \"void main() { v_uv = vec2(aPos.x * 0.5 + 0.5, 0.5 - aPos.y * 0.5); gl_Position = vec4(aPos, 0.0, 1.0); }\"\n            ].join(\"\\n\");\n            var FRAGMENT = `#version 300 es\nprecision highp float;\nout vec4 outColor;\n\nuniform vec2 uRes;\nuniform float uTime;\nuniform float uRadius;\nuniform float uSpin;\nuniform float uHue;\nuniform float uAccent;\nuniform float uStars;\nuniform float uGlow;\nuniform float uPulse;\nconst float TAU = 6.28318531;\n\n// One cheap hash for every random-looking thing in here.\nfloat h1(float x) { return fract(sin(x * 127.1) * 43758.5453); }\nfloat h2(vec2 p) { return h1(dot(p, vec2(1.0, 157.31))); }\n\nvec3 hue2rgb(float h) {\n  return clamp(abs(mod(h * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);\n}\n\nvec3 rotX(vec3 p, float a) { float c = cos(a), s = sin(a); return vec3(p.x, c * p.y - s * p.z, s * p.y + c * p.z); }\nvec3 rotY(vec3 p, float a) { float c = cos(a), s = sin(a); return vec3(c * p.x + s * p.z, p.y, -s * p.x + c * p.z); }\nvec3 rotZ(vec3 p, float a) { float c = cos(a), s = sin(a); return vec3(c * p.x - s * p.y, s * p.x + c * p.y, p.z); }\n\nvec3 safeDir(vec3 v) {\n  float l = dot(v, v);\n  if (l < 1e-6) return vec3(0.0, 0.0, -1.0);\n  return v * inversesqrt(l);\n}\n\n// Fixed axial tilt, then spin about the tilted polar axis.\nvec3 toBody(vec3 n, float spin) { return rotY(rotZ(rotX(n, -0.34), 0.42), -spin); }\nvec2 lonlat(vec3 d) { return vec2(atan(d.x, d.z), asin(clamp(d.y, -1.0, 1.0))); }\n\nfloat dens(float base) { return clamp(1.0 - (1.0 - base) * uStars, 0.0, 1.0); }\n\n// One star size-class: cell grid, seeded jitter, soft round core.\nfloat starField(vec2 q, float freq, float base, float rad) {\n  vec2 g = q * freq;\n  vec2 id = floor(g);\n  float h = h2(id);\n  if (h < dens(base)) return 0.0;\n  vec2 c = vec2(h2(id + vec2(3.7, 1.3)), h2(id + vec2(9.1, 5.5)));\n  float d = length(fract(g) - c);\n  float core = smoothstep(rad, 0.0, d);\n  // Twinkle: a per-star phase driven straight off uTime, no accumulator.\n  float tw = 0.62 + 0.38 * sin(uTime * 2.4 + h * 53.7);\n  return core * core * (0.45 + 0.55 * h1(h * 91.7)) * tw;\n}\n\n// 4-point diffraction glare, only worth paying for on the brightest class.\nfloat starGlare(vec2 q, float freq, float base) {\n  vec2 g = q * freq;\n  vec2 id = floor(g);\n  float h = h2(id);\n  if (h < dens(base)) return 0.0;\n  vec2 c = vec2(h2(id + vec2(3.7, 1.3)), h2(id + vec2(9.1, 5.5)));\n  vec2 dv = abs(fract(g) - c);\n  float hx = exp(-dv.x * 70.0) * exp(-dv.y * 9.0);\n  float hy = exp(-dv.y * 70.0) * exp(-dv.x * 9.0);\n  return max(hx, hy) * 0.45;\n}\n\n// Three size-classes at ~6 / 11 / 19 cell frequency.\nfloat starsAll(vec2 q, float gain) {\n  float s = starField(q, 6.0, 0.958, 0.20);\n  s += starGlare(q, 6.0, 0.958);\n  s += starField(q, 11.0, 0.920, 0.18) * 0.95;\n  s += starField(q, 19.0, 0.865, 0.17) * 0.75;\n  return s * gain;\n}\n\nvec3 nebula(vec2 q) {\n  // Two sin-field turbulence layers.\n  float t1 = sin(q.x * 3.1 + sin(q.y * 2.7) * 1.9) * sin(q.y * 4.3 + sin(q.x * 1.7) * 2.3);\n  float t2 = sin(q.x * 7.9 + sin(q.y * 5.1) * 1.3) * sin(q.y * 9.7 + sin(q.x * 4.4) * 1.1);\n  float turb = t1 * 0.66 + t2 * 0.34;\n\n  // Galaxy bands, warped by the turbulence.\n  float band = sin(q.y * 3.2 + turb * 1.7 + q.x * 0.55);\n  float bands = pow(max(0.0, band * 0.5 + 0.5), 3.2);\n\n  // Dust lanes: broad darkened swathes, not a thin curve.\n  float lane = sin(q.y * 2.9 + q.x * 1.3 + t1 * 1.6);\n  float dust = 0.22 + 0.78 * smoothstep(-0.45, 0.75, lane);\n\n  // Core bulge.\n  float dc = length(vec2((q.x - 0.55) * 0.5, (q.y + 0.12) * 1.1));\n  float core = exp(-dc * dc * 2.6);\n\n  // Two pocket glows.\n  float dA = length(vec2((q.x + 1.95) * 0.62, (q.y - 0.52) * 1.45));\n  float dB = length(vec2((q.x - 2.35) * 0.55, (q.y + 0.78) * 1.30));\n  float pA = exp(-dA * dA * 4.0);\n  float pB = exp(-dB * dB * 5.0);\n\n  vec3 cNeb = hue2rgb(uHue / 360.0);\n  vec3 cAcc = hue2rgb(uAccent / 360.0);\n  vec3 cWarm = hue2rgb(uHue / 360.0 + 0.07);\n\n  vec3 col = mix(cNeb, cWarm, 0.5 + 0.5 * turb) * bands * dust * 0.17;\n  col += mix(cNeb, vec3(1.0), 0.50) * core * dust * 0.13;\n  col += mix(cAcc, vec3(1.0), 0.60) * pA * 0.30 * uGlow;\n  col += mix(cNeb, vec3(1.0), 0.50) * pB * 0.24 * uGlow;\n  return col;\n}\n\nvoid main() {\n  vec2 p = (gl_FragCoord.xy - uRes * 0.5) / uRadius;\n  float r = length(p);\n  float aa = 1.4 / uRadius;\n  float spin = TAU * uSpin * uTime;\n\n  vec3 cNeb = hue2rgb(uHue / 360.0);\n  vec3 cAcc = hue2rgb(uAccent / 360.0);\n\n  float mask = smoothstep(1.0 + aa, 1.0 - aa, r);\n  float halo = exp(-max(0.0, r - 1.0) * 13.0) * (1.0 - mask);\n\n  vec3 body = vec3(0.0);\n  if (mask > 0.001) {\n    float rc = min(r, 1.0);\n    // Analytic sphere: the normal falls straight out of z = sqrt(1 - r^2).\n    float z = sqrt(max(0.0, 1.0 - rc * rc));\n    vec3 N = vec3(p.x, p.y, z);\n    vec2 q = lonlat(toBody(safeDir(N), spin));\n\n    float gain = 0.9 + 2.6 * uPulse;\n    body = nebula(q);\n    body += vec3(1.0) * starsAll(q, gain) * (0.95 + 0.15 * uGlow);\n\n    // Limb darkening.\n    body *= mix(0.32, 1.0, pow(z, 0.5));\n\n    // Refract-sampled back layer, split per channel: the chromatic\n    // aberration that reads as glass at the limb.\n    vec3 I = vec3(0.0, 0.0, -1.0);\n    vec3 dR = safeDir(refract(I, N, 1.0 / 1.09));\n    vec3 dG = safeDir(refract(I, N, 1.0 / 1.13));\n    vec3 dB = safeDir(refract(I, N, 1.0 / 1.17));\n    vec2 qR = lonlat(toBody(dR, spin));\n    vec2 qG = lonlat(toBody(dG, spin));\n    vec2 qB = lonlat(toBody(dB, spin));\n    vec3 back = vec3(starsAll(qR, gain), starsAll(qG, gain), starsAll(qB, gain));\n    float fres = pow(1.0 - z, 1.8);\n    body += back * fres * 2.2;\n    body += nebula(qG) * fres * 0.8;\n\n    // Aurora sheen riding the glass shell.\n    float ang = atan(p.y, p.x);\n    float sheen = smoothstep(0.72, 0.99, r) * smoothstep(1.0, 0.90, r);\n    float w = 0.5 + 0.5 * sin(ang * 2.0 + spin * 1.6);\n    body += (mix(cNeb, cAcc, w) * 0.55 + vec3(0.16)) * sheen * 0.30 * uGlow;\n\n    // Three speculars, fixed in screen space: the key light does not spin.\n    vec2 a1 = p - vec2(-0.34, 0.62);\n    vec2 a2 = p - vec2(0.58, 0.60);\n    vec2 a3 = p - vec2(0.24, -0.80);\n    float sp = exp(-dot(a1, a1) * 30.0) * 0.30;\n    sp += exp(-dot(a2, a2) * 150.0) * 0.80;\n    sp += exp(-dot(a3, a3) * 70.0) * 0.30;\n    body += vec3(1.0) * sp * (0.30 + 0.70 * pow(1.0 - z, 1.5)) * uGlow;\n\n    // Fresnel void glow hugging the inside of the rim.\n    body += mix(cAcc, vec3(1.0), 0.4) * pow(1.0 - z, 6.0) * 0.30 * uGlow;\n  }\n\n  vec3 haloCol = mix(cNeb, cAcc, 0.35);\n  vec3 outCol = body * mask + haloCol * halo * 0.22 * uGlow;\n  float outA = clamp(mask + halo * 0.16 * uGlow, 0.0, 1.0);\n  outColor = vec4(clamp(outCol, 0.0, 4.0), outA);\n}`;\n\n            var gl = canvas.getContext(\"webgl2\", { alpha: true, antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true });\n            function compile(type, source) {\n              var shader = gl.createShader(type);\n              gl.shaderSource(shader, source);\n              gl.compileShader(shader);\n              if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader) || \"shader compile failed\");\n              return shader;\n            }\n            var paint = null;\n            try {\n              if (!gl) throw new Error(\"WebGL2 is not available\");\n              var prog = gl.createProgram();\n              gl.attachShader(prog, compile(gl.VERTEX_SHADER, VERTEX));\n              gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FRAGMENT));\n              gl.bindAttribLocation(prog, 0, \"aPos\");\n              gl.linkProgram(prog);\n              if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog) || \"link failed\");\n              gl.useProgram(prog);\n              var buffer = gl.createBuffer();\n              gl.bindBuffer(gl.ARRAY_BUFFER, buffer);\n              gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);\n              gl.enableVertexAttribArray(0);\n              gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);\n              gl.viewport(0, 0, cw, ch);\n              function u(name) { return gl.getUniformLocation(prog, name); }\n              gl.uniform2f(u(\"uRes\"), cw, ch);\n              gl.uniform1f(u(\"uRadius\"), V.size * Math.min(cw, ch) / 2);\n              gl.uniform1f(u(\"uSpin\"), V.spin);\n              gl.uniform1f(u(\"uHue\"), V.hue);\n              gl.uniform1f(u(\"uAccent\"), V.accent);\n              gl.uniform1f(u(\"uStars\"), V.stars);\n              gl.uniform1f(u(\"uGlow\"), V.glow);\n              var timeLoc = u(\"uTime\"), pulseLoc = u(\"uPulse\");\n              paint = function (t) {\n                gl.uniform1f(timeLoc, t);\n                gl.uniform1f(pulseLoc, pulseAt(t));\n                gl.clearColor(0, 0, 0, 0);\n                gl.clear(gl.COLOR_BUFFER_BIT);\n                gl.drawArrays(gl.TRIANGLES, 0, 3);\n              };\n            } catch (err) {\n              canvas.style.display = \"none\";\n              if (window.console) console.warn(NAME + \":\", err.message);\n            }\n\n            var tl = gsap.timeline({ paused: true, onUpdate: function () { if (paint) paint(tl.time()); } });\n\n            // The block lasts DUR seconds even when nothing is tweened at the end.\n            tl.set({}, {}, DUR);\n            if (paint) paint(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[NAME] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "67c1ae1f28bbbfe175e234aa132ac9f51f7eb6194d4eaf0dfa3ebea94c456b5d",
+ "duration": 10,
+ "webgl": true,
+ "demo_background": "#04040a",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "hue",
+   "type": "number",
+   "role": "style",
+   "label": "Nebula hue",
+   "default": 268,
+   "min": 0,
+   "max": 360
+  },
+  {
+   "id": "accent",
+   "type": "number",
+   "role": "style",
+   "label": "Accent hue",
+   "default": 196,
+   "min": 0,
+   "max": 360
+  },
+  {
+   "id": "spin",
+   "type": "number",
+   "role": "motion",
+   "label": "Spin rate",
+   "default": 0.035,
+   "min": 0,
+   "max": 0.5
+  },
+  {
+   "id": "stars",
+   "type": "number",
+   "role": "style",
+   "label": "Star density",
+   "default": 1,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "glow",
+   "type": "number",
+   "role": "style",
+   "label": "Glow intensity",
+   "default": 1,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "size",
+   "type": "number",
+   "role": "style",
+   "label": "Orb size",
+   "default": 0.86,
+   "min": 0.2,
+   "max": 1.2
+  },
+  {
+   "id": "pulse",
+   "type": "number",
+   "role": "motion",
+   "label": "Beat pulse",
+   "default": 0,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "pulseEnvelope",
+   "type": "string",
+   "role": "motion",
+   "label": "Beat pulse envelope",
+   "default": ""
+  },
+  {
+   "id": "backdrop",
+   "type": "color",
+   "role": "style",
+   "label": "Backdrop",
+   "default": "#04040a"
+  },
+  {
+   "id": "resolution",
+   "type": "number",
+   "role": "quality",
+   "label": "Resolution",
+   "default": 0.5,
+   "min": 0.25,
+   "max": 1
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

@@ -1,0 +1,173 @@
+{
+ "name": "stroke-to-fill-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "RemotionUI",
+ "source": {
+  "repo": "https://github.com/riaz37/remotion-ui",
+  "path": "apps/web/registry/bases/default/primitives/stroke-to-fill-text.tsx",
+  "commit": "0aecaca2b61a167992e1205d10e4da16d8a71331"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Stroke to Fill Text\n\nDraws type as an outline, then floods each letter solid with a soft edge, in the direction you choose.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- A bold word should first read as a blueprint outline, then solidify: an editorial, confident reveal.\n- Large display type where the stroke shows clearly.\n\nAvoid when:\n- The text is small: the outline will not read, use split-text-chars.\n- You want a hand-drawn stroke: use handwriting-text.\n\nVariables:\n- text (string): Text, default \"Fill it in.\"\n- font_size (number, 24-260): Font size, default 120\n- color (color): Color, default \"#f4f4f5\"\n- font_weight (number, 100-900): Font weight, default 800\n- font (enum): Font, default \"poppins\"\n- mode (enum): Split by, default \"chars\"\n- order (enum): Order, default \"start\"\n- stagger_frames (number, 0-20): Stagger, default 3\n- duration_frames (number, 1-90): Unit duration, default 24\n- delay_frames (number, 0-120): Delay, default 6\n- exit (boolean): Exit, default false\n- stroke_color (color): Stroke color, default \"#f4f4f5\"\n- stroke_width (number, 0.5-16): Stroke width, default 3\n- direction (enum): Fill direction, default \"up\"\n- edge_softness (number, 0-1): Edge softness, default 0.12\n- stroke_retain (number, 0-1): Stroke kept, default 0.35\n- outline_frames (number, 1-90): Outline fade-in, default 16\n\nSource: https://github.com/riaz37/remotion-ui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Stroke to Fill Text\n\n  Draws type as an outline, then floods each letter solid with a soft edge, in the direction you choose.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/riaz37/remotion-ui/blob/0aecaca2b61a167992e1205d10e4da16d8a71331/apps/web/registry/bases/default/primitives/stroke-to-fill-text.tsx\n\n  MIT License\n\n  Copyright (c) 2026 RemotionUI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"stroke-to-fill-text\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    [\n      {\n        \"id\": \"text\",\n        \"type\": \"string\",\n        \"role\": \"content\",\n        \"label\": \"Text\",\n        \"description\": \"The text. A line break starts a new line.\",\n        \"default\": \"Fill it in.\"\n      },\n      {\n        \"id\": \"font_size\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font size\",\n        \"description\": \"Text size in pixels.\",\n        \"default\": 120,\n        \"min\": 24,\n        \"max\": 260,\n        \"step\": 1,\n        \"unit\": \"px\"\n      },\n      {\n        \"id\": \"color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Color\",\n        \"description\": \"Text color.\",\n        \"default\": \"#f4f4f5\"\n      },\n      {\n        \"id\": \"font_weight\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font weight\",\n        \"description\": \"Weight of the text.\",\n        \"default\": 800,\n        \"min\": 100,\n        \"max\": 900,\n        \"step\": 100\n      },\n      {\n        \"id\": \"font\",\n        \"type\": \"enum\",\n        \"role\": \"style\",\n        \"label\": \"Font\",\n        \"description\": \"Typeface.\",\n        \"default\": \"poppins\",\n        \"options\": [\n          {\n            \"value\": \"geist\",\n            \"label\": \"Geist\"\n          },\n          {\n            \"value\": \"poppins\",\n            \"label\": \"Poppins\"\n          },\n          {\n            \"value\": \"playfair\",\n            \"label\": \"Playfair Display\"\n          },\n          {\n            \"value\": \"grotesk\",\n            \"label\": \"Space Grotesk\"\n          }\n        ]\n      },\n      {\n        \"id\": \"mode\",\n        \"type\": \"enum\",\n        \"role\": \"motion\",\n        \"label\": \"Split by\",\n        \"description\": \"What one animated unit is.\",\n        \"default\": \"chars\",\n        \"options\": [\n          {\n            \"value\": \"chars\",\n            \"label\": \"Characters\"\n          },\n          {\n            \"value\": \"words\",\n            \"label\": \"Words\"\n          },\n          {\n            \"value\": \"lines\",\n            \"label\": \"Lines\"\n          }\n        ]\n      },\n      {\n        \"id\": \"order\",\n        \"type\": \"enum\",\n        \"role\": \"motion\",\n        \"label\": \"Order\",\n        \"description\": \"Order the units arrive in.\",\n        \"default\": \"start\",\n        \"options\": [\n          {\n            \"value\": \"start\",\n            \"label\": \"Start to end\"\n          },\n          {\n            \"value\": \"end\",\n            \"label\": \"End to start\"\n          },\n          {\n            \"value\": \"center\",\n            \"label\": \"Centre outwards\"\n          },\n          {\n            \"value\": \"edges\",\n            \"label\": \"Edges inwards\"\n          },\n          {\n            \"value\": \"random\",\n            \"label\": \"Random\"\n          }\n        ]\n      },\n      {\n        \"id\": \"stagger_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Stagger\",\n        \"description\": \"Frames (30 per second) between one unit and the next.\",\n        \"default\": 3,\n        \"min\": 0,\n        \"max\": 20,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      },\n      {\n        \"id\": \"duration_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Unit duration\",\n        \"description\": \"Frames one unit takes to arrive.\",\n        \"default\": 24,\n        \"min\": 1,\n        \"max\": 90,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      },\n      {\n        \"id\": \"delay_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Delay\",\n        \"description\": \"Frames before the first unit starts.\",\n        \"default\": 6,\n        \"min\": 0,\n        \"max\": 120,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      },\n      {\n        \"id\": \"exit\",\n        \"type\": \"boolean\",\n        \"role\": \"motion\",\n        \"label\": \"Exit\",\n        \"description\": \"Play an exit at the end of the clip.\",\n        \"default\": false\n      },\n      {\n        \"id\": \"stroke_color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Stroke color\",\n        \"description\": \"Colour of the outline.\",\n        \"default\": \"#f4f4f5\"\n      },\n      {\n        \"id\": \"stroke_width\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Stroke width\",\n        \"description\": \"Outline thickness in pixels.\",\n        \"default\": 3,\n        \"min\": 0.5,\n        \"max\": 16,\n        \"step\": 0.5,\n        \"unit\": \"px\"\n      },\n      {\n        \"id\": \"direction\",\n        \"type\": \"enum\",\n        \"role\": \"motion\",\n        \"label\": \"Fill direction\",\n        \"description\": \"Which way the fill floods each letter.\",\n        \"default\": \"up\",\n        \"options\": [\n          {\n            \"value\": \"up\",\n            \"label\": \"Up\"\n          },\n          {\n            \"value\": \"down\",\n            \"label\": \"Down\"\n          },\n          {\n            \"value\": \"left\",\n            \"label\": \"Right to left\"\n          },\n          {\n            \"value\": \"right\",\n            \"label\": \"Left to right\"\n          }\n        ]\n      },\n      {\n        \"id\": \"edge_softness\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Edge softness\",\n        \"description\": \"Softness of the fill edge as a share of one letter.\",\n        \"default\": 0.12,\n        \"min\": 0,\n        \"max\": 1,\n        \"step\": 0.01\n      },\n      {\n        \"id\": \"stroke_retain\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Stroke kept\",\n        \"description\": \"How much of the outline stays once a letter is full (0 to 1).\",\n        \"default\": 0.35,\n        \"min\": 0,\n        \"max\": 1,\n        \"step\": 0.05\n      },\n      {\n        \"id\": \"outline_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Outline fade-in\",\n        \"description\": \"Frames the outline takes to appear.\",\n        \"default\": 16,\n        \"min\": 1,\n        \"max\": 90,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      }\n    ]\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Stroke to Fill Text</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Poppins:wght@400;600;800&amp;family=Playfair+Display:wght@400..900&amp;family=Space+Grotesk:wght@300..700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #f4f4f5; }\n        .stf-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .stf-text { display: inline-flex; flex-direction: column; align-items: center; text-align: center; max-width: 90%; line-height: 1.15; }\n        .stf-line { display: block; white-space: normal; }\n        .stf-word { display: inline-block; white-space: nowrap; }\n        .stf-unit { display: inline-block; white-space: pre; }\n        .stf-unit { position: relative; }\n        .stf-fill { position: absolute; left: 0; top: 0; display: inline-block; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"stroke-to-fill-text\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"stf-clip\" class=\"stf-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <span id=\"stf-text\" class=\"stf-text\" role=\"img\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) && v !== \"\" && v !== null ? Math.min(max, Math.max(min, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function bool(v, f) { if (v === undefined || v === null || v === \"\") return f; return !(v === false || v === \"false\" || v === 0 || v === \"0\"); }\n            function pick(v, list, f) { v = String(v); return list.indexOf(v) >= 0 ? v : f; }\n            function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }\n            function lerp(a, b, t) { return a + (b - a) * t; }\n            function ramp(v, a, b, from, to, ease) { var p = b === a ? 1 : clamp01((v - a) / (b - a)); if (ease) p = ease(p); return from + (to - from) * p; }\n            function bez(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 30; i++) {\n                  var cx = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;\n              };\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function mk(tag, parent, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; if (parent) parent.appendChild(e); return e; }\n            var TOTAL = parseFloat(root.dataset.duration || \"4\");\n            // Every frame is drawn from the frame number alone, so seeking anywhere draws the same frame.\n            function drive(name, frameFn) {\n              var clock = { f: 0 };\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: function () { frameFn(clock.f); } }, 0);\n              frameFn(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[name] = tl;\n            }\n\n            // ---- Split text into lines, words and units (characters, words or lines), staggered like the source library's useSplitText ----\n            var ENTER = bez(0.16, 1, 0.3, 1);\n            function EXIT(t) { return t * t * t; }\n            function splitText(text, mode) {\n              var lines = [], units = [];\n              String(text).split(/\\r?\\n/).forEach(function (raw) {\n                var words = [];\n                var rawWords = mode === \"lines\" ? [raw.trim()].filter(Boolean) : raw.split(/\\s+/).filter(Boolean);\n                rawWords.forEach(function (w) {\n                  var pieces = mode === \"chars\" ? Array.from(w) : [w];\n                  var us = pieces.map(function (p) { var u = { text: p, index: units.length }; units.push(u); return u; });\n                  words.push({ units: us });\n                });\n                lines.push({ words: words });\n              });\n              return { lines: lines, units: units };\n            }\n            function staggerRanks(total, order, seed) {\n              var idx = [], i, mid = (total - 1) / 2;\n              for (i = 0; i < total; i++) idx.push(i);\n              if (order === \"end\") return idx.map(function (k) { return total - 1 - k; });\n              if (order === \"center\") return idx.map(function (k) { return Math.round(Math.abs(k - mid)); });\n              if (order === \"edges\") return idx.map(function (k) { return Math.round(mid - Math.abs(k - mid)); });\n              if (order === \"random\") {\n                var rng = mulberry32(seed || 1), keys = idx.map(function () { return rng(); });\n                var sorted = idx.slice().sort(function (a, b) { return keys[a] - keys[b]; });\n                var out = new Array(total);\n                sorted.forEach(function (orig, rank) { out[orig] = rank; });\n                return out;\n              }\n              return idx;\n            }\n            // o: stagger, duration, delay (frames), order, seed, exit (bool), exitFrames\n            function makeTiming(split, o) {\n              var rk = staggerRanks(split.units.length, o.order, o.seed);\n              var maxRank = rk.length ? Math.max.apply(null, rk) : 0;\n              var lastEnter = o.delay + maxRank * o.stagger + o.duration;\n              var exitFrames = Math.max(1, Math.round(o.exitFrames || Math.max(6, Math.round(o.duration * 0.7))));\n              var exitStart = null;\n              if (o.exit) exitStart = Math.max(TOTAL * 30 - exitFrames - maxRank * o.stagger, lastEnter);\n              return { ranks: rk, o: o, exitFrames: exitFrames, exitStart: exitStart, lastEnter: lastEnter };\n            }\n            function unitState(frame, T, u) {\n              var rank = T.ranks[u.index], o = T.o;\n              var start = o.delay + rank * o.stagger;\n              var et = clamp01((frame - start) / o.duration);\n              var enter = ENTER(et), eo = clamp01(et / 0.55);\n              if (T.exitStart === null) return { enter: enter, exit: 0, displace: 1 - enter, opacity: eo, value: enter };\n              var us = T.exitStart + rank * o.stagger;\n              var xt = clamp01((frame - us) / T.exitFrames);\n              var ex = EXIT(xt), xo = 1 - clamp01(xt / 0.7);\n              return { enter: enter, exit: ex, displace: ex > 0 ? ex : 1 - enter, opacity: eo * xo, value: enter * (1 - ex) };\n            }\n            // Builds lines > words > unit spans into parent. fill(unitEl, u) fills each unit.\n            function buildSplit(parent, split, pre, wordGap, fill) {\n              split.lines.forEach(function (line) {\n                var lineEl = mk(\"span\", parent, pre + \"-line\");\n                line.words.forEach(function (word, wi) {\n                  var wordEl = mk(\"span\", lineEl, pre + \"-word\");\n                  if (wi < line.words.length - 1) wordEl.style.marginRight = wordGap + \"em\";\n                  word.units.forEach(function (u) {\n                    u.el = mk(\"span\", wordEl, pre + \"-unit\");\n                    fill(u.el, u);\n                  });\n                });\n              });\n            }\n            function splitCss(pre) {\n              return \".\" + pre + \"-text { display: inline-flex; flex-direction: column; align-items: center; text-align: center; max-width: 90%; line-height: 1.15; }\\n\" +\n                \".\" + pre + \"-line { display: block; white-space: normal; }\\n\" +\n                \".\" + pre + \"-word { display: inline-block; }\\n\" +\n                \".\" + pre + \"-unit { display: inline-block; white-space: pre; }\\n\";\n            }\n\n            var DEFAULT_TEXT = \"Fill it in.\", DEF_STAGGER = 3, DEF_DURATION = 24, DEF_EXIT = false;\n            var FONTS = { geist: \"Geist, system-ui, sans-serif\", poppins: \"Poppins, system-ui, sans-serif\", playfair: '\"Playfair Display\", Georgia, serif', grotesk: '\"Space Grotesk\", system-ui, sans-serif' };\n            var fontKey = pick(vars.font, [\"geist\", \"poppins\", \"playfair\", \"grotesk\"], \"poppins\");\n            root.style.fontFamily = FONTS[fontKey];\n            var text = str(vars.text, DEFAULT_TEXT);\n            var mode = pick(vars.mode, [\"chars\", \"words\", \"lines\"], \"chars\");\n            var MODE_STAGGER = { chars: 2, words: 4, lines: 7 };\n            var split = splitText(text, mode);\n            var T = makeTiming(split, {\n              stagger: num(vars.stagger_frames, DEF_STAGGER, 0, 20), duration: num(vars.duration_frames, DEF_DURATION, 1, 90), delay: num(vars.delay_frames, 6, 0, 120),\n              order: pick(vars.order, [\"start\", \"end\", \"center\", \"edges\", \"random\"], \"start\"), seed: 1, exit: bool(vars.exit, DEF_EXIT)\n            });\n\n            var textEl = document.getElementById(\"stf-text\");\n            textEl.style.fontSize = num(vars.font_size, 120, 24, 260) + \"px\";\n            textEl.style.fontWeight = String(num(vars.font_weight, 800, 100, 900));\n            textEl.style.color = str(vars.color, \"#f4f4f5\");\n            textEl.setAttribute(\"aria-label\", text);\n\n            var strokeColor = str(vars.stroke_color, \"#f4f4f5\"), strokeWidth = num(vars.stroke_width, 3, 0.5, 16);\n            var dir = pick(vars.direction, [\"up\", \"down\", \"left\", \"right\"], \"up\");\n            var DIRS = { up: \"to top\", down: \"to bottom\", left: \"to left\", right: \"to right\" };\n            var softness = num(vars.edge_softness, 0.12, 0, 1) * 100, retain = num(vars.stroke_retain, 0.35, 0, 1);\n            var outlineFrames = num(vars.outline_frames, 16, 1, 90), delay = T.o.delay;\n            var ease = ENTER;\n            buildSplit(textEl, split, \"stf\", 0.26, function (el, u) {\n              u.line = mk(\"span\", el, \"stf-line1\", u.text);\n              u.line.style.color = \"transparent\";\n              u.line.style.webkitTextStrokeColor = strokeColor;\n              u.fill = mk(\"span\", el, \"stf-fill\", u.text);\n              u.fill.setAttribute(\"aria-hidden\", \"true\");\n            });\n            function draw(frame) {\n              var outline = ease(clamp01((frame - delay) / outlineFrames));\n              split.units.forEach(function (u) {\n                var s = unitState(frame, T, u);\n                var flooded = ramp(s.enter, 0.1, 1, 0, 1), fp = flooded * (1 - s.exit), stop = fp * 100;\n                var mask = \"linear-gradient(\" + DIRS[dir] + \", #000 \" + stop.toFixed(2) + \"%, rgba(0,0,0,0) \" + Math.min(100, stop + softness).toFixed(2) + \"%)\";\n                u.line.style.webkitTextStrokeWidth = (strokeWidth * (1 - (1 - retain) * fp)).toFixed(3) + \"px\";\n                u.line.style.opacity = String(outline * (1 - s.exit));\n                u.fill.style.opacity = String(s.opacity);\n                u.fill.style.webkitMaskImage = mask;\n                u.fill.style.maskImage = mask;\n              });\n            }\n            drive(\"stroke-to-fill-text\", draw);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "9159998fad9d89c010c05817cd00c060f2124f2396929b2359784ff8a726a188",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#0b0b10",
+ "demo_values": {
+  "text": "Fill it in.",
+  "font_size": 190,
+  "stroke_width": 4
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Fill it in."
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 120,
+   "min": 24,
+   "max": 260
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#f4f4f5"
+  },
+  {
+   "id": "font_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Font weight",
+   "default": 800,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "font",
+   "type": "enum",
+   "role": "style",
+   "label": "Font",
+   "default": "poppins"
+  },
+  {
+   "id": "mode",
+   "type": "enum",
+   "role": "motion",
+   "label": "Split by",
+   "default": "chars"
+  },
+  {
+   "id": "order",
+   "type": "enum",
+   "role": "motion",
+   "label": "Order",
+   "default": "start"
+  },
+  {
+   "id": "stagger_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 3,
+   "min": 0,
+   "max": 20
+  },
+  {
+   "id": "duration_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Unit duration",
+   "default": 24,
+   "min": 1,
+   "max": 90
+  },
+  {
+   "id": "delay_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Delay",
+   "default": 6,
+   "min": 0,
+   "max": 120
+  },
+  {
+   "id": "exit",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Exit",
+   "default": false
+  },
+  {
+   "id": "stroke_color",
+   "type": "color",
+   "role": "style",
+   "label": "Stroke color",
+   "default": "#f4f4f5"
+  },
+  {
+   "id": "stroke_width",
+   "type": "number",
+   "role": "style",
+   "label": "Stroke width",
+   "default": 3,
+   "min": 0.5,
+   "max": 16
+  },
+  {
+   "id": "direction",
+   "type": "enum",
+   "role": "motion",
+   "label": "Fill direction",
+   "default": "up"
+  },
+  {
+   "id": "edge_softness",
+   "type": "number",
+   "role": "style",
+   "label": "Edge softness",
+   "default": 0.12,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "stroke_retain",
+   "type": "number",
+   "role": "style",
+   "label": "Stroke kept",
+   "default": 0.35,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "outline_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Outline fade-in",
+   "default": 16,
+   "min": 1,
+   "max": 90
+  }
+ ],
+ "author_url": "https://remotionui.com"
+}

@@ -1,0 +1,165 @@
+{
+ "name": "handwriting-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "RemotionUI",
+ "source": {
+  "repo": "https://github.com/riaz37/remotion-ui",
+  "path": "apps/web/registry/bases/default/primitives/handwriting-text.tsx",
+  "commit": "0aecaca2b61a167992e1205d10e4da16d8a71331"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Handwriting Text\n\nWrites a string on, character by character, with a pen nib riding the wet edge of the ink and a slight hand-made tilt on every letter.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- A greeting, signature line or note should look written on by hand, letter by letter.\n- A personal, informal or craft tone.\n\nAvoid when:\n- You need to draw an actual stroke path (a logo or a real signature): draw an SVG path instead.\n- The text is long: a per-letter pen is slow for more than a short line.\n\nVariables:\n- text (string): Text, default \"Hello there\"\n- font_size (number, 24-260): Font size, default 130\n- color (color): Color, default \"#f4f4f5\"\n- font_weight (number, 100-900): Font weight, default 500\n- mode (enum): Split by, default \"chars\"\n- order (enum): Order, default \"start\"\n- stagger_frames (number, 0-20): Stagger, default 3\n- duration_frames (number, 1-90): Unit duration, default 10\n- delay_frames (number, 0-120): Delay, default 6\n- exit (boolean): Exit, default false\n- font (enum): Hand, default \"dancing\"\n- pen_size (number, 0-0.6): Pen size, default 0.14\n- pen_color (color): Pen color, default \"#f4f4f5\"\n- ink_softness (number, 0-1): Ink softness, default 0.18\n- wobble (number, 0-10): Wobble, default 1.6\n- seed (number, 0-999): Seed, default 1\n\nSource: https://github.com/riaz37/remotion-ui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Handwriting Text\n\n  Writes a string on, character by character, with a pen nib riding the wet edge of the ink and a slight hand-made tilt on every letter.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/riaz37/remotion-ui/blob/0aecaca2b61a167992e1205d10e4da16d8a71331/apps/web/registry/bases/default/primitives/handwriting-text.tsx\n\n  MIT License\n\n  Copyright (c) 2026 RemotionUI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"handwriting-text\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    [\n      {\n        \"id\": \"text\",\n        \"type\": \"string\",\n        \"role\": \"content\",\n        \"label\": \"Text\",\n        \"description\": \"The text. A line break starts a new line.\",\n        \"default\": \"Hello there\"\n      },\n      {\n        \"id\": \"font_size\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font size\",\n        \"description\": \"Text size in pixels.\",\n        \"default\": 130,\n        \"min\": 24,\n        \"max\": 260,\n        \"step\": 1,\n        \"unit\": \"px\"\n      },\n      {\n        \"id\": \"color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Color\",\n        \"description\": \"Text color.\",\n        \"default\": \"#f4f4f5\"\n      },\n      {\n        \"id\": \"font_weight\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font weight\",\n        \"description\": \"Weight of the text.\",\n        \"default\": 500,\n        \"min\": 100,\n        \"max\": 900,\n        \"step\": 100\n      },\n      {\n        \"id\": \"mode\",\n        \"type\": \"enum\",\n        \"role\": \"motion\",\n        \"label\": \"Split by\",\n        \"description\": \"What one animated unit is.\",\n        \"default\": \"chars\",\n        \"options\": [\n          {\n            \"value\": \"chars\",\n            \"label\": \"Characters\"\n          },\n          {\n            \"value\": \"words\",\n            \"label\": \"Words\"\n          },\n          {\n            \"value\": \"lines\",\n            \"label\": \"Lines\"\n          }\n        ]\n      },\n      {\n        \"id\": \"order\",\n        \"type\": \"enum\",\n        \"role\": \"motion\",\n        \"label\": \"Order\",\n        \"description\": \"Order the units arrive in.\",\n        \"default\": \"start\",\n        \"options\": [\n          {\n            \"value\": \"start\",\n            \"label\": \"Start to end\"\n          },\n          {\n            \"value\": \"end\",\n            \"label\": \"End to start\"\n          },\n          {\n            \"value\": \"center\",\n            \"label\": \"Centre outwards\"\n          },\n          {\n            \"value\": \"edges\",\n            \"label\": \"Edges inwards\"\n          },\n          {\n            \"value\": \"random\",\n            \"label\": \"Random\"\n          }\n        ]\n      },\n      {\n        \"id\": \"stagger_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Stagger\",\n        \"description\": \"Frames (30 per second) between one unit and the next.\",\n        \"default\": 3,\n        \"min\": 0,\n        \"max\": 20,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      },\n      {\n        \"id\": \"duration_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Unit duration\",\n        \"description\": \"Frames one unit takes to arrive.\",\n        \"default\": 10,\n        \"min\": 1,\n        \"max\": 90,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      },\n      {\n        \"id\": \"delay_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Delay\",\n        \"description\": \"Frames before the first unit starts.\",\n        \"default\": 6,\n        \"min\": 0,\n        \"max\": 120,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      },\n      {\n        \"id\": \"exit\",\n        \"type\": \"boolean\",\n        \"role\": \"motion\",\n        \"label\": \"Exit\",\n        \"description\": \"Play an exit at the end of the clip.\",\n        \"default\": false\n      },\n      {\n        \"id\": \"font\",\n        \"type\": \"enum\",\n        \"role\": \"style\",\n        \"label\": \"Hand\",\n        \"description\": \"Script typeface.\",\n        \"default\": \"dancing\",\n        \"options\": [\n          {\n            \"value\": \"caveat\",\n            \"label\": \"Caveat\"\n          },\n          {\n            \"value\": \"dancing\",\n            \"label\": \"Dancing Script\"\n          },\n          {\n            \"value\": \"apple\",\n            \"label\": \"Homemade Apple\"\n          }\n        ]\n      },\n      {\n        \"id\": \"pen_size\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Pen size\",\n        \"description\": \"Diameter of the nib in em. 0 hides it.\",\n        \"default\": 0.14,\n        \"min\": 0,\n        \"max\": 0.6,\n        \"step\": 0.01,\n        \"unit\": \"em\"\n      },\n      {\n        \"id\": \"pen_color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Pen color\",\n        \"description\": \"Colour of the nib.\",\n        \"default\": \"#f4f4f5\"\n      },\n      {\n        \"id\": \"ink_softness\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Ink softness\",\n        \"description\": \"Softness of the ink edge as a share of one letter. 0 is a hard cut.\",\n        \"default\": 0.18,\n        \"min\": 0,\n        \"max\": 1,\n        \"step\": 0.01\n      },\n      {\n        \"id\": \"wobble\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Wobble\",\n        \"description\": \"Per-letter tilt and baseline drift in degrees. 0 is machine-even.\",\n        \"default\": 1.6,\n        \"min\": 0,\n        \"max\": 10,\n        \"step\": 0.1,\n        \"unit\": \"deg\"\n      },\n      {\n        \"id\": \"seed\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Seed\",\n        \"description\": \"Varies the hand. The same seed always writes the same way.\",\n        \"default\": 1,\n        \"min\": 0,\n        \"max\": 999,\n        \"step\": 1\n      }\n    ]\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Handwriting Text</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&amp;family=Dancing+Script:wght@400..700&amp;family=Homemade+Apple&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #f4f4f5; }\n        .hwt-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .hwt-text { display: inline-flex; flex-direction: column; align-items: center; text-align: center; max-width: 90%; line-height: 1.15; }\n        .hwt-line { display: block; white-space: normal; }\n        .hwt-word { display: inline-block; white-space: nowrap; }\n        .hwt-unit { display: inline-block; white-space: pre; }\n        .hwt-unit { position: relative; }\n        .hwt-ink { display: inline-block; }\n        .hwt-nib { position: absolute; border-radius: 50%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"handwriting-text\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"hwt-clip\" class=\"hwt-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <span id=\"hwt-text\" class=\"hwt-text\" role=\"img\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) && v !== \"\" && v !== null ? Math.min(max, Math.max(min, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function bool(v, f) { if (v === undefined || v === null || v === \"\") return f; return !(v === false || v === \"false\" || v === 0 || v === \"0\"); }\n            function pick(v, list, f) { v = String(v); return list.indexOf(v) >= 0 ? v : f; }\n            function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }\n            function lerp(a, b, t) { return a + (b - a) * t; }\n            function ramp(v, a, b, from, to, ease) { var p = b === a ? 1 : clamp01((v - a) / (b - a)); if (ease) p = ease(p); return from + (to - from) * p; }\n            function bez(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 30; i++) {\n                  var cx = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;\n              };\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function mk(tag, parent, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; if (parent) parent.appendChild(e); return e; }\n            var TOTAL = parseFloat(root.dataset.duration || \"4\");\n            // Every frame is drawn from the frame number alone, so seeking anywhere draws the same frame.\n            function drive(name, frameFn) {\n              var clock = { f: 0 };\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: function () { frameFn(clock.f); } }, 0);\n              frameFn(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[name] = tl;\n            }\n\n            // ---- Split text into lines, words and units (characters, words or lines), staggered like the source library's useSplitText ----\n            var ENTER = bez(0.16, 1, 0.3, 1);\n            function EXIT(t) { return t * t * t; }\n            function splitText(text, mode) {\n              var lines = [], units = [];\n              String(text).split(/\\r?\\n/).forEach(function (raw) {\n                var words = [];\n                var rawWords = mode === \"lines\" ? [raw.trim()].filter(Boolean) : raw.split(/\\s+/).filter(Boolean);\n                rawWords.forEach(function (w) {\n                  var pieces = mode === \"chars\" ? Array.from(w) : [w];\n                  var us = pieces.map(function (p) { var u = { text: p, index: units.length }; units.push(u); return u; });\n                  words.push({ units: us });\n                });\n                lines.push({ words: words });\n              });\n              return { lines: lines, units: units };\n            }\n            function staggerRanks(total, order, seed) {\n              var idx = [], i, mid = (total - 1) / 2;\n              for (i = 0; i < total; i++) idx.push(i);\n              if (order === \"end\") return idx.map(function (k) { return total - 1 - k; });\n              if (order === \"center\") return idx.map(function (k) { return Math.round(Math.abs(k - mid)); });\n              if (order === \"edges\") return idx.map(function (k) { return Math.round(mid - Math.abs(k - mid)); });\n              if (order === \"random\") {\n                var rng = mulberry32(seed || 1), keys = idx.map(function () { return rng(); });\n                var sorted = idx.slice().sort(function (a, b) { return keys[a] - keys[b]; });\n                var out = new Array(total);\n                sorted.forEach(function (orig, rank) { out[orig] = rank; });\n                return out;\n              }\n              return idx;\n            }\n            // o: stagger, duration, delay (frames), order, seed, exit (bool), exitFrames\n            function makeTiming(split, o) {\n              var rk = staggerRanks(split.units.length, o.order, o.seed);\n              var maxRank = rk.length ? Math.max.apply(null, rk) : 0;\n              var lastEnter = o.delay + maxRank * o.stagger + o.duration;\n              var exitFrames = Math.max(1, Math.round(o.exitFrames || Math.max(6, Math.round(o.duration * 0.7))));\n              var exitStart = null;\n              if (o.exit) exitStart = Math.max(TOTAL * 30 - exitFrames - maxRank * o.stagger, lastEnter);\n              return { ranks: rk, o: o, exitFrames: exitFrames, exitStart: exitStart, lastEnter: lastEnter };\n            }\n            function unitState(frame, T, u) {\n              var rank = T.ranks[u.index], o = T.o;\n              var start = o.delay + rank * o.stagger;\n              var et = clamp01((frame - start) / o.duration);\n              var enter = ENTER(et), eo = clamp01(et / 0.55);\n              if (T.exitStart === null) return { enter: enter, exit: 0, displace: 1 - enter, opacity: eo, value: enter };\n              var us = T.exitStart + rank * o.stagger;\n              var xt = clamp01((frame - us) / T.exitFrames);\n              var ex = EXIT(xt), xo = 1 - clamp01(xt / 0.7);\n              return { enter: enter, exit: ex, displace: ex > 0 ? ex : 1 - enter, opacity: eo * xo, value: enter * (1 - ex) };\n            }\n            // Builds lines > words > unit spans into parent. fill(unitEl, u) fills each unit.\n            function buildSplit(parent, split, pre, wordGap, fill) {\n              split.lines.forEach(function (line) {\n                var lineEl = mk(\"span\", parent, pre + \"-line\");\n                line.words.forEach(function (word, wi) {\n                  var wordEl = mk(\"span\", lineEl, pre + \"-word\");\n                  if (wi < line.words.length - 1) wordEl.style.marginRight = wordGap + \"em\";\n                  word.units.forEach(function (u) {\n                    u.el = mk(\"span\", wordEl, pre + \"-unit\");\n                    fill(u.el, u);\n                  });\n                });\n              });\n            }\n            function splitCss(pre) {\n              return \".\" + pre + \"-text { display: inline-flex; flex-direction: column; align-items: center; text-align: center; max-width: 90%; line-height: 1.15; }\\n\" +\n                \".\" + pre + \"-line { display: block; white-space: normal; }\\n\" +\n                \".\" + pre + \"-word { display: inline-block; }\\n\" +\n                \".\" + pre + \"-unit { display: inline-block; white-space: pre; }\\n\";\n            }\n\n            var DEFAULT_TEXT = \"Hello there\", DEF_STAGGER = 3, DEF_DURATION = 10, DEF_EXIT = false;\n            var HANDS = { caveat: \"Caveat, cursive\", dancing: '\"Dancing Script\", cursive', apple: '\"Homemade Apple\", cursive' };\n            root.style.fontFamily = HANDS[pick(vars.font, [\"caveat\", \"dancing\", \"apple\"], \"dancing\")];\n\n            var text = str(vars.text, DEFAULT_TEXT);\n            var mode = pick(vars.mode, [\"chars\", \"words\", \"lines\"], \"chars\");\n            var MODE_STAGGER = { chars: 2, words: 4, lines: 7 };\n            var split = splitText(text, mode);\n            var T = makeTiming(split, {\n              stagger: num(vars.stagger_frames, DEF_STAGGER, 0, 20), duration: num(vars.duration_frames, DEF_DURATION, 1, 90), delay: num(vars.delay_frames, 6, 0, 120),\n              order: pick(vars.order, [\"start\", \"end\", \"center\", \"edges\", \"random\"], \"start\"), seed: 1, exit: bool(vars.exit, DEF_EXIT)\n            });\n\n            var textEl = document.getElementById(\"hwt-text\");\n            textEl.style.fontSize = num(vars.font_size, 130, 24, 260) + \"px\";\n            textEl.style.fontWeight = String(num(vars.font_weight, 500, 100, 900));\n            textEl.style.color = str(vars.color, \"#f4f4f5\");\n            textEl.setAttribute(\"aria-label\", text);\n\n            var penSize = num(vars.pen_size, 0.14, 0, 0.6), penColor = str(vars.pen_color, \"#f4f4f5\"), softness = num(vars.ink_softness, 0.18, 0, 1) * 100;\n            var wobble = num(vars.wobble, 1.6, 0, 10), seed = num(vars.seed, 1, 0, 999);\n            function jitter(index, salt) { return mulberry32(seed * 7919 + index * 131 + salt * 17)() * 2 - 1; }\n            buildSplit(textEl, split, \"hwt\", 0.26, function (el, u) {\n              var tilt = jitter(u.index, 1) * wobble, drift = jitter(u.index, 2) * wobble * 0.012;\n              el.style.transform = \"translateY(\" + drift.toFixed(4) + \"em) rotate(\" + tilt.toFixed(3) + \"deg)\";\n              u.ink = mk(\"span\", el, \"hwt-ink\", u.text);\n              u.nib = mk(\"span\", el, \"hwt-nib\");\n              u.nib.setAttribute(\"aria-hidden\", \"true\");\n              u.nib.style.cssText = \"bottom:0.08em;width:\" + penSize + \"em;height:\" + penSize + \"em;margin-left:\" + (-penSize / 2) + \"em;background:\" + penColor + \";opacity:0;\" + (penSize > 0 ? \"\" : \"display:none;\");\n            });\n            function draw(frame) {\n              split.units.forEach(function (u) {\n                var s = unitState(frame, T, u), written = clamp01(s.enter), stop = written * 100;\n                var ink = \"linear-gradient(to right, #000 \" + stop.toFixed(2) + \"%, rgba(0,0,0,0) \" + Math.min(100, stop + softness).toFixed(2) + \"%)\";\n                u.el.style.opacity = String(s.opacity);\n                u.ink.style.webkitMaskImage = ink;\n                u.ink.style.maskImage = ink;\n                u.nib.style.left = stop.toFixed(2) + \"%\";\n                u.nib.style.opacity = written > 0.02 && written < 0.98 ? String(s.opacity) : \"0\";\n              });\n            }\n            drive(\"handwriting-text\", draw);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "4db2343e78faf4fbce3efc66740aff4c2a419b977e1733764d922ecd570c3c84",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#0b0b10",
+ "demo_values": {
+  "text": "Hello there",
+  "font_size": 220
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Hello there"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 130,
+   "min": 24,
+   "max": 260
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#f4f4f5"
+  },
+  {
+   "id": "font_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Font weight",
+   "default": 500,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "mode",
+   "type": "enum",
+   "role": "motion",
+   "label": "Split by",
+   "default": "chars"
+  },
+  {
+   "id": "order",
+   "type": "enum",
+   "role": "motion",
+   "label": "Order",
+   "default": "start"
+  },
+  {
+   "id": "stagger_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 3,
+   "min": 0,
+   "max": 20
+  },
+  {
+   "id": "duration_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Unit duration",
+   "default": 10,
+   "min": 1,
+   "max": 90
+  },
+  {
+   "id": "delay_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Delay",
+   "default": 6,
+   "min": 0,
+   "max": 120
+  },
+  {
+   "id": "exit",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Exit",
+   "default": false
+  },
+  {
+   "id": "font",
+   "type": "enum",
+   "role": "style",
+   "label": "Hand",
+   "default": "dancing"
+  },
+  {
+   "id": "pen_size",
+   "type": "number",
+   "role": "style",
+   "label": "Pen size",
+   "default": 0.14,
+   "min": 0,
+   "max": 0.6
+  },
+  {
+   "id": "pen_color",
+   "type": "color",
+   "role": "style",
+   "label": "Pen color",
+   "default": "#f4f4f5"
+  },
+  {
+   "id": "ink_softness",
+   "type": "number",
+   "role": "style",
+   "label": "Ink softness",
+   "default": 0.18,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "wobble",
+   "type": "number",
+   "role": "motion",
+   "label": "Wobble",
+   "default": 1.6,
+   "min": 0,
+   "max": 10
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "motion",
+   "label": "Seed",
+   "default": 1,
+   "min": 0,
+   "max": 999
+  }
+ ],
+ "author_url": "https://remotionui.com"
+}

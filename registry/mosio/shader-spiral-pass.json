@@ -1,0 +1,86 @@
+{
+ "name": "shader-spiral-pass",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/shader-spiral-pass/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Shader Spiral Pass\n\nA neon spiral tunnel swallows the outgoing scene, the camera dives through its center, and an expanding aperture reveals the incoming scene. Rebuilt with a deterministic Canvas 2D tunnel instead of the original WebGL shader. The block draws its own colored field between two built-in placeholder scenes A and B (the two .ssp-panel elements); to use it between your own scenes, replace the contents of those two panels and keep the block on a track above.\n\nCategory: transitions. Length: 2.4 s. WebGL: no.\n\nUse when:\n- A hero moment: a dive through a tunnel into the next scene.\n- Tech, gaming or music content that wants an energetic, glowing scene change.\n\nAvoid when:\n- Subtle, corporate pieces.\n- Videos that already use several loud transitions.\n\nVariables:\n- spirals (number, 1-6): Spirals, default 3\n- twist (number, 0-2): Twist, default 0.7\n- zoom (number, 2-24): Zoom, default 14\n- softness (number, 0.02-0.3): Softness, default 0.12\n- speed (number, 0-5): Speed, default 1\n- time_offset (number, -100-100): Time offset, default 0\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Shader Spiral Pass\n\n  A neon spiral tunnel swallows the outgoing scene, the camera dives through its center, and an expanding aperture reveals the incoming scene. Rebuilt with a deterministic Canvas 2D tunnel instead of the original WebGL shader.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/shader-spiral-pass/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"shader-spiral-pass\"\n  data-composition-duration=\"2.4\"\n  data-composition-variables='[\n  {\n    \"id\": \"spirals\",\n    \"type\": \"number\",\n    \"role\": \"style\",\n    \"label\": \"Spirals\",\n    \"description\": \"Number of spiral ribbons around the tunnel.\",\n    \"default\": 3,\n    \"min\": 1,\n    \"max\": 6,\n    \"step\": 1\n  },\n  {\n    \"id\": \"twist\",\n    \"type\": \"number\",\n    \"role\": \"style\",\n    \"label\": \"Twist\",\n    \"description\": \"How strongly the ribbons wind.\",\n    \"default\": 0.7,\n    \"min\": 0,\n    \"max\": 2,\n    \"step\": 0.05\n  },\n  {\n    \"id\": \"zoom\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Zoom\",\n    \"description\": \"Magnification reached while passing through the center.\",\n    \"default\": 14,\n    \"min\": 2,\n    \"max\": 24,\n    \"step\": 1\n  },\n  {\n    \"id\": \"softness\",\n    \"type\": \"number\",\n    \"role\": \"style\",\n    \"label\": \"Softness\",\n    \"description\": \"Feather of the revealing aperture, as a fraction of the shorter side.\",\n    \"default\": 0.12,\n    \"min\": 0.02,\n    \"max\": 0.3,\n    \"step\": 0.01\n  },\n  {\n    \"id\": \"speed\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Speed\",\n    \"description\": \"Multiplier for the tunnel’s own motion.\",\n    \"default\": 1,\n    \"min\": 0,\n    \"max\": 5,\n    \"step\": 0.1\n  },\n  {\n    \"id\": \"time_offset\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Time offset\",\n    \"description\": \"Starting shader time in seconds.\",\n    \"default\": 0,\n    \"min\": -100,\n    \"max\": 100,\n    \"step\": 0.5,\n    \"unit\": \"s\"\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Shader Spiral Pass</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n\n        #root { background: #141318; }\n        .ssp-stage { position: absolute; inset: 0; }\n        .ssp-panel { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }\n        .ssp-in { display: flex; flex-direction: column; align-items: center; gap: 2.4cqmin; }\n        .ssp-in span { font-size: 9cqmin; font-weight: 600; letter-spacing: -0.03em; line-height: 1; color: #f2f2f2; white-space: nowrap; }\n        .ssp-bar { display: block; width: 14cqmin; height: 0.8cqmin; border-radius: 1cqmin; background: rgba(242, 242, 242, 0.55); }\n        .ssp-pa { background: #141318; }\n        .ssp-pb { background: linear-gradient(135deg, #3b3699 0%, #1e2a6b 55%, #0f4c75 100%); }\n        .ssp-pc { background: linear-gradient(135deg, #7a2f5f 0%, #3a2250 55%, #1c1b3f 100%); }\n\n        .ssp-field { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; opacity: 0; }\n        .ssp-pa { z-index: 1; } .ssp-pb { z-index: 3; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"shader-spiral-pass\" data-duration=\"2.4\" data-fps=\"30\">\n        <div id=\"ssp-clip\" class=\"ssp-stage clip\" data-start=\"0\" data-duration=\"2.4\" data-track-index=\"0\">\n          <div id=\"ssp-a\" class=\"ssp-panel ssp-pa\"><div class=\"ssp-in\"><span>Scene A</span><i class=\"ssp-bar\"></i></div></div>\n          <div id=\"ssp-b\" class=\"ssp-panel ssp-pb\"><div class=\"ssp-in\"><span>Scene B</span><i class=\"ssp-bar\"></i></div></div>\n          <canvas id=\"ssp-field\" class=\"ssp-field\"></canvas>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        \n        <script>\n          (function () {\n            \"use strict\";\n\nvar root = document.getElementById(\"root\");\nvar vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\nfunction num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : f; }\nfunction str(v, f) { return typeof v === \"string\" && v.trim() ? v.trim() : f; }\nfunction pick(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\nfunction clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\nfunction lerp(a, b, t) { return a + (b - a) * t; }\nfunction smooth(a, b, x) { var t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); }\n// cubic-bezier easing, solved by bisection (pure function of x)\nfunction bez(x1, y1, x2, y2) {\n  return function (x) {\n    if (x <= 0) return 0;\n    if (x >= 1) return 1;\n    var lo = 0, hi = 1, t = x;\n    for (var i = 0; i < 28; i++) {\n      var cx = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;\n      if (cx < x) lo = t; else hi = t;\n      t = (lo + hi) / 2;\n    }\n    return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;\n  };\n}\nvar inOutEase = bez(0.42, 0, 0.58, 1);\nfunction inCubic(x) { return x * x * x; }\nfunction outCubic(x) { return 1 - Math.pow(1 - x, 3); }\nfunction inQuad(x) { return x * x; }\nfunction outQuad(x) { return 1 - (1 - x) * (1 - x); }\nfunction outBack(s) { return function (x) { return 1 + (s + 1) * Math.pow(x - 1, 3) + s * Math.pow(x - 1, 2); }; }\n// interpolate(p, inputs, outputs, ease): clamped, eased per segment (like a frame interpolate)\nfunction interp(p, xs, ys, ease) {\n  var n = xs.length;\n  if (p <= xs[0]) return ys[0];\n  if (p >= xs[n - 1]) return ys[n - 1];\n  for (var i = 1; i < n; i++) {\n    if (p <= xs[i]) {\n      var t = (p - xs[i - 1]) / (xs[i] - xs[i - 1]);\n      if (ease) t = ease(t);\n      return lerp(ys[i - 1], ys[i], t);\n    }\n  }\n  return ys[n - 1];\n}\nfunction mulberry32(a) {\n  return function () {\n    a |= 0; a = (a + 0x6d2b79f5) | 0;\n    var t = Math.imul(a ^ (a >>> 15), 1 | a);\n    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n  };\n}\n// damped spring from 0 to 1 (zero initial velocity), t in seconds\nfunction spring(t, damping, stiffness, mass) {\n  if (t <= 0) return 0;\n  var w0 = Math.sqrt(stiffness / mass), z = damping / (2 * Math.sqrt(stiffness * mass));\n  if (Math.abs(z - 1) < 1e-4) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n  if (z < 1) {\n    var wd = w0 * Math.sqrt(1 - z * z);\n    return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t));\n  }\n  var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n  return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n}\nfunction stripIds(node) {\n  var all = node.querySelectorAll(\"[id]\");\n  for (var i = 0; i < all.length; i++) all[i].removeAttribute(\"id\");\n  node.removeAttribute(\"id\");\n  return node;\n}\nfunction drive(name, duration, frame) {\n  var st = { p: 0 };\n  frame(0);\n  var tl = gsap.timeline({ paused: true });\n  tl.to(st, { p: 1, duration: duration, ease: \"none\", onUpdate: function () { frame(st.p); } }, 0);\n  tl.seek(0);\n  window.__timelines = window.__timelines || {};\n  window.__timelines[name] = tl;\n}\n\nfunction hex(c, f) {\n  c = String(c || \"\").trim().replace(\"#\", \"\");\n  if (c.length === 3) c = c.split(\"\").map(function (x) { return x + x; }).join(\"\");\n  if (!/^[0-9a-fA-F]{6}$/.test(c)) c = f || \"000000\";\n  var n = parseInt(c, 16);\n  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];\n}\nfunction palette(v, fallback) {\n  var list = String(v || fallback).split(\",\").map(function (s) { return hex(s, \"808080\"); });\n  return list.length ? list : [hex(fallback)];\n}\nfunction hash2(x, y, s) {\n  var h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263) + Math.imul(s | 0, 1442695041);\n  h = Math.imul(h ^ (h >>> 13), 1274126177);\n  h ^= h >>> 16;\n  return (h >>> 0) / 4294967296;\n}\nfunction vnoise(x, y, s) {\n  var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;\n  var u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);\n  var a = hash2(xi, yi, s), b = hash2(xi + 1, yi, s), c = hash2(xi, yi + 1, s), d = hash2(xi + 1, yi + 1, s);\n  return lerp(lerp(a, b, u), lerp(c, d, u), v);\n}\nfunction fbm(x, y, s, oct) {\n  var sum = 0, amp = 0.5, tot = 0;\n  for (var i = 0; i < oct; i++) {\n    sum += amp * vnoise(x, y, s + i * 17);\n    tot += amp; x = x * 2.03 + 11.3; y = y * 2.03 - 7.1; amp *= 0.5;\n  }\n  return sum / tot;\n}\nfunction mixc(o, a, b, t) {\n  o[0] = a[0] + (b[0] - a[0]) * t; o[1] = a[1] + (b[1] - a[1]) * t; o[2] = a[2] + (b[2] - a[2]) * t;\n}\n// ramp through a list of colours with t in 0..1\nfunction ramp(o, list, t) {\n  t = clamp01(t) * (list.length - 1);\n  var i = Math.min(list.length - 2, Math.floor(t));\n  if (list.length === 1) { o[0] = list[0][0]; o[1] = list[0][1]; o[2] = list[0][2]; return; }\n  var f = t - i; f = f * f * (3 - 2 * f);\n  mixc(o, list[i], list[i + 1], f);\n}\n// Low-resolution 2D canvas filled per pixel; fn(u, v, out) gets centred coordinates (v spans -0.5..0.5).\nfunction makeField(canvas, cell) {\n  var W = Math.max(8, Math.round(root.clientWidth / cell)), H = Math.max(8, Math.round(root.clientHeight / cell));\n  canvas.width = W; canvas.height = H;\n  var ctx = canvas.getContext(\"2d\");\n  var img = ctx.createImageData(W, H);\n  var out = [0, 0, 0];\n  return {\n    W: W, H: H,\n    paint: function (fn) {\n      var d = img.data, i = 0;\n      for (var y = 0; y < H; y++) {\n        for (var x = 0; x < W; x++) {\n          fn((x + 0.5 - W / 2) / H, (y + 0.5 - H / 2) / H, out, x, y);\n          d[i++] = out[0]; d[i++] = out[1]; d[i++] = out[2]; d[i++] = 255;\n        }\n      }\n      ctx.putImageData(img, 0, 0);\n    }\n  };\n}\n\n            var D = 2.4;\n\nvar spirals = Math.round(num(vars.spirals, 3, 1, 6)), twist = num(vars.twist, 0.7, 0, 2), zoomMax = num(vars.zoom, 14, 2, 24);\nvar soft = num(vars.softness, 0.12, 0.02, 0.3), speed = num(vars.speed, 1, 0, 5), offset = num(vars.time_offset, 0, -100, 100);\nvar A = document.getElementById(\"ssp-a\"), B = document.getElementById(\"ssp-b\"), canvas = document.getElementById(\"ssp-field\");\nvar W = root.clientWidth, H = root.clientHeight, diag = Math.sqrt(W * W + H * H) / 2;\nvar cv = makeField(canvas, 4), NEON = [[90, 50, 235], [225, 70, 215], [70, 215, 255]];\nfunction frame(p) {\n  var dive = clamp01((p - 0.08) / 0.84), zoom = Math.exp(Math.log(zoomMax) * dive * dive);\n  var cover = smooth(0, 0.18, p), showNext = p >= 0.2, aperture = Math.pow(smooth(0.64, 1, p), 2);\n  var t = offset + p * D * (1 + 0.8 * p * p) * speed;\n  cv.paint(function (u, v, o) {\n    var r = Math.sqrt(u * u + v * v) / zoom + 1e-4, a = Math.atan2(v, u), lg = Math.log(r);\n    var ph = a * spirals + twist * 2.4 * lg - t * 1.1;\n    var line = Math.pow(0.5 + 0.5 * Math.cos(ph), 5);\n    var ring = 0.5 + 0.5 * Math.cos(lg * 7 - t * 1.6);\n    var b = line * (0.5 + 0.7 * ring), h = lg * 0.3 + a / 6.2832 + t * 0.04;\n    var glow = 0.12 + b * 1.5 + 0.35 * Math.exp(-r * 7);\n    ramp(o, NEON, 0.5 + 0.5 * Math.cos(6.2832 * h));\n    o[0] = 8 + o[0] * glow; o[1] = 6 + o[1] * glow; o[2] = 20 + o[2] * glow;\n  });\n  canvas.style.opacity = cover;\n  A.style.visibility = showNext ? \"hidden\" : \"visible\";\n  A.style.scale = 1 + 0.5 * smooth(0, 0.22, p);\n  var feather = Math.min(W, H) * soft, radius = (diag + feather) * aperture, edge = Math.min(feather, radius * 0.12);\n  var mask = \"radial-gradient(circle at center, black \" + Math.max(0, radius - edge) + \"px, transparent \" + radius + \"px)\";\n  B.style.visibility = showNext ? \"visible\" : \"hidden\";\n  B.style.opacity = smooth(0.64, 0.72, p);\n  B.style.webkitMaskImage = mask; B.style.maskImage = mask;\n  B.style.scale = 1 + 0.12 * (1 - smooth(0.55, 1, p));\n}\n\n            drive(\"shader-spiral-pass\", D, frame);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "e4f4add3363d88512aeaa62cf91e9cf3f18cfdd8909d746d335217dc34738a58",
+ "duration": 2.4,
+ "webgl": false,
+ "demo_background": "#141318",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "spirals",
+   "type": "number",
+   "role": "style",
+   "label": "Spirals",
+   "default": 3,
+   "min": 1,
+   "max": 6
+  },
+  {
+   "id": "twist",
+   "type": "number",
+   "role": "style",
+   "label": "Twist",
+   "default": 0.7,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "zoom",
+   "type": "number",
+   "role": "motion",
+   "label": "Zoom",
+   "default": 14,
+   "min": 2,
+   "max": 24
+  },
+  {
+   "id": "softness",
+   "type": "number",
+   "role": "style",
+   "label": "Softness",
+   "default": 0.12,
+   "min": 0.02,
+   "max": 0.3
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0,
+   "max": 5
+  },
+  {
+   "id": "time_offset",
+   "type": "number",
+   "role": "motion",
+   "label": "Time offset",
+   "default": 0,
+   "min": -100,
+   "max": 100
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

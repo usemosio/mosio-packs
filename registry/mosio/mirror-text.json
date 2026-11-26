@@ -1,0 +1,83 @@
+{
+ "name": "mirror-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Animata",
+ "source": {
+  "repo": "https://github.com/codse/animata",
+  "path": "animata/text/mirror-text.tsx",
+  "commit": "25c27e5a874c60a56dcc1609df3b2c4f5f8456f8"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Mirror Text\n\nA word stacked from four clipped copies; the copies slide in a staggered ripple, as if the text were sliced into mirrored strips.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- An uppercase word should get a graphic, sliced echo with a staggered ripple.\n- A title wants a quiet hover-style accent in one of four directions.\n\nAvoid when:\n- The text must stay fully legible at all times: the strips overlap mid-motion.\n- A long sentence: the effect suits one or two short words.\n\nVariables:\n- text (string): Text, default \"MIRROR\"\n- direction (enum): Direction, default \"up\"\n- font_size (number, 12-320): Font size, default 150\n- hold (number, 0-4): Hold, default 1.2\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"300\"\n\nSource: https://github.com/codse/animata. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Mirror Text\n\n  A word stacked from four clipped copies; the copies slide in a staggered ripple, as if the text were sliced into mirrored strips.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/codse/animata/blob/25c27e5a874c60a56dcc1609df3b2c4f5f8456f8/animata/text/mirror-text.tsx\n\n  MIT License\n\n  Copyright (c) Animata\n\n  Permission is hereby granted, free of charge, to any person obtaining\n  a copy of this software and associated documentation files (the\n  \"Software\"), to deal in the Software without restriction, including\n  without limitation the rights to use, copy, modify, merge, publish,\n  distribute, sublicense, and/or sell copies of the Software, and to\n  permit persons to whom the Software is furnished to do so, subject to\n  the following conditions:\n\n  The above copyright notice and this permission notice shall be\n  included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"mirror-text\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Word that is sliced.\", \"default\": \"MIRROR\"},\n    {\"id\": \"direction\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Direction\", \"description\": \"Direction the strips move in.\", \"default\": \"up\", \"options\": [{\"value\": \"up\", \"label\": \"Up\"}, {\"value\": \"down\", \"label\": \"Down\"}, {\"value\": \"left\", \"label\": \"Left\"}, {\"value\": \"right\", \"label\": \"Right\"}]},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 150, \"min\": 12, \"max\": 320, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"hold\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Hold\", \"description\": \"Seconds the strips stay shifted.\", \"default\": 1.2, \"min\": 0, \"max\": 4, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"300\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"900\", \"label\": \"Black\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Mirror Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .mir-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .mir-box { position: relative; overflow: hidden; }\n        .mir-layer { overflow: hidden; }\n        .mir-text { display: inline-block; text-transform: uppercase; line-height: 1; white-space: pre; letter-spacing: 0.02em; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"mirror-text\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"mir-clip\" class=\"mir-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <div id=\"mir-box\" class=\"mir-box\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function opt(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : v === \"true\" ? true : v === \"false\" ? false : f; }\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > max) { size = Math.max(12, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            \n            var box = document.getElementById(\"mir-box\");\n            var text = str(vars.text, \"MIRROR\");\n            var dir = opt(vars.direction, [\"up\", \"down\", \"left\", \"right\"], \"up\");\n            var hold = num(vars.hold, 1.2, 0, 4);\n            root.style.color = col(vars.color, \"#171717\");\n            root.style.fontWeight = opt(vars.font_weight, [\"300\",\"400\",\"500\",\"600\",\"700\",\"900\"], \"300\");\n            var probe = document.createElement(\"span\"); probe.className = \"mir-text\"; probe.textContent = text; box.appendChild(probe);\n            var size = num(vars.font_size, 150, 12, 320);\n            probe.style.fontSize = size + \"px\";\n            var maxW = root.clientWidth * 0.82;\n            if (probe.scrollWidth + size * 1.35 > maxW) size = Math.max(12, size * (maxW / (probe.scrollWidth + size * 1.35)));\n            box.removeChild(probe);\n            box.style.fontSize = size + \"px\";\n            box.style.padding = size * (24 / 36) + \"px\";\n            // 36 px text in the original: strips are a third of a line, travel is 16 px.\n            var layers = [], delays = [0.2, 0.1, 0.075, 0];\n            for (var i = 0; i < 4; i++) {\n              var layer = document.createElement(\"div\");\n              layer.className = \"mir-layer\";\n              if (i < 3) layer.style.height = size / 3 + \"px\";\n              var t = document.createElement(\"div\"); t.className = \"mir-text\"; t.textContent = text;\n              layer.appendChild(t); box.appendChild(layer); layers.push(layer);\n            }\n            var move = size * (16 / 36);\n            var prop = dir === \"up\" || dir === \"down\" ? \"y\" : \"x\";\n            var sign = dir === \"up\" || dir === \"left\" ? -1 : 1;\n            gsap.registerPlugin(CustomEase);\n            var ease = CustomEase.create(\"mir-ease\", \"M0,0 C0.405,0 0.025,1 1,1\");\n            var tl = gsap.timeline({ paused: true });\n            var start = 0.5, out = 0.5 + 0.2 + hold;\n            layers.forEach(function (layer, i) {\n              var a = {}, b = {}; a[prop] = 0; b[prop] = sign * move;\n              var to = Object.assign({ duration: 0.5, ease: ease, immediateRender: false }, b);\n              var back = Object.assign({ duration: 0.5, ease: ease, immediateRender: false }, a);\n              tl.fromTo(layer, a, to, start + delays[i]);\n              tl.fromTo(layer, b, back, start + out + delays[i]);\n              tl.fromTo(layer, a, to, start + 2 * out + delays[i] + 0.8);\n              tl.fromTo(layer, b, back, start + 3 * out + delays[i] + 0.8);\n            });\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"mirror-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "4b0153eb91f7e4c815cb65d4ae796c09ebe35f40574d62dddbc2e974aaefb380",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 190
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "MIRROR"
+  },
+  {
+   "id": "direction",
+   "type": "enum",
+   "role": "motion",
+   "label": "Direction",
+   "default": "up"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 150,
+   "min": 12,
+   "max": 320
+  },
+  {
+   "id": "hold",
+   "type": "number",
+   "role": "motion",
+   "label": "Hold",
+   "default": 1.2,
+   "min": 0,
+   "max": 4
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "300"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://animata.design"
+}

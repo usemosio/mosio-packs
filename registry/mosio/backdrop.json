@@ -1,0 +1,88 @@
+{
+ "name": "backdrop",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/backdrop/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Backdrop\n\nFull-frame colour or gradient fill with a padded, rounded, shadowed content frame (the floating-card look). Frame holds a built-in placeholder.\n\nCategory: layout. Length: 5 s. WebGL: no.\n\nUse when:\n- You need a scene background: a coloured surround with a padded, rounded, shadowed inner frame.\n- You want the floating-card look for a screen recording or UI scene.\n\nAvoid when:\n- You want a raw full-bleed colour with no frame: set padding and radius to 0.\n- You are inside a transition that manages its own full-frame layout.\n\nVariables:\n- fill_type (enum): Fill type, default \"gradient\"\n- color (color): Color, default \"#6366f1\"\n- gradient (string): Gradient, default \"linear-gradient(135deg, #6366f1 0%, #a855f7 100%)\"\n- padding (number, 0-12): Padding, default 4\n- radius (number, 0-4): Radius, default 1\n- shadow (string): Shadow, default \"0 20px 60px rgba(0,0,0,0.4)\"\n- placeholder (boolean): Placeholder content, default true\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Backdrop\n\n  Full-frame colour or gradient fill with a padded, rounded, shadowed content frame (the floating-card look). Frame holds a built-in placeholder.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/backdrop/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"backdrop\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[{\"id\":\"fill_type\",\"type\":\"enum\",\"role\":\"style\",\"label\":\"Fill type\",\"description\":\"Kind of background.\",\"default\":\"gradient\",\"options\":[{\"value\":\"color\",\"label\":\"Color\"},{\"value\":\"gradient\",\"label\":\"Gradient\"}]},{\"id\":\"color\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Color\",\"description\":\"Background colour when the fill type is Color.\",\"default\":\"#6366f1\"},{\"id\":\"gradient\",\"type\":\"string\",\"role\":\"style\",\"label\":\"Gradient\",\"description\":\"CSS gradient when the fill type is Gradient.\",\"default\":\"linear-gradient(135deg, #6366f1 0%, #a855f7 100%)\"},{\"id\":\"padding\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Padding\",\"description\":\"Gap between frame and edge, as a percentage of the frame width.\",\"default\":4,\"min\":0,\"max\":12,\"step\":0.5,\"unit\":\"%\"},{\"id\":\"radius\",\"type\":\"number\",\"role\":\"style\",\"label\":\"Radius\",\"description\":\"Corner radius of the frame, as a percentage of the frame width.\",\"default\":1,\"min\":0,\"max\":4,\"step\":0.25,\"unit\":\"%\"},{\"id\":\"shadow\",\"type\":\"string\",\"role\":\"style\",\"label\":\"Shadow\",\"description\":\"CSS box-shadow of the frame. Empty for none.\",\"default\":\"0 20px 60px rgba(0,0,0,0.4)\"},{\"id\":\"placeholder\",\"type\":\"boolean\",\"role\":\"content\",\"label\":\"Placeholder content\",\"description\":\"Draw a placeholder window inside the frame. Turn off for an empty frame a host layers its own scene over.\",\"default\":true}]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Backdrop</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n\n        #root { font-family: Geist, system-ui, sans-serif; }\n        .bd-stage { position: absolute; inset: 0; }\n        #bd-fill { position: absolute; inset: 0; }\n        #bd-frame { position: absolute; overflow: hidden; display: flex; background: #fdfdfd; }\n        .bd-win { width: 100%; height: 100%; display: flex; flex-direction: column; }\n        .bd-bar { height: 7%; min-height: 28px; display: flex; align-items: center; gap: 8px; padding: 0 3%; background: #f1f1f4; border-bottom: 1px solid #e3e3e8; }\n        .bd-dot { width: 12px; height: 12px; border-radius: 50%; background: #d4d4da; }\n        .bd-body { flex: 1; padding: 6%; display: flex; flex-direction: column; gap: 3%; justify-content: center; }\n        .bd-h { font-size: min(7cqw, 5cqh); font-weight: 600; letter-spacing: -0.04em; color: #1c1c22; }\n        .bd-line { height: 3.2%; border-radius: 6px; background: #e6e6ec; }\n        .bd-block { height: 30%; border-radius: 16px; background: linear-gradient(135deg, #eceef9, #f4ecfa); border: 1px solid #e3e3ee; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"backdrop\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"bd-clip\" class=\"bd-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n<div id=\"bd-fill\"></div><div id=\"bd-frame\"><div id=\"bd-win\" class=\"bd-win\"><div class=\"bd-bar\"><span class=\"bd-dot\"></span><span class=\"bd-dot\"></span><span class=\"bd-dot\"></span></div><div class=\"bd-body\"><div class=\"bd-h\">Your content here</div><div class=\"bd-line\" style=\"width:80%\"></div><div class=\"bd-line\" style=\"width:62%\"></div><div class=\"bd-block\"></div></div></div></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n\n\n            var fillType = pick(vars.fill_type, [\"color\", \"gradient\"], \"gradient\");\n            var fill = document.getElementById(\"bd-fill\");\n            fill.style.background = fillType === \"color\" ? str(vars.color, \"#6366f1\") : str(vars.gradient, \"linear-gradient(135deg, #6366f1 0%, #a855f7 100%)\");\n            var W = root.clientWidth;\n            var pad = (num(vars.padding, 4, 0, 12) / 100) * W;\n            var rad = (num(vars.radius, 1, 0, 4) / 100) * W;\n            var frame = document.getElementById(\"bd-frame\");\n            frame.style.inset = pad + \"px\";\n            frame.style.borderRadius = rad + \"px\";\n            var shadow = typeof vars.shadow === \"string\" ? vars.shadow : \"0 20px 60px rgba(0,0,0,0.4)\";\n            frame.style.boxShadow = shadow;\n            if (!bool(vars.placeholder, true)) document.getElementById(\"bd-win\").style.display = \"none\";\n            if (!bool(vars.placeholder, true)) frame.style.background = \"transparent\";\n            var tl = gsap.timeline({ paused: true });\n            // A static layout block: nothing moves.\n\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"backdrop\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "2e8e885c450ed46a4139bdc38b66ffb7f092d6e6010a65565bdca7c0f3bebf5e",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#6366f1",
+ "demo_values": {
+  "padding": 8,
+  "radius": 2.5
+ },
+ "variables": [
+  {
+   "id": "fill_type",
+   "type": "enum",
+   "role": "style",
+   "label": "Fill type",
+   "default": "gradient"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#6366f1"
+  },
+  {
+   "id": "gradient",
+   "type": "string",
+   "role": "style",
+   "label": "Gradient",
+   "default": "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)"
+  },
+  {
+   "id": "padding",
+   "type": "number",
+   "role": "style",
+   "label": "Padding",
+   "default": 4,
+   "min": 0,
+   "max": 12
+  },
+  {
+   "id": "radius",
+   "type": "number",
+   "role": "style",
+   "label": "Radius",
+   "default": 1,
+   "min": 0,
+   "max": 4
+  },
+  {
+   "id": "shadow",
+   "type": "string",
+   "role": "style",
+   "label": "Shadow",
+   "default": "0 20px 60px rgba(0,0,0,0.4)"
+  },
+  {
+   "id": "placeholder",
+   "type": "boolean",
+   "role": "content",
+   "label": "Placeholder content",
+   "default": true
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

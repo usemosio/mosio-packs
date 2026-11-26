@@ -1,0 +1,99 @@
+{
+ "name": "cradle-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Kokonut UI",
+ "source": {
+  "repo": "https://github.com/kokonut-labs/kokonutui",
+  "path": "components/kokonutui/cradle-text.tsx",
+  "commit": "4d497b7b03f02ffd07225e638c0b9ace3f892dbb"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Cradle Text\n\nLetters hang from a rail like a Newton's cradle: the first is pulled out and released, the knock runs through the row and the last letter swings out.\n\nCategory: typography. Length: 6 s. WebGL: no.\n\nUse when:\n- A short word should behave like a desk toy: physical, playful, with a clear cause and effect.\n- A title needs a satisfying ball-and-string beat.\n\nAvoid when:\n- Long text: the cradle needs a single short line.\n- A calm, premium entrance: use per-character-rise.\n\nVariables:\n- text (string): Text, default \"Momentum\"\n- font_size (number, 24-260): Font size, default 120\n- color (color): Text color, default \"#18181b\"\n- rail_color (color): Rail color, default \"#a1a1aa\"\n- bounce (number, 0-1): Bounce, default 0.97\n- pull_angle (number, 0.1-1.1): Pull angle, default 0.62\n- release_at (number, 0-3): Pull at, default 0.4\n- font_weight (enum): Font weight, default \"600\"\n\nSource: https://github.com/kokonut-labs/kokonutui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Cradle Text\n\n  Every letter hangs from a rail on a thread, like the balls of a Newton's cradle: the first letter is pulled out and let go, and the knock passes along the row until the last letter flies out and back.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/kokonut-labs/kokonutui/blob/4d497b7b03f02ffd07225e638c0b9ace3f892dbb/components/kokonutui/cradle-text.tsx\n\n  MIT License\n\n  Copyright (c) 2025 kokonutUI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"cradle-text\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"One short line of letters hung from the rail.\", \"default\": \"Momentum\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 120, \"min\": 24, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Color of the letters.\", \"default\": \"#18181b\"},\n    {\"id\": \"rail_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Rail color\", \"description\": \"Color of the rail and the threads.\", \"default\": \"#a1a1aa\"},\n    {\"id\": \"bounce\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Bounce\", \"description\": \"How much speed a collision keeps, 0 to 1. Steel is about 0.95.\", \"default\": 0.97, \"min\": 0, \"max\": 1, \"step\": 0.01},\n    {\"id\": \"pull_angle\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Pull angle\", \"description\": \"How far the first letter is pulled out, in radians.\", \"default\": 0.62, \"min\": 0.1, \"max\": 1.1, \"step\": 0.01},\n    {\"id\": \"release_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Pull at\", \"description\": \"Second the first letter is pulled out.\", \"default\": 0.4, \"min\": 0, \"max\": 3, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Cradle Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700&amp;display=block\" />\n      <style>\n        #root { position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none; }\n        #root { font-family: var(--font-display, Geist, system-ui, sans-serif); }\n        .cr-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .cr-box { position: relative; padding: 1.5em 0.9em 0.45em; line-height: 1; letter-spacing: -0.02em; }\n        .cr-rail { position: absolute; left: 0; right: 0; top: 0.3em; height: 2px; background: var(--cr-rail, #a1a1aa); border-radius: 1px; }\n        .cr-letters { position: relative; display: block; white-space: pre; }\n        .cr-letter { position: relative; display: inline-block; transform-origin: 0 0; }\n        .cr-thread { position: absolute; width: 1.5px; background: var(--cr-rail, #a1a1aa); }\n        .cr-space { display: inline-block; width: 0.32em; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"cradle-text\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"cr-clip\" class=\"cr-stage clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\">\n          <div id=\"cr-box\" class=\"cr-box\" role=\"img\">\n            <span id=\"cr-rail\" class=\"cr-rail\"></span>\n            <span id=\"cr-letters\" class=\"cr-letters\" aria-hidden=\"true\"></span>\n          </div>\n        </div>\n\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, a, b) { var x = Number(v); return Number.isFinite(x) ? Math.min(b, Math.max(a, x)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n\n\n            var box = document.getElementById(\"cr-box\");\n            var rail = document.getElementById(\"cr-rail\");\n            var lettersEl = document.getElementById(\"cr-letters\");\n            var text = str(vars.text, \"Momentum\");\n            var size = num(vars.font_size, 120, 24, 260);\n            var restitution = num(vars.bounce, 0.97, 0, 1);\n            var pullTo = -num(vars.pull_angle, 0.62, 0.1, 1.1);\n            var pullAt = num(vars.release_at, 0.4, 0, 3);\n            var weight = [\"500\", \"600\", \"700\"].indexOf(String(vars.font_weight)) >= 0 ? String(vars.font_weight) : \"600\";\n            root.style.setProperty(\"--cr-rail\", col(vars.rail_color, \"#a1a1aa\"));\n            box.style.color = col(vars.color, \"#18181b\");\n            box.style.fontWeight = weight;\n            box.style.fontSize = size + \"px\";\n            box.setAttribute(\"aria-label\", text);\n\n            var spans = [];\n            Array.from(text).forEach(function (ch) {\n              if (ch === \" \") { var sp = document.createElement(\"span\"); sp.className = \"cr-space\"; lettersEl.appendChild(sp); return; }\n              var s = document.createElement(\"span\");\n              s.className = \"cr-letter\";\n              var th = document.createElement(\"span\");\n              th.className = \"cr-thread\";\n              s.appendChild(th);\n              s.appendChild(document.createTextNode(ch));\n              s.dataset.letter = ch;\n              lettersEl.appendChild(s);\n              spans.push(s);\n            });\n            var tail = document.createElement(\"span\"); // zero-size probe that sits on the baseline\n            tail.style.cssText = \"display:inline-block;width:0;height:0\";\n            lettersEl.appendChild(tail);\n            var maxW = root.clientWidth * 0.92;\n            if (box.offsetWidth > maxW) { size = Math.max(24, size * maxW / box.offsetWidth); box.style.fontSize = size + \"px\"; }\n\n            // Measure at unscaled px.\n            var bb = box.getBoundingClientRect();\n            var kk = box.offsetWidth / (bb.width || box.offsetWidth);\n            var ink = document.createElement(\"canvas\").getContext(\"2d\");\n            var cs = getComputedStyle(lettersEl);\n            ink.font = cs.fontWeight + \" \" + cs.fontSize + \" \" + cs.fontFamily;\n            var baseline = (tail.getBoundingClientRect().bottom - bb.top) * kk;\n            var em = parseFloat(cs.fontSize);\n            var railY = (rail.getBoundingClientRect().top - bb.top) * kk + 1;\n            var radius = Math.max(baseline - em * 0.35 - railY, 1);\n            var bobs = spans.map(function (el) {\n              var r = el.getBoundingClientRect();\n              var boxLeft = (r.left - bb.left) * kk, boxTop = (r.top - bb.top) * kk;\n              var m = ink.measureText(el.dataset.letter);\n              var left = boxLeft - m.actualBoundingBoxLeft, right = boxLeft + m.actualBoundingBoxRight;\n              var top = baseline - m.actualBoundingBoxAscent, center = (left + right) / 2;\n              var th = el.firstChild;\n              th.style.left = (center - boxLeft - 0.75) + \"px\";\n              th.style.top = (railY - boxTop) + \"px\";\n              th.style.height = Math.max(top - railY, 0) + \"px\";\n              return { el: el, left: left, right: right, center: center, boxLeft: boxLeft, boxTop: boxTop, gap: 0, phi: 0, omega: 0, held: false };\n            });\n            for (var i = 0; i + 1 < bobs.length; i++) bobs[i].gap = Math.max(bobs[i + 1].left - bobs[i].right, 0);\n\n            // Every letter is a pendulum of the same length. Letters that touch pass the knock along.\n            var SUB = 8, ITER = 3, PERIOD = 0.72, DRAG = 0.3, SETTLE_DRAG = 1.6, SETTLE_BELOW = 0.02;\n            var w0 = 2 * Math.PI / PERIOD;\n            function cl(x, a, b) { return Math.min(Math.max(x, a), b); }\n            function energy() { var e = 0; bobs.forEach(function (b) { e += Math.pow(b.omega / w0, 2) + 2 * (1 - Math.cos(b.phi)); }); return e; }\n            function bounceApart(a, b, wa, wb) {\n              var ca = Math.max(Math.cos(a.phi), 0.2), cb = Math.max(Math.cos(b.phi), 0.2);\n              var va = a.omega * radius * ca, vb = b.omega * radius * cb;\n              var closing = va - vb;\n              if (closing <= 0) return;\n              var impulse = (1 + restitution) * closing / (wa + wb);\n              a.omega = (va - wa * impulse) / (radius * ca);\n              b.omega = (vb + wb * impulse) / (radius * cb);\n            }\n            function collide(a, b) {\n              var xa = radius * Math.sin(a.phi), xb = radius * Math.sin(b.phi);\n              var depth = xa - xb - a.gap;\n              var wa = a.held ? 0 : 1, wb = b.held ? 0 : 1;\n              if (depth <= 0 || wa + wb === 0) return;\n              var share = depth / (wa + wb);\n              a.phi = Math.asin(cl((xa - wa * share) / radius, -1, 1));\n              b.phi = Math.asin(cl((xb + wb * share) / radius, -1, 1));\n              bounceApart(a, b, wa, wb);\n            }\n            function stepSim(dtt) {\n              var h = dtt / SUB, drag = energy() < SETTLE_BELOW ? SETTLE_DRAG : DRAG;\n              for (var s = 0; s < SUB; s++) {\n                bobs.forEach(function (b) { if (!b.held) { b.omega -= w0 * w0 * Math.sin(b.phi) * h; b.omega *= 1 - drag * h; b.phi += b.omega * h; } });\n                for (var it = 0; it < ITER; it++) {\n                  for (var j = 0; j + 1 < bobs.length; j++) collide(bobs[j], bobs[j + 1]);\n                  for (var j2 = bobs.length - 2; j2 >= 0; j2--) collide(bobs[j2], bobs[j2 + 1]);\n                }\n              }\n            }\n            // The simulation is run once up front at 60 steps a second, so seeking to a time just reads it back.\n            var dur = parseFloat(root.dataset.duration || \"6\");\n            var RATE = 60, N = Math.ceil(dur * RATE) + 2;\n            var PH = bobs.map(function () { return new Float32Array(N); });\n            var first = bobs[0], PULL = 0.52;\n            for (var s = 0; s < N; s++) {\n              var t = s / RATE;\n              if (first) {\n                var u = (t - pullAt) / PULL;\n                if (u >= 0 && u < 1.25) { first.held = true; first.phi = pullTo * (1 - Math.pow(1 - Math.min(u, 1), 4)); first.omega = 0; }\n                else if (first.held) { first.held = false; first.omega = 0; }\n              }\n              stepSim(1 / RATE);\n              if (energy() < 0.0004 && t > pullAt + 1) bobs.forEach(function (b) { b.phi = 0; b.omega = 0; });\n              for (var k = 0; k < bobs.length; k++) PH[k][s] = bobs[k].phi;\n            }\n            function draw(time) {\n              var f = Math.min(N - 2, Math.max(0, time * RATE)), i0 = Math.floor(f), u2 = f - i0;\n              for (var k = 0; k < bobs.length; k++) {\n                var b = bobs[k], phi = PH[k][i0] + (PH[k][i0 + 1] - PH[k][i0]) * u2;\n                if (Math.abs(phi) < 1e-5) { b.el.style.transform = \"\"; continue; }\n                var px = b.center - b.boxLeft, py = railY - b.boxTop;\n                // Swinging right turns the letter counter-clockwise about the rail.\n                b.el.style.transform = \"translate(\" + px.toFixed(2) + \"px,\" + py.toFixed(2) + \"px) rotate(\" + (-phi).toFixed(4) + \"rad) translate(\" + (-px).toFixed(2) + \"px,\" + (-py).toFixed(2) + \"px)\";\n              }\n            }\n            var tl = gsap.timeline({ paused: true });\n            var clock = { t: 0 };\n            tl.to(clock, { t: dur, duration: dur, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n\n            var total = parseFloat(root.dataset.duration || \"6\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"cradle-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "bb913f4141f6d114e97479f5aceba7ca03cf743ee446663b2899eabea39dcf8d",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#fafafa",
+ "demo_values": {
+  "text": "Momentum",
+  "font_size": 170
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Momentum"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 120,
+   "min": 24,
+   "max": 260
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#18181b"
+  },
+  {
+   "id": "rail_color",
+   "type": "color",
+   "role": "style",
+   "label": "Rail color",
+   "default": "#a1a1aa"
+  },
+  {
+   "id": "bounce",
+   "type": "number",
+   "role": "motion",
+   "label": "Bounce",
+   "default": 0.97,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "pull_angle",
+   "type": "number",
+   "role": "motion",
+   "label": "Pull angle",
+   "default": 0.62,
+   "min": 0.1,
+   "max": 1.1
+  },
+  {
+   "id": "release_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Pull at",
+   "default": 0.4,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  }
+ ],
+ "author_url": "https://kokonutui.com"
+}

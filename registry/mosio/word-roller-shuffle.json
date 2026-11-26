@@ -1,0 +1,94 @@
+{
+ "name": "word-roller-shuffle",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "lifeprompt-team",
+ "source": {
+  "repo": "https://github.com/lifeprompt-team/remotion-scenes",
+  "path": "src/scenes/RollerAnimations/RollerShuffle.tsx",
+  "commit": "02c7a84241da7010b5f59c420b0110aafd1d6f0d"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Word Roller Shuffle\n\nEvery letter of a word flickers through random capitals and digits, then locks into its true letter from left to right with a small pop in the accent colour, while a bar below fills as letters are confirmed.\n\nCategory: typography. Length: 3 s. WebGL: no.\n\nUse when:\n- A decoding or unlocking reveal of one word, name or code on a clean title.\n- A tech or security tone.\n\nAvoid when:\n- The reveal should be smooth rather than noisy: use per-character-rise.\n- Several words: use scramble-reveal or glyph-rain-decode.\n\nVariables:\n- word (string): Word, default \"REVEALED\"\n- prefix (string): Lead-in, default \"DECODING\"\n- font_size (number, 20-280): Font size, default 80\n- accent (color): Locked color, default \"#2563eb\"\n- idle_color (color): Shuffling color, default \"#d4d4d4\"\n- prefix_color (color): Lead-in color, default \"#737373\"\n- background (color): Background, default \"#fafafa\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/lifeprompt-team/remotion-scenes. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Word Roller Shuffle\n\n  Every letter of a word flickers through random capitals and digits, then locks into its true letter from left to right with a small pop in the accent colour, while a bar below fills as letters are confirmed.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/lifeprompt-team/remotion-scenes/blob/02c7a84241da7010b5f59c420b0110aafd1d6f0d/src/scenes/RollerAnimations/RollerShuffle.tsx\n\n  MIT License\n\n  Copyright (c) 2026 lifeprompt-team\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"word-roller-shuffle\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    {\"id\": \"word\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Word\", \"description\": \"The word that gets revealed.\", \"default\": \"REVEALED\"},\n    {\"id\": \"prefix\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Lead-in\", \"description\": \"Small caps line above the word.\", \"default\": \"DECODING\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Size of the letters in pixels. A wide word shrinks to fit the frame.\", \"default\": 80, \"min\": 20, \"max\": 280, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Locked color\", \"description\": \"Color and bar of the confirmed letters.\", \"default\": \"#2563eb\"},\n    {\"id\": \"idle_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Shuffling color\", \"description\": \"Color of the letters that are still shuffling.\", \"default\": \"#d4d4d4\"},\n    {\"id\": \"prefix_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Lead-in color\", \"description\": \"Color of the line above.\", \"default\": \"#737373\"},\n    {\"id\": \"background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Fill behind the text. Use transparent to lay the block over your own footage.\", \"default\": \"#fafafa\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Word Roller Shuffle</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100;300;400;500;600;700;800;900&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, -apple-system, sans-serif);\n          pointer-events: none;\n        }\n        .wsh-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n\n        .wsh-g { text-align: center; line-height: 1.2; }\n        .wsh-lead { font-size: 0.225em; font-weight: 500; letter-spacing: 0.22em; color: var(--pc, #737373); margin-bottom: 1.1em; white-space: pre; }\n        .wsh-row { display: flex; justify-content: center; }\n        .wsh-ch { width: 0.75em; text-align: center; font-weight: 800; white-space: pre; }\n        .wsh-track { width: 3.75em; height: 0.05em; background: #e5e5e5; margin: 0.375em auto 0; border-radius: 0.025em; overflow: hidden; }\n        .wsh-fill { height: 100%; background: var(--ac, #2563eb); }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"word-roller-shuffle\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"wsh-clip\" class=\"wsh-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <div id=\"wsh-g\" class=\"wsh-g\">\n            <div id=\"wsh-lead\" class=\"wsh-lead\"></div>\n            <div id=\"wsh-row\" class=\"wsh-row\"></div>\n            <div class=\"wsh-track\"><div id=\"wsh-fill\" class=\"wsh-fill\"></div></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function el(id) { return document.getElementById(id); }\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return value !== \"\" && value !== null && value !== undefined && Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function txt(value, fallback) {\n              return typeof value === \"string\" ? value : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function list(value, fallback, max) {\n              var a = (typeof value === \"string\" ? value : \"\").split(\",\").map(function (s) { return s.trim(); }).filter(Boolean);\n              if (!a.length) a = fallback.slice();\n              return a.slice(0, max || 12);\n            }\n            function bezier(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 32; i++) {\n                  var u = 1 - t;\n                  var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                var v = 1 - t;\n                return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n              };\n            }\n            var E = {\n              out: bezier(0.16, 1, 0.3, 1), \"in\": bezier(0.7, 0, 0.84, 0), inOut: bezier(0.87, 0, 0.13, 1),\n              overshoot: bezier(0.34, 1.56, 0.64, 1), smooth: bezier(0.4, 0, 0.2, 1),\n              quadIn: function (x) { return x * x; },\n              quadOut: function (x) { return 1 - (1 - x) * (1 - x); },\n              cubicOut: function (x) { return 1 - Math.pow(1 - x, 3); },\n              cubicInOut: function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }\n            };\n            function clamp01(p) { return Math.min(1, Math.max(0, p)); }\n            // the source framework interpolate with clamped ends, one input range and one output range.\n            function ip(x, a, b, from, to, ease) {\n              var p = b === a ? (x >= b ? 1 : 0) : clamp01((x - a) / (b - a));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n            // Damped spring from 0 towards 1 (mass, stiffness, damping), frame at 30 fps, in closed form.\n            function spring(frame, cfg) {\n              if (frame <= 0) return 0;\n              var t = frame / 30, m = cfg.mass || 1, k = cfg.stiffness === undefined ? 100 : cfg.stiffness, c = cfg.damping === undefined ? 10 : cfg.damping;\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              if (z < 1) {\n                var wd = w0 * Math.sqrt(1 - z * z);\n                return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t));\n              }\n              var q = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + q, r2 = -z * w0 - q;\n              return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n            }\n            // Seeded generator (mulberry32).\n            function rng(seed) {\n              var a = seed >>> 0;\n              return function () {\n                a = (a + 0x6d2b79f5) >>> 0;\n                var t = a;\n                t = Math.imul(t ^ (t >>> 15), t | 1);\n                t ^= t + Math.imul(t ^ (t >>> 7), t | 61);\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            function onFonts(fn) {\n              if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn, function () {});\n            }\n            // Sets the group's font size, then shrinks it so the group (or its probe) fits the frame.\n            function fitG(g, size, probe, wf, hf, wmul) {\n              g.style.fontSize = size + \"px\";\n              var p = probe || g;\n              var w = Math.max(1, p.offsetWidth * (wmul || 1)), h = Math.max(1, p.offsetHeight);\n              var k = Math.min(1, root.clientWidth * (wf || 0.9) / w, root.clientHeight * (hf || 0.9) / h);\n              if (k < 1) { size = Math.max(6, size * k); g.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            function fillSizer(sizer, words) {\n              sizer.textContent = \"\";\n              words.forEach(function (w) {\n                var s = document.createElement(\"span\");\n                s.textContent = w;\n                sizer.appendChild(s);\n              });\n            }\n            function setText(node, value) {\n              if (node.__t !== value) { node.__t = value; node.textContent = value; }\n            }\n            var speed = num(vars.speed, 1, 0.25, 4);\n            var TOTAL = parseFloat(root.dataset.duration || \"3\");\n            var clock = { frame: 0 };\n            function start(draw) {\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { frame: Math.round(TOTAL * 30), duration: TOTAL, ease: \"none\", onUpdate: function () { draw(Math.round(clock.frame * speed * 1000) / 1000); } }, 0);\n              draw(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"word-roller-shuffle\"] = tl;\n            }\n\n            root.style.background = str(vars.background, \"#fafafa\");\n            \n            var word = str(vars.word, \"REVEALED\");\n            var chars = Array.from(word);\n            var g = el(\"wsh-g\"), lead = el(\"wsh-lead\"), row = el(\"wsh-row\"), fill = el(\"wsh-fill\");\n            var accent = str(vars.accent, \"#2563eb\"), idle = str(vars.idle_color, \"#d4d4d4\");\n            root.style.setProperty(\"--ac\", accent);\n            if (typeof vars.prefix_color === \"string\" && vars.prefix_color) root.style.setProperty(\"--pc\", vars.prefix_color);\n            lead.textContent = txt(vars.prefix, \"DECODING\");\n            lead.style.display = lead.textContent ? \"\" : \"none\";\n            var cells = chars.map(function (c) {\n              var d = document.createElement(\"div\");\n              d.className = \"wsh-ch\";\n              d.textContent = c;\n              row.appendChild(d);\n              return d;\n            });\n            var base = num(vars.font_size, 80, 20, 280);\n            function fit() { fitG(g, base, null, 0.88, 0.8); }\n            fit();\n            onFonts(fit);\n\n            var POOL = \"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\";\n            function pr(seed) { var x = Math.sin(seed * 12.9898) * 43758.5453; return x - Math.floor(x); }\n            // remocn-scenes: letters lock at 1.5 x (letters / 60 frames) per frame; shuffling letters pick\n            // a pseudo-random character every frame and wobble by 3 px at 80 px type.\n            function draw(f) {\n              var t = Math.floor(f), cpf = chars.length / 60;\n              var confirmed = Math.min(Math.floor(t * cpf * 1.5), chars.length);\n              cells.forEach(function (d, pos) {\n                var ok = pos < confirmed;\n                var shown = chars[pos];\n                if (!ok) shown = POOL[Math.floor(pr(t * 0.5 + pos * 100) * POOL.length)];\n                var cf = pos / cpf / 1.5;\n                var cp = ok ? spring(Math.max(0, t - cf), { damping: 12, stiffness: 300 }) : 0;\n                setText(d, shown);\n                d.style.color = ok ? accent : idle;\n                d.style.transform = \"scale(\" + (1 + cp * 0.2) + \") translateY(\" + ((ok ? 0 : Math.sin(t * 0.3 + pos) * 3) / 80) + \"em)\";\n              });\n              lead.style.opacity = ip(t, 0, 15, 0, 1);\n              fill.style.width = (confirmed / chars.length * 100) + \"%\";\n            }\n            start(draw);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "f94e170a7974f072b37d12cc924d907017118ff61d12ac5547cc90c0562aa31f",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#fafafa",
+ "demo_values": {
+  "font_size": 120
+ },
+ "variables": [
+  {
+   "id": "word",
+   "type": "string",
+   "role": "content",
+   "label": "Word",
+   "default": "REVEALED"
+  },
+  {
+   "id": "prefix",
+   "type": "string",
+   "role": "content",
+   "label": "Lead-in",
+   "default": "DECODING"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 80,
+   "min": 20,
+   "max": 280
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Locked color",
+   "default": "#2563eb"
+  },
+  {
+   "id": "idle_color",
+   "type": "color",
+   "role": "style",
+   "label": "Shuffling color",
+   "default": "#d4d4d4"
+  },
+  {
+   "id": "prefix_color",
+   "type": "color",
+   "role": "style",
+   "label": "Lead-in color",
+   "default": "#737373"
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#fafafa"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/lifeprompt-team/remotion-scenes"
+}

@@ -1,0 +1,116 @@
+{
+ "name": "phyllotaxis",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/phyllotaxis/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Phyllotaxis\n\nSeeds spiral out at the golden angle into a sunflower head, then one Fibonacci arm turns accent and pulses outward while the head slowly turns.\n\nCategory: motion-graphics. Length: 5.5 s. WebGL: no.\n\nUse when:\n- An opener or section break should grow something natural and precise in about two seconds, then keep a gentle idle motion.\n- A story about growth, nature, design systems or the golden ratio needs a literal, recognisable pattern.\n- One element of many needs to be singled out, with the accent arm drawing the eye along a spiral path.\n\nAvoid when:\n- The figure should be built from straight threads and morph between shapes: use string-art.\n- The moment calls for a one-shot burst that clears the frame.\n- The scene needs a texture with no focal point: use flow-field.\n\nVariables:\n- count (number, 50-1200): Seeds, default 420\n- size (number, 0.3-2): Seed size, default 1\n- arm (number, 1-89): Arm spacing, default 21\n- grow_frames (number, 15-150): Grow frames, default 60\n- pulse_frames (number, 15-120): Pulse frames, default 45\n- rotation (number, -30-30): Rotation, default 4\n- speed (number, 0.1-4): Speed, default 1\n- background (color): Background, default \"#111111\"\n- color (color): Seeds, default \"#FFFFFF\"\n- accent (color): Arm, default \"#E5322D\"\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Phyllotaxis\n\n  Seeds spiral out at the golden angle into a sunflower head, then one Fibonacci arm turns accent and pulses outward while the head slowly turns.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/phyllotaxis/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"phyllotaxis\"\n  data-composition-duration=\"5.5\"\n  data-composition-variables='[\n    {\"id\": \"count\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Seeds\", \"description\": \"Number of seeds.\", \"default\": 420, \"min\": 50, \"max\": 1200, \"step\": 10},\n    {\"id\": \"size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Seed size\", \"description\": \"Seed size multiplier.\", \"default\": 1, \"min\": 0.3, \"max\": 2, \"step\": 0.05},\n    {\"id\": \"arm\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Arm spacing\", \"description\": \"Every n-th seed forms one arm; a Fibonacci number reads best.\", \"default\": 21, \"min\": 1, \"max\": 89, \"step\": 1},\n    {\"id\": \"grow_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Grow frames\", \"description\": \"Frames for all seeds to spiral out.\", \"default\": 60, \"min\": 15, \"max\": 150, \"step\": 5, \"unit\": \"frames\"},\n    {\"id\": \"pulse_frames\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Pulse frames\", \"description\": \"Frames per pulse along the accent arm once grown.\", \"default\": 45, \"min\": 15, \"max\": 120, \"step\": 5, \"unit\": \"frames\"},\n    {\"id\": \"rotation\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Rotation\", \"description\": \"Slow rotation of the head in degrees per second; 0 holds still.\", \"default\": 4, \"min\": -30, \"max\": 30, \"step\": 1, \"unit\": \"deg/s\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed.\", \"default\": 1, \"min\": 0.1, \"max\": 4, \"step\": 0.1},\n    {\"id\": \"background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Background color.\", \"default\": \"#111111\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Seeds\", \"description\": \"Seed color.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Arm\", \"description\": \"Accent arm color.\", \"default\": \"#E5322D\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Phyllotaxis</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { background: #111111; }\n        .ph-stage { position: absolute; inset: 0; }\n        .ph-stage svg { display: block; width: 100%; height: 100%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"phyllotaxis\" data-duration=\"5.5\" data-fps=\"30\">\n        <div id=\"ph-clip\" class=\"ph-stage clip\" data-start=\"0\" data-duration=\"5.5\" data-track-index=\"0\">\n          <svg id=\"ph-svg\" role=\"img\" aria-label=\"Phyllotaxis spiral\">\n            <path id=\"ph-plain\" />\n            <path id=\"ph-spine\" fill=\"none\" />\n            <path id=\"ph-red-base\" />\n            <path id=\"ph-red\" />\n          </svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            var FPS = 30;\n            var W = root.clientWidth || 1080;\n            var H = root.clientHeight || 1920;\n\n            // Piecewise-linear map of x from inR to outR, optionally eased per segment and clamped.\n            function interp(x, inR, outR, o) {\n              o = o || {};\n              var n = inR.length;\n              var i = 0;\n              if (x >= inR[n - 1]) i = n - 2;\n              else if (x > inR[0]) { while (x > inR[i + 1]) i++; }\n              var t = (x - inR[i]) / (inR[i + 1] - inR[i]);\n              if (o.clamp !== false) t = Math.min(1, Math.max(0, t));\n              if (o.easing) t = o.easing(t);\n              return outR[i] + (outR[i + 1] - outR[i]) * t;\n            }\n            function clamp01(t) { return Math.min(1, Math.max(0, t)); }\n\n            // Easings with the usual names; every one maps 0..1 to 0..1.\n            var E = {\n              linear: function (t) { return t; },\n              quad: function (t) { return t * t; },\n              cubic: function (t) { return t * t * t; },\n              sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); },\n              back: function (s) { return function (t) { return t * t * ((s + 1) * t - s); }; },\n              out: function (f) { return function (t) { return 1 - f(1 - t); }; },\n              inOut: function (f) { return function (t) { return t < 0.5 ? f(t * 2) / 2 : 1 - f((1 - t) * 2) / 2; }; },\n              bezier: function (x1, y1, x2, y2) {\n                return function (x) {\n                  if (x <= 0) return 0;\n                  if (x >= 1) return 1;\n                  var lo = 0, hi = 1, t = x;\n                  for (var k = 0; k < 24; k++) {\n                    var mt = 1 - t;\n                    var bx = 3 * mt * mt * t * x1 + 3 * mt * t * t * x2 + t * t * t;\n                    if (bx < x) lo = t; else hi = t;\n                    t = (lo + hi) / 2;\n                  }\n                  var m = 1 - t;\n                  return 3 * m * m * t * y1 + 3 * m * t * t * y2 + t * t * t;\n                };\n              }\n            };\n\n            function fmt(n) { return Math.round(n * 10) / 10; }\n\n            function dot(x, y, r) {\n              return \"M \" + fmt(x - r) + \" \" + fmt(y) + \" a \" + fmt(r) + \" \" + fmt(r) + \" 0 1 0 \" + fmt(r * 2) + \" 0 a \" + fmt(r) + \" \" + fmt(r) + \" 0 1 0 \" + fmt(-r * 2) + \" 0 \";\n            }\n\n            var SVGNS = \"http://www.w3.org/2000/svg\";\n            function el(tag, attrs, parent) {\n              var e = document.createElementNS(SVGNS, tag);\n              for (var k in attrs) e.setAttribute(k, attrs[k]);\n              if (parent) parent.appendChild(e);\n              return e;\n            }\n\n            var tl = gsap.timeline({ paused: true });\n            // Runs draw(frame) from the timeline so seeking to a time always draws the same picture.\n            function drive(frames, draw) {\n              var clock = { frame: 0 };\n              tl.to(clock, { frame: frames, duration: frames / FPS, ease: \"none\", onUpdate: function () { draw(clock.frame); } }, 0);\n              draw(0);\n            }\n\n            var n = Math.round(num(vars.count, 420, 50, 1200));\n            var size = num(vars.size, 1, 0.3, 2);\n            var step = Math.max(1, Math.round(num(vars.arm, 21, 1, 89)));\n            var growFrames = num(vars.grow_frames, 60, 15, 150);\n            var pulseFrames = num(vars.pulse_frames, 45, 15, 120);\n            var rotation = num(vars.rotation, 4, -30, 30);\n            var speed = num(vars.speed, 1, 0.1, 4);\n            root.style.background = str(vars.background, \"#111111\");\n            var color = str(vars.color, \"#FFFFFF\");\n            var accent = str(vars.accent, \"#E5322D\");\n\n            var GOLDEN = (137.508 * Math.PI) / 180, POP = 10;\n            var pop = E.out(E.back(2.2)), outCubic = E.out(E.cubic);\n            var cx = W / 2, cy = H / 2, maxR = Math.min(W, H) * 0.44, c = maxR / Math.sqrt(n);\n            var svg = document.getElementById(\"ph-svg\");\n            svg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n            var pPlain = document.getElementById(\"ph-plain\"), pSpine = document.getElementById(\"ph-spine\");\n            var pRedBase = document.getElementById(\"ph-red-base\"), pRed = document.getElementById(\"ph-red\");\n            pPlain.setAttribute(\"fill\", color); pRedBase.setAttribute(\"fill\", color); pRed.setAttribute(\"fill\", accent);\n            pSpine.setAttribute(\"stroke\", accent); pSpine.setAttribute(\"stroke-width\", Math.min(W, H) / 720);\n\n            function draw(frame) {\n              var time = frame * speed;\n              var spin = (rotation * Math.PI * time) / 180 / FPS;\n              var armIn = interp(time, [growFrames, growFrames + 14], [0, 1], { easing: outCubic });\n              var since = time - growFrames - 10;\n              var pulse = since > 0 ? (since / Math.max(1, pulseFrames)) % 1 : -1;\n              var plain = \"\", red = \"\", spine = \"\";\n              for (var i = 1; i <= n; i++) {\n                // Seeds appear in order with a little overshoot.\n                var at = growFrames * Math.sqrt(i / n);\n                var s = pop(clamp01((time - at) / POP));\n                if (s <= 0) continue;\n                var radius = c * Math.sqrt(i), theta = i * GOLDEN + spin;\n                var x = cx + Math.cos(theta) * radius, y = cy + Math.sin(theta) * radius;\n                var base = c * 0.42 * size * (0.55 + 0.45 * Math.sqrt(i / n));\n                var onArm = i % step === 0 && armIn > 0;\n                if (!onArm) { plain += dot(x, y, base * s); continue; }\n                // The pulse travels outward along the arm as a soft gaussian bump.\n                var u = Math.sqrt(i / n);\n                var bump = pulse >= 0 ? Math.exp(-Math.pow((u - pulse * 1.4 + 0.2) / 0.09, 2)) : 0;\n                red += dot(x, y, base * s * (1 + 0.25 * armIn + bump * 0.9));\n                spine += (spine ? \"L\" : \"M\") + \" \" + fmt(x) + \" \" + fmt(y) + \" \";\n              }\n              pPlain.setAttribute(\"d\", plain);\n              pSpine.setAttribute(\"d\", spine); pSpine.setAttribute(\"stroke-opacity\", 0.35 * armIn);\n              pRedBase.setAttribute(\"d\", red); pRedBase.setAttribute(\"fill-opacity\", 1 - armIn);\n              pRed.setAttribute(\"d\", red); pRed.setAttribute(\"fill-opacity\", armIn);\n            }\n            drive(Math.round(parseFloat(root.dataset.duration || \"5.5\") * FPS), draw);\n\n            var total = parseFloat(root.dataset.duration || \"5.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"phyllotaxis\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "a2665194bfe5b342aa5c0f7a8a1068b3d761ed68677e237e00fbad4d62fc5120",
+ "duration": 5.5,
+ "webgl": false,
+ "demo_background": "#111111",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "count",
+   "type": "number",
+   "role": "style",
+   "label": "Seeds",
+   "default": 420,
+   "min": 50,
+   "max": 1200
+  },
+  {
+   "id": "size",
+   "type": "number",
+   "role": "style",
+   "label": "Seed size",
+   "default": 1,
+   "min": 0.3,
+   "max": 2
+  },
+  {
+   "id": "arm",
+   "type": "number",
+   "role": "style",
+   "label": "Arm spacing",
+   "default": 21,
+   "min": 1,
+   "max": 89
+  },
+  {
+   "id": "grow_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Grow frames",
+   "default": 60,
+   "min": 15,
+   "max": 150
+  },
+  {
+   "id": "pulse_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Pulse frames",
+   "default": 45,
+   "min": 15,
+   "max": 120
+  },
+  {
+   "id": "rotation",
+   "type": "number",
+   "role": "motion",
+   "label": "Rotation",
+   "default": 4,
+   "min": -30,
+   "max": 30
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.1,
+   "max": 4
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#111111"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Seeds",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Arm",
+   "default": "#E5322D"
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

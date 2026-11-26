@@ -1,0 +1,103 @@
+{
+ "name": "terminal-simulator",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/terminal-simulator/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Terminal Simulator\n\nA console window that types out commands line by line, shows logs, success and error lines, and snaps older lines off the top as the buffer fills.\n\nCategory: ui-blocks. Length: 10 s. WebGL: no.\n\nUse when:\n- Demoing a CLI tool install sequence (package install, scaffold, build output).\n- Showing an AI agent or script executing a multi-step task in a terminal session.\n- A developer tool launch video needs the authentic feel of commands running and output streaming.\n\nAvoid when:\n- You only need to type a single short string: use typewriter, which is lighter and pairs with any layout.\n- The code should be shown as a formatted, highlighted editor window: use glass-code-block.\n\nVariables:\n- lines (string): Lines, default \"[{\\\"text\\\":\\\"npm run build\\\",\\\"type\\\":\\\"command\\\",\\\"delay\\\":0},{\\\"text\\\":\\\"Resolving dependencies...\\\",\\\"type\\\":\\\"log\\\",\\\"delay\\\":6},{\\\"text\\\":\\\"> my-app@1.0.0 build\\\",\\\"type\\\":\\\"log\\\",\\\"delay\\\":4},{\\\"text\\\":\\\"> next build\\\",\\\"type\\\":\\\"log\\\",\\\"delay\\\":4},{\\\"text\\\":\\\"Compiling...\\\",\\\"type\\\":\\\"log\\\",\\\"delay\\\":12},{\\\"text\\\":\\\"Compiled successfully in 4.2s\\\",\\\"type\\\":\\\"success\\\",\\\"delay\\\":14},{\\\"text\\\":\\\"Generating static pages (24/24)\\\",\\\"type\\\":\\\"log\\\",\\\"delay\\\":10},{\\\"text\\\":\\\"Build completed without errors\\\",\\\"type\\\":\\\"success\\\",\\\"delay\\\":12}]\"\n- prompt (string): Prompt, default \"$\"\n- title (string): Title, default \"~/projects/my-app\"\n- background (color): Background, default \"#0a0a0a\"\n- chrome_color (color): Chrome color, default \"#1a1a1a\"\n- font_size (number, 10-32): Font size, default 18\n- chars_per_frame (number, 0.25-6): Characters per frame, default 1\n- chunk_size (number, 1-20): Chunk size, default 1\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Terminal Simulator\n\n  A console window that types out commands and rolls older lines off the top.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/terminal-simulator/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"terminal-simulator\"\n  data-composition-duration=\"10\"\n  data-composition-variables='[\n    {\"id\": \"lines\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Lines\", \"description\": \"JSON array of lines: [{\\\"text\\\", \\\"type\\\": \\\"command\\\" | \\\"log\\\" | \\\"success\\\" | \\\"error\\\", \\\"delay\\\": frames before the line starts (default 8), \\\"pause\\\": extra frames to hold after it (lines ending in ... hold 18)}].\", \"default\": \"[{\\\"text\\\":\\\"npm run build\\\",\\\"type\\\":\\\"command\\\",\\\"delay\\\":0},{\\\"text\\\":\\\"Resolving dependencies...\\\",\\\"type\\\":\\\"log\\\",\\\"delay\\\":6},{\\\"text\\\":\\\"> my-app@1.0.0 build\\\",\\\"type\\\":\\\"log\\\",\\\"delay\\\":4},{\\\"text\\\":\\\"> next build\\\",\\\"type\\\":\\\"log\\\",\\\"delay\\\":4},{\\\"text\\\":\\\"Compiling...\\\",\\\"type\\\":\\\"log\\\",\\\"delay\\\":12},{\\\"text\\\":\\\"Compiled successfully in 4.2s\\\",\\\"type\\\":\\\"success\\\",\\\"delay\\\":14},{\\\"text\\\":\\\"Generating static pages (24/24)\\\",\\\"type\\\":\\\"log\\\",\\\"delay\\\":10},{\\\"text\\\":\\\"Build completed without errors\\\",\\\"type\\\":\\\"success\\\",\\\"delay\\\":12}]\"},\n    {\"id\": \"prompt\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Prompt\", \"description\": \"Prompt character before commands.\", \"default\": \"$\"},\n    {\"id\": \"title\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Title\", \"description\": \"Window title in the title bar.\", \"default\": \"~/projects/my-app\"},\n    {\"id\": \"background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Terminal background.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"chrome_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Chrome color\", \"description\": \"Title bar background.\", \"default\": \"#1a1a1a\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Terminal text size in design pixels (the window scales to fit the frame).\", \"default\": 18, \"min\": 10, \"max\": 32, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"chars_per_frame\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Characters per frame\", \"description\": \"Typing speed.\", \"default\": 1, \"min\": 0.25, \"max\": 6, \"step\": 0.25},\n    {\"id\": \"chunk_size\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Chunk size\", \"description\": \"Characters revealed per step.\", \"default\": 1, \"min\": 1, \"max\": 20, \"step\": 1},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Terminal Simulator</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n          \n          font-family: var(--font-display, Geist, -apple-system, BlinkMacSystemFont, sans-serif);\n        }\n        .tsm-stage { position: absolute; inset: 0; }\n        .tsm-win { position: absolute; left: 50%; top: 50%; width: 900px; height: 480px; margin: -240px 0 0 -450px; transform-origin: 50% 50%;\n          border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;\n          box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);\n          font-family: \"Geist Mono\", ui-monospace, SFMono-Regular, monospace; }\n        .tsm-chrome { height: 40px; flex: none; display: flex; align-items: center; padding: 0 16px; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }\n        .tsm-light { width: 12px; height: 12px; border-radius: 50%; opacity: 0.85; }\n        .tsm-title { flex: 1; text-align: center; color: #71717a; font-size: 13px; }\n        .tsm-body { flex: 1; padding: 20px; overflow: hidden; position: relative; }\n        .tsm-buffer { position: absolute; left: 20px; right: 20px; top: 20px; }\n        .tsm-row { display: flex; align-items: center; white-space: pre; }\n        .tsm-prompt { color: #22c55e; margin-right: 8px; }\n        .tsm-block { display: inline-block; margin-left: 2px; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"terminal-simulator\" data-duration=\"10\" data-fps=\"30\">\n        <div id=\"tsm-clip\" class=\"tsm-stage clip\" data-start=\"0\" data-duration=\"10\" data-track-index=\"0\">\n          <div id=\"tsm-win\" class=\"tsm-win\">\n            <div id=\"tsm-chrome\" class=\"tsm-chrome\">\n              <div class=\"tsm-light\" style=\"background: #ff5f57\"></div>\n              <div class=\"tsm-light\" style=\"background: #febc2e\"></div>\n              <div class=\"tsm-light\" style=\"background: #28c840\"></div>\n              <div id=\"tsm-title\" class=\"tsm-title\"></div>\n            </div>\n            <div class=\"tsm-body\"><div id=\"tsm-buffer\" class=\"tsm-buffer\"></div></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            // Easing.bezier(x1, y1, x2, y2) as a function of t (Newton, then bisection).\n            function bez(x1, y1, x2, y2) {\n              function cx(s) { return 3 * x1 * s * (1 - s) * (1 - s) + 3 * x2 * s * s * (1 - s) + s * s * s; }\n              function cy(s) { return 3 * y1 * s * (1 - s) * (1 - s) + 3 * y2 * s * s * (1 - s) + s * s * s; }\n              return function (t) {\n                if (t <= 0) return 0;\n                if (t >= 1) return 1;\n                var lo = 0, hi = 1, s = t;\n                for (var i = 0; i < 40; i++) {\n                  var x = cx(s);\n                  if (Math.abs(x - t) < 1e-6) break;\n                  if (x < t) lo = s; else hi = s;\n                  s = (lo + hi) / 2;\n                }\n                return cy(s);\n              };\n            }\n            // interpolate(f, [a, b], [from, to]) with both ends clamped, like the source framework's extrapolate \"clamp\".\n            function interp(f, a, b, from, to, ease) {\n              var t = b === a ? 1 : Math.min(1, Math.max(0, (f - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(t) : t);\n            }\n            // Fit one line to 90 % of the frame width: shrinks the font size when it overflows.\n            function fit(root, line, size) {\n              line.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * 0.9);\n              if (line.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / line.scrollWidth));\n                line.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            // Drives draw(frame) from the paused timeline: frame = time * 30 * speed (the source framework's useCurrentFrame() * speed).\n            function drive(tl, total, speed, draw) {\n              var clock = { t: 0 };\n              tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t * 30 * speed); } }, 0);\n              draw(0);\n            }\n\n            var total = parseFloat(root.dataset.duration || \"10\");\n            var DEFAULT_LINES = [\n              { text: \"npm run build\", type: \"command\", delay: 0 },\n              { text: \"Resolving dependencies...\", type: \"log\", delay: 6 },\n              { text: \"> my-app@1.0.0 build\", type: \"log\", delay: 4 },\n              { text: \"> next build\", type: \"log\", delay: 4 },\n              { text: \"Compiling...\", type: \"log\", delay: 12 },\n              { text: \"Compiled successfully in 4.2s\", type: \"success\", delay: 14 },\n              { text: \"Generating static pages (24/24)\", type: \"log\", delay: 10 },\n              { text: \"Build completed without errors\", type: \"success\", delay: 12 }\n            ];\n            var TYPE_COLORS = { command: \"#fafafa\", log: \"#a1a1aa\", success: \"#22c55e\", error: \"#ef4444\" };\n            var lines = DEFAULT_LINES;\n            try {\n              var parsed = typeof vars.lines === \"string\" ? JSON.parse(vars.lines) : vars.lines;\n              if (Array.isArray(parsed) && parsed.length) {\n                lines = parsed.filter(function (l) { return l && typeof l.text === \"string\"; }).map(function (l) {\n                  return { text: l.text, type: TYPE_COLORS[l.type] ? l.type : \"log\", delay: l.delay, pause: l.pause };\n                });\n                if (!lines.length) lines = DEFAULT_LINES;\n              }\n            } catch (e) { lines = DEFAULT_LINES; }\n            var prompt = str(vars.prompt, \"$\");\n            var fontSize = num(vars.font_size, 18, 10, 32);\n            var charsPerFrame = num(vars.chars_per_frame, 1, 0.25, 6);\n            var chunkSize = Math.round(num(vars.chunk_size, 1, 1, 20));\n            var speed = num(vars.speed, 1, 0.25, 4);\n            var win = document.getElementById(\"tsm-win\");\n            var buffer = document.getElementById(\"tsm-buffer\");\n            win.style.background = str(vars.background, \"#0a0a0a\");\n            document.getElementById(\"tsm-chrome\").style.background = str(vars.chrome_color, \"#1a1a1a\");\n            document.getElementById(\"tsm-title\").textContent = str(vars.title, \"~/projects/my-app\");\n            // The design-size window (900 x 480) scales to fit 90 % of the frame.\n            var k = Math.min(4, 0.9 * Math.min(root.clientWidth / 900, root.clientHeight / 480));\n            win.style.transform = \"scale(\" + k + \")\";\n\n            var lineHeight = Math.round(fontSize * 1.6);\n            var visibleLines = 8;\n            function autoPause(l) {\n              if (l.pause !== undefined && l.pause !== null) return Number(l.pause) || 0;\n              return l.text.replace(/\\s+$/, \"\").slice(-3) === \"...\" ? 18 : 0;\n            }\n            // Start frame of each line: 10 frames of lead-in, then each line's delay, its typing time and its pause.\n            var starts = [], acc = 10;\n            lines.forEach(function (l) {\n              acc += l.delay === undefined || l.delay === null ? 8 : Number(l.delay) || 0;\n              starts.push(acc);\n              acc += Math.ceil(l.text.length / (chunkSize * charsPerFrame)) + autoPause(l);\n            });\n\n            var rows = lines.map(function (l, i) {\n              var row = document.createElement(\"div\");\n              row.id = \"tsm-row-\" + i;\n              row.className = \"tsm-row\";\n              row.style.height = lineHeight + \"px\";\n              row.style.fontSize = fontSize + \"px\";\n              row.style.color = TYPE_COLORS[l.type];\n              row.style.visibility = \"hidden\";\n              var p = null;\n              if (l.type === \"command\") {\n                p = document.createElement(\"span\");\n                p.className = \"tsm-prompt\";\n                p.textContent = prompt;\n                row.appendChild(p);\n              }\n              var t = document.createElement(\"span\");\n              row.appendChild(t);\n              var block = document.createElement(\"span\");\n              block.className = \"tsm-block\";\n              block.style.width = fontSize * 0.55 + \"px\";\n              block.style.height = fontSize + \"px\";\n              block.style.background = TYPE_COLORS[l.type];\n              row.appendChild(block);\n              buffer.appendChild(row);\n              return { row: row, text: t, block: block, line: l };\n            });\n\n            // `frame` is remocn's useCurrentFrame() * speed. A row is mounted by a Sequence at\n            // round(start / speed) and counts its own frames from there, also times speed.\n            function draw(frame) {\n              var raw = frame / speed;\n              var ty = 0;\n              for (var i = visibleLines; i < lines.length; i++) if (frame >= starts[i]) ty -= lineHeight;\n              buffer.style.transform = \"translateY(\" + ty + \"px)\";\n              rows.forEach(function (r, i) {\n                var from = Math.round(starts[i] / speed);\n                if (raw < from) { r.row.style.visibility = \"hidden\"; return; }\n                r.row.style.visibility = \"visible\";\n                var local = (raw - from) * speed;\n                var n = r.line.text.length;\n                var linear = Math.floor(interp(local, 0, n / charsPerFrame, 0, n));\n                var revealed = Math.min(n, Math.ceil(linear / chunkSize) * chunkSize);\n                r.text.textContent = r.line.text.substring(0, revealed);\n                var done = revealed >= n;\n                r.block.style.display = !done && Math.floor((local / 30) * 2) % 2 === 0 ? \"inline-block\" : \"none\";\n              });\n            }\n            var tl = gsap.timeline({ paused: true });\n            drive(tl, total, speed, draw);\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"terminal-simulator\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "205330dc7556b16fa4ead664168bc06920fa021698e8f343700066181cd3c5c0",
+ "duration": 10,
+ "webgl": false,
+ "demo_background": "#050505",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "lines",
+   "type": "string",
+   "role": "content",
+   "label": "Lines",
+   "default": "[{\"text\":\"npm run build\",\"type\":\"command\",\"delay\":0},{\"text\":\"Resolving dependencies...\",\"type\":\"log\",\"delay\":6},{\"text\":\"> my-app@1.0.0 build\",\"type\":\"log\",\"delay\":4},{\"text\":\"> next build\",\"type\":\"log\",\"delay\":4},{\"text\":\"Compiling...\",\"type\":\"log\",\"delay\":12},{\"text\":\"Compiled successfully in 4.2s\",\"type\":\"success\",\"delay\":14},{\"text\":\"Generating static pages (24/24)\",\"type\":\"log\",\"delay\":10},{\"text\":\"Build completed without errors\",\"type\":\"success\",\"delay\":12}]"
+  },
+  {
+   "id": "prompt",
+   "type": "string",
+   "role": "content",
+   "label": "Prompt",
+   "default": "$"
+  },
+  {
+   "id": "title",
+   "type": "string",
+   "role": "content",
+   "label": "Title",
+   "default": "~/projects/my-app"
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "chrome_color",
+   "type": "color",
+   "role": "style",
+   "label": "Chrome color",
+   "default": "#1a1a1a"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 18,
+   "min": 10,
+   "max": 32
+  },
+  {
+   "id": "chars_per_frame",
+   "type": "number",
+   "role": "motion",
+   "label": "Characters per frame",
+   "default": 1,
+   "min": 0.25,
+   "max": 6
+  },
+  {
+   "id": "chunk_size",
+   "type": "number",
+   "role": "motion",
+   "label": "Chunk size",
+   "default": 1,
+   "min": 1,
+   "max": 20
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

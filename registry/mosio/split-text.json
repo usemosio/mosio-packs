@@ -1,0 +1,82 @@
+{
+ "name": "split-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Animata",
+ "source": {
+  "repo": "https://github.com/codse/animata",
+  "path": "animata/text/split-text.tsx",
+  "commit": "25c27e5a874c60a56dcc1609df3b2c4f5f8456f8"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Split Text\n\nA pointer sweeps along a word and each letter it touches splits along its middle: the top half lifts and the bottom half drops, and the neighbours part by less.\n\nCategory: typography. Length: 5.5 s. WebGL: no.\n\nUse when:\n- Bold uppercase letters should crack open in a travelling wave.\n- A title wants a playful, tactile hover-style accent.\n\nAvoid when:\n- The text is small or light: the split needs thick letters to read.\n- A single clean reveal: use a per-character block.\n\nVariables:\n- text (string): Text, default \"SPLIT TEXT\"\n- font_size (number, 12-360): Font size, default 190\n- spread (number, 0.02-0.5): Spread, default 0.16\n- dwell (number, 0.05-1): Dwell, default 0.22\n- color (color): Color, default \"#eab308\"\n- font_weight (enum): Font weight, default \"900\"\n\nSource: https://github.com/codse/animata. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Split Text\n\n  A pointer sweeps along a word and each letter it touches splits along its middle: the top half lifts and the bottom half drops, and the neighbours part by less.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/codse/animata/blob/25c27e5a874c60a56dcc1609df3b2c4f5f8456f8/animata/text/split-text.tsx\n\n  MIT License\n\n  Copyright (c) Animata\n\n  Permission is hereby granted, free of charge, to any person obtaining\n  a copy of this software and associated documentation files (the\n  \"Software\"), to deal in the Software without restriction, including\n  without limitation the rights to use, copy, modify, merge, publish,\n  distribute, sublicense, and/or sell copies of the Software, and to\n  permit persons to whom the Software is furnished to do so, subject to\n  the following conditions:\n\n  The above copyright notice and this permission notice shall be\n  included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"split-text\"\n  data-composition-duration=\"5.5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Word whose letters split.\", \"default\": \"SPLIT TEXT\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 190, \"min\": 12, \"max\": 360, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"spread\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Spread\", \"description\": \"How far the touched letter splits, as a fraction of the font size (the neighbours get 60 % and 20 %).\", \"default\": 0.16, \"min\": 0.02, \"max\": 0.5, \"step\": 0.01, \"unit\": \"em\"},\n    {\"id\": \"dwell\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Dwell\", \"description\": \"Seconds the pointer spends on each letter.\", \"default\": 0.22, \"min\": 0.05, \"max\": 1, \"step\": 0.01, \"unit\": \"s\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#eab308\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"900\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"900\", \"label\": \"Black\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Split Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .spl-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .spl-row { display: flex; line-height: 1; text-transform: uppercase; white-space: pre; }\n        .spl-l { position: relative; display: inline-block; line-height: 1; white-space: pre; }\n        .spl-sizer { visibility: hidden; }\n        .spl-half { position: absolute; left: 0; top: 0; white-space: pre; }\n        .spl-top { clip-path: inset(0 0 50% 0); }\n        .spl-bot { clip-path: inset(50% 0 0 0); }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"split-text\" data-duration=\"5.5\" data-fps=\"30\">\n        <div id=\"spl-clip\" class=\"spl-stage clip\" data-start=\"0\" data-duration=\"5.5\" data-track-index=\"0\">\n          <div id=\"spl-row\" class=\"spl-row\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        \n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function opt(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : v === \"true\" ? true : v === \"false\" ? false : f; }\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > max) { size = Math.max(12, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            \n            var row = document.getElementById(\"spl-row\");\n            var text = str(vars.text, \"SPLIT TEXT\");\n            var spread = num(vars.spread, 0.16, 0.02, 0.5), dwell = num(vars.dwell, 0.22, 0.05, 1);\n            root.style.color = col(vars.color, \"#eab308\");\n            root.style.fontWeight = opt(vars.font_weight, [\"300\",\"400\",\"500\",\"600\",\"700\",\"900\"], \"900\");\n            row.setAttribute(\"aria-label\", text);\n            var chars = Array.from(text), tops = [], bots = [];\n            chars.forEach(function (c) {\n              var l = document.createElement(\"span\"); l.className = \"spl-l\";\n              var s = document.createElement(\"span\"); s.className = \"spl-sizer\"; s.textContent = c;\n              var t = document.createElement(\"span\"); t.className = \"spl-half spl-top\"; t.textContent = c;\n              var bt = document.createElement(\"span\"); bt.className = \"spl-half spl-bot\"; bt.textContent = c;\n              l.appendChild(s); l.appendChild(t); l.appendChild(bt); row.appendChild(l); tops.push(t); bots.push(bt);\n            });\n            var size = fit(row, num(vars.font_size, 190, 12, 360), 0.9);\n            var n = chars.length;\n            // Pointer path: left to right, away, then right to left (the original splits letters on hover).\n            var steps = [], t0 = 0.4, i;\n            for (i = 0; i < n; i++) steps.push({ t: t0 + i * dwell, a: i });\n            steps.push({ t: t0 + n * dwell, a: -1 });\n            var t1 = t0 + n * dwell + 0.7;\n            for (i = n - 1; i >= 0; i--) steps.push({ t: t1 + (n - 1 - i) * dwell, a: i });\n            steps.push({ t: t1 + n * dwell, a: -1 });\n            function target(j, a) { if (a < 0) return 0; var d = Math.abs(j - a); return d === 0 ? 1 : d === 1 ? 0.6 : d === 2 ? 0.2 : 0; }\n            function ease(p) { p = Math.min(1, Math.max(0, p)); var x = p; for (var q = 0; q < 6; q++) { var cx = 3 * 0.2 * 0 + 0; } return 1 - Math.pow(1 - p, 2.2); }\n            function valueAt(j, t) {\n              var from = 0, to = 0, s0 = -1e9;\n              for (var k = 0; k < steps.length; k++) {\n                if (steps[k].t > t) break;\n                from = from + (to - from) * ease((steps[k].t - s0) / 0.3);\n                to = target(j, steps[k].a); s0 = steps[k].t;\n              }\n              return from + (to - from) * ease((t - s0) / 0.3);\n            }\n            function draw(t) {\n              for (var j = 0; j < n; j++) {\n                var v = valueAt(j, t) * spread * size;\n                tops[j].style.transform = \"translateY(\" + (-v) + \"px)\";\n                bots[j].style.transform = \"translateY(\" + v + \"px)\";\n              }\n            }\n            var clock = { t: 0 };\n            var total0 = parseFloat(root.dataset.duration || \"5.5\");\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, { t: total0, duration: total0, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            var total = parseFloat(root.dataset.duration || \"5.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"split-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "f64157ea90faf5084cbaa91c1d2f76903fd555c1c41650a18a3c4b7d06f16e3d",
+ "duration": 5.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 210
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "SPLIT TEXT"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 190,
+   "min": 12,
+   "max": 360
+  },
+  {
+   "id": "spread",
+   "type": "number",
+   "role": "style",
+   "label": "Spread",
+   "default": 0.16,
+   "min": 0.02,
+   "max": 0.5
+  },
+  {
+   "id": "dwell",
+   "type": "number",
+   "role": "motion",
+   "label": "Dwell",
+   "default": 0.22,
+   "min": 0.05,
+   "max": 1
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#eab308"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "900"
+  }
+ ],
+ "author_url": "https://animata.design"
+}

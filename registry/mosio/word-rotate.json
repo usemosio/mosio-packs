@@ -1,0 +1,86 @@
+{
+ "name": "word-rotate",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Magic UI",
+ "source": {
+  "repo": "https://github.com/magicuidesign/magicui",
+  "path": "apps/www/registry/magicui/word-rotate.tsx",
+  "commit": "166367b4e31a27f166fd6c2b71d7be290fe0c1bc"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Word Rotate\n\nA list of words takes turns in one spot: each fades out sliding down, the next fades in sliding down from above.\n\nCategory: typography. Length: 6 s. WebGL: no.\n\nUse when:\n- A headline slot should cycle through a few alternative words (audiences, benefits, verbs).\n- You need a simple, calm word swap with a fade and a short slide.\n\nAvoid when:\n- The word should sit beside a fixed prefix and re-centre the whole line: use inline-word-roll.\n- You want a mechanical reel or flip: use slot-machine-roll or card-file-flip.\n\nVariables:\n- words (string): Words, default \"Word|Rotate\"\n- font_size (number, 12-260): Font size, default 96\n- color (color): Colour, default \"#0a0a0a\"\n- font_weight (enum): Font weight, default \"700\"\n- interval (number, 0.8-8): Interval, default 2.5\n- distance (number, 0-200): Slide distance, default 50\n\nSource: https://github.com/magicuidesign/magicui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Word Rotate\n\n  A list of words takes turns in one spot: each fades out sliding down, the next fades in sliding down from above.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/magicuidesign/magicui/blob/166367b4e31a27f166fd6c2b71d7be290fe0c1bc/apps/www/registry/magicui/word-rotate.tsx\n\n  MIT License\n\n  Copyright (c) Magic UI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"word-rotate\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n    {\"id\": \"words\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Words\", \"description\": \"The words in order, separated by | .\", \"default\": \"Word|Rotate\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer words shrink to fit the frame.\", \"default\": 96, \"min\": 12, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Colour\", \"description\": \"Text colour.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]},\n    {\"id\": \"interval\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Interval\", \"description\": \"Seconds between word changes (the source uses 2.5).\", \"default\": 2.5, \"min\": 0.8, \"max\": 8, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Slide distance\", \"description\": \"How far words slide while fading, in pixels.\", \"default\": 50, \"min\": 0, \"max\": 200, \"step\": 1, \"unit\": \"px\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Word Rotate</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700;800&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .wrt-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .wrt-box { overflow: hidden; padding: 0.1em 0; text-align: center; font-family: var(--font-display, Geist, system-ui, sans-serif); line-height: 1.15; }\n        .wrt-word { display: block; white-space: pre; letter-spacing: -0.03em; opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"word-rotate\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"wrt-clip\" class=\"wrt-stage clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\">\n          <div id=\"wrt-box\" class=\"wrt-box\"><span id=\"wrt-word\" class=\"wrt-word\"></span></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Shrink an element's font until it fits a share of the frame width.\n            function fit(el, size, share) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * share);\n              if (el.scrollWidth > max) {\n                size = Math.max(12, size * (max / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            // A seeded random generator, so every seek draws the same thing.\n            function mulberry32(a) {\n              return function () {\n                a |= 0; a = (a + 0x6d2b79f5) | 0;\n                var t = Math.imul(a ^ (a >>> 15), 1 | a);\n                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n            gsap.registerPlugin(CustomEase);\n            var TAG = \"wrt\";\n            var bezN = 0;\n            function bez(x1, y1, x2, y2) {\n              return CustomEase.create(TAG + \"-\" + bezN++, \"M0,0 C\" + x1 + \",\" + y1 + \" \" + x2 + \",\" + y2 + \" 1,1\");\n            }\n            var tl = gsap.timeline({ paused: true });\n            function finish() {\n              var total = parseFloat(root.dataset.duration || \"6\");\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"word-rotate\"] = tl;\n            }\n\n            var box = document.getElementById(\"wrt-box\");\n            var el = document.getElementById(\"wrt-word\");\n            var words = str(vars.words, \"Word|Rotate\").split(\"|\").map(function (w) { return w.trim(); }).filter(Boolean);\n            if (!words.length) words = [\"Word\", \"Rotate\"];\n            var gap = num(vars.interval, 2.5, 0.8, 8);\n            var dist = num(vars.distance, 50, 0, 200);\n            var total = parseFloat(root.dataset.duration || \"6\");\n            box.style.color = col(vars.color, \"#0a0a0a\");\n            el.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\", \"800\"], \"700\");\n            // Size to the widest word so the box does not jump between words.\n            var size = num(vars.font_size, 96, 12, 260);\n            box.style.fontSize = size + \"px\";\n            var widest = 1;\n            words.forEach(function (w) { el.textContent = w; widest = Math.max(widest, el.scrollWidth); });\n            var maxW = root.clientWidth * 0.9;\n            if (widest > maxW) { size = Math.max(12, size * maxW / widest); box.style.fontSize = size + \"px\"; }\n            // Source motion: enter from y -50 over 0.25 s, exit to y 50 over 0.25 s, easeOut,\n            // one after the other (AnimatePresence wait), a new word every `interval`.\n            var out = bez(0, 0, 0.58, 1);\n            var q = 0.25;\n            var n = 0;\n            for (var at = 0; at < total + 0.001; at += gap, n++) {\n              var w = words[n % words.length];\n              (function (w, at) {\n                if (at > 0) tl.to(el, { opacity: 0, y: dist, duration: q, ease: out, immediateRender: false }, at);\n                tl.call(function () { el.textContent = w; }, null, at + (at > 0 ? q : 0));\n                tl.fromTo(el, { opacity: 0, y: -dist }, { opacity: 1, y: 0, duration: q, ease: out, immediateRender: false }, at + (at > 0 ? q : 0));\n              })(w, at);\n            }\n            el.textContent = words[0];\n\n            finish();\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "fcaae426bf6fa8c65e687f42435dbd9b7c8fd931e9ec322e968819383459f8e4",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "words": "Word|Rotate",
+  "font_size": 200
+ },
+ "variables": [
+  {
+   "id": "words",
+   "type": "string",
+   "role": "content",
+   "label": "Words",
+   "default": "Word|Rotate"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 96,
+   "min": 12,
+   "max": 260
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  },
+  {
+   "id": "interval",
+   "type": "number",
+   "role": "motion",
+   "label": "Interval",
+   "default": 2.5,
+   "min": 0.8,
+   "max": 8
+  },
+  {
+   "id": "distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Slide distance",
+   "default": 50,
+   "min": 0,
+   "max": 200
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://magicui.design"
+}

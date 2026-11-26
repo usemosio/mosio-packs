@@ -1,0 +1,76 @@
+{
+ "name": "inflate",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/inflate/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Inflate\n\nA flat sliver puffs up like a balloon toy, squashes and settles into a glossy mark, then the wordmark slides out. The mark is a fixed rounded square with a dot; the wordmark is the text variable.\n\nCategory: logo-stings. Length: 2.2 s. WebGL: no.\n\nUse when:\n- A consumer, kids or casual app wants a soft, bouncy brand moment with a toy-like feel.\n- You have a wordmark and want the sting to supply a simple rounded mark beside it.\n\nAvoid when:\n- Your real logo must appear exactly as designed: the mark here is a fixed rounded square with a dot, so wrap your logo with spotlight or orbit-lock.\n- The brand is serious or premium and the bounce reads as too playful: use anamorphic-flare.\n\nVariables:\n- text (string): Wordmark, default \"studio\"\n- background_color (color): Background, default \"#111111\"\n- color (color): Body, default \"#E5322D\"\n- highlight (color): Highlight, default \"#FFFFFF\"\n- dot_color (color): Dot, default \"#111111\"\n- speed (number, 0.25-3): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Inflate\n\n  A flat sliver puffs up like a balloon toy, squashes and settles into a glossy mark, then the wordmark slides out. The mark is a fixed rounded square with a dot; the wordmark is the text variable.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/inflate/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"inflate\"\n  data-composition-duration=\"2.2\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Wordmark\", \"description\": \"Wordmark that slides out beside the mark. Leave empty for the mark alone.\", \"default\": \"studio\"},\n    {\"id\": \"background_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Stage color.\", \"default\": \"#111111\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Body\", \"description\": \"Body color of the mark.\", \"default\": \"#E5322D\"},\n    {\"id\": \"highlight\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Highlight\", \"description\": \"Specular highlight color.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"dot_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Dot\", \"description\": \"Dot inside the mark.\", \"default\": \"#111111\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 3, \"step\": 0.05}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Inflate</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n\n        #root { background: var(--bg); }\n        .in-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .in-row { display: flex; align-items: center; }\n        .in-box { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }\n        .in-body { position: relative; flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--color); }\n        .in-gloss { position: absolute; left: 14%; top: 10%; width: 46%; height: 28%; border-radius: 50%; transform: rotate(-18deg); }\n        .in-dot { border-radius: 50%; background: var(--dotc); }\n        .in-word { font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Inter, Helvetica, Arial, sans-serif; font-weight: 800; letter-spacing: -0.04em; color: var(--text); white-space: nowrap; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"inflate\" data-duration=\"2.2\" data-fps=\"30\">\n        <div id=\"in-clip\" class=\"in-stage clip\" data-start=\"0\" data-duration=\"2.2\" data-track-index=\"0\">\n          <div class=\"in-row\" id=\"in-row\">\n            <div class=\"in-box\" id=\"in-box\">\n              <div class=\"in-body\" id=\"in-body\"><div class=\"in-gloss\" id=\"in-gloss\"></div><div class=\"in-dot\" id=\"in-dot\"></div></div>\n            </div>\n            <span class=\"in-word\" id=\"in-word\"></span>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var NAME = \"inflate\";\n\nvar root = document.getElementById(\"root\");\nvar vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\nfunction num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : f; }\nfunction str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\nfunction col(v, f) { return typeof v === \"string\" && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v.trim()) ? v.trim() : f; }\nfunction bool(v, f) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : f; }\nvar FPS = 30;\nvar DUR = parseFloat(root.dataset.duration || \"2\");\nvar TOTAL = Math.round(DUR * FPS);\nfunction lerp(a, b, t) { return a + (b - a) * t; }\nfunction cl(x, a, b) { return Math.min(b, Math.max(a, x)); }\n// interpolate(x, [in...], [out...], easing): clamped on both sides, easing applied per segment.\nfunction interp(x, inp, out, easing) {\n  if (x <= inp[0]) return out[0];\n  if (x >= inp[inp.length - 1]) return out[out.length - 1];\n  var i = 0;\n  while (x > inp[i + 1]) i++;\n  var t = (x - inp[i]) / (inp[i + 1] - inp[i]);\n  if (easing) t = easing(t);\n  return out[i] + (out[i + 1] - out[i]) * t;\n}\nfunction bez(x1, y1, x2, y2) {\n  return function (x) {\n    if (x <= 0) return 0; if (x >= 1) return 1;\n    var t = x;\n    for (var i = 0; i < 8; i++) {\n      var cx = 3 * x1 * t * (1 - t) * (1 - t) + 3 * x2 * t * t * (1 - t) + t * t * t - x;\n      var d = 3 * x1 * (1 - t) * (1 - t) - 6 * x1 * t * (1 - t) + 6 * x2 * t * (1 - t) - 3 * x2 * t * t + 3 * t * t;\n      if (Math.abs(cx) < 1e-6 || Math.abs(d) < 1e-6) break;\n      t -= cx / d;\n    }\n    t = cl(t, 0, 1);\n    return 3 * y1 * t * (1 - t) * (1 - t) + 3 * y2 * t * t * (1 - t) + t * t * t;\n  };\n}\nvar E = {\n  lin: function (t) { return t; },\n  quad: function (t) { return t * t; },\n  cubic: function (t) { return t * t * t; },\n  sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); }\n};\nfunction eOut(f) { return function (t) { return 1 - f(1 - t); }; }\nfunction eInOut(f) { return function (t) { return t < 0.5 ? f(2 * t) / 2 : 1 - f(2 - 2 * t) / 2; }; }\nvar outCubic = eOut(E.cubic), outQuad = eOut(E.quad), inCubic = E.cubic, inQuad = E.quad;\nvar inOutCubic = eInOut(E.cubic), inOutQuad = eInOut(E.quad), inOutSin = eInOut(E.sin), outSin = eOut(E.sin);\n// Damped spring from 0 to 1 (rest at 1, no initial velocity), frames at 30 fps.\nfunction spring(frame, cfg) {\n  if (frame <= 0) return 0;\n  var m = cfg.mass || 1, k = cfg.stiffness, c = cfg.damping;\n  var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m)), t = frame / FPS;\n  if (z < 1) {\n    var wd = w0 * Math.sqrt(1 - z * z);\n    return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));\n  }\n  if (z === 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n  var s = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + s, r2 = -z * w0 - s;\n  return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n}\n// Seeded random: same string in, same number out.\nfunction rnd(seed) {\n  var sd = String(seed), h = 1779033703 ^ sd.length;\n  for (var i = 0; i < sd.length; i++) { h = Math.imul(h ^ sd.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }\n  h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); h ^= h >>> 16;\n  var a = (h >>> 0);\n  a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a);\n  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n}\nfunction rgb(h) {\n  h = h.replace(\"#\", \"\");\n  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];\n}\nfunction mixc(a, b, t) {\n  var x = rgb(a), y = rgb(b);\n  return \"rgb(\" + Math.round(lerp(x[0], y[0], t)) + \",\" + Math.round(lerp(x[1], y[1], t)) + \",\" + Math.round(lerp(x[2], y[2], t)) + \")\";\n}\nfunction rgba(h, a) { var x = rgb(h); return \"rgba(\" + x[0] + \",\" + x[1] + \",\" + x[2] + \",\" + a + \")\"; }\nvar SVGNS = \"http://www.w3.org/2000/svg\";\nfunction svgEl(tag, attrs, parent) {\n  var e = document.createElementNS(SVGNS, tag);\n  for (var k in attrs) e.setAttribute(k, attrs[k]);\n  if (parent) parent.appendChild(e);\n  return e;\n}\nfunction setA(e, attrs) { for (var k in attrs) e.setAttribute(k, attrs[k]); }\n// Drive draw(frame) from the timeline; frames run 0..frames over frames/30 seconds.\nfunction drive(draw, frames) {\n  var tl = gsap.timeline({ paused: true });\n  var clock = { frame: 0 };\n  tl.to(clock, { frame: frames, duration: frames / FPS, ease: \"none\", onUpdate: function () { draw(clock.frame); } }, 0);\n  draw(0);\n  return tl;\n}\nfunction finish(tl) {\n  if (tl.duration() < DUR) tl.to({}, { duration: DUR - tl.duration() });\n  tl.seek(0);\n  window.__timelines = window.__timelines || {};\n  window.__timelines[NAME] = tl;\n}\n\n\nvar row = document.getElementById(\"in-row\"), box = document.getElementById(\"in-box\"), body = document.getElementById(\"in-body\"), gloss = document.getElementById(\"in-gloss\"), dotEl = document.getElementById(\"in-dot\"), word = document.getElementById(\"in-word\");\nvar bg = col(vars.background_color, \"#111111\"), color = col(vars.color, \"#E5322D\"), hl = col(vars.highlight, \"#FFFFFF\"), dotC = col(vars.dot_color, \"#111111\"), speed = num(vars.speed, 1, 0, 4);\nvar wordText = typeof vars.text === \"string\" ? vars.text : \"studio\";\nroot.style.setProperty(\"--bg\", bg); root.style.setProperty(\"--color\", color); root.style.setProperty(\"--dotc\", dotC); root.style.setProperty(\"--text\", \"#ffffff\");\nvar W = root.clientWidth, H = root.clientHeight;\nvar size = Math.round(Math.min(W, H) * 0.22);\nbox.style.width = box.style.height = size + \"px\";\nrow.style.gap = size * 0.24 + \"px\";\ndotEl.style.width = dotEl.style.height = size * 0.3 + \"px\";\ngloss.style.background = \"radial-gradient(ellipse at 45% 40%, \" + hl + \" 0%, transparent 70%)\";\nword.textContent = wordText; word.style.fontSize = size * 0.5 + \"px\";\nif (!wordText) word.style.display = \"none\";\nvar rowW = row.offsetWidth;\nvar PUFF = 3, WOBBLE = 10, DOT = 15, SLIDE = 22;\nfunction draw(frame) {\n  var t = frame * speed;\n  var puff = spring(t - PUFF, { damping: 8, stiffness: 150, mass: 0.6 });\n  var w0 = t - WOBBLE;\n  var wobble = w0 > 0 ? 0.2 * Math.exp(-w0 / 6) * Math.sin((w0 / 9) * Math.PI * 2) : 0;\n  var grow = Math.max(0, puff);\n  var sliverW = interp(t, [0, PUFF], [0.7, 1], outQuad);\n  var bodyH = size * (0.05 + 0.95 * grow) * (1 - wobble);\n  var bodyW = size * (sliverW + (Math.max(1, grow) - 1) * 0.8) * (1 + wobble);\n  var roundness = interp(t, [PUFF, PUFF + 7, 26], [0.5, 0.46, 0.27], inOutQuad);\n  var gl = interp(t, [PUFF + 2, PUFF + 9], [0, 1]);\n  var dot = spring(t - DOT, { damping: 10, stiffness: 220, mass: 0.5 });\n  var slide = interp(t, [SLIDE, SLIDE + 11], [0, 1], inOutCubic);\n  var reveal = interp(t, [SLIDE + 2, SLIDE + 13], [0, 1], outCubic);\n  body.style.width = bodyW + \"px\"; body.style.height = bodyH + \"px\";\n  body.style.borderRadius = Math.min(bodyW, bodyH) * roundness + \"px\";\n  body.style.opacity = interp(t, [0, 2], [0, 1]);\n  body.style.boxShadow = \"inset \" + -size * 0.06 + \"px \" + -size * 0.08 + \"px \" + size * 0.14 + \"px rgba(0,0,0,\" + 0.28 * gl + \")\";\n  gloss.style.opacity = 0.55 * gl;\n  dotEl.style.transform = \"scale(\" + dot + \")\";\n  if (wordText) {\n    row.style.transform = \"translateX(\" + (rowW / 2 - size / 2) * (1 - slide) + \"px)\";\n    word.style.opacity = reveal;\n    word.style.clipPath = \"inset(-30% \" + (1 - reveal) * 100 + \"% -30% -5%)\";\n    word.style.transform = \"translateX(\" + (1 - reveal) * -size * 0.3 + \"px)\";\n  }\n}\nfinish(drive(draw, TOTAL));\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "45a6c6a7a48ee16115b0b4ba89427c6aaf473e836a08aabcfd0b05de63bb063d",
+ "duration": 2.2,
+ "webgl": false,
+ "demo_background": "#111111",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Wordmark",
+   "default": "studio"
+  },
+  {
+   "id": "background_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#111111"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Body",
+   "default": "#E5322D"
+  },
+  {
+   "id": "highlight",
+   "type": "color",
+   "role": "style",
+   "label": "Highlight",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "dot_color",
+   "type": "color",
+   "role": "style",
+   "label": "Dot",
+   "default": "#111111"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 3
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

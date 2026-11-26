@@ -1,0 +1,156 @@
+{
+ "name": "outline-fill-track-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/outline-fill-track-text/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Outline Fill Track Text\n\nA rising lead word gives way to an outlined value that fills as one continuous track moves left.\n\nCategory: typography. Length: 2.667 s. WebGL: no.\n\nUse when:\n- A statement should hand focus from a lead word to a large numeric value in one continuous move.\n- An outlined percentage or metric should gain visual weight without fading.\n\nAvoid when:\n- The two texts should swap in place: use value-swap.\n- The value needs to count numerically: use rolling-number or number-wheel.\n\nVariables:\n- lead_text (string): Lead text, default \"Keep\"\n- value_text (string): Value text, default \"1000000000%\"\n- font_size (number, 120-520): Font size, default 368\n- font_weight (enum): Font weight, default \"700\"\n- color (color): Color, default \"#f4f3f6\"\n- outline_color (color): Outline color, default \"#e6e2ed\"\n- outline_width (number, 0-12): Outline width, default 3\n- background_color (color): Background, default \"#030012\"\n- glow_color (color): Glow color, default \"#64109a\"\n- enter_offset (number, 0-420): Enter offset, default 240\n- anchor_offset_x (number, -400-400): Anchor offset, default -84\n- track_distance (number, 0-1800): Track distance, default 0\n- word_gap (number, 0-500): Word gap, default 220\n- end_padding (number, 0-320): End padding, default 96\n- fill_duration (number, 8-45): Fill duration, default 38\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Outline Fill Track Text\n\n  A rising lead word gives way to an outlined value that fills as one continuous track moves left.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/outline-fill-track-text/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"outline-fill-track-text\"\n  data-composition-duration=\"2.667\"\n  data-composition-variables='[\n    { \"id\": \"lead_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Lead text\", \"description\": \"Word that rises first.\", \"default\": \"Keep\" },\n    { \"id\": \"value_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Value text\", \"description\": \"Large value that is outlined, then fills.\", \"default\": \"1000000000%\" },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Type size in pixels at a 1920 px wide frame; it scales with the frame.\", \"default\": 368, \"min\": 120, \"max\": 520, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"900\", \"label\": \"Black\"}] },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#f4f3f6\" },\n    { \"id\": \"outline_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Outline color\", \"description\": \"Color of the outline before the fill.\", \"default\": \"#e6e2ed\" },\n    { \"id\": \"outline_width\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Outline width\", \"description\": \"Outline thickness in pixels at 1920 px wide.\", \"default\": 3, \"min\": 0, \"max\": 12, \"step\": 0.5, \"unit\": \"px\" },\n    { \"id\": \"background_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Color of the field behind the text.\", \"default\": \"#030012\" },\n    { \"id\": \"glow_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Glow color\", \"description\": \"Color of the soft glow the lead word rises through.\", \"default\": \"#64109a\" },\n    { \"id\": \"enter_offset\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Enter offset\", \"description\": \"How far below its place the lead word starts.\", \"default\": 240, \"min\": 0, \"max\": 420, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"anchor_offset_x\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Anchor offset\", \"description\": \"Horizontal offset of the lead word from the center.\", \"default\": -84, \"min\": -400, \"max\": 400, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"track_distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Track distance\", \"description\": \"Distance the track moves left. 0 measures it from the text.\", \"default\": 0, \"min\": 0, \"max\": 1800, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"word_gap\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Word gap\", \"description\": \"Gap between the lead word and the value.\", \"default\": 220, \"min\": 0, \"max\": 500, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"end_padding\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"End padding\", \"description\": \"Space kept to the right of the value at the end.\", \"default\": 96, \"min\": 0, \"max\": 320, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"fill_duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Fill duration\", \"description\": \"Frames the fill takes to sweep across (30 fps).\", \"default\": 38, \"min\": 8, \"max\": 45, \"step\": 1, \"unit\": \"frames\" }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Outline Fill Track Text</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #f4f3f6);\n          background: var(--bg, #030012);\n          font-family: Arial, Helvetica, sans-serif;\n          pointer-events: none;\n        }\n        .oft-glow { position: absolute; inset: 0; pointer-events: none; }\n        .oft-track { position: absolute; top: 50%; }\n        .oft-text { display: block; line-height: 0.86; white-space: nowrap; }\n        .oft-lead { position: absolute; top: 0; left: 0; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }\n        .oft-value { position: absolute; top: 0; visibility: hidden; }\n        .oft-outline { color: transparent; paint-order: stroke fill; }\n        .oft-fill { position: absolute; inset: 0; }\n        .oft-field { position: absolute; left: 0; pointer-events: none; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"outline-fill-track-text\" data-duration=\"2.667\" data-fps=\"30\">\n        <div id=\"oft-clip\" class=\"oft-stage clip\" data-start=\"0\" data-duration=\"2.667\" data-track-index=\"0\">\n          <div id=\"oft-glow\" class=\"oft-glow\"></div>\n          <div id=\"oft-track\" class=\"oft-track\">\n            <div id=\"oft-lead\" class=\"oft-text oft-lead\"></div>\n            <div id=\"oft-value\" class=\"oft-value\">\n              <span id=\"oft-outline\" class=\"oft-text oft-outline\"></span>\n              <span id=\"oft-fill\" class=\"oft-text oft-fill\"></span>\n            </div>\n            <div id=\"oft-field\" class=\"oft-field\"></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            gsap.registerPlugin(CustomEase);\n            function bz(id, a, b, c, d) {\n              return CustomEase.create(\"oft-\" + id, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\");\n            }\n            // interpolate(frame, [a, b], [from, to], { easing }) as a tween (frames at 30 fps).\n            function tw(tl, el, from, to, a, b, ease, keep) {\n              var t = Object.assign({}, to, { duration: (b - a) / 30, ease: ease || \"none\", immediateRender: !keep });\n              tl.fromTo(el, from, t, a / 30);\n            }\n            // Shrink an element's font size so it fits a fraction of the frame width.\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            var TOTAL = parseFloat(root.dataset.duration || \"2.667\");\n            function finish(tl) {\n              if (tl.duration() < TOTAL) tl.to({}, { duration: TOTAL - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"outline-fill-track-text\"] = tl;\n            }\n            // interpolate() with clamping, easing given as a function of progress.\n            function ip(f, a, b, from, to, ease) {\n              var p = b === a ? 1 : Math.min(1, Math.max(0, (f - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n            var lead = str(vars.lead_text, \"Keep\");\n            var value = str(vars.value_text, \"1000000000%\");\n            var weight = pick(vars.font_weight, [\"400\", \"600\", \"700\", \"900\"], \"700\");\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            var bgColor = str(vars.background_color, \"#030012\");\n            root.style.setProperty(\"--bg\", bgColor);\n            var glowColor = str(vars.glow_color, \"#64109a\");\n            var outlineColor = str(vars.outline_color, \"#e6e2ed\");\n            // Design units are px at a 1920 px wide frame.\n            var u = root.clientWidth / 1920;\n            var size = Math.max(1, num(vars.font_size, 368, 120, 520)) * u;\n            var gap = num(vars.word_gap, 220, 0, 500) * u;\n            var endPad = num(vars.end_padding, 96, 0, 320) * u;\n            var anchorX = num(vars.anchor_offset_x, -84, -400, 400) * u;\n            var enterOffset = num(vars.enter_offset, 240, 0, 420) * u;\n            var fillDuration = Math.max(1, num(vars.fill_duration, 38, 8, 45));\n            var trackOverride = num(vars.track_distance, 0, 0, 1800) * u;\n            var strokeW = num(vars.outline_width, 3, 0, 12) * u;\n            var track = document.getElementById(\"oft-track\");\n            var leadEl = document.getElementById(\"oft-lead\");\n            var valueBox = document.getElementById(\"oft-value\");\n            var outline = document.getElementById(\"oft-outline\");\n            var fill = document.getElementById(\"oft-fill\");\n            var glow = document.getElementById(\"oft-glow\");\n            var field = document.getElementById(\"oft-field\");\n            [leadEl, outline, fill].forEach(function (el) { el.style.fontSize = size + \"px\"; el.style.fontWeight = weight; });\n            leadEl.textContent = lead;\n            outline.textContent = value;\n            fill.textContent = value;\n            outline.style.webkitTextStroke = strokeW + \"px \" + outlineColor;\n            function measure(s) {\n              var ctx = document.createElement(\"canvas\").getContext(\"2d\");\n              ctx.font = weight + \" \" + size + \"px Arial\";\n              return ctx.measureText(s).width;\n            }\n            var leadW = measure(lead), valueW = measure(value);\n            var valueOffset = trackOverride > 0 ? trackOverride : leadW / 2 + gap + valueW / 2;\n            var anchor = root.clientWidth / 2 + anchorX;\n            var overflow = Math.max(0, anchor + valueW / 2 - (root.clientWidth - endPad));\n            var travel = valueOffset + overflow;\n            track.style.left = \"calc(50% + \" + anchorX + \"px)\";\n            valueBox.style.left = valueOffset + \"px\";\n            valueBox.style.transform = \"translate3d(-50%, -50%, 0)\";\n            glow.style.background = \"radial-gradient(ellipse 118% 66% at 50% -12%, \" + glowColor + \" 0%, \" + glowColor + \" 14%, transparent 76%)\";\n            glow.style.filter = \"blur(\" + size * 0.15 + \"px)\";\n            field.style.width = size * 2.8 + \"px\";\n            field.style.height = size * 0.72 + \"px\";\n            field.style.background = \"radial-gradient(ellipse at center, \" + bgColor + \" 0%, \" + bgColor + \" 18%, transparent 74%)\";\n            field.style.filter = \"blur(\" + size * 0.07 + \"px)\";\n\n            var ENTER_END = 16, TRACK_START = 16, TRACK_END = 72, FILL_START = 34, PREFILL = 10;\n            var enterEase = bz(\"enter\", 0.16, 0.84, 0.24, 1);\n            var trackEase = bz(\"track\", 0.42, 0, 0.58, 1);\n            var P = { f: 0 };\n            function apply() {\n              var f = P.f;\n              var enter = ip(f, 0, ENTER_END, 0, 1, enterEase);\n              var tp = ip(f, TRACK_START, TRACK_END, 0, 1, trackEase);\n              var fp = ip(f, FILL_START - PREFILL, FILL_START + fillDuration, 0, 1);\n              var edge = enter * 112 - 8;\n              var solid = Math.max(0, Math.min(100, edge - 10));\n              var fade = Math.max(0, Math.min(100, edge + 10));\n              var mask = \"linear-gradient(180deg, #000 0%, #000 \" + solid + \"%, transparent \" + fade + \"%, transparent 100%)\";\n              var go = enter < 0.18 ? 0.92 + (1 - 0.92) * enter / 0.18 : enter < 0.72 ? 1 + (0.52 - 1) * (enter - 0.18) / 0.54 : 0.52 * (1 - (enter - 0.72) / 0.28);\n              track.style.transform = \"translate3d(\" + -travel * tp + \"px, -50%, 0)\";\n              leadEl.style.webkitMaskImage = leadEl.style.maskImage = mask;\n              leadEl.style.transform = \"translate3d(-50%, calc(-50% + \" + enterOffset * (1 - enter) + \"px), 0)\";\n              valueBox.style.visibility = f < FILL_START ? \"hidden\" : \"visible\";\n              fill.style.clipPath = \"inset(0 \" + (100 - fp * 100) + \"% 0 0)\";\n              glow.style.opacity = go;\n              field.style.opacity = go;\n              field.style.top = ip(enter, 0, 1, -42 * u, -210 * u) + \"px\";\n              field.style.transform = \"translate3d(-50%, -50%, 0)\";\n            }\n            apply();\n            var tl = gsap.timeline({ paused: true });\n            tl.to(P, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: apply }, 0);\n            finish(tl);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "2d1d92cc507be52739f19f18eafd7f62e970380532cb6c96e8bb526511c17473",
+ "duration": 2.667,
+ "webgl": false,
+ "demo_background": "#030012",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "lead_text",
+   "type": "string",
+   "role": "content",
+   "label": "Lead text",
+   "default": "Keep"
+  },
+  {
+   "id": "value_text",
+   "type": "string",
+   "role": "content",
+   "label": "Value text",
+   "default": "1000000000%"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 368,
+   "min": 120,
+   "max": 520
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#f4f3f6"
+  },
+  {
+   "id": "outline_color",
+   "type": "color",
+   "role": "style",
+   "label": "Outline color",
+   "default": "#e6e2ed"
+  },
+  {
+   "id": "outline_width",
+   "type": "number",
+   "role": "style",
+   "label": "Outline width",
+   "default": 3,
+   "min": 0,
+   "max": 12
+  },
+  {
+   "id": "background_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#030012"
+  },
+  {
+   "id": "glow_color",
+   "type": "color",
+   "role": "style",
+   "label": "Glow color",
+   "default": "#64109a"
+  },
+  {
+   "id": "enter_offset",
+   "type": "number",
+   "role": "motion",
+   "label": "Enter offset",
+   "default": 240,
+   "min": 0,
+   "max": 420
+  },
+  {
+   "id": "anchor_offset_x",
+   "type": "number",
+   "role": "motion",
+   "label": "Anchor offset",
+   "default": -84,
+   "min": -400,
+   "max": 400
+  },
+  {
+   "id": "track_distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Track distance",
+   "default": 0,
+   "min": 0,
+   "max": 1800
+  },
+  {
+   "id": "word_gap",
+   "type": "number",
+   "role": "style",
+   "label": "Word gap",
+   "default": 220,
+   "min": 0,
+   "max": 500
+  },
+  {
+   "id": "end_padding",
+   "type": "number",
+   "role": "motion",
+   "label": "End padding",
+   "default": 96,
+   "min": 0,
+   "max": 320
+  },
+  {
+   "id": "fill_duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Fill duration",
+   "default": 38,
+   "min": 8,
+   "max": 45
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

@@ -1,0 +1,87 @@
+{
+ "name": "staggered-letter",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Animata",
+ "source": {
+  "repo": "https://github.com/codse/animata",
+  "path": "animata/text/staggered-letter.tsx",
+  "commit": "25c27e5a874c60a56dcc1609df3b2c4f5f8456f8"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Staggered Letter\n\nLetters drop in from far above (or rise from far below) one by one and snap into place on a quick spring, over a pale ghost of the word.\n\nCategory: typography. Length: 3 s. WebGL: no.\n\nUse when:\n- A title should assemble letter by letter with a long, visible drop and a soft shadow.\n- The pale ghost of the word under it should show where the letters will land.\n\nAvoid when:\n- A tiny, crisp rise is wanted: use per-character-rise.\n- Blur or fade-only entrances: use soft-blur-in or tracking-in.\n\nVariables:\n- text (string): Text, default \"Staggered\"\n- direction (enum): Direction, default \"drop\"\n- font_size (number, 12-320): Font size, default 150\n- delay (number, 0-0.5): Delay, default 0.09\n- ghost (boolean): Ghost, default true\n- color (color): Color, default \"#171717\"\n- ghost_color (color): Ghost color, default \"#9ca3af\"\n\nSource: https://github.com/codse/animata. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Staggered Letter\n\n  Letters drop in from far above (or rise from far below) one by one and snap into place on a quick spring, over a pale ghost of the word.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/codse/animata/blob/25c27e5a874c60a56dcc1609df3b2c4f5f8456f8/animata/text/staggered-letter.tsx\n\n  MIT License\n\n  Copyright (c) Animata\n\n  Permission is hereby granted, free of charge, to any person obtaining\n  a copy of this software and associated documentation files (the\n  \"Software\"), to deal in the Software without restriction, including\n  without limitation the rights to use, copy, modify, merge, publish,\n  distribute, sublicense, and/or sell copies of the Software, and to\n  permit persons to whom the Software is furnished to do so, subject to\n  the following conditions:\n\n  The above copyright notice and this permission notice shall be\n  included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"staggered-letter\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Word that assembles.\", \"default\": \"Staggered\"},\n    {\"id\": \"direction\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Direction\", \"description\": \"Letters fall from above or rise from below.\", \"default\": \"drop\", \"options\": [{\"value\": \"drop\", \"label\": \"Drop\"}, {\"value\": \"up\", \"label\": \"Rise\"}]},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 150, \"min\": 12, \"max\": 320, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Delay\", \"description\": \"Seconds between letters.\", \"default\": 0.09, \"min\": 0, \"max\": 0.5, \"step\": 0.01, \"unit\": \"s\"},\n    {\"id\": \"ghost\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Ghost\", \"description\": \"Show a pale copy of the word where the letters land.\", \"default\": true},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"ghost_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Ghost color\", \"description\": \"Color of the pale copy.\", \"default\": \"#9ca3af\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Staggered Letter</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .sl-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .sl-wrap { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; line-height: 1.1; }\n        .sl-gc { display: inline-block; white-space: pre; }\n        .sl-ghost { position: absolute; display: flex; white-space: pre; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.04)) drop-shadow(0 4px 3px rgba(0,0,0,0.1)); }\n        .sl-row { display: flex; white-space: pre; }\n        .sl-ch { display: inline-block; white-space: pre; opacity: 0; filter: drop-shadow(0 10px 8px rgba(0,0,0,0.04)) drop-shadow(0 4px 3px rgba(0,0,0,0.1)); }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"staggered-letter\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"sl-clip\" class=\"sl-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <div id=\"sl-wrap\" class=\"sl-wrap\" role=\"img\"><div id=\"sl-ghost\" class=\"sl-ghost\"></div><div id=\"sl-row\" class=\"sl-row\"></div></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        \n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function opt(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : v === \"true\" ? true : v === \"false\" ? false : f; }\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > max) { size = Math.max(12, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            function spring(t, k, c, m) {\n              if (t <= 0) return 0;\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t)); }\n              if (z === 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n              return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n            }\n            var wrap = document.getElementById(\"sl-wrap\");\n            var ghost = document.getElementById(\"sl-ghost\");\n            var row = document.getElementById(\"sl-row\");\n            var text = str(vars.text, \"Staggered\");\n            var dirSign = opt(vars.direction, [\"drop\", \"up\"], \"drop\") === \"up\" ? 1 : -1;\n            var step = num(vars.delay, 0.09, 0, 0.5);\n            root.style.color = col(vars.color, \"#171717\");\n            wrap.setAttribute(\"aria-label\", text);\n            ghost.style.color = col(vars.ghost_color, \"#9ca3af\");\n            Array.from(text).forEach(function (c) { var g = document.createElement(\"span\"); g.className = \"sl-gc\"; g.textContent = c; ghost.appendChild(g); });\n            ghost.style.display = bool(vars.ghost, true) ? \"\" : \"none\";\n            var chars = Array.from(text).map(function (c) {\n              var s = document.createElement(\"span\"); s.className = \"sl-ch\"; s.textContent = c; row.appendChild(s); return s;\n            });\n            var size = fit(wrap, num(vars.font_size, 150, 12, 320), 0.9);\n            var k = size / 72;\n            var total0 = parseFloat(root.dataset.duration || \"3\");\n            function draw(t) {\n              chars.forEach(function (s, i) {\n                var lt = t - i * step;\n                var y = 150 * k * (-dirSign) * 1;\n                y = (dirSign === 1 ? 150 : -150) * k * (1 - spring(lt, 500, 25, 1));\n                var p = Math.min(1, Math.max(0, lt / 0.3));\n                s.style.opacity = 1 - (1 - p) * (1 - p);\n                s.style.transform = \"translateY(\" + y + \"px)\";\n              });\n            }\n            var clock = { t: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, { t: total0, duration: total0, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            var total = parseFloat(root.dataset.duration || \"3\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"staggered-letter\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "9740606ff09e55e302b36b11bd5f90f5083da97bf670114290ecd9fb524d107c",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 190
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Staggered"
+  },
+  {
+   "id": "direction",
+   "type": "enum",
+   "role": "motion",
+   "label": "Direction",
+   "default": "drop"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 150,
+   "min": 12,
+   "max": 320
+  },
+  {
+   "id": "delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Delay",
+   "default": 0.09,
+   "min": 0,
+   "max": 0.5
+  },
+  {
+   "id": "ghost",
+   "type": "boolean",
+   "role": "style",
+   "label": "Ghost",
+   "default": true
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "ghost_color",
+   "type": "color",
+   "role": "style",
+   "label": "Ghost color",
+   "default": "#9ca3af"
+  }
+ ],
+ "author_url": "https://animata.design"
+}

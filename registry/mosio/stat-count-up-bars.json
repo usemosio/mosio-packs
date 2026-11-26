@@ -1,0 +1,125 @@
+{
+ "name": "stat-count-up-bars",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "original": true
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Stat Count-up With Bars\n\nA muted label and a giant figure counting up in tight black type with a unit under it, then a bar chart whose bars grow while their values count (the last one in the accent colour, the rest in light grey), then a percent ring that draws itself with its figure and a few words beside it. White page.\n\nCategory: commerce. Length: 9 s. WebGL: no.\n\nUse when:\n- A business milestone, a channel's numbers or a data-led lesson with one headline figure, a short trend and one percentage.\n- Figures that should be read in order: total first, trend second, share last.\n\nAvoid when:\n- Only one number: use a plain counter block.\n- More than six data points or exact axes: use a real chart block.\n- Several milestones as a list: use milestone-counter-list.\n\nVariables:\n- label (string): Label, default \"Bulan ini kami mencuci\"\n- number (number, 0-999999999): Big number, default 12000\n- number_suffix (string): Number suffix, default \"+\"\n- unit (string): Unit, default \"kg pakaian pelanggan\"\n- bars (string): Bars, default \"Jul|4,1\\nAgu|6,3\\nSep|8,6\\nOkt|12\"\n- bar_suffix (string): Bar value suffix, default \"t\"\n- percent (number, 0-100): Percent, default 98\n- percent_label (string): Percent label, default \"pelanggan puas dan langganan lagi\"\n- bg_color (color): Background, default \"#ffffff\"\n- accent_color (color): Accent, default \"#2563eb\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Stat Count-up With Bars\n\n  A big number counting up, bars growing and a percent ring filling: milestone stats.\n\n  Extracted from the Mosio recipe angka-capaian by usemosio/blocks.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"stat-count-up-bars\"\n  data-composition-duration=\"9\"\n  data-composition-variables='[\n  {\n    \"id\": \"label\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Label\",\n    \"description\": \"Dim line above the big number.\",\n    \"default\": \"Bulan ini kami mencuci\"\n  },\n  {\n    \"id\": \"number\",\n    \"type\": \"number\",\n    \"role\": \"content\",\n    \"label\": \"Big number\",\n    \"description\": \"The number the headline counts up to.\",\n    \"default\": 12000,\n    \"min\": 0,\n    \"max\": 999999999,\n    \"step\": 1\n  },\n  {\n    \"id\": \"number_suffix\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Number suffix\",\n    \"description\": \"Text right after the big number, e.g. + or rb.\",\n    \"default\": \"+\"\n  },\n  {\n    \"id\": \"unit\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Unit\",\n    \"description\": \"Bold line under the big number.\",\n    \"default\": \"kg pakaian pelanggan\"\n  },\n  {\n    \"id\": \"bars\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Bars\",\n    \"description\": \"One bar per line, \\\"Label|Value\\\" (2 to 6 bars, decimals with a comma). The last bar is highlighted.\",\n    \"default\": \"Jul|4,1\\nAgu|6,3\\nSep|8,6\\nOkt|12\"\n  },\n  {\n    \"id\": \"bar_suffix\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Bar value suffix\",\n    \"description\": \"Text after each bar value, e.g. t or rb.\",\n    \"default\": \"t\"\n  },\n  {\n    \"id\": \"percent\",\n    \"type\": \"number\",\n    \"role\": \"content\",\n    \"label\": \"Percent\",\n    \"description\": \"What the ring fills to, 0 to 100.\",\n    \"default\": 98,\n    \"min\": 0,\n    \"max\": 100,\n    \"step\": 1\n  },\n  {\n    \"id\": \"percent_label\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Percent label\",\n    \"description\": \"Words beside the ring.\",\n    \"default\": \"pelanggan puas dan langganan lagi\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"accent_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent\",\n    \"description\": \"Highlighted last bar and the ring: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Big number, unit and bar values.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Label, bar names and the ring caption.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Stat Count-up With Bars</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n        }\n        #root * { box-sizing: border-box; }\n        .sc-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        #root { background: var(--sc-bg); color: var(--sc-text); font-family: Geist, system-ui, sans-serif; font-variant-numeric: tabular-nums; }\n        .sc-grid { position: absolute; inset: 0; padding: 0 calc(var(--u) * 90); display: grid; align-content: center; gap: calc(var(--u) * 60); grid-template-columns: minmax(0, 1fr);\n          grid-template-areas: \"hero\" \"chart\" \"ring\"; }\n        .sc-hero { grid-area: hero; }\n        .sc-label { font-size: calc(var(--u) * 48); font-weight: 500; letter-spacing: -0.02em; color: var(--sc-muted); line-height: 1.2; }\n        .sc-bigw { display: flex; justify-content: flex-start; margin-top: calc(var(--u) * 6); }\n        .sc-big { display: inline-block; white-space: nowrap; font-weight: 600; font-size: calc(var(--u) * 240); line-height: 1.02; letter-spacing: -0.04em; color: var(--sc-text); font-variant-numeric: tabular-nums; transform-origin: 0 50%; }\n        .sc-unit { font-size: calc(var(--u) * 56); font-weight: 500; letter-spacing: -0.03em; margin-top: calc(var(--u) * 6); line-height: 1.2; }\n        .sc-chart { grid-area: chart; position: relative; height: calc(var(--u) * 520); margin: calc(var(--u) * 70) 0 calc(var(--u) * 70); display: flex; align-items: flex-end; gap: calc(var(--u) * 36); border-bottom: 1px solid color-mix(in oklab, var(--sc-text) 14%, transparent); }\n        .sc-bar { flex: 1 1 0; position: relative; height: 100%; display: flex; align-items: flex-end; }\n        .sc-fill { width: 100%; border-radius: calc(var(--u) * 12) calc(var(--u) * 12) 0 0; background: color-mix(in oklab, var(--sc-text) 10%, var(--sc-bg)); transform-origin: 50% 100%; }\n        .sc-bar.top .sc-fill { background: var(--sc-accent); }\n        .sc-val { position: absolute; left: calc(var(--u) * -10); right: calc(var(--u) * -10); text-align: center; font-size: calc(var(--u) * 42); font-weight: 600; letter-spacing: -0.02em; white-space: nowrap; }\n        .sc-nm { position: absolute; left: calc(var(--u) * -10); right: calc(var(--u) * -10); bottom: calc(var(--u) * -62); text-align: center; font-size: calc(var(--u) * 38); color: var(--sc-muted); white-space: nowrap; }\n        .sc-ringrow { grid-area: ring; display: flex; align-items: center; gap: calc(var(--u) * 36); }\n        .sc-ring { width: calc(var(--u) * 230); height: calc(var(--u) * 230); flex-shrink: 0; }\n        .sc-ring .track { stroke: color-mix(in oklab, var(--sc-text) 10%, var(--sc-bg)); }\n        .sc-ring .arc { stroke: var(--sc-accent); }\n        .sc-rtxt { min-width: 0; }\n        .sc-pct { display: block; font-size: calc(var(--u) * 96); font-weight: 600; letter-spacing: -0.05em; line-height: 1; color: var(--sc-text); font-variant-numeric: tabular-nums; }\n        .sc-plab { display: block; font-size: calc(var(--u) * 42); color: var(--sc-muted); line-height: 1.25; margin-top: calc(var(--u) * 6); }\n        @container (aspect-ratio > 1) {\n          .sc-grid { padding: 0 calc(var(--u) * 140); column-gap: calc(var(--u) * 120); row-gap: calc(var(--u) * 50); grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); grid-template-areas: \"hero chart\" \"ring chart\"; align-items: center; }\n          .sc-big { font-size: calc(var(--u) * 180); }\n          .sc-chart { height: calc(var(--u) * 600); margin: 0; }\n          .sc-ring { width: calc(var(--u) * 200); height: calc(var(--u) * 200); }\n          .sc-pct { font-size: calc(var(--u) * 84); } .sc-plab { font-size: calc(var(--u) * 38); }\n        }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"stat-count-up-bars\" data-duration=\"9\" data-fps=\"30\">\n        <div id=\"sc-clip\" class=\"sc-stage clip\" data-start=\"0\" data-duration=\"9\" data-track-index=\"0\">\n          <div class=\"sc-grid\">\n            <div class=\"sc-hero\" id=\"sc-hero\">\n              <div class=\"sc-label\" id=\"sc-label\"></div>\n              <div class=\"sc-bigw\" id=\"sc-bigw\"><span class=\"sc-big\" id=\"sc-big\"></span></div>\n              <div class=\"sc-unit\" id=\"sc-unit\"></div>\n            </div>\n            <div class=\"sc-chart\" id=\"sc-chart\"></div>\n            <div class=\"sc-ringrow\" id=\"sc-ringrow\">\n              <svg class=\"sc-ring\" id=\"sc-ring\" viewBox=\"0 0 100 100\">\n                <circle class=\"track\" cx=\"50\" cy=\"50\" r=\"42\" fill=\"none\" stroke-width=\"9\" />\n                <circle class=\"arc\" id=\"sc-arc\" cx=\"50\" cy=\"50\" r=\"42\" fill=\"none\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-dasharray=\"264\" stroke-dashoffset=\"264\" transform=\"rotate(-90 50 50)\" />\n              </svg>\n              <div class=\"sc-rtxt\" id=\"sc-rtxt\"><span class=\"sc-pct\" id=\"sc-pct\"></span><span class=\"sc-plab\" id=\"sc-plab\"></span></div>\n            </div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function ink(c, thr) {\n              var m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(c).trim());\n              if (!m) return \"#14161a\";\n              var h = m[1].length === 3 ? m[1].replace(/./g, \"$&$&\") : m[1];\n              var r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);\n              return 0.299 * r + 0.587 * g + 0.114 * b > (thr || 150) ? \"#14161a\" : \"#ffffff\";\n            }\n            function setColors(p, list) {\n              list.forEach(function (c) { root.style.setProperty(\"--\" + p + \"-\" + c[0], colr(vars[c[1]], c[2])); });\n            }\n            // Shrink a one-line element's wrapper (flex, centred) when its content is wider than the wrapper.\n            var fitList = [];\n            function fit(wrap) { fitList.push(wrap); refit(); }\n            function refit() {\n              fitList.forEach(function (w) {\n                w.style.transform = \"\";\n                var c = w.firstElementChild, cw = c ? c.offsetWidth : 0, aw = w.clientWidth;\n                if (cw > aw && aw > 0) w.style.transform = \"scale(\" + (aw / cw).toFixed(4) + \")\";\n              });\n            }\n            if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n\n            setColors(\"sc\", [[\"bg\", \"bg_color\", \"#ffffff\"], [\"accent\", \"accent_color\", \"#2563eb\"],\n              [\"text\", \"text_color\", \"#0a0a0a\"], [\"muted\", \"muted_color\", \"#737373\"]]);\n            var label = typeof vars.label === \"string\" ? vars.label : \"Bulan ini kami mencuci\";\n            var bigN = num(vars.number, 12000, 0, 999999999);\n            var suffix = typeof vars.number_suffix === \"string\" ? vars.number_suffix : \"+\";\n            var unit = typeof vars.unit === \"string\" ? vars.unit : \"kg pakaian pelanggan\";\n            var barSuffix = typeof vars.bar_suffix === \"string\" ? vars.bar_suffix : \"t\";\n            var pctN = num(vars.percent, 98, 0, 100);\n            var plab = typeof vars.percent_label === \"string\" ? vars.percent_label : \"pelanggan puas dan langganan lagi\";\n            var defBars = \"Jul|4,1\\nAgu|6,3\\nSep|8,6\\nOkt|12\";\n            var bars = String(typeof vars.bars === \"string\" && vars.bars.trim() ? vars.bars : defBars).split(/\\r?\\n/).map(function (l) {\n              var p = l.split(\"|\"), raw = (p[1] || \"\").trim(), v = parseFloat(raw.replace(/\\./g, \"\").replace(\",\", \".\"));\n              var decimals = /,/.test(raw) ? raw.split(\",\")[1].length : 0;\n              return { name: p[0].trim(), v: Number.isFinite(v) ? Math.max(0, v) : 0, dec: decimals };\n            }).filter(function (b) { return b.name; }).slice(0, 6);\n            if (bars.length < 2) bars = defBars.split(\"\\n\").map(function (l) { var p = l.split(\"|\"); return { name: p[0], v: parseFloat(p[1].replace(\",\", \".\")), dec: p[1].indexOf(\",\") >= 0 ? 1 : 0 }; });\n            var maxV = Math.max.apply(null, bars.map(function (b) { return b.v; })) || 1;\n            function fmtBar(v, dec) { var s = v.toFixed(dec); var parts = s.split(\".\"); parts[0] = parts[0].replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); return parts.join(\",\"); }\n\n            var lab = document.getElementById(\"sc-label\"); lab.textContent = label; if (!label) lab.style.display = \"none\";\n            var unitEl = document.getElementById(\"sc-unit\"); unitEl.textContent = unit; if (!unit) unitEl.style.display = \"none\";\n            var big = document.getElementById(\"sc-big\");\n            big.textContent = dots(bigN) + suffix;\n            fit(document.getElementById(\"sc-bigw\"));\n            var chart = document.getElementById(\"sc-chart\");\n            bars.forEach(function (b, i) {\n              var bar = el(\"div\", \"sc-bar\" + (i === bars.length - 1 ? \" top\" : \"\"), chart);\n              var h = Math.max(4, b.v / maxV * 100);\n              var fill = el(\"div\", \"sc-fill\", bar); fill.style.height = h + \"%\";\n              var val = el(\"div\", \"sc-val\", bar); val.style.bottom = \"calc(\" + h + \"% + \" + (14 * U) + \"px)\";\n              val.textContent = fmtBar(b.v, b.dec) + barSuffix;\n              el(\"div\", \"sc-nm\", bar).textContent = b.name;\n              bar._val = val; bar._v = b;\n            });\n            var barEls = chart.querySelectorAll(\".sc-bar\");\n            var plabEl = document.getElementById(\"sc-plab\"); plabEl.textContent = plab; if (!plab) plabEl.style.display = \"none\";\n            var pctEl = document.getElementById(\"sc-pct\"); pctEl.textContent = Math.round(pctN) + \"%\";\n            var C = 264;\n\n            var bigC = { v: 0 }, pctC = { v: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(\"#sc-label\", { y: 40 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: \"power3.out\" }, 0.2);\n            tl.fromTo(\"#sc-big\", { y: 80 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: \"expo.out\" }, 0.4);\n            tl.fromTo(bigC, { v: 0 }, { v: bigN, duration: 2, ease: \"power3.out\", onUpdate: function () { big.textContent = dots(bigC.v) + suffix; } }, 0.4);\n            tl.fromTo(\"#sc-unit\", { y: 40 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: \"power3.out\" }, 1.2);\n            var bs = Math.min(0.2, 1.2 / bars.length), B0 = 2.4;\n            barEls.forEach(function (bar, i) {\n              var at = B0 + i * bs, v = bar._v, c = { v: 0 }, valEl = bar._val;\n              tl.fromTo(bar.querySelector(\".sc-fill\"), { scaleY: 0 }, { scaleY: 1, duration: 0.8, ease: \"expo.out\" }, at);\n              tl.fromTo(valEl, { opacity: 0, y: 30 * U }, { opacity: 1, y: 0, duration: 0.4, ease: \"power3.out\" }, at + 0.3);\n              tl.fromTo(c, { v: 0 }, { v: v.v, duration: 0.8, ease: \"power2.out\", onUpdate: function () { valEl.textContent = fmtBar(c.v, v.dec) + barSuffix; } }, at + 0.1);\n              tl.fromTo(bar.querySelector(\".sc-nm\"), { opacity: 0 }, { opacity: 1, duration: 0.4 }, at + 0.1);\n            });\n            var BT = B0 + bars.length * bs + 0.3;\n            tl.to(chart.querySelector(\".top .sc-fill\"), { scaleY: 1.04, duration: 0.35, yoyo: true, repeat: 3, ease: \"sine.inOut\" }, BT + 0.8);\n            var R0 = BT + 1.4;\n            tl.fromTo(\"#sc-ring\", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: \"power3.out\" }, R0);\n            tl.fromTo(\"#sc-arc\", { attr: { \"stroke-dashoffset\": C } }, { attr: { \"stroke-dashoffset\": C * (1 - pctN / 100) }, duration: 1.4, ease: \"power2.out\" }, R0 + 0.2);\n            tl.fromTo(pctC, { v: 0 }, { v: pctN, duration: 1.4, ease: \"power2.out\", onUpdate: function () { pctEl.textContent = Math.round(pctC.v) + \"%\"; } }, R0 + 0.2);\n            tl.fromTo(\"#sc-pct\", { opacity: 0 }, { opacity: 1, duration: 0.3 }, R0 + 0.2);\n            tl.fromTo(\"#sc-plab\", { x: 40 * U, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: \"power3.out\" }, R0 + 0.6);\n\n            var total = parseFloat(root.dataset.duration || \"9\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"stat-count-up-bars\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "fbe5a15e1c36ac04effa68e1e8c14c5df319de1295059a7c40871f08d240089a",
+ "duration": 9,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "label",
+   "type": "string",
+   "role": "content",
+   "label": "Label",
+   "default": "Bulan ini kami mencuci"
+  },
+  {
+   "id": "number",
+   "type": "number",
+   "role": "content",
+   "label": "Big number",
+   "default": 12000,
+   "min": 0,
+   "max": 999999999
+  },
+  {
+   "id": "number_suffix",
+   "type": "string",
+   "role": "content",
+   "label": "Number suffix",
+   "default": "+"
+  },
+  {
+   "id": "unit",
+   "type": "string",
+   "role": "content",
+   "label": "Unit",
+   "default": "kg pakaian pelanggan"
+  },
+  {
+   "id": "bars",
+   "type": "string",
+   "role": "content",
+   "label": "Bars",
+   "default": "Jul|4,1\nAgu|6,3\nSep|8,6\nOkt|12"
+  },
+  {
+   "id": "bar_suffix",
+   "type": "string",
+   "role": "content",
+   "label": "Bar value suffix",
+   "default": "t"
+  },
+  {
+   "id": "percent",
+   "type": "number",
+   "role": "content",
+   "label": "Percent",
+   "default": 98,
+   "min": 0,
+   "max": 100
+  },
+  {
+   "id": "percent_label",
+   "type": "string",
+   "role": "content",
+   "label": "Percent label",
+   "default": "pelanggan puas dan langganan lagi"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "accent_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2563eb"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

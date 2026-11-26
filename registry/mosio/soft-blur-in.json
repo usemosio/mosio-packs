@@ -1,0 +1,83 @@
+{
+ "name": "soft-blur-in",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/soft-blur-in/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Soft Blur In\n\nPer-character fade-in with a gentle blur and upward motion: an airy, soft premium reveal.\n\nCategory: typography. Length: 2 s. WebGL: no.\n\nUse when:\n- A hero headline needs a premium, airy, cinematic per-character soft reveal.\n- The text is long enough that a word-by-word stagger would take too long; per-character stagger with blur reads faster.\n- The scene is clean and bright, so the blur-clear motion reads against the background.\n\nAvoid when:\n- You want a hard exit animation: this is an entrance only.\n- The vibe is tech, gritty or high-energy: use tracking-in or a glitch text for a sharper feel.\n- You are swapping between two texts: use shared-axis-z or shared-axis-y.\n\nVariables:\n- text (string): Text, default \"Think different.\"\n- blur (number, 0-40): Blur, default 12\n- font_size (number, 12-220): Font size, default 72\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"600\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Soft Blur In\n\n  Per-character fade-in with a gentle blur and upward motion.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/soft-blur-in/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"soft-blur-in\"\n  data-composition-duration=\"2\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Word or short phrase that fades in.\", \"default\": \"Think different.\"},\n    {\"id\": \"blur\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Blur\", \"description\": \"Starting blur radius in pixels.\", \"default\": 12, \"min\": 0, \"max\": 40, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 72, \"min\": 12, \"max\": 220, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Soft Blur In</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n          color: var(--color, #171717);\n          font-family: var(--font-display, Geist, -apple-system, BlinkMacSystemFont, sans-serif);\n        }\n        .sbi-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .sbi-line { letter-spacing: -0.05em; line-height: 1; white-space: pre; }\n        .sbi-char { display: inline-block; white-space: pre; opacity: 0; backface-visibility: hidden; transform-origin: 50% 55%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"soft-blur-in\" data-duration=\"2\" data-fps=\"30\">\n        <div id=\"sbi-clip\" class=\"sbi-stage clip\" data-start=\"0\" data-duration=\"2\" data-track-index=\"0\">\n          <span id=\"sbi-line\" class=\"sbi-line\" role=\"img\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            // Easing.bezier(x1, y1, x2, y2) as a function of t (Newton, then bisection).\n            function bez(x1, y1, x2, y2) {\n              function cx(s) { return 3 * x1 * s * (1 - s) * (1 - s) + 3 * x2 * s * s * (1 - s) + s * s * s; }\n              function cy(s) { return 3 * y1 * s * (1 - s) * (1 - s) + 3 * y2 * s * s * (1 - s) + s * s * s; }\n              return function (t) {\n                if (t <= 0) return 0;\n                if (t >= 1) return 1;\n                var lo = 0, hi = 1, s = t;\n                for (var i = 0; i < 40; i++) {\n                  var x = cx(s);\n                  if (Math.abs(x - t) < 1e-6) break;\n                  if (x < t) lo = s; else hi = s;\n                  s = (lo + hi) / 2;\n                }\n                return cy(s);\n              };\n            }\n            // interpolate(f, [a, b], [from, to]) with both ends clamped, like the source framework's extrapolate \"clamp\".\n            function interp(f, a, b, from, to, ease) {\n              var t = b === a ? 1 : Math.min(1, Math.max(0, (f - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(t) : t);\n            }\n            // Fit one line to 90 % of the frame width: shrinks the font size when it overflows.\n            function fit(root, line, size) {\n              line.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * 0.9);\n              if (line.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / line.scrollWidth));\n                line.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            // Drives draw(frame) from the paused timeline: frame = time * 30 * speed (the source framework's useCurrentFrame() * speed).\n            function drive(tl, total, speed, draw) {\n              var clock = { t: 0 };\n              tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t * 30 * speed); } }, 0);\n              draw(0);\n            }\n\n            var text = str(vars.text, \"Think different.\");\n            var blur = num(vars.blur, 12, 0, 40);\n            var speed = num(vars.speed, 1, 0.25, 4);\n            var line = document.getElementById(\"sbi-line\");\n            line.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"600\");\n            line.setAttribute(\"aria-label\", text);\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            var chars = Array.from(text).map(function (ch, i) {\n              var span = document.createElement(\"span\");\n              span.id = \"sbi-char-\" + i;\n              span.className = \"sbi-char\";\n              span.textContent = ch;\n              line.appendChild(span);\n              return span;\n            });\n            fit(root, line, num(vars.font_size, 72, 12, 220));\n\n            // remocn: 27-frame fade and blur clear, 9-frame rise from 16 px, one frame between letters.\n            var ease = bez(0.22, 1, 0.36, 1);\n            function draw(frame) {\n              chars.forEach(function (el, i) {\n                var local = frame - i;\n                el.style.opacity = interp(local, 0, 27, 0, 1, ease);\n                el.style.transform = \"translateY(\" + interp(local, 0, 9, 16, 0, ease) + \"px)\";\n                var b = interp(local, 0, 27, blur, 0, ease);\n                el.style.filter = b > 0.01 ? \"blur(\" + b + \"px)\" : \"none\";\n              });\n            }\n            var total = parseFloat(root.dataset.duration || \"2\");\n            var tl = gsap.timeline({ paused: true });\n            drive(tl, total, speed, draw);\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"soft-blur-in\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "ef366c4c026825d8e9e36b94999d54b434211d46246a41ab7f52c3fce4001fa9",
+ "duration": 2,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "text": "Think different.",
+  "font_size": 120
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Think different."
+  },
+  {
+   "id": "blur",
+   "type": "number",
+   "role": "motion",
+   "label": "Blur",
+   "default": 12,
+   "min": 0,
+   "max": 40
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 12,
+   "max": 220
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

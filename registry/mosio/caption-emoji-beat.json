@@ -1,0 +1,135 @@
+{
+ "name": "caption-emoji-beat",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "RemotionUI",
+ "source": {
+  "repo": "https://github.com/riaz37/remotion-ui",
+  "path": "apps/web/registry/bases/default/primitives/caption-emoji-beat.tsx",
+  "commit": "0aecaca2b61a167992e1205d10e4da16d8a71331"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Caption Emoji Beat\n\nEmoji stamps land on the beat over a caption line: each arrives with overshoot, wobbles once, holds, then releases.\n\nCategory: captions. Length: 5 s. WebGL: no.\n\nUse when:\n- A short caption or voiceover line needs emoji punctuation timed to a music beat or a cut.\n- The beat times are known when the edit is cut: each emoji is scheduled on its own time.\n\nAvoid when:\n- The emoji should follow spoken words from a transcript: use caption-emoji.\n- The emoji must stay on screen with the caption for the whole phrase.\n\nVariables:\n- text (string): Caption, default \"Make every beat count\"\n- beats (string): Beats, default \"[{\\\"emoji\\\": \\\"\\ud83d\\udd25\\\", \\\"at\\\": 0.6, \\\"x\\\": 22, \\\"y\\\": 30, \\\"rotate\\\": -10}, {\\\"emoji\\\": \\\"\\ud83c\\udfac\\\", \\\"at\\\": 1.3, \\\"x\\\": 78, \\\"y\\\": 26, \\\"rotate\\\": 8}, {\\\"emoji\\\": \\\"\\ud83d\\udca1\\\", \\\"at\\\": 2.0, \\\"x\\\": 18, \\\"y\\\": 68, \\\"rotate\\\": -6}, {\\\"emoji\\\": \\\"\\u2b50\\\", \\\"at\\\": 2.7, \\\"x\\\": 80, \\\"y\\\": 72, \\\"rotate\\\": 12}, {\\\"emoji\\\": \\\"\\ud83d\\udc4f\\\", \\\"at\\\": 3.4, \\\"x\\\": 50, \\\"y\\\": 20, \\\"scale\\\": 110}]\"\n- font_size (number, 16-200): Font size, default 64\n- font_weight (number, 100-900): Font weight, default 800\n- color (color): Color, default \"#fafafa\"\n- font (enum): Font, default \"geist\"\n- emoji_size (number, 24-300): Emoji size, default 84\n- land_frames (number, 2-30): Landing, default 7\n- hold_frames (number, 0-120): Hold, default 26\n- overshoot (number, 1-2): Overshoot, default 1.35\n- wobble_degrees (number, 0-30): Wobble, default 9\n- text_at_frames (number, 0-120): Caption at, default 0\n\nSource: https://github.com/riaz37/remotion-ui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Caption Emoji Beat\n\n  Emoji punctuation landing on beats, over an optional caption line.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/riaz37/remotion-ui/blob/0aecaca2b61a167992e1205d10e4da16d8a71331/apps/web/registry/bases/default/primitives/caption-emoji-beat.tsx\n\n  MIT License\n\n  Copyright (c) 2026 RemotionUI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"caption-emoji-beat\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    [\n      {\n        \"id\": \"text\",\n        \"type\": \"string\",\n        \"role\": \"content\",\n        \"label\": \"Caption\",\n        \"description\": \"The caption line the emoji punctuate. Leave empty for emoji alone.\",\n        \"default\": \"Make every beat count\"\n      },\n      {\n        \"id\": \"beats\",\n        \"type\": \"string\",\n        \"role\": \"content\",\n        \"label\": \"Beats\",\n        \"description\": \"JSON list of emoji stamps: [{\\\"emoji\\\",\\\"at\\\",\\\"x\\\",\\\"y\\\",\\\"scale\\\",\\\"rotate\\\"}]. at is in seconds (or atInFrames in frames); x and y are percent of the frame from the top-left; scale is the size in px; rotate is the resting tilt in degrees.\",\n        \"default\": \"[{\\\"emoji\\\": \\\"🔥\\\", \\\"at\\\": 0.6, \\\"x\\\": 22, \\\"y\\\": 30, \\\"rotate\\\": -10}, {\\\"emoji\\\": \\\"🎬\\\", \\\"at\\\": 1.3, \\\"x\\\": 78, \\\"y\\\": 26, \\\"rotate\\\": 8}, {\\\"emoji\\\": \\\"💡\\\", \\\"at\\\": 2.0, \\\"x\\\": 18, \\\"y\\\": 68, \\\"rotate\\\": -6}, {\\\"emoji\\\": \\\"⭐\\\", \\\"at\\\": 2.7, \\\"x\\\": 80, \\\"y\\\": 72, \\\"rotate\\\": 12}, {\\\"emoji\\\": \\\"👏\\\", \\\"at\\\": 3.4, \\\"x\\\": 50, \\\"y\\\": 20, \\\"scale\\\": 110}]\"\n      },\n      {\n        \"id\": \"font_size\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font size\",\n        \"description\": \"Caption size in pixels.\",\n        \"default\": 64,\n        \"min\": 16,\n        \"max\": 200,\n        \"step\": 1,\n        \"unit\": \"px\"\n      },\n      {\n        \"id\": \"font_weight\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font weight\",\n        \"description\": \"Weight of the caption.\",\n        \"default\": 800,\n        \"min\": 100,\n        \"max\": 900,\n        \"step\": 100\n      },\n      {\n        \"id\": \"color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Color\",\n        \"description\": \"Caption colour.\",\n        \"default\": \"#fafafa\"\n      },\n      {\n        \"id\": \"font\",\n        \"type\": \"enum\",\n        \"role\": \"style\",\n        \"label\": \"Font\",\n        \"description\": \"Typeface.\",\n        \"default\": \"geist\",\n        \"options\": [\n          {\n            \"value\": \"geist\",\n            \"label\": \"Geist\"\n          },\n          {\n            \"value\": \"poppins\",\n            \"label\": \"Poppins\"\n          },\n          {\n            \"value\": \"playfair\",\n            \"label\": \"Playfair Display\"\n          },\n          {\n            \"value\": \"grotesk\",\n            \"label\": \"Space Grotesk\"\n          }\n        ]\n      },\n      {\n        \"id\": \"emoji_size\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Emoji size\",\n        \"description\": \"Base emoji size in pixels.\",\n        \"default\": 84,\n        \"min\": 24,\n        \"max\": 300,\n        \"step\": 1,\n        \"unit\": \"px\"\n      },\n      {\n        \"id\": \"land_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Landing\",\n        \"description\": \"Frames (30 per second) an emoji takes to land.\",\n        \"default\": 7,\n        \"min\": 2,\n        \"max\": 30,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      },\n      {\n        \"id\": \"hold_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Hold\",\n        \"description\": \"Frames it holds at full size before releasing.\",\n        \"default\": 26,\n        \"min\": 0,\n        \"max\": 120,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      },\n      {\n        \"id\": \"overshoot\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Overshoot\",\n        \"description\": \"Overshoot on the way in. 1 lands flat.\",\n        \"default\": 1.35,\n        \"min\": 1,\n        \"max\": 2,\n        \"step\": 0.01\n      },\n      {\n        \"id\": \"wobble_degrees\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Wobble\",\n        \"description\": \"Wobble after landing, in degrees.\",\n        \"default\": 9,\n        \"min\": 0,\n        \"max\": 30,\n        \"step\": 0.5,\n        \"unit\": \"deg\"\n      },\n      {\n        \"id\": \"text_at_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Caption at\",\n        \"description\": \"Frame the caption line arrives on.\",\n        \"default\": 0,\n        \"min\": 0,\n        \"max\": 120,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      }\n    ]\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Caption Emoji Beat</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Poppins:wght@400;600;800&amp;family=Playfair+Display:wght@400..900&amp;family=Space+Grotesk:wght@300..700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #f4f4f5; }\n        .ceb-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .ceb-text { position: absolute; inset: 0; display: grid; place-items: center; padding: 0 12%; text-align: center; line-height: 1.15; }\n        .ceb-emoji { position: absolute; line-height: 1; opacity: 0; font-family: 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"caption-emoji-beat\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"ceb-clip\" class=\"ceb-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <div id=\"ceb-text\" class=\"ceb-text\"></div><div id=\"ceb-beats\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) && v !== \"\" && v !== null ? Math.min(max, Math.max(min, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function bool(v, f) { if (v === undefined || v === null || v === \"\") return f; return !(v === false || v === \"false\" || v === 0 || v === \"0\"); }\n            function pick(v, list, f) { v = String(v); return list.indexOf(v) >= 0 ? v : f; }\n            function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }\n            function lerp(a, b, t) { return a + (b - a) * t; }\n            function ramp(v, a, b, from, to, ease) { var p = b === a ? 1 : clamp01((v - a) / (b - a)); if (ease) p = ease(p); return from + (to - from) * p; }\n            function bez(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 30; i++) {\n                  var cx = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;\n              };\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function mk(tag, parent, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; if (parent) parent.appendChild(e); return e; }\n            var TOTAL = parseFloat(root.dataset.duration || \"5\");\n            // Every frame is drawn from the frame number alone, so seeking anywhere draws the same frame.\n            function drive(name, frameFn) {\n              var clock = { f: 0 };\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: function () { frameFn(clock.f); } }, 0);\n              frameFn(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[name] = tl;\n            }\n\n            var FONTS = { geist: \"Geist, system-ui, sans-serif\", poppins: \"Poppins, system-ui, sans-serif\", playfair: '\"Playfair Display\", Georgia, serif', grotesk: '\"Space Grotesk\", system-ui, sans-serif' };\n            var fontKey = pick(vars.font, [\"geist\", \"poppins\", \"playfair\", \"grotesk\"], \"geist\");\n            root.style.fontFamily = FONTS[fontKey];\n            var DEFAULT_BEATS = [{\"emoji\": \"🔥\", \"at\": 0.6, \"x\": 22, \"y\": 30, \"rotate\": -10}, {\"emoji\": \"🎬\", \"at\": 1.3, \"x\": 78, \"y\": 26, \"rotate\": 8}, {\"emoji\": \"💡\", \"at\": 2.0, \"x\": 18, \"y\": 68, \"rotate\": -6}, {\"emoji\": \"⭐\", \"at\": 2.7, \"x\": 80, \"y\": 72, \"rotate\": 12}, {\"emoji\": \"👏\", \"at\": 3.4, \"x\": 50, \"y\": 20, \"scale\": 110}];\n            function parseBeats(raw) {\n              var data = raw;\n              if (typeof raw === \"string\") { try { data = JSON.parse(raw); } catch (e) { data = null; } }\n              if (!Array.isArray(data)) return null;\n              var out = [];\n              data.forEach(function (b) {\n                if (!b || typeof b.emoji !== \"string\") return;\n                var at = b.atInFrames !== undefined ? Number(b.atInFrames) : Number(b.at) * 30;\n                if (!Number.isFinite(at)) return;\n                out.push({ emoji: b.emoji, at: at, x: Number.isFinite(Number(b.x)) ? Number(b.x) : 50, y: Number.isFinite(Number(b.y)) ? Number(b.y) : 50, scale: Number(b.scale) > 0 ? Number(b.scale) : null, rotate: Number(b.rotate) || 0 });\n              });\n              return out;\n            }\n            var beats = parseBeats(vars.beats) || parseBeats(DEFAULT_BEATS);\n            var text = typeof vars.text === \"string\" ? vars.text : \"Make every beat count\";\n            var size = num(vars.emoji_size, 84, 24, 300), land = num(vars.land_frames, 7, 2, 30), hold = num(vars.hold_frames, 26, 0, 120);\n            var overshoot = num(vars.overshoot, 1.35, 1, 2), wob = num(vars.wobble_degrees, 9, 0, 30), textAt = num(vars.text_at_frames, 0, 0, 120);\n            var ENTER = bez(0.16, 1, 0.3, 1);\n            function EXIT(t) { return t * t * t; }\n            var textEl = document.getElementById(\"ceb-text\");\n            textEl.textContent = text;\n            textEl.style.fontSize = num(vars.font_size, 64, 16, 200) + \"px\";\n            textEl.style.fontWeight = String(num(vars.font_weight, 800, 100, 900));\n            textEl.style.color = str(vars.color, \"#fafafa\");\n            var holder = document.getElementById(\"ceb-beats\");\n            beats.forEach(function (b) {\n              b.el = mk(\"span\", holder, \"ceb-emoji\", b.emoji);\n              b.el.style.left = b.x + \"%\";\n              b.el.style.top = b.y + \"%\";\n              b.el.style.fontSize = (b.scale || size) + \"px\";\n            });\n            function draw(frame) {\n              var tp = ramp(frame, textAt, textAt + 12, 0, 1, ENTER);\n              textEl.style.opacity = String(clamp01(tp));\n              textEl.style.transform = \"translateY(\" + ((1 - tp) * 18).toFixed(2) + \"px)\";\n              beats.forEach(function (b) {\n                var since = frame - b.at;\n                if (since < -1) { b.el.style.opacity = \"0\"; return; }\n                var l = ramp(since, 0, land, 0, 1, ENTER);\n                // The release is shorter than the landing and accelerates away.\n                var rel = ramp(since, land + hold, land + hold + 10, 0, 1, EXIT);\n                var scale = (1 + (overshoot - 1) * Math.sin(Math.PI * clamp01(l))) * l * (1 - rel * 0.4);\n                var wobble = wob * Math.sin(since * 0.55) * Math.exp(-Math.max(0, since - land) / 7) * clamp01(l);\n                b.el.style.opacity = String(clamp01(l * 2) * (1 - rel));\n                b.el.style.transform = \"translate(-50%, -50%) scale(\" + scale.toFixed(4) + \") rotate(\" + (b.rotate + wobble).toFixed(3) + \"deg)\";\n              });\n            }\n            drive(\"caption-emoji-beat\", draw);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "7f049a14d12d8fb53daf2a19fcb091f8c414d0c2a3022c1f0e2def69bc5fbe38",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#14141c",
+ "demo_values": {
+  "font_size": 96,
+  "emoji_size": 150
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Caption",
+   "default": "Make every beat count"
+  },
+  {
+   "id": "beats",
+   "type": "string",
+   "role": "content",
+   "label": "Beats",
+   "default": "[{\"emoji\": \"🔥\", \"at\": 0.6, \"x\": 22, \"y\": 30, \"rotate\": -10}, {\"emoji\": \"🎬\", \"at\": 1.3, \"x\": 78, \"y\": 26, \"rotate\": 8}, {\"emoji\": \"💡\", \"at\": 2.0, \"x\": 18, \"y\": 68, \"rotate\": -6}, {\"emoji\": \"⭐\", \"at\": 2.7, \"x\": 80, \"y\": 72, \"rotate\": 12}, {\"emoji\": \"👏\", \"at\": 3.4, \"x\": 50, \"y\": 20, \"scale\": 110}]"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 64,
+   "min": 16,
+   "max": 200
+  },
+  {
+   "id": "font_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Font weight",
+   "default": 800,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#fafafa"
+  },
+  {
+   "id": "font",
+   "type": "enum",
+   "role": "style",
+   "label": "Font",
+   "default": "geist"
+  },
+  {
+   "id": "emoji_size",
+   "type": "number",
+   "role": "style",
+   "label": "Emoji size",
+   "default": 84,
+   "min": 24,
+   "max": 300
+  },
+  {
+   "id": "land_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Landing",
+   "default": 7,
+   "min": 2,
+   "max": 30
+  },
+  {
+   "id": "hold_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Hold",
+   "default": 26,
+   "min": 0,
+   "max": 120
+  },
+  {
+   "id": "overshoot",
+   "type": "number",
+   "role": "motion",
+   "label": "Overshoot",
+   "default": 1.35,
+   "min": 1,
+   "max": 2
+  },
+  {
+   "id": "wobble_degrees",
+   "type": "number",
+   "role": "motion",
+   "label": "Wobble",
+   "default": 9,
+   "min": 0,
+   "max": 30
+  },
+  {
+   "id": "text_at_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Caption at",
+   "default": 0,
+   "min": 0,
+   "max": 120
+  }
+ ],
+ "author_url": "https://remotionui.com"
+}

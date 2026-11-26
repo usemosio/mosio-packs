@@ -1,0 +1,107 @@
+{
+ "name": "shop-end-card",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "original": true
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Shop End Card\n\nThe closing card of a small-shop video on a clean white page: a logo tile, the shop name, a tagline, address, opening hours, a contact line and a call-to-action button settle in one after another and hold still.\n\nCategory: commerce. Length: 6 s. WebGL: no.\n\nUse when:\n- The last seconds of a video for a shop, stall or service that needs name, address, hours and a way to order.\n- A call to action should land clearly and then stay readable.\n\nAvoid when:\n- You only need a single line or a URL: use a text block.\n- The ending should be a product shot or a big offer: put it in the scene before this card.\n\nVariables:\n- shop_name (string): Shop name, default \"Dapur Lumer\"\n- tagline (string): Tagline, default \"Kue rumahan, pesan dari HP\"\n- address (string): Address, default \"Jl. Kenanga No. 8, Malang\"\n- hours (string): Opening hours, default \"Buka setiap hari 10.00\\u201321.00\"\n- contact (string): Contact, default \"Kontak 0812-3456-7890\"\n- cta (string): Call to action, default \"Pesan sekarang\"\n- show_logo (boolean): Logo tile, default true\n- primary_color (color): Accent colour, default \"#2563eb\"\n- on_primary_color (color): Text colour, default \"#0a0a0a\"\n- dark_color (color): Background, default \"#ffffff\"\n- surface_color (color): Light surface, default \"#fafafa\"\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Shop End Card\n\n  The closing card of a small-shop video: on a clean page a logo tile, the shop name, a short\n  tagline, address, opening hours and contact line, and a call-to-action button settle in and hold still.\n\n  Extracted from the Mosio recipes menu-board, flash-sale, angka-capaian and product-hero by usemosio/blocks.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"shop-end-card\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n  {\n    \"id\": \"shop_name\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Shop name\",\n    \"description\": \"Name of the shop, set large.\",\n    \"default\": \"Dapur Lumer\"\n  },\n  {\n    \"id\": \"tagline\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Tagline\",\n    \"description\": \"One short line under the name. Leave empty to hide it.\",\n    \"default\": \"Kue rumahan, pesan dari HP\"\n  },\n  {\n    \"id\": \"address\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Address\",\n    \"description\": \"Short address. Leave empty to hide the row.\",\n    \"default\": \"Jl. Kenanga No. 8, Malang\"\n  },\n  {\n    \"id\": \"hours\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Opening hours\",\n    \"description\": \"Opening hours. Leave empty to hide the row.\",\n    \"default\": \"Buka setiap hari 10.00–21.00\"\n  },\n  {\n    \"id\": \"contact\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Contact\",\n    \"description\": \"Contact line, for example a chat number. Leave empty to hide the row.\",\n    \"default\": \"Kontak 0812-3456-7890\"\n  },\n  {\n    \"id\": \"cta\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Call to action\",\n    \"description\": \"Text of the button. Leave empty to hide it.\",\n    \"default\": \"Pesan sekarang\"\n  },\n  {\n    \"id\": \"show_logo\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Logo tile\",\n    \"description\": \"Show the drawn shop-front logo tile above the name.\",\n    \"default\": true\n  },\n  {\n    \"id\": \"primary_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent colour\",\n    \"description\": \"Accent: the button and the logo glyph.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"on_primary_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Shop name, details and icons.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"dark_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background of the card.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"surface_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Light surface\",\n    \"description\": \"Logo tile.\",\n    \"default\": \"#fafafa\"\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Shop End Card</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\" />\n      <style>\n        #root {\n          --se-primary: #2563eb; --se-on: #0a0a0a; --se-dark: #ffffff; --se-surface: #fafafa; --se-ink: #ffffff;\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none; background: var(--se-dark); color: var(--se-on);\n          font-family: Geist, system-ui, sans-serif; font-weight: 500; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased;\n        }\n        #root * { box-sizing: border-box; }\n        #se-stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; }\n        .se-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 90px; gap: 70px; transform-origin: 50% 50%; }\n        .se-top, .se-bottom { display: flex; flex-direction: column; align-items: center; }\n        .se-logo { position: relative; width: 170px; height: 170px; border-radius: 44px; background: var(--se-surface); border: 1px solid color-mix(in oklab, var(--se-on) 12%, transparent); display: grid; place-items: center; margin-bottom: 44px; }\n        .se-logo svg { width: 104px; height: 104px; fill: none; stroke: var(--se-primary); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }\n        .se-name { font-size: 132px; font-weight: 600; letter-spacing: -0.05em; line-height: 1.02; }\n        .se-tag { margin-top: 26px; font-size: 44px; color: color-mix(in oklab, var(--se-on) 58%, var(--se-dark)); }\n        .se-rows { display: flex; flex-direction: column; gap: 22px; align-items: flex-start; }\n        .se-row { display: flex; align-items: center; gap: 26px; font-size: 44px; line-height: 1.2; text-align: left; }\n        .se-ic { width: 68px; height: 68px; border-radius: 50%; flex: none; display: grid; place-items: center; border: 1px solid color-mix(in oklab, var(--se-on) 14%, transparent); }\n        .se-ic svg { width: 34px; height: 34px; fill: none; stroke: var(--se-on); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }\n        .se-cta { margin-top: 60px; padding: 30px 74px; border-radius: 90px; background: var(--se-primary); color: var(--se-ink); font-size: 50px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }\n        /* Landscape: name and tagline on the left, details and button on the right. */\n        #se-stage.se-land .se-inner { flex-direction: row; gap: 130px; padding: 0 110px; }\n        #se-stage.se-land .se-top { align-items: flex-start; text-align: left; flex: 1 1 0; min-width: 0; }\n        #se-stage.se-land .se-bottom { align-items: flex-start; flex: 0 0 auto; }\n        #se-stage.se-land .se-name { font-size: 120px; }\n        #se-stage.se-land .se-tag { font-size: 42px; }\n        #se-stage.se-land .se-row { font-size: 40px; }\n        #se-stage.se-land .se-cta { margin-top: 44px; font-size: 46px; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"shop-end-card\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"se-clip\" class=\"clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\" style=\"position:absolute;inset:0\">\n          <div id=\"se-stage\">\n            <div class=\"se-inner\" id=\"se-inner\">\n              <div class=\"se-top\">\n                <div class=\"se-logo\" id=\"se-logo\"><svg viewBox=\"0 0 24 24\"><path d=\"M4 9.5 5.5 4h13L20 9.5\" /><path d=\"M4 9.5a2.67 2.67 0 0 0 5.33 0 2.67 2.67 0 0 0 5.34 0 2.67 2.67 0 0 0 5.33 0\" /><path d=\"M5.5 12.5V20h13v-7.5\" /><path d=\"M10 20v-4.5h4V20\" /></svg></div>\n                <div class=\"se-name\" id=\"se-name\"></div>\n                <div class=\"se-tag\" id=\"se-tag\"></div>\n              </div>\n              <div class=\"se-bottom\">\n                <div class=\"se-rows\" id=\"se-rows\"></div>\n                <div class=\"se-cta\" id=\"se-cta\"></div>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var $ = function (id) { return document.getElementById(id); };\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v.trim() : d; }\n            function txt(v, d) { return typeof v === \"string\" ? v.trim() : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            [[\"primary_color\", \"--se-primary\", \"#2563eb\"], [\"on_primary_color\", \"--se-on\", \"#0a0a0a\"], [\"dark_color\", \"--se-dark\", \"#ffffff\"], [\"surface_color\", \"--se-surface\", \"#fafafa\"]]\n              .forEach(function (c) { root.style.setProperty(c[1], colr(vars[c[0]], c[2])); });\n            // Button text: white on a dark accent, near-black on a light one.\n            (function () {\n              var m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(colr(vars.primary_color, \"#2563eb\")).trim());\n              if (!m) return;\n              var h = m[1].length === 3 ? m[1].replace(/./g, \"$&$&\") : m[1];\n              var lum = 0.299 * parseInt(h.slice(0, 2), 16) + 0.587 * parseInt(h.slice(2, 4), 16) + 0.114 * parseInt(h.slice(4, 6), 16);\n              root.style.setProperty(\"--se-ink\", lum > 160 ? \"#0a0a0a\" : \"#ffffff\");\n            })();\n\n            var stage = $(\"se-stage\"), W = root.clientWidth || 1080, H = root.clientHeight || 1920;\n            var land = W > H * 1.05, RW, RH, k;\n            if (land) { RH = 1080; RW = Math.round(1080 * W / H); k = H / RH; stage.classList.add(\"se-land\"); } else { RW = 1080; RH = Math.round(1080 * H / W); k = W / RW; }\n            stage.style.width = RW + \"px\"; stage.style.height = RH + \"px\"; stage.style.transform = \"scale(\" + k + \")\";\n\n            $(\"se-name\").textContent = str(vars.shop_name, \"Dapur Lumer\");\n            var tag = txt(vars.tagline, \"Kue rumahan, pesan dari HP\"); $(\"se-tag\").textContent = tag; if (!tag) $(\"se-tag\").style.display = \"none\";\n            if (!bool(vars.show_logo, true)) $(\"se-logo\").style.display = \"none\";\n            var icons = {\n              pin: '<path d=\"M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.4\"/>',\n              clock: '<circle cx=\"12\" cy=\"12\" r=\"8.5\"/><path d=\"M12 7.5V12l3 2\"/>',\n              chat: '<path d=\"M5 5h14a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 16h-7l-4.5 3.5V16H5a1.5 1.5 0 0 1-1.5-1.5v-8A1.5 1.5 0 0 1 5 5z\"/>'\n            };\n            var rows = $(\"se-rows\"), n = 0;\n            [[\"pin\", txt(vars.address, \"Jl. Kenanga No. 8, Malang\")], [\"clock\", txt(vars.hours, \"Buka setiap hari 10.00–21.00\")], [\"chat\", txt(vars.contact, \"Kontak 0812-3456-7890\")]].forEach(function (r) {\n              if (!r[1]) return; n++;\n              var d = document.createElement(\"div\"); d.className = \"se-row\";\n              d.innerHTML = '<span class=\"se-ic\"><svg viewBox=\"0 0 24 24\">' + icons[r[0]] + '</svg></span><span></span>';\n              d.lastChild.textContent = r[1]; rows.appendChild(d);\n            });\n            if (!n) rows.style.display = \"none\";\n            var cta = txt(vars.cta, \"Pesan sekarang\"); $(\"se-cta\").textContent = cta; if (!cta) $(\"se-cta\").style.display = \"none\";\n            // Fit a long name: scale the type down until it needs at most two lines.\n            var nm = $(\"se-name\"), avail = (land ? RW * 0.42 : RW - 180), size = parseFloat(getComputedStyle(nm).fontSize) || 132;\n            while (nm.scrollHeight > size * 1.02 * 2.05 && size > 56) { size -= 6; nm.style.fontSize = size + \"px\"; }\n            nm.style.maxWidth = avail + \"px\";\n\n            var tl = gsap.timeline({ paused: true });\n            var items = [\"#se-logo\", \"#se-name\", \"#se-tag\", \".se-row\", \"#se-cta\"].filter(function (s) { return document.querySelector(s) && getComputedStyle(document.querySelector(s)).display !== \"none\"; });\n            // The content rises one piece at a time.\n            if (items.indexOf(\"#se-logo\") >= 0) tl.fromTo(\"#se-logo\", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: \"power3.out\" }, 0.3);\n            var rest = items.filter(function (s) { return s !== \"#se-logo\"; });\n            rest.forEach(function (s, i) {\n              tl.fromTo(s, { y: 60, opacity: 0, filter: \"blur(8px)\" }, { y: 0, opacity: 1, filter: \"blur(0px)\", duration: 0.55, ease: \"circ.out\", stagger: 0.12 }, 0.45 + i * (s === \".se-row\" ? 0.18 : 0.14));\n            });\n            tl.fromTo(\"#se-inner\", { scale: 1.06 }, { scale: 1, duration: 3.6, ease: \"sine.out\" }, 0.55);\n            // The button pulses three times, then everything holds still.\n            if (items.indexOf(\"#se-cta\") >= 0) tl.to(\"#se-cta\", { scale: 1.03, duration: 0.45, yoyo: true, repeat: 5, ease: \"sine.inOut\" }, 2.3);\n            var total = parseFloat(root.dataset.duration || \"6\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"shop-end-card\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "022c655e22b5557501300fa6aa6cb49e63b1e84e965919fa8a450177dbcbf56a",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "shop_name",
+   "type": "string",
+   "role": "content",
+   "label": "Shop name",
+   "default": "Dapur Lumer"
+  },
+  {
+   "id": "tagline",
+   "type": "string",
+   "role": "content",
+   "label": "Tagline",
+   "default": "Kue rumahan, pesan dari HP"
+  },
+  {
+   "id": "address",
+   "type": "string",
+   "role": "content",
+   "label": "Address",
+   "default": "Jl. Kenanga No. 8, Malang"
+  },
+  {
+   "id": "hours",
+   "type": "string",
+   "role": "content",
+   "label": "Opening hours",
+   "default": "Buka setiap hari 10.00–21.00"
+  },
+  {
+   "id": "contact",
+   "type": "string",
+   "role": "content",
+   "label": "Contact",
+   "default": "Kontak 0812-3456-7890"
+  },
+  {
+   "id": "cta",
+   "type": "string",
+   "role": "content",
+   "label": "Call to action",
+   "default": "Pesan sekarang"
+  },
+  {
+   "id": "show_logo",
+   "type": "boolean",
+   "role": "style",
+   "label": "Logo tile",
+   "default": true
+  },
+  {
+   "id": "primary_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent colour",
+   "default": "#2563eb"
+  },
+  {
+   "id": "on_primary_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "dark_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "surface_color",
+   "type": "color",
+   "role": "style",
+   "label": "Light surface",
+   "default": "#fafafa"
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

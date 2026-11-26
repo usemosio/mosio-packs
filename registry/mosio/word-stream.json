@@ -1,0 +1,94 @@
+{
+ "name": "word-stream",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/word-stream/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Word Stream\n\nVoiceover-paced phrases building word by word while the line drifts left.\n\nCategory: typography. Length: 3.4 s. WebGL: no.\n\nUse when:\n- An intro or narration follows a voiceover and each phrase should build word by word at speaking pace.\n- Several short phrases play in sequence with fast cut-like swaps, the line drifting left as new words land.\n\nAvoid when:\n- There is only one static phrase to reveal: use per-word-crossfade.\n- The words follow a real voiceover transcript: use caption-karaoke or another caption block.\n\nVariables:\n- text (string): Text, default \"introducing | one-tap checkout | for your store\"\n- word_gap (number, 2-30): Word gap, default 6\n- hold (number, 6-90): Hold, default 18\n- drift (number, 0-6): Drift, default 2\n- font_size (number, 12-160): Font size, default 72\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"400\"\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Word Stream\n\n  Voiceover-paced phrases building word by word while the line drifts left.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/word-stream/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"word-stream\"\n  data-composition-duration=\"3.4\"\n  data-composition-variables='[\n    { \"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Phrases separated by |. Words within a phrase are split on spaces.\", \"default\": \"introducing | one-tap checkout | for your store\" },\n    { \"id\": \"word_gap\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Word gap\", \"description\": \"Frames between words of a phrase (30 fps).\", \"default\": 6, \"min\": 2, \"max\": 30, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"hold\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Hold\", \"description\": \"Frames a finished phrase stays before the next one cuts in.\", \"default\": 18, \"min\": 6, \"max\": 90, \"step\": 1, \"unit\": \"frames\" },\n    { \"id\": \"drift\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Drift\", \"description\": \"How fast the whole line crawls left, in px per frame at 72 px type.\", \"default\": 2, \"min\": 0, \"max\": 6, \"step\": 0.1 },\n    { \"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 72, \"min\": 12, \"max\": 160, \"step\": 1, \"unit\": \"px\" },\n    { \"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\" },\n    { \"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"400\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}] }\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Word Stream</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .wst-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .wst-phrase { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; white-space: nowrap; }\n        .wst-shift { display: flex; align-items: center; justify-content: center; }\n        .wst-line { letter-spacing: -0.02em; line-height: 1.1; white-space: nowrap; }\n        .wst-word { display: inline-block; white-space: pre; opacity: 0; margin-right: 0.28em; }\n        .wst-word:last-child { margin-right: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"word-stream\" data-duration=\"3.4\" data-fps=\"30\">\n        <div id=\"wst-clip\" class=\"wst-stage clip\" data-start=\"0\" data-duration=\"3.4\" data-track-index=\"0\"></div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            gsap.registerPlugin(CustomEase);\n            function bz(id, a, b, c, d) {\n              return CustomEase.create(\"wst-\" + id, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\");\n            }\n            // interpolate(frame, [a, b], [from, to], { easing }) as a tween (frames at 30 fps).\n            function tw(tl, el, from, to, a, b, ease, keep) {\n              var t = Object.assign({}, to, { duration: (b - a) / 30, ease: ease || \"none\", immediateRender: !keep });\n              tl.fromTo(el, from, t, a / 30);\n            }\n            // Shrink an element's font size so it fits a fraction of the frame width.\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            var TOTAL = parseFloat(root.dataset.duration || \"3.4\");\n            function finish(tl) {\n              if (tl.duration() < TOTAL) tl.to({}, { duration: TOTAL - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"word-stream\"] = tl;\n            }\n            var text = str(vars.text, \"introducing | one-tap checkout | for your store\");\n            var weight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"400\");\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            // interpolate() with clamping, easing given as a function of progress.\n            function ip(f, a, b, from, to, ease) {\n              var p = b === a ? 1 : Math.min(1, Math.max(0, (f - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n\n            var gap = num(vars.word_gap, 6, 2, 30);\n            var hold = num(vars.hold, 18, 6, 90);\n            var drift = num(vars.drift, 2, 0, 6);\n            var clip = document.getElementById(\"wst-clip\");\n            var REVEAL = 3, ENTRY = 8, RUN_OUT = 5;\n            var phrases = text.split(\"|\").map(function (p) { return p.trim(); }).filter(Boolean);\n            if (!phrases.length) phrases = [\"introducing\"];\n\n            // Build every phrase, then size them all by the widest one.\n            var cursor = 0;\n            var items = phrases.map(function (p, i) {\n              var words = p.split(/\\s+/);\n              var start = cursor;\n              var exitStart = start + (words.length - 1) * gap + REVEAL + hold;\n              cursor = exitStart;\n              var outer = document.createElement(\"div\");\n              outer.className = \"wst-phrase\";\n              var mid = document.createElement(\"div\");\n              mid.className = \"wst-shift\";\n              var inner = document.createElement(\"div\");\n              inner.className = \"wst-shift\";\n              var line = document.createElement(\"span\");\n              line.className = \"wst-line\";\n              line.style.fontWeight = weight;\n              var spans = words.map(function (w, j) {\n                var s = document.createElement(\"span\");\n                s.id = \"wst-word-\" + i + \"-\" + j;\n                s.className = \"wst-word\";\n                s.textContent = w;\n                line.appendChild(s);\n                return s;\n              });\n              inner.appendChild(line);\n              mid.appendChild(inner);\n              outer.appendChild(mid);\n              clip.appendChild(outer);\n              return { outer: outer, mid: mid, inner: inner, line: line, spans: spans, start: start, exitStart: exitStart, last: i === phrases.length - 1 };\n            });\n            var size = num(vars.font_size, 72, 12, 160);\n            items.forEach(function (it) { it.line.style.fontSize = size + \"px\"; });\n            var widest = 1;\n            items.forEach(function (it) { widest = Math.max(widest, it.line.scrollWidth); });\n            if (widest > root.clientWidth * 0.85) size = Math.max(12, size * (root.clientWidth * 0.85 / widest));\n            items.forEach(function (it) { it.line.style.fontSize = size + \"px\"; });\n\n            var k = size / 72;\n            var easeReveal = bz(\"reveal\", 0.2, 0.8, 0.2, 1);\n            var easeEntry = bz(\"entry\", 0.2, 0.8, 0.3, 1);\n            var easeRun = bz(\"run\", 0.7, 0, 0.9, 0.4);\n            var tl = gsap.timeline({ paused: true });\n            items.forEach(function (it) {\n              var life = it.exitStart - it.start;\n              var crawl = k * drift;\n              // Crawl: linear drift left over the phrase's life, then it holds.\n              tw(tl, it.mid, { x: crawl * life / 2 }, { x: -crawl * life / 2 }, it.start, it.exitStart);\n              tw(tl, it.inner, { x: k * 30 }, { x: 0 }, it.start, it.start + ENTRY, easeEntry);\n              it.spans.forEach(function (s, j) {\n                var at = it.start + j * gap;\n                tw(tl, s, { opacity: 0 }, { opacity: 1 }, at, at + REVEAL, easeReveal);\n              });\n              if (!it.last) {\n                tw(tl, it.line, { x: 0 }, { x: -k * 80 }, it.exitStart - RUN_OUT, it.exitStart, easeRun, true);\n                tl.set(it.outer, { visibility: \"hidden\" }, it.exitStart / 30);\n              }\n            });\n            finish(tl);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "419c69b732e21c5fee048b0352d475168f64a19ab147a414439bbd71258ae148",
+ "duration": 3.4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 100
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "introducing | one-tap checkout | for your store"
+  },
+  {
+   "id": "word_gap",
+   "type": "number",
+   "role": "motion",
+   "label": "Word gap",
+   "default": 6,
+   "min": 2,
+   "max": 30
+  },
+  {
+   "id": "hold",
+   "type": "number",
+   "role": "motion",
+   "label": "Hold",
+   "default": 18,
+   "min": 6,
+   "max": 90
+  },
+  {
+   "id": "drift",
+   "type": "number",
+   "role": "motion",
+   "label": "Drift",
+   "default": 2,
+   "min": 0,
+   "max": 6
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 12,
+   "max": 160
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "400"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

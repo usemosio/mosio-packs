@@ -1,0 +1,139 @@
+{
+ "name": "agent-terminal",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/claude-code/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Agent Terminal\n\nAn unbranded coding-agent terminal: the window or launcher eases in, panels fade up and a task types itself into the prompt with a blinking caret.\n\nCategory: ai. Length: 5.34 s. WebGL: no.\n\nUse when:\n- Showing a coding agent or command-line assistant taking a task, without naming any product.\n- A task should type itself into a terminal prompt with welcome context around it.\n- A developer-tool video needs a terminal card in your own accent colour.\n\nAvoid when:\n- You need the agent to run, stream steps and show results: use agent-run.\n- You need a plain shell with scrolling output: use terminal-simulator.\n- You only need a typed line with a caret: use caret or a typewriter text block.\n\nVariables:\n- layout (enum): Layout, default \"panel\"\n- app_name (string): App name, default \"Agent\"\n- user_name (string): User name, default \"Sam\"\n- model_label (string): Model label, default \"Model One \\u2022 Pro plan\"\n- cwd (string): Working directory, default \"/users/sam/code/app\"\n- tips (string): Tips, default \"/plan to outline a task|/review to check a change|ctrl+b to run in the background\"\n- placeholder (string): Placeholder, default \"Try \\\"edit <filepath> to ...\\\"\"\n- prompt (string): Prompt, default \"edit src/theme.ts to add a dark mode toggle\"\n- agent_name (string): Agent mode, default \"Build\"\n- model_name (string): Model name, default \"Model One\"\n- provider (string): Provider, default \"Provider Co\"\n- accent_color (color): Accent, default \"#2dd4bf\"\n- theme (enum): Theme, default \"dark\"\n- transparent (boolean): Transparent, default false\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Agent Terminal\n\n  An unbranded coding-agent terminal: the window or launcher eases in, panels fade up and a task types itself into the prompt with a blinking caret.\n\n  Adapted as an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/claude-code/index.tsx\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/opencode/index.tsx\n  Two remocn components share this motion (spring intro, staggered fade-ups, typing from 1.6 s); they became the two layouts of one block. The motion follows the sources. The look was made generic: no product names, wordmarks, mascots, signature colours or model names; labels and accent are variables.\n\n  MIT License\n\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"agent-terminal\"\n  data-composition-duration=\"5.34\"\n  data-composition-variables='[\n    {\"id\": \"layout\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Layout\", \"description\": \"A framed terminal window with a welcome panel, or a centered launcher with a prompt box.\", \"default\": \"panel\", \"options\": [\n    {\"value\": \"panel\", \"label\": \"Window panel\"},\n    {\"value\": \"launcher\", \"label\": \"Launcher\"}\n  ]},\n    {\"id\": \"app_name\", \"type\": \"string\", \"role\": \"content\", \"label\": \"App name\", \"description\": \"Generic name shown as the panel title (with a version) or the launcher wordmark.\", \"default\": \"Agent\"},\n    {\"id\": \"user_name\", \"type\": \"string\", \"role\": \"content\", \"label\": \"User name\", \"description\": \"Name in the panel greeting (panel layout).\", \"default\": \"Sam\"},\n    {\"id\": \"model_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Model label\", \"description\": \"Muted line under the glyph (panel layout).\", \"default\": \"Model One • Pro plan\"},\n    {\"id\": \"cwd\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Working directory\", \"description\": \"Muted path under the model label (panel layout).\", \"default\": \"/users/sam/code/app\"},\n    {\"id\": \"tips\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Tips\", \"description\": \"Pipe-separated lines in the right-hand panel (panel layout).\", \"default\": \"/plan to outline a task|/review to check a change|ctrl+b to run in the background\"},\n    {\"id\": \"placeholder\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Placeholder\", \"description\": \"Muted hint shown in the empty prompt.\", \"default\": \"Try \\\"edit <filepath> to ...\\\"\"},\n    {\"id\": \"prompt\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Prompt\", \"description\": \"Task that types itself into the prompt.\", \"default\": \"edit src/theme.ts to add a dark mode toggle\"},\n    {\"id\": \"agent_name\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Agent mode\", \"description\": \"Highlighted mode label under the launcher prompt (launcher layout).\", \"default\": \"Build\"},\n    {\"id\": \"model_name\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Model name\", \"description\": \"Model shown under the launcher prompt (launcher layout).\", \"default\": \"Model One\"},\n    {\"id\": \"provider\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Provider\", \"description\": \"Muted provider name next to the model (launcher layout).\", \"default\": \"Provider Co\"},\n    {\"id\": \"accent_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Accent\", \"description\": \"Colour of the frame, title and mode label.\", \"default\": \"#2dd4bf\"},\n    {\"id\": \"theme\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Theme\", \"description\": \"Dark or light terminal.\", \"default\": \"dark\", \"options\": [\n    {\"value\": \"dark\", \"label\": \"Dark\"},\n    {\"value\": \"light\", \"label\": \"Light\"}\n  ]},\n    {\"id\": \"transparent\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Transparent\", \"description\": \"Leave the background clear so the terminal sits over your own scene.\", \"default\": false},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier; above 1 the scene plays faster and holds the end.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Agent Terminal</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          background: var(--at-page, #22252d); color: var(--at-fg, #e6e6ea);\n          font-family: \"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace;\n          -webkit-font-smoothing: antialiased;\n        }\n        #root * { box-sizing: border-box; }\n        .at-clip { position: absolute; inset: 0; }\n        .at-stage { position: absolute; left: 50%; top: 50%; transform-origin: 50% 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; }\n        .at-win { background: var(--at-body); border-radius: 12px; overflow: hidden; box-shadow: 0 24px 60px -20px rgba(0,0,0,0.6); transform-origin: 50% 0; display: flex; flex-direction: column; }\n        .at-bar { height: 40px; background: var(--at-bar); display: flex; align-items: center; gap: 8px; padding-left: 16px; flex-shrink: 0; }\n        .at-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--at-dim); opacity: 0.7; }\n        .at-inner { padding: 28px; display: flex; flex-direction: column; }\n        .at-frame { position: relative; border: 1px dashed var(--at-accent); border-radius: 6px; padding: 28px 24px 24px; display: flex; }\n        .at-frame.col { flex-direction: column; }\n        .at-title { position: absolute; top: -11px; left: 22px; padding: 0 10px; background: var(--at-body); color: var(--at-accent); font-size: 16px; font-weight: 700; }\n        .at-left { width: 42%; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding-right: 24px; }\n        .col .at-left { width: 100%; padding: 0 0 20px; }\n        .at-hello { font-size: 20px; }\n        .at-glyph { align-self: center; }\n        .col .at-glyph { align-self: flex-start; }\n        .at-muted { font-size: 15px; color: var(--at-muted); line-height: 1.5; }\n        .at-right { width: 58%; border-left: 1px dashed var(--at-accent); padding-left: 24px; }\n        .col .at-right { width: 100%; border-left: 0; border-top: 1px dashed var(--at-accent); padding: 20px 0 0; }\n        .at-h { font-size: 15px; font-weight: 700; color: var(--at-accent); margin-bottom: 10px; }\n        .at-tip { font-size: 14px; margin-bottom: 6px; }\n        .at-prompt { margin-top: 32px; }\n        .at-rule { height: 1px; background: var(--at-dim); opacity: 0.4; margin-bottom: 16px; }\n        .at-line { display: flex; align-items: center; font-size: 17px; white-space: pre; overflow: hidden; }\n        .at-gt { color: var(--at-muted); }\n        .at-typed { color: var(--at-fg); }\n        .at-caret { display: inline-block; flex-shrink: 0; width: 11px; height: 22px; background: var(--at-fg); opacity: 0.55; }\n        .at-hint { color: var(--at-muted); margin-left: 6px; }\n        .at-word { font-size: 84px; font-weight: 700; letter-spacing: 0.18em; text-indent: 0.18em; color: var(--at-fg); line-height: 1; }\n        .at-box { margin-top: 40px; min-height: 150px; background: var(--at-box); border-left: 4px solid var(--at-accent); padding: 26px 28px; display: flex; flex-direction: column; justify-content: center; gap: 26px; transform-origin: 50% 0; }\n        .at-q { display: block; font-size: 22px; line-height: 1.4; white-space: pre-wrap; word-break: break-word; }\n        .at-q .at-hint { margin: 0; }\n        .at-q .at-caret { width: 12px; height: 24px; vertical-align: middle; }\n        .at-meta { display: flex; gap: 16px; font-size: 20px; }\n        .at-keys { margin-top: 18px; display: flex; justify-content: flex-end; gap: 22px; font-size: 18px; }\n        .at-keys b { color: var(--at-fg); margin-right: 8px; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"agent-terminal\" data-duration=\"5.34\" data-fps=\"30\">\n        <div id=\"at-clip\" class=\"at-clip clip\" data-start=\"0\" data-duration=\"5.34\" data-track-index=\"0\">\n          <div id=\"at-stage\" class=\"at-stage\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var stage = document.getElementById(\"at-stage\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n\n            var FPS = 30;\n            function num(v, d, min, max) { var n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : d; }\n            function txt(v, d) { return typeof v === \"string\" ? v : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function clamp(x, a, b) { return Math.min(b, Math.max(a, x)); }\n            function spring(frame, c) {\n              var t = Math.max(0, frame) / FPS, w0 = Math.sqrt(c.stiffness / c.mass), z = c.damping / (2 * Math.sqrt(c.stiffness * c.mass));\n              if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t)); }\n              if (z === 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              var s = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + s, r2 = -z * w0 - s;\n              return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n            }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n\n            function fadeUp(f, a, b) { var p = clamp((f - a) / (b - a), 0, 1); return { o: p, y: 12 * (1 - p) }; }\n            var launcher = String(vars.layout) === \"launcher\";\n            var appName = str(vars.app_name, \"Agent\");\n            var user = str(vars.user_name, \"Sam\");\n            var modelLabel = txt(vars.model_label, \"Model One • Pro plan\");\n            var cwd = txt(vars.cwd, \"/users/sam/code/app\");\n            var tips = txt(vars.tips, \"/plan to outline a task|/review to check a change|ctrl+b to run in the background\").split(\"|\").map(function (s) { return s.trim(); }).filter(Boolean);\n            var placeholder = txt(vars.placeholder, 'Try \"edit <filepath> to ...\"');\n            var prompt = str(vars.prompt, \"edit src/theme.ts to add a dark mode toggle\");\n            var agentName = txt(vars.agent_name, \"Build\"), modelName = txt(vars.model_name, \"Model One\"), provider = txt(vars.provider, \"Provider Co\");\n            var accent = colr(vars.accent_color, \"#2dd4bf\");\n            var light = String(vars.theme) === \"light\";\n            var speed = num(vars.speed, 1, 0.25, 4);\n            var T = light\n              ? { page: \"#e9e7e2\", body: \"#fbfaf8\", bar: \"#dcd9d3\", box: \"#efefed\", fg: \"#1f1f22\", muted: \"#6f6f76\", dim: \"#a0a0a8\" }\n              : { page: \"#22252d\", body: \"#14161b\", bar: \"#2b2e37\", box: \"#1c1f26\", fg: \"#e6e6ea\", muted: \"#8a8a94\", dim: \"#62626c\" };\n            Object.keys(T).forEach(function (k) { root.style.setProperty(\"--at-\" + k, T[k]); });\n            root.style.setProperty(\"--at-accent\", accent);\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, portrait = H > W;\n            var RW = portrait ? 720 : 1280, RH = portrait ? 1280 : 720, k = Math.min(W / RW, H / RH);\n            stage.style.width = RW + \"px\"; stage.style.height = RH + \"px\";\n            stage.style.marginLeft = -RW / 2 + \"px\"; stage.style.marginTop = -RH / 2 + \"px\";\n            stage.style.transform = \"scale(\" + k + \")\";\n\n            var a, b, c, typed, caret, hint, intro1, intro2, TYPE_AT = 48, CPS = launcher ? 20 : 18;\n            if (!launcher) {\n              var win = el(\"div\", \"at-win\", stage);\n              win.style.width = (portrait ? 640 : 1100) + \"px\";\n              var bar = el(\"div\", \"at-bar\", win);\n              for (var i = 0; i < 3; i++) el(\"div\", \"at-dot\", bar);\n              var inner = el(\"div\", \"at-inner\", win);\n              a = el(\"div\", \"at-frame\" + (portrait ? \" col\" : \"\"), inner);\n              el(\"span\", \"at-title\", a).textContent = appName + \" v1.0\";\n              var left = el(\"div\", \"at-left\", a);\n              el(\"div\", \"at-hello\", left).textContent = \"Hi \" + user + \", ready when you are.\";\n              el(\"div\", \"at-glyph\", left, '<svg width=\"84\" height=\"84\" viewBox=\"0 0 84 84\" fill=\"none\"><rect x=\"6\" y=\"6\" width=\"72\" height=\"72\" rx=\"16\" stroke=\"' + accent + '\" stroke-width=\"5\"/><path d=\"M26 32l14 10-14 10\" stroke=\"' + accent + '\" stroke-width=\"6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M46 54h14\" stroke=\"' + accent + '\" stroke-width=\"6\" stroke-linecap=\"round\"/></svg>');\n              var meta = el(\"div\", \"\", left);\n              el(\"div\", \"at-muted\", meta).textContent = modelLabel;\n              el(\"div\", \"at-muted\", meta).textContent = cwd;\n              b = el(\"div\", \"at-right\", a);\n              el(\"div\", \"at-h\", b).textContent = \"Tips\";\n              tips.forEach(function (t) { el(\"div\", \"at-tip\", b).textContent = t; });\n              var more = el(\"div\", \"at-tip\", b); more.textContent = \"... /help for more\"; more.style.color = T.dim;\n              c = el(\"div\", \"at-prompt\", inner);\n              el(\"div\", \"at-rule\", c);\n              var line = el(\"div\", \"at-line\", c);\n              el(\"span\", \"at-gt\", line).textContent = \"> \";\n              typed = el(\"span\", \"at-typed\", line); caret = el(\"span\", \"at-caret\", line); hint = el(\"span\", \"at-hint\", line); hint.textContent = placeholder;\n              intro1 = win;\n            } else {\n              a = el(\"div\", \"at-word\", stage); a.textContent = appName.toLowerCase();\n              b = el(\"div\", \"at-box\", stage); b.style.width = (portrait ? 640 : 1000) + \"px\";\n              var q = el(\"div\", \"at-q\", b);\n              hint = el(\"span\", \"at-hint\", q); hint.textContent = placeholder;\n              typed = el(\"span\", \"at-typed\", q); typed.style.color = T.muted; typed.style.color = light ? \"#55555c\" : \"#a8a8b0\";\n              caret = el(\"span\", \"at-caret\", q);\n              var m = el(\"div\", \"at-meta\", b);\n              var an = el(\"span\", \"\", m); an.textContent = agentName; an.style.color = accent; an.style.fontWeight = \"600\";\n              el(\"span\", \"\", m).textContent = modelName;\n              var pv = el(\"span\", \"\", m); pv.textContent = provider; pv.style.color = T.muted;\n              c = el(\"div\", \"at-keys\", stage); c.style.width = b.style.width;\n              c.innerHTML = '<span><b>tab</b><span style=\"color:' + T.muted + '\">agents</span></span><span><b>ctrl+p</b><span style=\"color:' + T.muted + '\">commands</span></span>';\n              intro1 = b;\n            }\n            var INTRO = { damping: 14, stiffness: 110, mass: 0.7 };\n            var chars = Array.from(prompt);\n            function draw(f) {\n              var s = spring(f, INTRO), introY = 28 * (1 - s), introS = 0.97 + 0.03 * s;\n              var local = f - TYPE_AT, over = (chars.length / CPS) * FPS;\n              var count = local <= 0 ? 0 : clamp(Math.floor((local / over) * chars.length), 0, chars.length);\n              var typing = count > 0 && count < chars.length;\n              typed.textContent = chars.slice(0, count).join(\"\");\n              caret.style.opacity = typing ? 0.55 : Math.floor(f / 15) % 2 === 0 ? 0.55 : 0;\n              if (launcher) {\n                hint.style.display = count > 0 ? \"none\" : \"inline\";\n                var lf = fadeUp(f, 4, 22), bf = fadeUp(f, 12, 30), hf = fadeUp(f, 20, 38);\n                a.style.opacity = lf.o; a.style.transform = \"translateY(\" + (lf.y + introY * 0.4) + \"px)\";\n                b.style.opacity = bf.o; b.style.transform = \"translateY(\" + (bf.y + introY * 0.6) + \"px) scale(\" + introS + \")\";\n                c.style.opacity = hf.o; c.style.transform = \"translateY(\" + hf.y + \"px)\";\n              } else {\n                hint.style.display = count > 0 ? \"none\" : \"inline\";\n                caret.style.marginLeft = count > 0 ? \"2px\" : \"0\";\n                var wf = clamp(introS, 0, 1);\n                intro1.style.opacity = wf; intro1.style.transform = \"translateY(\" + introY + \"px) scale(\" + introS + \")\";\n                var l = fadeUp(f, 6, 22), r = fadeUp(f, 12, 30), p = fadeUp(f, 18, 36);\n                a.style.opacity = l.o; a.style.transform = \"translateY(\" + l.y + \"px)\";\n                b.style.opacity = r.o; b.style.transform = \"translateY(\" + r.y + \"px)\";\n                c.style.opacity = p.o; c.style.transform = \"translateY(\" + p.y + \"px)\";\n              }\n            }\n\n            var seconds = parseFloat(root.dataset.duration || \"5.34\");\n            var clock = { f: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, { f: seconds * FPS * speed, duration: seconds, ease: \"none\", onUpdate: function () { draw(clock.f); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"agent-terminal\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "f30663eaca552a3250f1ad612fc9cbefc2cdf4291435102a053c588577d53839",
+ "duration": 5.34,
+ "webgl": false,
+ "demo_background": "#1c1f26",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "layout",
+   "type": "enum",
+   "role": "style",
+   "label": "Layout",
+   "default": "panel"
+  },
+  {
+   "id": "app_name",
+   "type": "string",
+   "role": "content",
+   "label": "App name",
+   "default": "Agent"
+  },
+  {
+   "id": "user_name",
+   "type": "string",
+   "role": "content",
+   "label": "User name",
+   "default": "Sam"
+  },
+  {
+   "id": "model_label",
+   "type": "string",
+   "role": "content",
+   "label": "Model label",
+   "default": "Model One • Pro plan"
+  },
+  {
+   "id": "cwd",
+   "type": "string",
+   "role": "content",
+   "label": "Working directory",
+   "default": "/users/sam/code/app"
+  },
+  {
+   "id": "tips",
+   "type": "string",
+   "role": "content",
+   "label": "Tips",
+   "default": "/plan to outline a task|/review to check a change|ctrl+b to run in the background"
+  },
+  {
+   "id": "placeholder",
+   "type": "string",
+   "role": "content",
+   "label": "Placeholder",
+   "default": "Try \"edit <filepath> to ...\""
+  },
+  {
+   "id": "prompt",
+   "type": "string",
+   "role": "content",
+   "label": "Prompt",
+   "default": "edit src/theme.ts to add a dark mode toggle"
+  },
+  {
+   "id": "agent_name",
+   "type": "string",
+   "role": "content",
+   "label": "Agent mode",
+   "default": "Build"
+  },
+  {
+   "id": "model_name",
+   "type": "string",
+   "role": "content",
+   "label": "Model name",
+   "default": "Model One"
+  },
+  {
+   "id": "provider",
+   "type": "string",
+   "role": "content",
+   "label": "Provider",
+   "default": "Provider Co"
+  },
+  {
+   "id": "accent_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2dd4bf"
+  },
+  {
+   "id": "theme",
+   "type": "enum",
+   "role": "style",
+   "label": "Theme",
+   "default": "dark"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

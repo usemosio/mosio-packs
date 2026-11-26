@@ -1,0 +1,97 @@
+{
+ "name": "type-wall",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/type-wall/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Type Wall\n\nRows of one word fill the frame, run in alternating directions at different speeds in heavy, narrow and outline faces, with an accent band through the middle.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- A loud full-screen beat for one word, such as a section title, a manifesto word or a transition card.\n- A busy, graphic backdrop behind a short overlay that should read as pure energy.\n- Kinetic poster typography should run for as long as the scene needs.\n\nAvoid when:\n- One strip of scrolling text is enough, as a ticker or a separator: use infinite-marquee.\n- The rows should recede in perspective rather than fill the frame flat: use perspective-marquee.\n- A single word should stay readable at the center with quieter repeats: use echo-stack.\n\nVariables:\n- text (string): Text, default \"MOTION\"\n- separator (string): Separator, default \"\\u00b7\"\n- color (color): Text color, default \"#fafafa\"\n- accent (color): Band color, default \"#ff4d1a\"\n- accent_text (color): Band text, default \"#111111\"\n- font_size (number, 24-180): Row height, default 64\n- seed (number, 0-99): Seed, default 7\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Type Wall\n\n  Rows of one word fill the frame, run in alternating directions at different speeds in heavy, narrow and outline faces, with an accent band through the middle.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/type-wall/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"type-wall\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"The word repeated along every row.\", \"default\": \"MOTION\"},\n    {\"id\": \"separator\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Separator\", \"description\": \"Mark between repeats.\", \"default\": \"·\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Color of the rows.\", \"default\": \"#fafafa\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Band color\", \"description\": \"Color of the middle band.\", \"default\": \"#ff4d1a\"},\n    {\"id\": \"accent_text\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Band text\", \"description\": \"Text color on the band.\", \"default\": \"#111111\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Row height\", \"description\": \"Height of one row in reference pixels (720 high stage).\", \"default\": 64, \"min\": 24, \"max\": 180, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"seed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Seed\", \"description\": \"Changes each row&#39;s speed and starting point.\", \"default\": 7, \"min\": 0, \"max\": 99, \"step\": 1},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Type Wall</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Inter:wght@900&family=Anton&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .tw-stage { position: absolute; inset: 0; overflow: hidden; font-family: Inter, system-ui, sans-serif; }\n        .tw-row { position: absolute; left: 0; right: 0; }\n        .tw-band { position: absolute; inset: 0; transform-origin: 50% 50%; }\n        .tw-strip { position: absolute; left: 0; top: 0; width: max-content; height: 100%; display: flex; align-items: center; white-space: pre; line-height: 1; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"type-wall\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"tw-clip\" class=\"tw-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <svg width=\"0\" height=\"0\" style=\"position:absolute\" aria-hidden=\"true\">\n            <defs>\n              <filter id=\"tw-outline\">\n                <feMorphology id=\"tw-erode\" in=\"SourceAlpha\" operator=\"erode\" radius=\"1.5\" result=\"inner\" />\n                <feComposite in=\"SourceAlpha\" in2=\"inner\" operator=\"out\" result=\"ring\" />\n                <feFlood id=\"tw-flood\" flood-color=\"#fafafa\" />\n                <feComposite in2=\"ring\" operator=\"in\" />\n              </filter>\n            </defs>\n          </svg>\n          <div id=\"tw-rows\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            function fit(el, maxPx, size, ratio) {\n              // Shrink el's font size until its scrollWidth fits ratio of the frame width.\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * (ratio || 0.9));\n              if (el.scrollWidth > max) { size = Math.max(10, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            gsap.registerPlugin(CustomEase);\n            function ease(name, a, b, c, d) { return CustomEase.create(name, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\"); }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            var tl = gsap.timeline({ paused: true });\n            var TOTAL = parseFloat(root.dataset.duration || \"5\");\n            function ip(t, a, b, from, to, e) {\n              var p = b === a ? 1 : (t - a) / (b - a);\n              p = Math.min(1, Math.max(0, p));\n              if (e) p = e(p);\n              return from + (to - from) * p;\n            }\n            function hash01(seed) {\n              var h = 2166136261;\n              for (var i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              return ((h ^ (h >>> 16)) >>> 0) / 4294967296;\n            }\n            function hashRange(seed, lo, hi) { return lo + hash01(seed) * (hi - lo); }\n            // Snap a frame number down to a stop-motion pose.\n            function qf(frame, step) { return Math.floor(frame / step + 1e-6) * step; }\n            function kf(t, keys, vals, e) {\n              if (t <= keys[0]) return vals[0];\n              for (var i = 0; i < keys.length - 1; i++) if (t <= keys[i + 1]) return ip(t, keys[i], keys[i + 1], vals[i], vals[i + 1], e);\n              return vals[vals.length - 1];\n            }\n            // Per-frame drawing: a pure function of the timeline time, run from a tween's onUpdate.\n            function tick(draw) {\n              tl.to({}, { duration: TOTAL, ease: \"none\", onUpdate: function () { draw(tl.time()); } }, 0);\n              draw(0);\n            }\n            var cubOut = ease(\"cub-out\", 0.215, 0.61, 0.355, 1);\n            var cubIn = ease(\"cub-in\", 0.55, 0.055, 0.675, 0.19);\n            var cubInOut = ease(\"cub-io\", 0.645, 0.045, 0.355, 1);\n\n            var text = str(vars.text, \"MOTION\"), sep = typeof vars.separator === \"string\" ? vars.separator : \"·\";\n            var color = col(vars.color, \"#fafafa\"), accent = col(vars.accent, \"#ff4d1a\"), accentText = col(vars.accent_text, \"#111111\");\n            var seed = num(vars.seed, 7, 0, 99), speed = num(vars.speed, 1, 0.25, 4);\n            var W = root.clientWidth, H = root.clientHeight, unit = H / 720;\n            var rowH = Math.max(8, num(vars.font_size, 64, 24, 180) * unit);\n            document.getElementById(\"tw-erode\").setAttribute(\"radius\", 1.5 * unit);\n            document.getElementById(\"tw-flood\").setAttribute(\"flood-color\", color);\n            var token = text + \" \" + sep + \" \";\n            var reachRows = Math.ceil((H / 2 - rowH / 2) / rowH) + 1;\n            var wrap = document.getElementById(\"tw-rows\");\n            var styles = [\"solid\", \"narrow\", \"outline\"];\n            var NARROW = 0.7275 / 0.8594;\n            var easeOutCubic = function (p) { return 1 - Math.pow(1 - p, 3); };\n            var rows = [];\n            for (var r = -reachRows; r <= reachRows; r++) {\n              var style = r === 0 ? \"solid\" : styles[((r % 3) + 3) % 3];\n              var narrow = style === \"narrow\", size = narrow ? rowH * NARROW : rowH;\n              var count = Math.min(48, Math.ceil(W / (Math.max(1, Array.from(token).length) * 0.4 * size)) + 2);\n              var rowEl = document.createElement(\"div\");\n              rowEl.className = \"tw-row\"; rowEl.style.top = H / 2 + (r - 0.5) * rowH + \"px\"; rowEl.style.height = rowH + \"px\";\n              if (r === 0) { var b = document.createElement(\"div\"); b.className = \"tw-band\"; b.style.background = accent; rowEl.appendChild(b); }\n              var strip = document.createElement(\"div\");\n              strip.className = \"tw-strip\";\n              strip.style.fontFamily = narrow ? \"Anton, Impact, sans-serif\" : \"Inter, system-ui, sans-serif\";\n              strip.style.fontSize = size + \"px\"; strip.style.fontWeight = narrow ? 400 : 900;\n              strip.style.color = r === 0 ? accentText : color;\n              if (style === \"outline\") strip.style.filter = \"url(#tw-outline)\";\n              for (var i = 0; i < count; i++) { var sp = document.createElement(\"span\"); sp.textContent = token; strip.appendChild(sp); }\n              rowEl.appendChild(strip);\n              wrap.appendChild(rowEl);\n              var factor = 0.7 + 0.6 * hash01(\"type-wall-\" + seed + \"-speed-\" + r);\n              rows.push({ r: r, el: rowEl, strip: strip, band: r === 0 ? rowEl.firstChild : null, count: count,\n                velocity: (0.22 * factor) / 30, phase: hash01(\"type-wall-\" + seed + \"-phase-\" + r), dir: Math.abs(r) % 2 === 0 ? -1 : 1 });\n            }\n            function fract(x) { return x - Math.floor(x); }\n            tick(function (tt) {\n              var t = tt * 30 * speed;\n              var band = ip(t, 6, 20, 0, 1, easeOutCubic);\n              rows.forEach(function (row) {\n                var e = easeOutCubic(Math.min(1, Math.max(0, (t - 2 * Math.abs(row.r)) / 20)));\n                var travel = row.phase + row.velocity * t + 2.5 * e;\n                var shift = row.dir < 0 ? -fract(travel) : fract(travel) - 1;\n                var hidden = (1 - e) * 100 + \"%\";\n                row.el.style.clipPath = row.dir < 0 ? \"inset(0 0 0 \" + hidden + \")\" : \"inset(0 \" + hidden + \" 0 0)\";\n                row.strip.style.transform = \"translateX(\" + (shift * 100) / row.count + \"%)\";\n                if (row.band) row.band.style.transform = \"scaleX(\" + band + \")\";\n              });\n            });\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"type-wall\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "49a6fd483d2a9131c6d30f1806fbfdaaccccd4db1729dc7832735890c93a3c99",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#2b3bff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "MOTION"
+  },
+  {
+   "id": "separator",
+   "type": "string",
+   "role": "content",
+   "label": "Separator",
+   "default": "·"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#fafafa"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Band color",
+   "default": "#ff4d1a"
+  },
+  {
+   "id": "accent_text",
+   "type": "color",
+   "role": "style",
+   "label": "Band text",
+   "default": "#111111"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Row height",
+   "default": 64,
+   "min": 24,
+   "max": 180
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "motion",
+   "label": "Seed",
+   "default": 7,
+   "min": 0,
+   "max": 99
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

@@ -1,0 +1,108 @@
+{
+ "name": "selection-snap",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/selection-snap/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Selection Snap\n\nA thin word in a loose viewfinder snaps into a design-tool selection while it goes from Thin to Black, pops its handles and counts up a size badge.\n\nCategory: typography. Length: 2.5 s. WebGL: no.\n\nUse when:\n- A single word should read as something being designed: a design tool, a component library, a type or layout feature.\n- A weight change should carry the beat: the word grows from Thin to Black inside the frame.\n- The title needs a precise, UI-flavored accent (selection box, handles, a W × H readout) without building interface chrome.\n\nAvoid when:\n- The word should enter with physical motion rather than change in place: use stretch-in.\n- A plain, quiet reveal is enough and the design-tool look would distract: use soft-blur-in.\n- The text is a full sentence: the selection frames one short word.\n\nVariables:\n- text (string): Text, default \"Frame\"\n- color (color): Start color, default \"#fafafa\"\n- accent (color): Accent, default \"#ff4d1a\"\n- selection_color (color): Selection, default \"#3d5afe\"\n- font_size (number, 60-260): Font size, default 150\n- from_weight (number, 100-900): From weight, default 100\n- to_weight (number, 100-900): To weight, default 900\n- badge (boolean): Size badge, default true\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Selection Snap\n\n  A thin word in a loose viewfinder snaps into a design-tool selection while it goes from Thin to Black, pops its handles and counts up a size badge.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/selection-snap/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"selection-snap\"\n  data-composition-duration=\"2.5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"One short word.\", \"default\": \"Frame\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Start color\", \"description\": \"Color of the word at the start.\", \"default\": \"#fafafa\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Accent\", \"description\": \"Color the word settles on.\", \"default\": \"#ff4d1a\"},\n    {\"id\": \"selection_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Selection\", \"description\": \"Color of the brackets, handles and badge.\", \"default\": \"#3d5afe\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in reference pixels (1280×720 stage).\", \"default\": 150, \"min\": 60, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"from_weight\", \"type\": \"number\", \"role\": \"style\", \"label\": \"From weight\", \"description\": \"Starting font weight.\", \"default\": 100, \"min\": 100, \"max\": 900, \"step\": 100},\n    {\"id\": \"to_weight\", \"type\": \"number\", \"role\": \"style\", \"label\": \"To weight\", \"description\": \"Final font weight.\", \"default\": 900, \"min\": 100, \"max\": 900, \"step\": 100},\n    {\"id\": \"badge\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Size badge\", \"description\": \"Show the W × H readout under the box.\", \"default\": true},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Selection Snap</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .ss-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: Inter, system-ui, sans-serif; }\n        .ss-box { position: relative; display: inline-block; }\n        .ss-word { display: block; white-space: pre; line-height: 1; }\n        .ss-measure { position: absolute; visibility: hidden; white-space: pre; line-height: 1; left: 0; top: 0; }\n        .ss-frame { position: absolute; inset: 0; }\n        .ss-arm, .ss-handle { position: absolute; }\n        .ss-handle { box-sizing: border-box; background: #fff; }\n        .ss-badge { position: absolute; left: 50%; white-space: nowrap; color: #fff; font-weight: 600; line-height: 1.2; font-variant-numeric: tabular-nums; transform-origin: 50% 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"selection-snap\" data-duration=\"2.5\" data-fps=\"30\">\n        <div id=\"ss-clip\" class=\"ss-stage clip\" data-start=\"0\" data-duration=\"2.5\" data-track-index=\"0\">\n          <span id=\"ss-measure\" class=\"ss-measure\"></span>\n          <div id=\"ss-box\" class=\"ss-box\">\n            <span id=\"ss-word\" class=\"ss-word\"></span>\n            <div id=\"ss-frame\" class=\"ss-frame\"></div>\n            <div id=\"ss-badge\" class=\"ss-badge\"></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            function fit(el, maxPx, size, ratio) {\n              // Shrink el's font size until its scrollWidth fits ratio of the frame width.\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * (ratio || 0.9));\n              if (el.scrollWidth > max) { size = Math.max(10, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            gsap.registerPlugin(CustomEase);\n            function ease(name, a, b, c, d) { return CustomEase.create(name, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\"); }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            var tl = gsap.timeline({ paused: true });\n            var TOTAL = parseFloat(root.dataset.duration || \"2.5\");\n            function ip(t, a, b, from, to, e) {\n              var p = b === a ? 1 : (t - a) / (b - a);\n              p = Math.min(1, Math.max(0, p));\n              if (e) p = e(p);\n              return from + (to - from) * p;\n            }\n            function hash01(seed) {\n              var h = 2166136261;\n              for (var i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              return ((h ^ (h >>> 16)) >>> 0) / 4294967296;\n            }\n            function hashRange(seed, lo, hi) { return lo + hash01(seed) * (hi - lo); }\n            // Snap a frame number down to a stop-motion pose.\n            function qf(frame, step) { return Math.floor(frame / step + 1e-6) * step; }\n            function kf(t, keys, vals, e) {\n              if (t <= keys[0]) return vals[0];\n              for (var i = 0; i < keys.length - 1; i++) if (t <= keys[i + 1]) return ip(t, keys[i], keys[i + 1], vals[i], vals[i + 1], e);\n              return vals[vals.length - 1];\n            }\n            // Per-frame drawing: a pure function of the timeline time, run from a tween's onUpdate.\n            function tick(draw) {\n              tl.to({}, { duration: TOTAL, ease: \"none\", onUpdate: function () { draw(tl.time()); } }, 0);\n              draw(0);\n            }\n            var cubOut = ease(\"cub-out\", 0.215, 0.61, 0.355, 1);\n            var cubIn = ease(\"cub-in\", 0.55, 0.055, 0.675, 0.19);\n            var cubInOut = ease(\"cub-io\", 0.645, 0.045, 0.355, 1);\n\n            var text = str(vars.text, \"Frame\");\n            var accent = col(vars.accent, \"#ff4d1a\"), start = col(vars.color, \"#fafafa\"), sel = col(vars.selection_color, \"#3d5afe\");\n            var fromW = num(vars.from_weight, 100, 100, 900), toW = num(vars.to_weight, 900, 100, 900);\n            var speed = num(vars.speed, 1, 0.25, 4), showBadge = bool(vars.badge, true);\n            var unit = Math.min(root.clientWidth / 1280, root.clientHeight / 720);\n            var size = num(vars.font_size, 150, 60, 260) * unit;\n            var box = document.getElementById(\"ss-box\"), word = document.getElementById(\"ss-word\"), frameEl = document.getElementById(\"ss-frame\");\n            var badge = document.getElementById(\"ss-badge\"), measure = document.getElementById(\"ss-measure\");\n            word.textContent = text; measure.textContent = text;\n            word.style.fontSize = size + \"px\"; measure.style.fontSize = size + \"px\";\n            measure.style.fontWeight = toW; measure.style.fontVariationSettings = '\"wght\" ' + toW;\n            var stroke = Math.max(1, 1.5 * unit), arm = 0.16 * size, hs = 9 * unit;\n            var armEls = [], i;\n            var armDefs = [[\"top\", \"left\", \"h\"], [\"top\", \"right\", \"h\"], [\"bottom\", \"left\", \"h\"], [\"bottom\", \"right\", \"h\"], [\"top\", \"left\", \"v\"], [\"bottom\", \"left\", \"v\"], [\"top\", \"right\", \"v\"], [\"bottom\", \"right\", \"v\"]];\n            armDefs.forEach(function (d) {\n              var el = document.createElement(\"div\"); el.className = \"ss-arm\"; el.style.background = sel;\n              el.style[d[0]] = \"0\"; el.style[d[1]] = \"0\";\n              if (d[2] === \"h\") el.style.height = stroke + \"px\"; else el.style.width = stroke + \"px\";\n              frameEl.appendChild(el); armEls.push({ el: el, dir: d[2] });\n            });\n            var HANDLES = [[0, 0], [1, 0], [1, 1], [0, 1], [0.5, 0], [1, 0.5], [0.5, 1], [0, 0.5]];\n            var handleEls = HANDLES.map(function (h) {\n              var el = document.createElement(\"div\"); el.className = \"ss-handle\";\n              el.style.left = h[0] * 100 + \"%\"; el.style.top = h[1] * 100 + \"%\";\n              el.style.width = hs + \"px\"; el.style.height = hs + \"px\"; el.style.border = stroke + \"px solid \" + sel;\n              frameEl.appendChild(el); return el;\n            });\n            badge.style.top = \"calc(100% + \" + 12 * unit + \"px)\";\n            badge.style.padding = 3 * unit + \"px \" + 7 * unit + \"px\";\n            badge.style.borderRadius = 4 * unit + \"px\"; badge.style.background = sel;\n            badge.style.fontSize = 14 * unit + \"px\"; badge.style.fontVariationSettings = '\"wght\" 600';\n            if (!showBadge) badge.style.display = \"none\";\n            function rgb(c) {\n              var h = c.replace(\"#\", \"\");\n              if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n              var n = parseInt(h, 16);\n              return Number.isFinite(n) ? [(n >> 16) & 255, (n >> 8) & 255, n & 255] : [255, 255, 255];\n            }\n            var c0 = rgb(start), c1 = rgb(accent);\n            var easeOutCubic = function (p) { return 1 - Math.pow(1 - p, 3); };\n            var snapEase = ease(\"ss-snap\", 0.34, 1.3, 0.64, 1);\n            var popEase = function (p) { var q = 1 - p; return 1 - q * q * (2.7 * q - 1.7); };\n            function pop(t, s, d) { return Math.max(0, ip(t, s, s + d, 0, 1, popEase)); }\n            tick(function (tt) {\n              var t = tt * 30 * speed;\n              var intro = ip(t, 0, 8, 0, 1, easeOutCubic), bScale = ip(t, 0, 8, 1.06, 1, easeOutCubic);\n              var snap = ip(t, 14, 28, 0, 1, snapEase), wt = ip(t, 14, 30, 0, 1, cubInOut);\n              var tint = ip(t, 18, 30, 0, 1, cubInOut), edges = ip(t, 16, 26, 0, 1, cubInOut);\n              var px = 1.1 + (0.12 - 1.1) * snap, py = 0.9 + (0 - 0.9) * snap;\n              box.style.padding = py * size + \"px \" + px * size + \"px\";\n              var w = fromW + (toW - fromW) * wt;\n              word.style.fontWeight = Math.round(w / 100) * 100;\n              word.style.fontVariationSettings = '\"wght\" ' + w.toFixed(2);\n              word.style.color = \"rgb(\" + [0, 1, 2].map(function (k) { return Math.round(c0[k] + (c1[k] - c0[k]) * tint); }).join(\",\") + \")\";\n              word.style.opacity = intro;\n              frameEl.style.opacity = intro; frameEl.style.transform = \"scale(\" + bScale + \")\";\n              var along = \"calc(\" + arm + \"px + (50% - \" + arm + \"px) * \" + edges + \")\";\n              armEls.forEach(function (a) { if (a.dir === \"h\") a.el.style.width = along; else a.el.style.height = along; });\n              handleEls.forEach(function (el, k) { el.style.transform = \"translate(-50%, -50%) scale(\" + pop(t, 24 + k, 5) + \")\"; });\n              if (showBadge) {\n                var tw = measure.getBoundingClientRect().width / unit, fs = size / unit;\n                var bw = Math.round(tw + 2 * 0.12 * fs), bh = Math.round(fs);\n                var pb = pop(t, 24, 8), count = ip(t, 24, 38, 0, 1, easeOutCubic);\n                badge.textContent = Math.round(bw * count) + \" × \" + Math.round(bh * count);\n                badge.style.opacity = Math.min(1, pb);\n                badge.style.transform = \"translate(-50%, \" + (1 - pb) * 8 * unit + \"px) scale(\" + (0.6 + 0.4 * pb) + \")\";\n              }\n            });\n            var total = parseFloat(root.dataset.duration || \"2.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"selection-snap\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "5aac5778d20ad2eb15ce6bde3af3ca8b747718ac59d5c937b191cfe20b3928ae",
+ "duration": 2.5,
+ "webgl": false,
+ "demo_background": "#0a0a0a",
+ "demo_values": {
+  "font_size": 260
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Frame"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Start color",
+   "default": "#fafafa"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#ff4d1a"
+  },
+  {
+   "id": "selection_color",
+   "type": "color",
+   "role": "style",
+   "label": "Selection",
+   "default": "#3d5afe"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 150,
+   "min": 60,
+   "max": 260
+  },
+  {
+   "id": "from_weight",
+   "type": "number",
+   "role": "style",
+   "label": "From weight",
+   "default": 100,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "to_weight",
+   "type": "number",
+   "role": "style",
+   "label": "To weight",
+   "default": 900,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "badge",
+   "type": "boolean",
+   "role": "style",
+   "label": "Size badge",
+   "default": true
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

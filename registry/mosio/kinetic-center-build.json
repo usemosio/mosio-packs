@@ -1,0 +1,83 @@
+{
+ "name": "kinetic-center-build",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/kinetic-center-build/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Kinetic Center Build\n\nWords enter from the right one at a time and push the line left so the sentence builds around the centre.\n\nCategory: typography. Length: 2 s. WebGL: no.\n\nUse when:\n- A short sentence should assemble word by word, each new word nudging the earlier ones sideways.\n- A title card for a confident statement that builds toward the centre.\n\nAvoid when:\n- The sentence must stay fixed while words appear: use a per-word fade.\n- Text enters from below or above: use line-by-line-slide or bottom-up-letters.\n\nVariables:\n- text (string): Text, default \"Words push left.\"\n- entry_offset (number, 0-400): Entry offset, default 88\n- font_size (number, 12-240): Font size, default 72\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"600\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Kinetic Center Build\n\n  Words enter from the right one at a time and push the line left so the sentence builds around the centre.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/kinetic-center-build/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"kinetic-center-build\"\n  data-composition-duration=\"2\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Sentence built word by word.\", \"default\": \"Words push left.\"},\n    {\"id\": \"entry_offset\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Entry offset\", \"description\": \"How far right of its place each new word starts.\", \"default\": 88, \"min\": 0, \"max\": 400, \"step\": 2, \"unit\": \"px\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 72, \"min\": 12, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Kinetic Center Build</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: var(--color, #171717); font-family: Geist, -apple-system, BlinkMacSystemFont, sans-serif; }\n        .kcb-stage { position: absolute; inset: 0; }\n        .kcb-line { position: absolute; inset: 0; letter-spacing: -0.03em; white-space: nowrap; }\n        .kcb-word { position: absolute; left: 50%; top: 50%; white-space: nowrap; backface-visibility: hidden; opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"kinetic-center-build\" data-duration=\"2\" data-fps=\"30\">\n        <div id=\"kcb-clip\" class=\"kcb-stage clip\" data-start=\"0\" data-duration=\"2\" data-track-index=\"0\">\n          <div id=\"kcb-line\" class=\"kcb-line\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return value !== \"\" && value !== null && Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function bezier(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 32; i++) {\n                  var u = 1 - t;\n                  var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                var v = 1 - t;\n                return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n              };\n            }\n            function clamp01(p) { return Math.min(1, Math.max(0, p)); }\n            function ip(x, a, b, from, to, ease) {\n              var p = b === a ? (x >= b ? 1 : 0) : clamp01((x - a) / (b - a));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n            // Damped spring from 0 to 1, rest at 0 velocity (mass, stiffness, damping), at `frame` of 30 fps.\n            function spring(frame, cfg) {\n              if (frame <= 0) return 0;\n              var t = frame / 30, m = cfg.mass, k = cfg.stiffness, c = cfg.damping;\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              if (z < 1) {\n                var wd = w0 * Math.sqrt(1 - z * z);\n                return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t));\n              }\n              return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n            }\n            // Seeded generator (mulberry32).\n            function rng(seed) {\n              var a = seed >>> 0;\n              return function () {\n                a = (a + 0x6d2b79f5) >>> 0;\n                var t = a;\n                t = Math.imul(t ^ (t >>> 15), t | 1);\n                t ^= t + Math.imul(t ^ (t >>> 7), t | 61);\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            var TOTAL = 2;\n            var FRAMES = Math.round(TOTAL * 30);\n            var clock = { frame: 0 };\n            function frameNow() { return Math.round(clock.frame * 1000) / 1000; }\n            function start(draw) {\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { frame: FRAMES, duration: TOTAL, ease: \"none\", onUpdate: function () { draw(frameNow()); } }, 0);\n              draw(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"kinetic-center-build\"] = tl;\n            }\n            function onFonts(fn) {\n              if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn, function () {});\n            }\n            function fit(el, size, frac, hfrac) {\n              el.style.fontSize = size + \"px\";\n              var maxW = Math.max(1, root.clientWidth * frac);\n              var maxH = Math.max(1, root.clientHeight * (hfrac || 0.9));\n              var k = Math.min(1, maxW / Math.max(1, el.scrollWidth), maxH / Math.max(1, el.scrollHeight));\n              if (k < 1) { size = Math.max(8, size * k); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n\n\n            var text = str(vars.text, \"Words push left.\");\n            var entryOffset = num(vars.entry_offset, 88, 0, 400), size = num(vars.font_size, 72, 12, 240), speed = num(vars.speed, 1, 0.25, 4);\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            var wt = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"600\");\n            var words = text.split(\" \").filter(function (w) { return w.length; });\n            var line = document.getElementById(\"kcb-line\");\n            line.setAttribute(\"aria-label\", text);\n            line.style.fontWeight = wt;\n            var spans = words.map(function (w, j) {\n              var sp = document.createElement(\"span\");\n              sp.id = \"kcb-word-\" + j; sp.className = \"kcb-word\"; sp.textContent = w;\n              line.appendChild(sp); return sp;\n            });\n            var n = words.length, gap = 10, firstDur = 10, pushDur = 13, travelDur = 7;\n            var entryScale = 0.992, entryBlur = 3.5, reflowBlur = 0.8, firstWordY = 6;\n            var easing = bezier(0.2, 0.8, 0.2, 1);\n            var positionsAt = [], fsize = size, scaleK = 1;\n            function measure() {\n              line.style.fontSize = fsize + \"px\";\n              var widths = spans.map(function (s) { return s.getBoundingClientRect().width / (s.getBoundingClientRect().width ? 1 : 1); });\n              widths = spans.map(function (s) { return s.offsetWidth; });\n              gap = 10 * fsize / 72; // remocn's 10 px gap at 72 px, kept in proportion\n              var total = gap * (n - 1);\n              widths.forEach(function (w) { total += w; });\n              return { widths: widths, total: total };\n            }\n            function layout() {\n              fsize = size;\n              var m = measure();\n              var maxW = root.clientWidth * 0.9;\n              if (m.total > maxW) { fsize = Math.max(8, size * maxW / m.total); m = measure(); }\n              scaleK = fsize / size;\n              positionsAt = [];\n              for (var k = 1; k <= n; k++) {\n                var tot = gap * (k - 1);\n                for (var j = 0; j < k; j++) tot += m.widths[j];\n                var cursor = -tot / 2, xs = [];\n                for (var j2 = 0; j2 < k; j2++) { xs.push(cursor + m.widths[j2] / 2); cursor += m.widths[j2] + gap; }\n                positionsAt.push(xs);\n              }\n            }\n            layout();\n            onFonts(function () { layout(); draw(frameNow()); });\n            function draw(raw) {\n              var frame = raw * speed;\n              spans.forEach(function (sp, j) {\n                var entryStart = j === 0 ? 0 : firstDur + (j - 1) * pushDur;\n                var entryEnd = entryStart + (j === 0 ? firstDur : pushDur);\n                var targetX = positionsAt[j][j];\n                var xFrom = j === 0 ? 0 : targetX + entryOffset * scaleK;\n                var x = targetX, opacity = 1, scale = 1, blur = 0, y = 0;\n                if (frame < entryStart) {\n                  opacity = 0; x = xFrom; scale = entryScale; blur = entryBlur; y = j === 0 ? firstWordY : 0;\n                } else if (frame <= entryEnd) {\n                  var tEnd = Math.min(entryStart + travelDur, entryEnd);\n                  x = ip(frame, entryStart, tEnd, xFrom, targetX, easing);\n                  opacity = ip(frame, entryStart, entryEnd, 0, 1, easing);\n                  scale = ip(frame, entryStart, entryEnd, entryScale, 1, easing);\n                  blur = ip(frame, entryStart, entryEnd, entryBlur, 0, easing);\n                  y = j === 0 ? ip(frame, entryStart, tEnd, firstWordY, 0, easing) : 0;\n                } else {\n                  for (var w = j + 1; w < n; w++) {\n                    var pS = firstDur + (w - 1) * pushDur, pE = pS + pushDur;\n                    var fromX = positionsAt[w - 1][j], toX = positionsAt[w][j];\n                    if (frame >= pE) { x = toX; }\n                    else if (frame >= pS) {\n                      x = ip(frame, pS, Math.min(pS + travelDur, pE), fromX, toX, easing);\n                      var mid = (pS + pE) / 2;\n                      blur = frame < mid ? ip(frame, pS, mid, 0, reflowBlur) : ip(frame, mid, pE, reflowBlur, 0);\n                      break;\n                    } else { x = fromX; break; }\n                  }\n                }\n                sp.style.opacity = opacity;\n                sp.style.transform = \"translate(-50%, -50%) translate3d(\" + x + \"px,\" + y + \"px,0) scale(\" + scale + \")\";\n                sp.style.filter = blur > 0.01 ? \"blur(\" + blur + \"px)\" : \"none\";\n              });\n            }\n            start(draw);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "6a50a1961a4c8a398419f6d46590fc30d914800b26a6a4db10babcd9c5d8ef9d",
+ "duration": 2,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "text": "Build the line.",
+  "font_size": 170
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Words push left."
+  },
+  {
+   "id": "entry_offset",
+   "type": "number",
+   "role": "motion",
+   "label": "Entry offset",
+   "default": 88,
+   "min": 0,
+   "max": 400
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 12,
+   "max": 240
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

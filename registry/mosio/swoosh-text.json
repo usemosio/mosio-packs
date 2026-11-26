@@ -1,0 +1,104 @@
+{
+ "name": "swoosh-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Kokonut UI",
+ "source": {
+  "repo": "https://github.com/kokonut-labs/kokonutui",
+  "path": "components/kokonutui/swoosh-text.tsx",
+  "commit": "4d497b7b03f02ffd07225e638c0b9ace3f892dbb"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Swoosh Text\n\nExtruded letters lit by a moving light: the 3D extrusion swings and overshoots as a cursor sweeps past, then a letter is pressed down like a keycap.\n\nCategory: typography. Length: 4.5 s. WebGL: no.\n\nUse when:\n- A headline should feel like solid, tactile lettering that reacts to a light or a touch.\n- A short product word or key phrase needs a playful, physical beat.\n\nAvoid when:\n- Long sentences: every letter carries a stack of layers.\n- A flat, quiet title card: use per-character-rise.\n\nVariables:\n- text (string): Text, default \"Extruded\"\n- font_size (number, 24-320): Font size, default 150\n- face_color (color): Face color, default \"#18181b\"\n- near_color (color): Near color, default \"#d4d4d8\"\n- far_color (color): Far color, default \"#52525b\"\n- accent (color): Accent, default \"\"\n- depth (number, 6-16): Layers, default 14\n- length (number, 0.05-0.8): Extrusion length, default 0.32\n- font_weight (enum): Font weight, default \"800\"\n\nSource: https://github.com/kokonut-labs/kokonutui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Swoosh Text\n\n  Extruded lettering lit by a moving light: the extrusion swings away from a cursor sweeping across the text (under-damped, so a flick overshoots), and a click presses a key into its own extrusion.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/kokonut-labs/kokonutui/blob/4d497b7b03f02ffd07225e638c0b9ace3f892dbb/components/kokonutui/swoosh-text.tsx\n\n  MIT License\n\n  Copyright (c) 2025 kokonutUI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"swoosh-text\"\n  data-composition-duration=\"4.5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Short word or phrase.\", \"default\": \"Extruded\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 150, \"min\": 24, \"max\": 320, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"face_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Face color\", \"description\": \"Color of the front of the letters.\", \"default\": \"#18181b\"},\n    {\"id\": \"near_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Near color\", \"description\": \"Extrusion color right behind the face.\", \"default\": \"#d4d4d8\"},\n    {\"id\": \"far_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Far color\", \"description\": \"Extrusion color at its deepest layer.\", \"default\": \"#52525b\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Accent\", \"description\": \"Optional color for the deepest layer only (leave empty for none).\", \"default\": \"\"},\n    {\"id\": \"depth\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Layers\", \"description\": \"Stacked layers behind each letter (6 to 16).\", \"default\": 14, \"min\": 6, \"max\": 16, \"step\": 1},\n    {\"id\": \"length\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Extrusion length\", \"description\": \"Total extrusion length in em.\", \"default\": 0.32, \"min\": 0.05, \"max\": 0.8, \"step\": 0.01, \"unit\": \"em\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"800\", \"options\": [{\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Swoosh Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@600;700;800&amp;display=block\" />\n      <style>\n        #root { position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none; }\n        #root { font-family: var(--font-display, Geist, system-ui, sans-serif); }\n        .sw-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .sw-line { position: relative; letter-spacing: -0.03em; line-height: 1.1; white-space: pre; padding: 0.3em 0.4em; }\n        .sw-word { display: inline-block; white-space: nowrap; }\n        .sw-key { position: relative; display: inline-block; }\n        .sw-layer { position: absolute; inset: 0; }\n        .sw-face { position: relative; display: inline-block; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"swoosh-text\" data-duration=\"4.5\" data-fps=\"30\">\n        <div id=\"sw-clip\" class=\"sw-stage clip\" data-start=\"0\" data-duration=\"4.5\" data-track-index=\"0\">\n          <div id=\"sw-line\" class=\"sw-line\" role=\"img\"></div>\n        </div>\n\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, a, b) { var x = Number(v); return Number.isFinite(x) ? Math.min(b, Math.max(a, x)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n\n\n            var line = document.getElementById(\"sw-line\");\n            var text = str(vars.text, \"Extruded\");\n            var size = num(vars.font_size, 150, 24, 320);\n            var depth = Math.round(num(vars.depth, 14, 6, 16));\n            var length = num(vars.length, 0.32, 0.05, 0.8);\n            var step = length / depth;\n            var weight = [\"600\", \"700\", \"800\"].indexOf(String(vars.font_weight)) >= 0 ? String(vars.font_weight) : \"800\";\n            function rgbOf(hex, f) {\n              var h = String(hex || \"\").replace(\"#\", \"\");\n              if (h.length === 3) h = h.replace(/(.)/g, \"$1$1\");\n              var n = parseInt(h, 16);\n              return Number.isFinite(n) && h.length === 6 ? [(n >> 16) & 255, (n >> 8) & 255, n & 255] : f;\n            }\n            var face = col(vars.face_color, \"#18181b\");\n            var near = rgbOf(vars.near_color, [212, 212, 216]), far = rgbOf(vars.far_color, [82, 82, 91]);\n            var accent = typeof vars.accent === \"string\" && vars.accent.trim() ? vars.accent : null;\n            line.setAttribute(\"aria-label\", text);\n            line.style.fontSize = size + \"px\";\n            line.style.fontWeight = weight;\n\n            function layerColor(i) {\n              if (i === depth && accent) return accent;\n              var t = (i - 1) / Math.max(1, depth - 1);\n              return \"rgb(\" + [0, 1, 2].map(function (c) { return Math.round(far[c] * t + near[c] * (1 - t)); }).join(\",\") + \")\";\n            }\n            var keys = [];\n            var REST = Math.SQRT1_2;\n            Array.from(text.split(/\\s+/).filter(Boolean)).forEach(function (word, w) {\n              if (w > 0) line.appendChild(document.createTextNode(\" \"));\n              var ws = document.createElement(\"span\");\n              ws.className = \"sw-word\";\n              Array.from(word).forEach(function (ch) {\n                var key = document.createElement(\"span\");\n                key.className = \"sw-key\";\n                var layers = [];\n                // Deepest layer first so the face paints on top.\n                for (var i = depth; i >= 1; i--) {\n                  var l = document.createElement(\"span\");\n                  l.className = \"sw-layer\";\n                  l.style.color = layerColor(i);\n                  l.textContent = ch;\n                  key.appendChild(l);\n                  layers.push(l);\n                }\n                var f = document.createElement(\"span\");\n                f.className = \"sw-face\";\n                f.style.color = face;\n                f.textContent = ch;\n                key.appendChild(f);\n                layers.push(f);\n                ws.appendChild(key);\n                keys.push({ el: key, layers: layers });\n              });\n              line.appendChild(ws);\n            });\n            // Shrink to 90 % of the frame width when the text is wider.\n            var maxW = root.clientWidth * 0.9;\n            if (line.scrollWidth > maxW) { size = Math.max(24, size * maxW / line.scrollWidth); line.style.fontSize = size + \"px\"; }\n\n            // Measure keys relative to the text block, in unscaled px.\n            var lineBox = line.getBoundingClientRect();\n            var kk = line.offsetWidth / (lineBox.width || line.offsetWidth);\n            keys.forEach(function (k) {\n              var r = k.el.getBoundingClientRect();\n              k.x = (r.left - lineBox.left + r.width / 2) * kk;\n              k.y = (r.top - lineBox.top + r.height / 2) * kk;\n            });\n            var LW = line.offsetWidth, LH = line.offsetHeight;\n\n            // A scripted cursor: it sweeps across the text, clicks one letter, then leaves.\n            // Waypoints are [time, x, y] in fractions of the text block (outside 0..1 is off the text).\n            var way = [[0.5, -0.35, -1.6], [1.3, 0.2, 0.2], [2.1, 0.82, 0.45], [2.7, 0.9, 1.8], [3.4, 0.1, 2.0]];\n            var pointerOn = 0.5, pointerOff = 3.55, clickAt = 2.05, clickOff = 2.5;\n            function pointerAt(t) {\n              if (t < pointerOn || t > pointerOff) return null;\n              for (var i = 0; i < way.length - 1; i++) {\n                var a = way[i], b = way[i + 1];\n                if (t >= a[0] && t <= b[0]) {\n                  var u = (t - a[0]) / (b[0] - a[0]); u = u * u * (3 - 2 * u);\n                  return { x: (a[1] + (b[1] - a[1]) * u) * LW, y: (a[2] + (b[2] - a[2]) * u) * LH };\n                }\n              }\n              var z = way[way.length - 1];\n              return { x: z[1] * LW, y: z[2] * LH };\n            }\n            // Spring for the light direction: under-damped on purpose, so a fast flick swings past its target.\n            var LIGHT_K = 170, LIGHT_C = 13, LIGHT_KICK = 9, LIGHT_MAXV = 30, LIGHT_MAXLEN = 1.35;\n            var KEY_K = 420, KEY_C = 34, MAX_SINK = 0.72, PRESS_R = 0.75;\n            function cl(v, m) { return Math.max(-m, Math.min(m, v)); }\n            function target(p) {\n              if (!p) return [REST, REST];\n              var dx = LW / 2 - p.x, dy = LH / 2 - p.y;\n              var reach = Math.max(Math.hypot(dx, dy), size * 0.9);\n              return [dx / reach, dy / reach];\n            }\n            var dur = parseFloat(root.dataset.duration || \"4.5\");\n            var H = 120, N = Math.ceil(dur * H) + 2, dt = 1 / H;\n            var LX = new Float32Array(N), LY = new Float32Array(N);\n            var P = keys.map(function () { return new Float32Array(N); });\n            var lx = REST, ly = REST, vx = 0, vy = 0, kp = keys.map(function () { return 0; }), kv = keys.map(function () { return 0; });\n            var prevTarget = [REST, REST], pressed = -1;\n            for (var s = 0; s < N; s++) {\n              var t = s * dt, p = pointerAt(t);\n              var tg = target(p);\n              // The pointer's velocity is carried into the spring at each move.\n              if (p && s % 2 === 0) { vx = cl(vx + (tg[0] - prevTarget[0]) * LIGHT_KICK, LIGHT_MAXV); vy = cl(vy + (tg[1] - prevTarget[1]) * LIGHT_KICK, LIGHT_MAXV); }\n              prevTarget = tg;\n              if (p && t >= clickAt && t < clickOff) {\n                if (pressed < 0) { var bd = size * 0.8; keys.forEach(function (k, i) { var d = Math.hypot(k.x - p.x, k.y - p.y); if (d < bd) { bd = d; pressed = i; } }); }\n              } else pressed = -1;\n              vx += ((tg[0] - lx) * LIGHT_K - vx * LIGHT_C) * dt;\n              vy += ((tg[1] - ly) * LIGHT_K - vy * LIGHT_C) * dt;\n              lx += vx * dt; ly += vy * dt;\n              var ln = Math.hypot(lx, ly);\n              if (ln > LIGHT_MAXLEN) { lx = lx / ln * LIGHT_MAXLEN; ly = ly / ln * LIGHT_MAXLEN; }\n              LX[s] = lx; LY[s] = ly;\n              for (var i2 = 0; i2 < keys.length; i2++) {\n                var tp;\n                if (i2 === pressed) tp = 1;\n                else if (!p) tp = 0;\n                else { var dd = Math.hypot(p.x - keys[i2].x, p.y - keys[i2].y) / (size * PRESS_R); tp = dd > 2.5 ? 0 : Math.exp(-dd * dd); }\n                tp *= MAX_SINK;\n                kv[i2] += ((tp - kp[i2]) * KEY_K - kv[i2] * KEY_C) * dt;\n                kp[i2] += kv[i2] * dt;\n                P[i2][s] = kp[i2];\n              }\n            }\n            function draw(time) {\n              var f = Math.min(N - 2, Math.max(0, time * H)), i0 = Math.floor(f), u = f - i0;\n              var ax = LX[i0] + (LX[i0 + 1] - LX[i0]) * u, ay = LY[i0] + (LY[i0 + 1] - LY[i0]) * u;\n              for (var k = 0; k < keys.length; k++) {\n                var pk = Math.max(0, P[k][i0] + (P[k][i0 + 1] - P[k][i0]) * u);\n                var ls = keys[k].layers; // deepest first, face last\n                for (var j = 0; j < ls.length; j++) {\n                  var idx = ls.length - 1 - j; // face = 0\n                  var off = (idx + (depth - idx) * pk) * step;\n                  ls[j].style.transform = \"translate(\" + (ax * off).toFixed(4) + \"em,\" + (ay * off).toFixed(4) + \"em)\";\n                }\n              }\n            }\n            var tl = gsap.timeline({ paused: true });\n            var clock = { t: 0 };\n            tl.to(clock, { t: dur, duration: dur, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n\n            var total = parseFloat(root.dataset.duration || \"4.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"swoosh-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "db6b9d8a291e2f97cf83a30bd259596367c259a8fc1c362a0c05d6001ebd00f7",
+ "duration": 4.5,
+ "webgl": false,
+ "demo_background": "#f4f4f5",
+ "demo_values": {
+  "text": "Extruded",
+  "font_size": 230
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Extruded"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 150,
+   "min": 24,
+   "max": 320
+  },
+  {
+   "id": "face_color",
+   "type": "color",
+   "role": "style",
+   "label": "Face color",
+   "default": "#18181b"
+  },
+  {
+   "id": "near_color",
+   "type": "color",
+   "role": "style",
+   "label": "Near color",
+   "default": "#d4d4d8"
+  },
+  {
+   "id": "far_color",
+   "type": "color",
+   "role": "style",
+   "label": "Far color",
+   "default": "#52525b"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": ""
+  },
+  {
+   "id": "depth",
+   "type": "number",
+   "role": "style",
+   "label": "Layers",
+   "default": 14,
+   "min": 6,
+   "max": 16
+  },
+  {
+   "id": "length",
+   "type": "number",
+   "role": "style",
+   "label": "Extrusion length",
+   "default": 0.32,
+   "min": 0.05,
+   "max": 0.8
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "800"
+  }
+ ],
+ "author_url": "https://kokonutui.com"
+}

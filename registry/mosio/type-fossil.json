@@ -1,0 +1,113 @@
+{
+ "name": "type-fossil",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/type-fossil/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Type Fossil\n\nA readable word carries layers of fine contours, revises itself through earlier drafts, then compresses into a clean typographic imprint.\n\nCategory: typography. Length: 6.9333 s. WebGL: no.\n\nUse when:\n- A creative process should move from earlier wording to a finished idea.\n- A title needs a sculptural contour effect that resolves into clean typography.\n\nAvoid when:\n- Letters must morph individually between phrases: use kinetic-morph-text.\n- Long paragraphs need to be read: this is built for words and short phrases.\n\nVariables:\n- text (string): Final word, default \"Form\"\n- drafts (string): Drafts, default \"Idea | Maybe | Try | Almost | Again | Closer\"\n- layers (number, 4-24): Contour layers, default 16\n- depth (number, 50-150): Slice depth, default 100\n- font_size (number, 24-300): Font size, default 220\n- font_weight (enum): Font weight, default \"600\"\n- color (color): Ink, default \"#302b26\"\n- accent_color (color): Contours, default \"#a800b7\"\n- background_color (color): Background, default \"#eeeae2\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Type Fossil\n\n  A readable word carries layers of fine contours, revises itself through earlier drafts, then compresses into a clean typographic imprint.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/type-fossil/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"type-fossil\"\n  data-composition-duration=\"6.9333\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Final word\", \"description\": \"The word the drafts settle on.\", \"default\": \"Form\"},\n    {\"id\": \"drafts\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Drafts\", \"description\": \"Earlier versions, separated by |. Up to twelve; the clip is sized for six, more drafts play faster.\", \"default\": \"Idea | Maybe | Try | Almost | Again | Closer\"},\n    {\"id\": \"layers\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Contour layers\", \"description\": \"Number of stacked contour slices.\", \"default\": 16, \"min\": 4, \"max\": 24, \"step\": 1},\n    {\"id\": \"depth\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Slice depth\", \"description\": \"Thickness of the slice, in reference pixels.\", \"default\": 100, \"min\": 50, \"max\": 150, \"step\": 1},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in reference pixels (1280×720 stage).\", \"default\": 220, \"min\": 24, \"max\": 300, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the word.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Ink\", \"description\": \"Color of the word.\", \"default\": \"#302b26\"},\n    {\"id\": \"accent_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Contours\", \"description\": \"Color of the contour lines.\", \"default\": \"#a800b7\"},\n    {\"id\": \"background_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Backdrop color.\", \"default\": \"#eeeae2\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Type Fossil</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .tf-stage { position: absolute; inset: 0; font-family: Arimo, Arial, Helvetica, sans-serif; }\n        .tf-svg { display: block; width: 100%; height: 100%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"type-fossil\" data-duration=\"6.9333\" data-fps=\"30\">\n        <div id=\"tf-clip\" class=\"tf-stage clip\" data-start=\"0\" data-duration=\"6.9333\" data-track-index=\"0\">\n          <svg id=\"tf-svg\" class=\"tf-svg\" viewBox=\"0 0 1280 720\" preserveAspectRatio=\"xMidYMid meet\">\n            <defs>\n              <clipPath id=\"tf-old\"><rect id=\"tf-old-r\" x=\"-100\" y=\"-100\" width=\"1480\" height=\"920\" /></clipPath>\n              <clipPath id=\"tf-new\"><rect id=\"tf-new-r\" x=\"-100\" y=\"-100\" width=\"0\" height=\"920\" /></clipPath>\n            </defs>\n            <g id=\"tf-a\" clip-path=\"url(#tf-old)\"></g>\n            <g id=\"tf-b\" clip-path=\"url(#tf-new)\"></g>\n          </svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            function fit(el, maxPx, size, ratio) {\n              // Shrink el's font size until its scrollWidth fits ratio of the frame width.\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * (ratio || 0.9));\n              if (el.scrollWidth > max) { size = Math.max(10, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            gsap.registerPlugin(CustomEase);\n            function ease(name, a, b, c, d) { return CustomEase.create(name, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\"); }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            var tl = gsap.timeline({ paused: true });\n            var TOTAL = parseFloat(root.dataset.duration || \"6.9333\");\n            function ip(t, a, b, from, to, e) {\n              var p = b === a ? 1 : (t - a) / (b - a);\n              p = Math.min(1, Math.max(0, p));\n              if (e) p = e(p);\n              return from + (to - from) * p;\n            }\n            function hash01(seed) {\n              var h = 2166136261;\n              for (var i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              return ((h ^ (h >>> 16)) >>> 0) / 4294967296;\n            }\n            function hashRange(seed, lo, hi) { return lo + hash01(seed) * (hi - lo); }\n            // Snap a frame number down to a stop-motion pose.\n            function qf(frame, step) { return Math.floor(frame / step + 1e-6) * step; }\n            function kf(t, keys, vals, e) {\n              if (t <= keys[0]) return vals[0];\n              for (var i = 0; i < keys.length - 1; i++) if (t <= keys[i + 1]) return ip(t, keys[i], keys[i + 1], vals[i], vals[i + 1], e);\n              return vals[vals.length - 1];\n            }\n            // Per-frame drawing: a pure function of the timeline time, run from a tween's onUpdate.\n            function tick(draw) {\n              tl.to({}, { duration: TOTAL, ease: \"none\", onUpdate: function () { draw(tl.time()); } }, 0);\n              draw(0);\n            }\n            var cubOut = ease(\"cub-out\", 0.215, 0.61, 0.355, 1);\n            var cubIn = ease(\"cub-in\", 0.55, 0.055, 0.675, 0.19);\n            var cubInOut = ease(\"cub-io\", 0.645, 0.045, 0.355, 1);\n\n            var NS = \"http://www.w3.org/2000/svg\";\n            var stage = document.getElementById(\"tf-clip\");\n            stage.style.backgroundColor = col(vars.background_color, \"#eeeae2\");\n            var finalText = str(vars.text, \"Form\").trim().replace(/\\s+/g, \" \");\n            var drafts = str(vars.drafts, \"Idea | Maybe | Try | Almost | Again | Closer\").split(/[|\\n\\r]+/).map(function (s) { return s.trim().replace(/\\s+/g, \" \"); }).filter(Boolean).slice(0, 12);\n            var revisions = drafts.concat([finalText]);\n            var count = Math.round(num(vars.layers, 16, 4, 24)), thickness = num(vars.depth, 100, 50, 150);\n            var size = num(vars.font_size, 220, 24, 300), weight = pick(vars.font_weight, [\"400\", \"600\", \"700\"], \"600\");\n            var ink = col(vars.color, \"#302b26\"), accent = col(vars.accent_color, \"#a800b7\");\n            var draftCount = revisions.length - 1;\n            var collapseStart = draftCount === 0 ? 16 : 20 + (draftCount - 1) * 18 + 16, settle = collapseStart + 48;\n            // The clip is sized for the default six drafts; longer scripts speed up to fit it.\n            var rate = num(vars.speed, 1, 0.25, 4) * Math.max(1, (settle + 34) / (TOTAL * 30));\n            var easeIO = ease(\"tf-io\", 0.65, 0, 0.3, 1), easeOut = ease(\"tf-out\", 0.16, 1, 0.3, 1);\n            function prog(t, a, b) { return Math.min(1, Math.max(0, (t - a) / (b - a))); }\n            function widthUnits(s) {\n              return Array.from(s).reduce(function (sum, ch) {\n                return sum + (/\\s/.test(ch) ? 0.35 : /[ilI.,'!:;]/.test(ch) ? 0.4 : /[MW@]/.test(ch) ? 1 : 0.8);\n              }, 0);\n            }\n            function slice(parent) {\n              var list = [];\n              for (var order = 0; order < count; order++) {\n                var tx = document.createElementNS(NS, \"text\");\n                tx.setAttribute(\"text-anchor\", \"middle\"); tx.setAttribute(\"paint-order\", \"stroke fill\");\n                parent.appendChild(tx);\n                list.push(tx);\n              }\n              return list;\n            }\n            var groupA = slice(document.getElementById(\"tf-a\")), groupB = slice(document.getElementById(\"tf-b\"));\n            function drawSlice(list, copy, st) {\n              var font = Math.min(size, 720 / Math.max(1, widthUnits(copy)));\n              list.forEach(function (tx, order) {\n                var index = count - 1 - order, fraction = index / (count - 1);\n                var x = 640 + st.spanX / 2 - st.spanX * fraction, y = 360 + st.spanY / 2 - st.spanY * fraction;\n                tx.textContent = copy;\n                tx.setAttribute(\"x\", 0); tx.setAttribute(\"y\", font * 0.35);\n                tx.setAttribute(\"font-size\", font); tx.setAttribute(\"font-weight\", weight);\n                tx.setAttribute(\"transform\", \"translate(\" + x + \" \" + y + \") skewX(\" + st.skew + \")\");\n                tx.setAttribute(\"fill\", index === 0 ? ink : \"none\");\n                tx.setAttribute(\"stroke\", index === 0 ? \"none\" : accent);\n                tx.setAttribute(\"stroke-width\", index === 0 ? 0 : 0.75);\n                tx.setAttribute(\"stroke-opacity\", 0.18 + (1 - fraction) * 0.38);\n                tx.setAttribute(\"opacity\", index === 0 ? 1 : st.ghost);\n              });\n            }\n            var rOld = document.getElementById(\"tf-old-r\"), rNew = document.getElementById(\"tf-new-r\");\n            tick(function (tt) {\n              var t = tt * 30 * rate;\n              var collapse = easeIO(prog(t, collapseStart, settle));\n              var open = 0.55 + 0.45 * easeOut(prog(t, 0, 16));\n              var spread = open * (1 - collapse);\n              var from = 0, to = 0, change = 0;\n              for (var rev = 0; rev < draftCount; rev++) {\n                var start = 20 + rev * 18;\n                if (t < start) break;\n                if (t >= start + 8) { from = rev + 1; to = from; change = 0; }\n                else { from = rev; to = rev + 1; change = easeIO(prog(t, start, start + 8)); break; }\n              }\n              var st = { spanX: thickness * 1.35 * spread, spanY: -thickness * 0.68 * spread, skew: -10 * (1 - collapse), ghost: 1 - easeIO(prog(t, settle - 18, settle)) };\n              var wipeX = -100 + (1380 + 100) * change;\n              rOld.setAttribute(\"x\", wipeX); rOld.setAttribute(\"width\", 1480 - (wipeX + 100));\n              rNew.setAttribute(\"width\", wipeX + 100);\n              drawSlice(groupA, revisions[from], st);\n              if (from === to) { rOld.setAttribute(\"x\", -100); rOld.setAttribute(\"width\", 1480); groupB.forEach(function (tx) { tx.setAttribute(\"opacity\", 0); }); }\n              else drawSlice(groupB, revisions[to], st);\n            });\n            var total = parseFloat(root.dataset.duration || \"6.9333\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"type-fossil\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "dcc770e506bd8f0c3a07fca455f7e2cdc8f560db6e619a0afd3a9978d7a1113c",
+ "duration": 6.9333,
+ "webgl": false,
+ "demo_background": "#eeeae2",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Final word",
+   "default": "Form"
+  },
+  {
+   "id": "drafts",
+   "type": "string",
+   "role": "content",
+   "label": "Drafts",
+   "default": "Idea | Maybe | Try | Almost | Again | Closer"
+  },
+  {
+   "id": "layers",
+   "type": "number",
+   "role": "style",
+   "label": "Contour layers",
+   "default": 16,
+   "min": 4,
+   "max": 24
+  },
+  {
+   "id": "depth",
+   "type": "number",
+   "role": "style",
+   "label": "Slice depth",
+   "default": 100,
+   "min": 50,
+   "max": 150
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 220,
+   "min": 24,
+   "max": 300
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Ink",
+   "default": "#302b26"
+  },
+  {
+   "id": "accent_color",
+   "type": "color",
+   "role": "style",
+   "label": "Contours",
+   "default": "#a800b7"
+  },
+  {
+   "id": "background_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#eeeae2"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

@@ -1,0 +1,94 @@
+{
+ "name": "hw-pipeline",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/hw-pipeline/hw-pipeline.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Hand-Drawn Flowchart\n\nWobbled boxes with handwritten labels joined by curved connectors, drawing on in sequence from a list of steps.\n\nCategory: motion-graphics. Length: 7 s. WebGL: no.\n\nUse when:\n- A process or pipeline of 2 to 6 steps should draw itself on screen like a quick whiteboard sketch.\n- The look should be hand-made and a little imperfect.\n\nAvoid when:\n- You need data-heavy diagrams with precise geometry: use a data-viz block.\n- More than 6 steps or long labels.\n\nVariables:\n- nodes (string): Steps, default \"Idea, Record, Shine!\"\n- font_size (number, 20-120): Label size, default 56\n- ink_color (color): Ink, default \"#f4f2ec\"\n- accent_color (color): Arrow colour, default \"#ffb020\"\n- transparent (boolean): Transparent, default false\n- background (color): Background, default \"#1c1b18\"\n- boil (boolean): Boil, default true\n- seed (number, 1-999): Seed, default 11\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Hand-Drawn Flowchart\n\n  Wobbled boxes with handwritten labels joined by curved connectors, drawing on in sequence from a list of steps.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/hw-pipeline/hw-pipeline.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: fills the host frame (a row of boxes in landscape, a column in portrait, scaled to fit); steps, colours, background, boil and seed are variables; Caveat comes from Google Fonts instead of a bundled file; the family helper functions are inlined.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"hw-pipeline\"\n  data-composition-duration=\"7\"\n  data-composition-variables='[\n  {\n    \"id\": \"nodes\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Steps\",\n    \"description\": \"Box labels in order, comma separated (1 to 6).\",\n    \"default\": \"Idea, Record, Shine!\"\n  },\n  {\n    \"id\": \"font_size\",\n    \"type\": \"number\",\n    \"role\": \"style\",\n    \"label\": \"Label size\",\n    \"description\": \"Label size in design pixels (shrinks when many boxes).\",\n    \"default\": 56,\n    \"min\": 20,\n    \"max\": 120,\n    \"step\": 1,\n    \"unit\": \"px\"\n  },\n  {\n    \"id\": \"ink_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Ink\",\n    \"description\": \"Box and label colour.\",\n    \"default\": \"#f4f2ec\"\n  },\n  {\n    \"id\": \"accent_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Arrow colour\",\n    \"description\": \"Connector colour.\",\n    \"default\": \"#ffb020\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the drawing sits over your own scene.\",\n    \"default\": false\n  },\n  {\n    \"id\": \"background\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background colour when not transparent.\",\n    \"default\": \"#1c1b18\"\n  },\n  {\n    \"id\": \"boil\",\n    \"type\": \"boolean\",\n    \"role\": \"motion\",\n    \"label\": \"Boil\",\n    \"description\": \"Lines jitter slightly every third frame, like hand-redrawn animation.\",\n    \"default\": true\n  },\n  {\n    \"id\": \"seed\",\n    \"type\": \"number\",\n    \"role\": \"style\",\n    \"label\": \"Seed\",\n    \"description\": \"Changes the wobble of the hand-drawn lines.\",\n    \"default\": 11,\n    \"min\": 1,\n    \"max\": 999,\n    \"step\": 1\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Hand-Drawn Flowchart</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@700&amp;display=block\" />\n      <style>\n        #root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: \"Caveat\", cursive; pointer-events: none; }\n        #hwp-stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; }\n        #hwp-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }\n        #hwp-svg path { fill: none; stroke-linecap: round; stroke-linejoin: round; }\n        .hwp-box { stroke: var(--hwp-ink, #f4f2ec); stroke-width: 6; }\n        .hwp-conn { stroke: var(--hwp-accent, #ffb020); stroke-width: 5; }\n        .hwp-label { position: absolute; text-align: center; font-weight: 700; color: var(--hwp-ink, #f4f2ec); white-space: nowrap; opacity: 0; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4); }\n      </style>\n      <div id=\"root\" data-composition-id=\"hw-pipeline\" data-duration=\"7\" data-fps=\"30\">\n        <div id=\"hwp-clip\" class=\"clip\" data-start=\"0\" data-duration=\"7\" data-track-index=\"0\" style=\"position:absolute;inset:0\">\n          <div id=\"hwp-stage\"><svg id=\"hwp-svg\"></svg><div id=\"hwp-labels\"></div></div>\n        </div>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(x, f, lo, hi) { var n = Number(x); return Number.isFinite(n) ? Math.min(hi, Math.max(lo, n)) : f; }\n            function col(x, f) { return typeof x === \"string\" && x.trim() ? x.trim() : f; }\n            var nodes = (typeof vars.nodes === \"string\" && vars.nodes.trim() ? vars.nodes : \"Idea, Record, Shine!\")\n              .split(\",\").map(function (s) { return s.trim(); }).filter(Boolean).slice(0, 6);\n            var fontSize = num(vars.font_size, 56, 20, 120);\n            var seed = num(vars.seed, 11, 1, 999);\n            var boilOn = vars.boil !== false && vars.boil !== \"false\";\n            var DUR = 7;\n            root.style.setProperty(\"--hwp-ink\", col(vars.ink_color, \"#f4f2ec\"));\n            root.style.setProperty(\"--hwp-accent\", col(vars.accent_color, \"#ffb020\"));\n            if (!(vars.transparent === true || vars.transparent === \"true\")) root.style.background = col(vars.background, \"#1c1b18\");\n\n            function hash(n, s) { var x = Math.sin(n * 127.1 + s * 311.7) * 43758.5453; return (x - Math.floor(x)) * 2 - 1; }\n            function wobbleRect(w, h, r, s, amp) {\n              function wob(n) { return hash(n, s) * amp; }\n              return \"M \" + (r + wob(1)) + \" \" + wob(2) + \" L \" + (w / 2 + wob(3)) + \" \" + wob(4) + \" L \" + (w - r + wob(5)) + \" \" + wob(6) +\n                \" Q \" + (w + wob(7)) + \" \" + wob(8) + \" \" + (w + wob(9)) + \" \" + (r + wob(10)) +\n                \" L \" + (w + wob(11)) + \" \" + (h / 2 + wob(12)) + \" L \" + (w + wob(13)) + \" \" + (h - r + wob(14)) +\n                \" Q \" + (w + wob(15)) + \" \" + (h + wob(16)) + \" \" + (w - r + wob(17)) + \" \" + (h + wob(18)) +\n                \" L \" + (w / 2 + wob(19)) + \" \" + (h + wob(20)) + \" L \" + (r + wob(21)) + \" \" + (h + wob(22)) +\n                \" Q \" + wob(23) + \" \" + (h + wob(24)) + \" \" + wob(25) + \" \" + (h - r + wob(26)) +\n                \" L \" + wob(27) + \" \" + (h / 2 + wob(28)) + \" L \" + wob(29) + \" \" + (r + wob(30)) +\n                \" Q \" + wob(31) + \" \" + wob(32) + \" \" + (r + wob(33)) + \" \" + wob(34);\n            }\n\n            // Design space: 1920 wide in landscape (boxes in a row), 1080 wide in portrait (boxes in a column).\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920;\n            var portrait = H > W;\n            var DW = portrait ? 1080 : 1920;\n            var DH = DW * H / W;\n            var n = nodes.length;\n            var boxW = portrait ? 560 : 320, boxH = portrait ? 190 : 170, gap = portrait ? 170 : 190;\n            var span = portrait ? n * boxH + (n - 1) * gap : n * boxW + (n - 1) * gap;\n            var avail = (portrait ? DH : DW) * 0.9;\n            var k = Math.min(1, avail / span);\n            boxW *= k; boxH *= k; gap *= k; fontSize *= k;\n            span *= k;\n            var stage = document.getElementById(\"hwp-stage\");\n            stage.style.width = DW + \"px\"; stage.style.height = DH + \"px\";\n            stage.style.transform = \"scale(\" + (W / DW) + \")\";\n            var svg = document.getElementById(\"hwp-svg\");\n            svg.setAttribute(\"viewBox\", \"0 0 \" + DW + \" \" + DH);\n            var labels = document.getElementById(\"hwp-labels\");\n            var NS = \"http://www.w3.org/2000/svg\";\n            var x0 = portrait ? (DW - boxW) / 2 : (DW - span) / 2;\n            var y0 = portrait ? (DH - span) / 2 : (DH - boxH) / 2;\n            var boxes = [], conns = [], labelEls = [], boxGs = [];\n            nodes.forEach(function (label, i) {\n              var bx = portrait ? x0 : x0 + i * (boxW + gap);\n              var by = portrait ? y0 + i * (boxH + gap) : y0;\n              var gOuter = document.createElementNS(NS, \"g\");\n              gOuter.setAttribute(\"transform\", \"translate(\" + bx + \" \" + by + \")\");\n              var g = document.createElementNS(NS, \"g\");\n              gOuter.appendChild(g);\n              var p = document.createElementNS(NS, \"path\");\n              p.setAttribute(\"class\", \"hwp-box\");\n              p.setAttribute(\"d\", wobbleRect(boxW, boxH, 24 * k, seed + i, 3.5 * k));\n              g.appendChild(p);\n              svg.appendChild(gOuter);\n              boxes.push(p); boxGs.push(g);\n              var el = document.createElement(\"div\");\n              el.className = \"hwp-label\";\n              el.textContent = label;\n              el.style.left = bx + \"px\"; el.style.top = by + boxH / 2 - fontSize * 0.62 + \"px\";\n              el.style.width = boxW + \"px\"; el.style.fontSize = fontSize + \"px\";\n              labels.appendChild(el); labelEls.push(el);\n              if (i < n - 1) {\n                var sx, sy, tx, ty, qx, qy;\n                if (portrait) {\n                  sx = bx + boxW / 2; sy = by + boxH + 10; tx = sx; ty = by + boxH + gap - 10;\n                  qx = sx + 46 * k + hash(i * 9 + 2, seed) * 14; qy = (sy + ty) / 2 + hash(i * 9 + 3, seed) * 10;\n                } else {\n                  sx = bx + boxW + 10; sy = by + boxH / 2; tx = bx + boxW + gap - 10; ty = sy;\n                  qx = bx + boxW + gap / 2 + hash(i * 9 + 2, seed) * 16; qy = sy - 46 * k - hash(i * 9 + 3, seed) * 12;\n                }\n                var ang = Math.atan2(ty - qy, tx - qx) + Math.PI, BARB = 26 * k, SPREAD = 0.42;\n                var b1x = tx + BARB * Math.cos(ang - SPREAD), b1y = ty + BARB * Math.sin(ang - SPREAD);\n                var b2x = tx + BARB * Math.cos(ang + SPREAD), b2y = ty + BARB * Math.sin(ang + SPREAD);\n                var c = document.createElementNS(NS, \"path\");\n                c.setAttribute(\"class\", \"hwp-conn\");\n                c.setAttribute(\"d\", \"M \" + sx + \" \" + sy + \" Q \" + qx + \" \" + qy + \" \" + tx + \" \" + ty +\n                  \" M \" + tx + \" \" + ty + \" L \" + b1x + \" \" + b1y + \" M \" + tx + \" \" + ty + \" L \" + b2x + \" \" + b2y);\n                svg.appendChild(c); conns.push(c);\n              }\n            });\n\n            var tl = gsap.timeline({ paused: true });\n            var t = 0.3;\n            nodes.forEach(function (_, i) {\n              var p = boxes[i], len = p.getTotalLength();\n              gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });\n              tl.to(p, { strokeDashoffset: 0, duration: 0.65, ease: \"power2.inOut\" }, t);\n              tl.to(labelEls[i], { opacity: 1, duration: 0.35, ease: \"power2.out\" }, t + 0.45);\n              t += 0.7;\n              if (i < conns.length) {\n                var c = conns[i], cl = c.getTotalLength();\n                gsap.set(c, { strokeDasharray: cl, strokeDashoffset: cl });\n                tl.to(c, { strokeDashoffset: 0, duration: 0.45, ease: \"power2.inOut\" }, t);\n                t += 0.5;\n              }\n            });\n            // Boil: a small jitter that changes every third frame, a pure function of the timeline time.\n            if (boilOn) {\n              var jit = boxGs.concat(conns, labelEls);\n              var amp = 1.6, rot = 0.4;\n              var boil = function () {\n                var step = Math.floor((tl.time() * 30) / 3);\n                for (var i = 0; i < jit.length; i++) {\n                  gsap.set(jit[i], { x: hash(step * 3 + i * 97, seed) * amp, y: hash(step * 3 + 1 + i * 97, seed) * amp, rotation: hash(step * 3 + 2 + i * 97, seed) * rot });\n                }\n              };\n              tl.eventCallback(\"onUpdate\", boil);\n              boil();\n            }\n            var OUT = Math.min(0.6, Math.max(0.25, DUR * 0.06));\n            tl.to([svg, labels], { opacity: 0, duration: OUT, ease: \"power2.in\" }, DUR - OUT - 0.05);\n            if (tl.duration() < DUR) tl.to({}, { duration: DUR - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"hw-pipeline\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "c1446cb64953542a3f9d5efa9d99ecde46d8ccc68a498d1b5c4a581741dc5e0f",
+ "duration": 7,
+ "webgl": false,
+ "demo_background": "#1c1b18",
+ "demo_values": {
+  "nodes": "Idea, Record, Edit, Shine!"
+ },
+ "variables": [
+  {
+   "id": "nodes",
+   "type": "string",
+   "role": "content",
+   "label": "Steps",
+   "default": "Idea, Record, Shine!"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Label size",
+   "default": 56,
+   "min": 20,
+   "max": 120
+  },
+  {
+   "id": "ink_color",
+   "type": "color",
+   "role": "style",
+   "label": "Ink",
+   "default": "#f4f2ec"
+  },
+  {
+   "id": "accent_color",
+   "type": "color",
+   "role": "style",
+   "label": "Arrow colour",
+   "default": "#ffb020"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#1c1b18"
+  },
+  {
+   "id": "boil",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Boil",
+   "default": true
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "style",
+   "label": "Seed",
+   "default": 11,
+   "min": 1,
+   "max": 999
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

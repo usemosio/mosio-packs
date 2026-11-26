@@ -1,0 +1,93 @@
+{
+ "name": "bottom-up-letters",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/bottom-up-letters/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Bottom-Up Letters\n\nLetters rise from below in a pronounced staircase, one symbol at a time.\n\nCategory: typography. Length: 2 s. WebGL: no.\n\nUse when:\n- A short punchy word or acronym should land with clear, visible per-character energy.\n- A slow reveal cadence where the staircase wave is the hero moment, crisp and without blur.\n\nAvoid when:\n- The text is a full sentence: the stagger drags; use per-character-rise or mask-reveal-up.\n- You want blur or softness in the reveal: use blur-out-up or focus-blur-resolve.\n- The entrance should feel unified rather than letter by letter: use micro-scale-fade.\n\nVariables:\n- text (string): Text, default \"Shift\"\n- stagger_delay (number, 1-12): Stagger, default 3\n- distance (number, 0-120): Distance, default 46\n- font_size (number, 12-240): Font size, default 72\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"600\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Bottom-Up Letters\n\n  Letters rise from below in a pronounced staircase, one symbol at a time.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/bottom-up-letters/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"bottom-up-letters\"\n  data-composition-duration=\"2\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Short word or acronym that rises in.\", \"default\": \"Shift\"},\n    {\"id\": \"stagger_delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Frames between one letter and the next.\", \"default\": 3, \"min\": 1, \"max\": 12, \"step\": 1, \"unit\": \"frames\"},\n    {\"id\": \"distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Distance\", \"description\": \"How far below its place each letter starts.\", \"default\": 46, \"min\": 0, \"max\": 120, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 72, \"min\": 12, \"max\": 240, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Bottom-Up Letters</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: var(--color, #171717); font-family: Geist, -apple-system, BlinkMacSystemFont, sans-serif; }\n        .bul-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .bul-line { letter-spacing: -0.05em; line-height: 1.2; white-space: pre; }\n        .bul-char { display: inline-block; white-space: pre; opacity: 0; backface-visibility: hidden; transform-origin: 50% 55%; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"bottom-up-letters\" data-duration=\"2\" data-fps=\"30\">\n        <div id=\"bul-clip\" class=\"bul-stage clip\" data-start=\"0\" data-duration=\"2\" data-track-index=\"0\">\n          <span id=\"bul-line\" class=\"bul-line\" role=\"img\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return value !== \"\" && value !== null && Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            // cubic-bezier(x1, y1, x2, y2) as an easing function (a cubic-bezier easing), solved by bisection.\n            function bezier(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 32; i++) {\n                  var u = 1 - t;\n                  var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                var v = 1 - t;\n                return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n              };\n            }\n            // interpolate(x, [a, b], [from, to], { easing, extrapolateLeft: \"clamp\", extrapolateRight: \"clamp\" }).\n            function ip(x, a, b, from, to, ease) {\n              var p = b === a ? (x >= b ? 1 : 0) : Math.min(1, Math.max(0, (x - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n            var TOTAL = parseFloat(root.dataset.duration || \"2\");\n            var FRAMES = TOTAL * 30;\n            // Drive draw(frame) from the timeline, so seeking to a time always draws the same picture.\n            var clock = { frame: 0 };\n            function frameNow() {\n              return Math.round(clock.frame * 1000) / 1000;\n            }\n            function start(draw) {\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { frame: FRAMES, duration: TOTAL, ease: \"none\", onUpdate: function () { draw(frameNow()); } }, 0);\n              draw(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"bottom-up-letters\"] = tl;\n            }\n            // Re-measure once the web font is in, then redraw the current frame.\n            function onFonts(fn) {\n              if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn, function () {});\n            }\n\n            // Shrink an element's font size so it fits a fraction of the frame.\n            function fit(el, size, frac, hfrac) {\n              el.style.fontSize = size + \"px\";\n              var maxW = Math.max(1, root.clientWidth * frac);\n              var maxH = Math.max(1, root.clientHeight * (hfrac || 0.9));\n              var k = Math.min(1, maxW / Math.max(1, el.scrollWidth), maxH / Math.max(1, el.scrollHeight));\n              if (k < 1) {\n                size = Math.max(8, size * k);\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n\n            var text = str(vars.text, \"Shift\");\n            var stagger = num(vars.stagger_delay, 3, 1, 12);\n            var distance = num(vars.distance, 46, 0, 120);\n            var size = num(vars.font_size, 72, 12, 240);\n            var speed = num(vars.speed, 1, 0.25, 4);\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n\n            var line = document.getElementById(\"bul-line\");\n            line.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"600\");\n            line.setAttribute(\"aria-label\", text);\n            var chars = Array.from(text).map(function (ch, i) {\n              var span = document.createElement(\"span\");\n              span.id = \"bul-char-\" + i;\n              span.className = \"bul-char\";\n              span.textContent = ch;\n              line.appendChild(span);\n              return span;\n            });\n            fit(line, size, 0.9);\n            onFonts(function () { fit(line, size, 0.9); });\n\n            // Each letter fades over 12 frames and travels over 7, `stagger` frames after the previous one.\n            var ease = bezier(0.18, 1, 0.32, 1);\n            start(function (raw) {\n              var frame = raw * speed;\n              chars.forEach(function (span, i) {\n                var local = frame - i * stagger;\n                span.style.opacity = ip(local, 0, 12, 0, 1, ease);\n                span.style.transform = \"translateY(\" + ip(local, 0, 7, distance, 0, ease) + \"px)\";\n              });\n            });\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "f25c548ea8e7c7f746f82488041617c32118b0586649e4440b1b2c9db8ac2ba8",
+ "duration": 2,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "text": "Shift",
+  "font_size": 220,
+  "distance": 120
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Shift"
+  },
+  {
+   "id": "stagger_delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 3,
+   "min": 1,
+   "max": 12
+  },
+  {
+   "id": "distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Distance",
+   "default": 46,
+   "min": 0,
+   "max": 120
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 72,
+   "min": 12,
+   "max": 240
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

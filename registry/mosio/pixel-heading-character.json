@@ -1,0 +1,131 @@
+{
+ "name": "pixel-heading-character",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Cult UI",
+ "source": {
+  "repo": "https://github.com/nolly-studio/cult-ui",
+  "path": "apps/www/registry/default/ui/pixel-heading-character.tsx",
+  "commit": "d71b1428b811c2779d46ea41b7ef8c9f9c9991c2"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Pixel Heading Character\n\nA heading whose letters each take a pixel typeface of their own and keep changing on a staggered clock: all five faces mixed, a travelling wave, pseudo-random picks, or one face for the whole line.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- A title should shimmer through pixel styles letter by letter, with a wave or a scatter.\n- A retro, glitchy or arcade headline.\n\nAvoid when:\n- Body copy or long sentences.\n- A calm entrance: use per-character-rise.\n\nVariables:\n- text (string): Text, default \"Pixel Heading\"\n- mode (enum): Mode, default \"multi\"\n- cycle_interval (number, 50-1000): Cycle interval, default 150\n- stagger_delay (number, 0-300): Stagger, default 50\n- default_font (enum): Starting face, default \"square\"\n- prefix (string): Prefix, default \"\"\n- prefix_font (enum): Prefix face, default \"none\"\n- hover_at (number, 0-5): Pointer enters, default 0.5\n- hover_until (number, 0.5-8): Pointer leaves, default 3.5\n- show_label (boolean): Show mode label, default true\n- font_size (number, 12-260): Font size, default 120\n- color (color): Color, default \"#171717\"\n\nSource: https://github.com/nolly-studio/cult-ui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Pixel Heading Character\n\n  A heading whose letters each take a pixel typeface of their own and keep changing on a staggered clock: all five faces mixed, a travelling wave, pseudo-random picks, or one face for the whole line.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/nolly-studio/cult-ui/blob/d71b1428b811c2779d46ea41b7ef8c9f9c9991c2/apps/www/registry/default/ui/pixel-heading-character.tsx\n\n  MIT License\n\n  Copyright (c) 2023 Jordan-Gilliam\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"pixel-heading-character\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Heading text.\", \"default\": \"Pixel Heading\"},\n    {\"id\": \"mode\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Mode\", \"description\": \"How the faces are spread across the letters.\", \"default\": \"multi\", \"options\": [{\"value\": \"multi\", \"label\": \"Multi (golden-ratio spread)\"}, {\"value\": \"wave\", \"label\": \"Wave\"}, {\"value\": \"random\", \"label\": \"Random\"}, {\"value\": \"uniform\", \"label\": \"Uniform\"}]},\n    {\"id\": \"cycle_interval\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Cycle interval\", \"description\": \"Milliseconds between face changes.\", \"default\": 150, \"min\": 50, \"max\": 1000, \"step\": 10, \"unit\": \"ms\"},\n    {\"id\": \"stagger_delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Milliseconds between one letter starting and the next.\", \"default\": 50, \"min\": 0, \"max\": 300, \"step\": 5, \"unit\": \"ms\"},\n    {\"id\": \"default_font\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Starting face\", \"description\": \"Face used by the uniform mode at the start.\", \"default\": \"square\", \"options\": [{\"value\": \"square\", \"label\": \"Square (Geist Pixel)\"}, {\"value\": \"grid\", \"label\": \"Grid (Pixelify Sans)\"}, {\"value\": \"circle\", \"label\": \"Circle (Silkscreen)\"}, {\"value\": \"triangle\", \"label\": \"Triangle (Jersey 10)\"}, {\"value\": \"line\", \"label\": \"Line (Tiny5)\"}]},\n    {\"id\": \"prefix\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Prefix\", \"description\": \"Optional word before the heading that stays put.\", \"default\": \"\"},\n    {\"id\": \"prefix_font\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Prefix face\", \"description\": \"Pixel face for the prefix, or the heading font.\", \"default\": \"none\", \"options\": [{\"value\": \"none\", \"label\": \"Heading font\"}, {\"value\": \"square\", \"label\": \"Square (Geist Pixel)\"}, {\"value\": \"grid\", \"label\": \"Grid (Pixelify Sans)\"}, {\"value\": \"circle\", \"label\": \"Circle (Silkscreen)\"}, {\"value\": \"triangle\", \"label\": \"Triangle (Jersey 10)\"}, {\"value\": \"line\", \"label\": \"Line (Tiny5)\"}]},\n    {\"id\": \"hover_at\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Pointer enters\", \"description\": \"Seconds before the pointer rests on the heading.\", \"default\": 0.5, \"min\": 0, \"max\": 5, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"hover_until\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Pointer leaves\", \"description\": \"Seconds when the pointer leaves again.\", \"default\": 3.5, \"min\": 0.5, \"max\": 8, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"show_label\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Show mode label\", \"description\": \"Show the mode name under the heading.\", \"default\": true},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 120, \"min\": 12, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Pixel Heading Character</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;family=Geist+Pixel&amp;family=Pixelify+Sans&amp;family=Silkscreen&amp;family=Jersey+10&amp;family=Tiny5&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #171717);\n          font-family: var(--font-display, \"Geist\", system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .pxc-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .pxh-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5em; max-width: 92%; }\n        .pxh-head { text-align: center; line-height: 1.1; letter-spacing: 0; margin: 0; font-weight: 400; }\n        .pxh-label { font-family: \"Geist\", system-ui, sans-serif; font-size: 0.14em; letter-spacing: 0.25em; text-transform: uppercase; opacity: 0; color: #71717a; }\n        .pxh-preload { position: absolute; left: 0; top: 0; opacity: 0; font-size: 12px; pointer-events: none; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"pixel-heading-character\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"pxc-clip\" class=\"pxc-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <div class=\"pxh-wrap\"><h1 id=\"pxc-head\" class=\"pxh-head\"></h1><output id=\"pxc-label\" class=\"pxh-label\"></output></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function pick(v, l, f) { return l.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { if (typeof v === \"boolean\") return v; if (v === \"true\") return true; if (v === \"false\") return false; return f; }\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            gsap.registerPlugin(CustomEase);\n            var total = parseFloat(root.dataset.duration || \"4\");\n            // Motion tweens with no easing named run easeInOut.\n            var EIO = CustomEase.create(\"pxc-eio\", \"M0,0 C0.42,0 0.58,1 1,1\");\n            // Unit step response of a damped spring (semi-implicit Euler at 480 Hz), sampled once.\n            function springTable(k, c, m, dur) {\n              var dt = 1 / 480, x = 0, v = 0, out = [0];\n              for (var t = 0; t < dur; t += dt) { v += ((-k * (x - 1) - c * v) / m) * dt; x += v * dt; out.push(x); }\n              return out;\n            }\n            function springAt(tab, tau) {\n              if (tau <= 0) return 0;\n              var i = tau * 480; if (i >= tab.length - 1) return tab[tab.length - 1];\n              var j = Math.floor(i); return tab[j] + (tab[j + 1] - tab[j]) * (i - j);\n            }\n            var clock = { t: 0 };\n            function finish(tl, draw) {\n              if (draw) { tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0); draw(0); }\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"pixel-heading-character\"] = tl;\n            }\n\n\n            // The source cycles five Geist Pixel faces; only one of them is on Google Fonts, so the five\n            // slots (square, grid, circle, triangle, line) use five open pixel faces instead.\n            var KEYS = [\"square\", \"grid\", \"circle\", \"triangle\", \"line\"];\n            var FAMS = [\"Geist Pixel\", \"Pixelify Sans\", \"Silkscreen\", \"Jersey 10\", \"Tiny5\"];\n            var LABELS = [\"Square\", \"Grid\", \"Circle\", \"Triangle\", \"Line\"];\n            // Hidden samples make the browser load every face before it is first needed.\n            FAMS.forEach(function (fam) { var g = document.createElement(\"span\"); g.className = \"pxh-preload\"; g.style.fontFamily = '\"' + fam + '\"'; g.textContent = \"Aa\"; root.appendChild(g); });\n\n            var head = document.getElementById(\"pxc-head\"), label = document.getElementById(\"pxc-label\");\n            var text = str(vars.text, \"Pixel Heading\");\n            var mode = pick(vars.mode, [\"multi\", \"wave\", \"random\", \"uniform\"], \"multi\");\n            var cycle = num(vars.cycle_interval, 150, 50, 1000), stagger = num(vars.stagger_delay, 50, 0, 300);\n            var defIdx = Math.max(0, KEYS.indexOf(pick(vars.default_font, KEYS, \"square\")));\n            var prefix = typeof vars.prefix === \"string\" ? vars.prefix.trim() : \"\";\n            var pfx = KEYS.indexOf(String(vars.prefix_font || \"none\"));\n            var at = num(vars.hover_at, 0.5, 0, 5), until = Math.max(at + 0.2, num(vars.hover_until, 3.5, 0.5, 8));\n            var showLabel = bool(vars.show_label, true);\n            root.style.fontSize = num(vars.font_size, 120, 12, 260) + \"px\";\n            head.setAttribute(\"aria-label\", prefix ? prefix + \" \" + text : text);\n            if (prefix) { var p = document.createElement(\"span\"); p.textContent = prefix + \" \"; if (pfx >= 0) p.style.fontFamily = '\"' + FAMS[pfx] + '\"'; head.appendChild(p); }\n            var chars = Array.from(text).map(function (ch) { var s = document.createElement(\"span\"); s.textContent = ch; head.appendChild(s); return { ch: ch, el: s }; });\n            var PHI = (1 + Math.sqrt(5)) / 2;\n            function golden(i) { return Math.floor((i * PHI * 5) % 5); }\n            function rnd(tick, i) { return ((tick * 2654435761 + i * 340573321) >>> 0) % 5; }\n            var MODE_LABEL = { multi: \"Multi\", wave: \"Wave\", random: \"Random\" }, lastSig = \"\", lastOn = null;\n            function draw(t) {\n              var ms = t >= at ? (Math.min(t, until) - at) * 1000 : 0, vi = 0, fonts = [];\n              chars.forEach(function (c) {\n                if (c.ch === \" \") { fonts.push(-1); return; }\n                var f;\n                if (mode === \"uniform\") f = (defIdx + Math.floor(ms / cycle)) % 5;\n                else {\n                  var cycles = Math.floor(Math.max(0, ms - vi * stagger) / cycle);\n                  if (mode === \"multi\") f = (golden(vi) + cycles) % 5;\n                  else if (mode === \"wave\") f = (vi + cycles) % 5;\n                  else f = cycles > 0 ? rnd(cycles, vi) : golden(vi);\n                }\n                fonts.push(f); vi++;\n              });\n              var sig = fonts.join(\",\");\n              if (sig !== lastSig) {\n                lastSig = sig;\n                chars.forEach(function (c, i) { c.el.style.fontFamily = fonts[i] >= 0 ? '\"' + FAMS[fonts[i]] + '\", monospace' : \"\"; });\n                var first = fonts.filter(function (x) { return x >= 0; })[0];\n                label.textContent = mode === \"uniform\" ? LABELS[first === undefined ? 0 : first] : MODE_LABEL[mode];\n              }\n              var on = t >= at && t < until;\n              if (on !== lastOn) { lastOn = on; label.style.opacity = showLabel && on ? \"1\" : \"0\"; }\n            }\n            finish(gsap.timeline({ paused: true }), draw);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "0b81c7ac473d97862e1b60c6311c0902d4969e3bcca2683da201fe09f1ef8ad9",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 105
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Pixel Heading"
+  },
+  {
+   "id": "mode",
+   "type": "enum",
+   "role": "style",
+   "label": "Mode",
+   "default": "multi"
+  },
+  {
+   "id": "cycle_interval",
+   "type": "number",
+   "role": "motion",
+   "label": "Cycle interval",
+   "default": 150,
+   "min": 50,
+   "max": 1000
+  },
+  {
+   "id": "stagger_delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 50,
+   "min": 0,
+   "max": 300
+  },
+  {
+   "id": "default_font",
+   "type": "enum",
+   "role": "style",
+   "label": "Starting face",
+   "default": "square"
+  },
+  {
+   "id": "prefix",
+   "type": "string",
+   "role": "content",
+   "label": "Prefix",
+   "default": ""
+  },
+  {
+   "id": "prefix_font",
+   "type": "enum",
+   "role": "style",
+   "label": "Prefix face",
+   "default": "none"
+  },
+  {
+   "id": "hover_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Pointer enters",
+   "default": 0.5,
+   "min": 0,
+   "max": 5
+  },
+  {
+   "id": "hover_until",
+   "type": "number",
+   "role": "motion",
+   "label": "Pointer leaves",
+   "default": 3.5,
+   "min": 0.5,
+   "max": 8
+  },
+  {
+   "id": "show_label",
+   "type": "boolean",
+   "role": "style",
+   "label": "Show mode label",
+   "default": true
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 120,
+   "min": 12,
+   "max": 260
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://www.cult-ui.com"
+}

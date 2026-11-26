@@ -1,0 +1,96 @@
+{
+ "name": "font-weight-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Eldora UI",
+ "source": {
+  "repo": "https://github.com/karthikmudunuri/eldoraui",
+  "path": "apps/www/registry/eldoraui/font-weight-text.tsx",
+  "commit": "6bb8fd211ecbdfa983f5780bead27d9f3890f20a"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Font Weight Text\n\nLetters breathe through a variable font weight, thin to heavy and back, each on its own phase so a wave of weight rolls along the word from the middle outward.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- A headline should feel alive without moving: weight swells and relaxes letter by letter.\n- A calm, looping title or call to action.\n\nAvoid when:\n- The layout must not shift: the letters change width as the weight changes; use caption-weight for a no-shift swell.\n- A one-shot entrance.\n\nVariables:\n- text (string): Text, default \"Get Started\"\n- min_weight (number, 100-1000): Minimum weight, default 100\n- max_weight (number, 100-1000): Maximum weight, default 840\n- animation_duration (number, 0.4-5): Breath time, default 1.5\n- delay_multiplier (number, 0-1): Phase offset, default 0.25\n- font_size (number, 12-260): Font size, default 150\n- color (color): Color, default \"#0e7490\"\n\nSource: https://github.com/karthikmudunuri/eldoraui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Font Weight Text\n\n  Letters breathe through a variable font weight, thin to heavy and back, each on its own phase so a wave of weight rolls along the word from the middle outward.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/karthikmudunuri/eldoraui/blob/6bb8fd211ecbdfa983f5780bead27d9f3890f20a/apps/www/registry/eldoraui/font-weight-text.tsx\n\n  MIT License\n\n  Copyright (c) Mudunuri Bhaskara Karthikeya Varma\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"font-weight-text\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"The word or phrase that breathes.\", \"default\": \"Get Started\"},\n    {\"id\": \"min_weight\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Minimum weight\", \"description\": \"Lightest weight of the cycle (the font floors it at 100).\", \"default\": 100, \"min\": 100, \"max\": 1000, \"step\": 10},\n    {\"id\": \"max_weight\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Maximum weight\", \"description\": \"Heaviest weight of the cycle.\", \"default\": 840, \"min\": 100, \"max\": 1000, \"step\": 10},\n    {\"id\": \"animation_duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Breath time\", \"description\": \"Seconds from light to heavy.\", \"default\": 1.5, \"min\": 0.4, \"max\": 5, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"delay_multiplier\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Phase offset\", \"description\": \"Seconds of phase between neighbouring letters.\", \"default\": 0.25, \"min\": 0, \"max\": 1, \"step\": 0.01, \"unit\": \"s\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels. The source is built for 72px type; its pixel offsets scale with this size.\", \"default\": 150, \"min\": 12, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#0e7490\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Font Weight Text</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@100..1000&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          color: var(--color, #0e7490);\n          font-family: var(--font-display, \"Roboto Flex\", system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .fwt-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .fwt-line { text-align: center; line-height: 1.1; white-space: pre; }\n        .fwt-ch { display: inline-block; white-space: pre; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"font-weight-text\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"fwt-clip\" class=\"fwt-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <div id=\"fwt-line\" class=\"fwt-line\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function pick(v, l, f) { return l.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { if (typeof v === \"boolean\") return v; if (v === \"true\") return true; if (v === \"false\") return false; return f; }\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            gsap.registerPlugin(CustomEase);\n            var total = parseFloat(root.dataset.duration || \"4\");\n            // Motion tweens with no easing named run easeInOut.\n            var EIO = CustomEase.create(\"fwt-eio\", \"M0,0 C0.42,0 0.58,1 1,1\");\n            // Unit step response of a damped spring (semi-implicit Euler at 480 Hz), sampled once.\n            function springTable(k, c, m, dur) {\n              var dt = 1 / 480, x = 0, v = 0, out = [0];\n              for (var t = 0; t < dur; t += dt) { v += ((-k * (x - 1) - c * v) / m) * dt; x += v * dt; out.push(x); }\n              return out;\n            }\n            function springAt(tab, tau) {\n              if (tau <= 0) return 0;\n              var i = tau * 480; if (i >= tab.length - 1) return tab[tab.length - 1];\n              var j = Math.floor(i); return tab[j] + (tab[j + 1] - tab[j]) * (i - j);\n            }\n            var clock = { t: 0 };\n            function finish(tl, draw) {\n              if (draw) { tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0); draw(0); }\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"font-weight-text\"] = tl;\n            }\n\n\n            var line = document.getElementById(\"fwt-line\");\n            var text = str(vars.text, \"Get Started\");\n            var wmin = num(vars.min_weight, 100, 100, 1000), wmax = num(vars.max_weight, 840, 100, 1000);\n            var D = num(vars.animation_duration, 1.5, 0.4, 5), mult = num(vars.delay_multiplier, 0.25, 0, 1);\n            var size = num(vars.font_size, 150, 12, 260);\n            line.style.fontSize = size + \"px\"; line.setAttribute(\"aria-label\", text);\n            var spans = Array.from(text).map(function (ch) { var s = document.createElement(\"span\"); s.className = \"fwt-ch\"; s.textContent = ch; line.appendChild(s); return s; });\n            // Fit the width at the heaviest weight.\n            spans.forEach(function (s) { s.style.fontVariationSettings = '\"wght\" ' + wmax; });\n            var maxW = root.clientWidth * 0.9;\n            if (line.scrollWidth > maxW) { size = size * maxW / line.scrollWidth; line.style.fontSize = size + \"px\"; }\n            // CSS: breath Ds alternate infinite, cubic-bezier(0.37, 0, 0.63, 1), delay (i - n/2) * mult, fill both.\n            CustomEase.create(\"fwt-breath\", \"M0,0 C0.37,0 0.63,1 1,1\");\n            var ease = gsap.parseEase(\"fwt-breath\"), n = spans.length;\n            function draw(t) {\n              spans.forEach(function (s, i) {\n                var u = t - (i - n / 2) * mult, w = wmin;\n                if (u > 0) {\n                  var cyc = u / D, k = Math.floor(cyc), fr = cyc - k;\n                  w = wmin + (wmax - wmin) * ease(k % 2 === 0 ? fr : 1 - fr);\n                }\n                s.style.fontVariationSettings = '\"wght\" ' + w.toFixed(1);\n              });\n            }\n            finish(gsap.timeline({ paused: true }), draw);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "eeffdc2807a7bc084f98622c1e8696c8f86cfe6f42968e90a0e4028e0d0e86bc",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 210
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Get Started"
+  },
+  {
+   "id": "min_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Minimum weight",
+   "default": 100,
+   "min": 100,
+   "max": 1000
+  },
+  {
+   "id": "max_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Maximum weight",
+   "default": 840,
+   "min": 100,
+   "max": 1000
+  },
+  {
+   "id": "animation_duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Breath time",
+   "default": 1.5,
+   "min": 0.4,
+   "max": 5
+  },
+  {
+   "id": "delay_multiplier",
+   "type": "number",
+   "role": "motion",
+   "label": "Phase offset",
+   "default": 0.25,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 150,
+   "min": 12,
+   "max": 260
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#0e7490"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://www.eldoraui.site"
+}

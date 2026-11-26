@@ -1,0 +1,123 @@
+{
+ "name": "voucher-ticket",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "UI animation and kinetic type: a card tearing apart, a code resolving from scrambled characters"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Voucher Ticket\n\nA discount ticket with notched, perforated edges slides in, the headline (\"DISKON 20%\") lands, and the stub tears off while its code reveals with a short scramble. Horizontal in landscape, stacked in portrait. Headline, code, note and shop are variables.\n\nCategory: commerce. Length: 5.5 s. WebGL: no.\n\nUse when:\n- Handing out a discount code or coupon in a promo video.\n- A small shop's voucher for followers or first-time customers.\n\nAvoid when:\n- A sale price shown on one product: use price-drop.\n- A stamp or points card: use loyalty-stamp-card.\n- A countdown to the end of the offer: use event-countdown-clock.\n\nVariables:\n- shop (string): Shop name, default \"Kopi Senja\"\n- headline (string): Headline, default \"DISKON 20%\"\n- note (string): Note, default \"Min. belanja Rp50.000 \\u00b7 s/d 30 Nov\"\n- code_label (string): Code label, default \"Kode voucher\"\n- code (string): Code, default \"SENJA20\"\n- tear_at (number, 1-3.5): Tear time, default 1.9\n- ticket_color (color): Ticket colour, default \"#f4f4f5\"\n- bg_color (color): Background, default \"#ffffff\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- main_color (color): Accent, default \"#2563eb\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Voucher Ticket\n\n  A discount ticket with notched, perforated edges slides in, the headline (\"DISKON 20%\") lands, and the stub tears off while its code reveals with a short scramble. Horizontal in landscape, stacked in portrait. Headline, code, note and shop are variables.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"voucher-ticket\"\n  data-composition-duration=\"5.5\"\n  data-composition-variables='[\n  {\n    \"id\": \"shop\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Shop name\",\n    \"description\": \"Small line at the top of the ticket.\",\n    \"default\": \"Kopi Senja\"\n  },\n  {\n    \"id\": \"headline\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Headline\",\n    \"description\": \"Big offer text, kept on one line.\",\n    \"default\": \"DISKON 20%\"\n  },\n  {\n    \"id\": \"note\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Note\",\n    \"description\": \"Conditions under the headline. Leave empty to hide it.\",\n    \"default\": \"Min. belanja Rp50.000 · s/d 30 Nov\"\n  },\n  {\n    \"id\": \"code_label\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Code label\",\n    \"description\": \"Small label above the code on the stub.\",\n    \"default\": \"Kode voucher\"\n  },\n  {\n    \"id\": \"code\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Code\",\n    \"description\": \"The code that scrambles into place. Letters and digits, up to 12 characters.\",\n    \"default\": \"SENJA20\"\n  },\n  {\n    \"id\": \"tear_at\",\n    \"type\": \"number\",\n    \"role\": \"motion\",\n    \"label\": \"Tear time\",\n    \"description\": \"Second the stub tears off.\",\n    \"default\": 1.9,\n    \"min\": 1,\n    \"max\": 3.5,\n    \"step\": 0.1\n  },\n  {\n    \"id\": \"ticket_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Ticket colour\",\n    \"description\": \"Main part of the ticket.\",\n    \"default\": \"#f4f4f5\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Main text and outlines.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Secondary text and hairlines.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Accent\",\n    \"description\": \"The headline: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Font family name. Geist is loaded by default; another family must be loaded by the host.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Voucher Ticket</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          color: var(--vt-text); font-family: var(--FAM, Geist), system-ui, sans-serif; background: var(--vt-bg);\n        }\n        #root * { box-sizing: border-box; }\n        .vt-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        .vt-wrap { position: absolute; left: 50%; top: 50%; transform-origin: 50% 50%; }\n        .vt-piece { position: absolute; filter: drop-shadow(0 calc(var(--u) * 8) calc(var(--u) * 16) rgba(0,0,0,0.13)); }\n        .vt-piece svg { position: absolute; left: 0; top: 0; overflow: visible; }\n        .vt-in { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 calc(var(--u) * 50); }\n        .vt-shop { font-size: calc(var(--u) * 36); font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--vt-muted); margin-bottom: calc(var(--u) * 22); }\n        .vt-head { white-space: nowrap; font-size: calc(var(--u) * 150); font-weight: 700; letter-spacing: -0.05em; line-height: 1; color: var(--vt-main); }\n        .vt-note { margin-top: calc(var(--u) * 28); font-size: calc(var(--u) * 33); font-weight: 500; color: var(--vt-muted); white-space: nowrap; }\n        .vt-clabel { font-size: calc(var(--u) * 28); font-weight: 500; color: rgba(255,255,255,0.62); letter-spacing: 0.06em; margin-bottom: calc(var(--u) * 18); }\n        .vt-code { font-family: \"Geist Mono\", ui-monospace, monospace; font-size: calc(var(--u) * 68); font-weight: 700; letter-spacing: 0.08em; color: #fff; white-space: nowrap; font-variant-numeric: tabular-nums; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"voucher-ticket\" data-duration=\"5.5\" data-fps=\"30\">\n        <div id=\"vt-clip\" class=\"vt-stage clip\" data-start=\"0\" data-duration=\"5.5\" data-track-index=\"0\">\n\n          <div class=\"vt-wrap\" id=\"vt-wrap\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function svg(tag, attrs, parent) { var e = document.createElementNS(\"http://www.w3.org/2000/svg\", tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function rp(n) { return \"Rp\" + dots(n); }\n            function money(s) { var d = String(s).replace(/[^\\d]/g, \"\"); return d ? parseInt(d, 10) : 0; }\n            function list(s, d) { var a = String(str(s, d)).split(\";\").map(function (x) { return x.trim(); }).filter(Boolean); return a.length ? a : String(d).split(\";\").map(function (x) { return x.trim(); }); }\n            function mulberry(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function setColors(p, c) { for (var k in c) root.style.setProperty(\"--\" + p + \"-\" + k, colr(vars[k + \"_color\"], c[k])); }\n            var fam = str(vars.font_family, \"Geist\");\n            root.style.setProperty(\"--FAM\", /^[\\w\\s-]+$/.test(fam) ? '\"' + fam + '\"' : \"Geist\");\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n            setColors(\"vt\", { bg: \"#ffffff\", text: \"#0a0a0a\", muted: \"#737373\", main: \"#2563eb\", ticket: \"#f4f4f5\" });\n\n\n            root.style.setProperty(\"--vt-ticket\", colr(vars.ticket_color, \"#f4f4f5\"));\n            var u = U, wrap = document.getElementById(\"vt-wrap\");\n            var shop = str(vars.shop, \"Kopi Senja\");\n            var headline = str(vars.headline, \"DISKON 20%\");\n            var note = typeof vars.note === \"string\" ? vars.note.trim() : \"Min. belanja Rp50.000 · s/d 30 Nov\";\n            var codeLabel = typeof vars.code_label === \"string\" ? vars.code_label.trim() : \"Kode voucher\";\n            var code = (str(vars.code, \"SENJA20\").replace(/[^A-Za-z0-9]/g, \"\").toUpperCase() || \"SENJA20\").slice(0, 12);\n            var tear = num(vars.tear_at, 1.9, 1, 3.5);\n            var cBg = colr(vars.bg_color, \"#ffffff\"), cText = colr(vars.text_color, \"#0a0a0a\"), cTicket = colr(vars.ticket_color, \"#f4f4f5\");\n            var R = 40 * u, N = 36 * u;\n            function path(w, h, c) {\n              var r = function (k) { return c[k] === \"n\" ? N : R; }, s = function (k) { return c[k] === \"n\" ? 0 : 1; };\n              return \"M\" + r(\"tl\") + \" 0 H\" + (w - r(\"tr\")) + \" A\" + r(\"tr\") + \" \" + r(\"tr\") + \" 0 0 \" + s(\"tr\") + \" \" + w + \" \" + r(\"tr\") +\n                \" V\" + (h - r(\"br\")) + \" A\" + r(\"br\") + \" \" + r(\"br\") + \" 0 0 \" + s(\"br\") + \" \" + (w - r(\"br\")) + \" \" + h +\n                \" H\" + r(\"bl\") + \" A\" + r(\"bl\") + \" \" + r(\"bl\") + \" 0 0 \" + s(\"bl\") + \" 0 \" + (h - r(\"bl\")) +\n                \" V\" + r(\"tl\") + \" A\" + r(\"tl\") + \" \" + r(\"tl\") + \" 0 0 \" + s(\"tl\") + \" \" + r(\"tl\") + \" 0 Z\";\n            }\n            var mw, mh, sw, sh, sx, sy, gw, gh, mc, sc;\n            if (PORTRAIT) { mw = 880 * u; mh = 520 * u; sw = mw; sh = 230 * u; sx = 0; sy = mh; gw = mw; gh = mh + sh; mc = { tl: \"r\", tr: \"r\", br: \"n\", bl: \"n\" }; sc = { tl: \"n\", tr: \"n\", br: \"r\", bl: \"r\" }; }\n            else { mw = 1020 * u; mh = 470 * u; sw = 400 * u; sh = mh; sx = mw; sy = 0; gw = mw + sw; gh = mh; mc = { tl: \"r\", tr: \"n\", br: \"n\", bl: \"r\" }; sc = { tl: \"n\", tr: \"r\", br: \"r\", bl: \"n\" }; }\n            wrap.style.width = gw + \"px\"; wrap.style.height = gh + \"px\";\n            var S = Math.min(1.5, (H * 0.8) / gh, (W * 0.9) / (gw + 70 * u));\n            gsap.set(wrap, { xPercent: -50, yPercent: -50, scale: S });\n            function piece(x, y, w, h, c, fill) {\n              var p = el(\"div\", \"vt-piece\", wrap); p.style.left = x + \"px\"; p.style.top = y + \"px\"; p.style.width = w + \"px\"; p.style.height = h + \"px\";\n              var sv = svg(\"svg\", { width: w, height: h, viewBox: \"0 0 \" + w + \" \" + h }, p);\n              svg(\"path\", { d: path(w, h, c), fill: fill }, sv);\n              return { p: p, sv: sv };\n            }\n            var main = piece(0, 0, mw, mh, mc, cTicket);\n            var stub = piece(sx, sy, sw, sh, sc, cText);\n            // Perforation: a dashed line in the page colour on the stub's joining edge.\n            var perf = PORTRAIT ? { x1: N + 8 * u, y1: 0, x2: sw - N - 8 * u, y2: 0 } : { x1: 0, y1: N + 8 * u, x2: 0, y2: sh - N - 8 * u };\n            svg(\"line\", { x1: perf.x1, y1: perf.y1, x2: perf.x2, y2: perf.y2, stroke: cBg, \"stroke-width\": 4 * u, \"stroke-dasharray\": 10 * u + \" \" + 12 * u, \"stroke-linecap\": \"round\" }, stub.sv);\n            var mi = el(\"div\", \"vt-in\", main.p);\n            var shopEl = el(\"div\", \"vt-shop\", mi); shopEl.textContent = shop;\n            var headEl = el(\"div\", \"vt-head\", mi); headEl.textContent = headline;\n            var noteEl = el(\"div\", \"vt-note\", mi); noteEl.textContent = note; if (!note) noteEl.style.display = \"none\";\n            var si = el(\"div\", \"vt-in\", stub.p);\n            var clEl = el(\"div\", \"vt-clabel\", si); clEl.textContent = codeLabel; if (!codeLabel) clEl.style.display = \"none\";\n            var codeEl = el(\"div\", \"vt-code\", si);\n            if (PORTRAIT) { headEl.style.fontSize = 132 * u + \"px\"; codeEl.style.fontSize = 84 * u + \"px\"; }\n            // Fit the headline and note inside the main part.\n            var avail = mw - 110 * u;\n            [headEl, noteEl].forEach(function (e) { if (e.offsetWidth > avail) { e.style.fontSize = parseFloat(getComputedStyle(e).fontSize) * avail / e.offsetWidth + \"px\"; } });\n\n            var POOL = \"ABCDEFGHJKLMNPQRSTUVWXYZ23456789\";\n            function scrambled(p) {\n              var out = \"\", step = Math.floor(p * 26);\n              for (var i = 0; i < code.length; i++) {\n                var done = p >= 1 || p > 0.18 + 0.82 * (i + 1) / code.length;\n                if (done) out += code.charAt(i); else out += POOL.charAt(Math.floor(mulberry(i * 977 + step * 131 + 5)() * POOL.length));\n              }\n              return out;\n            }\n            codeEl.textContent = code;\n            var sc2 = { p: 0 };\n\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(wrap, { x: W * 0.7 + gw * S * 0.5, rotation: 4 }, { x: 0, rotation: 0, duration: 0.85, ease: \"expo.out\" }, 0.1);\n            tl.fromTo(headEl, { scale: 1.4, opacity: 0, y: 14 * u }, { scale: 1, opacity: 1, y: 0, duration: 0.55, ease: \"back.out(1.3)\" }, 0.75);\n            tl.fromTo([shopEl, noteEl], { opacity: 0, y: 20 * u }, { opacity: 1, y: 0, duration: 0.45, ease: \"power3.out\", stagger: 0.12 }, 0.85);\n            // Tear: a small pull back, then the stub falls away.\n            var tx = PORTRAIT ? 0 : 26 * u, ty = PORTRAIT ? 34 * u : 30 * u, rot = PORTRAIT ? -3 : 6;\n            stub.p.style.transformOrigin = PORTRAIT ? \"0% 0%\" : \"0% 0%\";\n            tl.fromTo(stub.p, { x: 0, y: 0, rotation: 0 }, { x: PORTRAIT ? 0 : -8 * u, y: PORTRAIT ? -8 * u : 0, duration: 0.14, ease: \"power2.out\" }, tear - 0.14);\n            tl.to(stub.p, { x: tx, y: ty, rotation: rot, duration: 0.5, ease: \"back.out(1.6)\" }, tear);\n            tl.fromTo([clEl, codeEl], { opacity: 0 }, { opacity: 1, duration: 0.1 }, tear + 0.1);\n            tl.fromTo(sc2, { p: 0 }, { p: 1, duration: 0.85, ease: \"none\", onUpdate: function () { codeEl.textContent = scrambled(sc2.p); } }, tear + 0.15);\n            tl.fromTo(codeEl, { scale: 1 }, { scale: 1.06, duration: 0.12, ease: \"power2.out\" }, tear + 1.0);\n            tl.to(codeEl, { scale: 1, duration: 0.25, ease: \"power2.out\" }, tear + 1.12);\n            tl.fromTo(clEl, { opacity: 0 }, { opacity: 1, duration: 0.01 }, tear - 0.2);\n            tl.fromTo([clEl, codeEl], { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);\n\n            var total = parseFloat(root.dataset.duration || \"5.5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"voucher-ticket\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "a6694ea48bd34779af4f83488f0e91bc42f76b31028f2994328723dda289bfad",
+ "duration": 5.5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "shop",
+   "type": "string",
+   "role": "content",
+   "label": "Shop name",
+   "default": "Kopi Senja"
+  },
+  {
+   "id": "headline",
+   "type": "string",
+   "role": "content",
+   "label": "Headline",
+   "default": "DISKON 20%"
+  },
+  {
+   "id": "note",
+   "type": "string",
+   "role": "content",
+   "label": "Note",
+   "default": "Min. belanja Rp50.000 · s/d 30 Nov"
+  },
+  {
+   "id": "code_label",
+   "type": "string",
+   "role": "content",
+   "label": "Code label",
+   "default": "Kode voucher"
+  },
+  {
+   "id": "code",
+   "type": "string",
+   "role": "content",
+   "label": "Code",
+   "default": "SENJA20"
+  },
+  {
+   "id": "tear_at",
+   "type": "number",
+   "role": "motion",
+   "label": "Tear time",
+   "default": 1.9,
+   "min": 1,
+   "max": 3.5
+  },
+  {
+   "id": "ticket_color",
+   "type": "color",
+   "role": "style",
+   "label": "Ticket colour",
+   "default": "#f4f4f5"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Accent",
+   "default": "#2563eb"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

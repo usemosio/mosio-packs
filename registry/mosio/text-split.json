@@ -1,0 +1,87 @@
+{
+ "name": "text-split",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "lifeprompt-team",
+ "source": {
+  "repo": "https://github.com/lifeprompt-team/remotion-scenes",
+  "path": "src/scenes/TextAnimations/TextSplit.tsx",
+  "commit": "02c7a84241da7010b5f59c420b0110aafd1d6f0d"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Split Line Reveal\n\nTwo big left-aligned words arrive from opposite directions, one dropping in from above and one rising from below, while a rule draws across the gap and a thin vertical line grows at the right.\n\nCategory: typography. Length: 3 s. WebGL: no.\n\nUse when:\n- A two-part title (word + word) that should open like a split, with a rule between.\n- Editorial or poster-like headlines.\n\nAvoid when:\n- A single word: use per-character-rise.\n- Centered layouts: the block is left aligned.\n\nVariables:\n- text_top (string): Top text, default \"SPLIT\"\n- text_bottom (string): Bottom text, default \"REVEAL\"\n- font_size (number, 30-400): Font size, default 140\n- color (color): Text color, default \"#0a0a0a\"\n- accent (color): Rule color, default \"#2563eb\"\n- background (color): Background, default \"#fafafa\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/lifeprompt-team/remotion-scenes. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Split Line Reveal\n\n  Two big left-aligned words arrive from opposite directions, one dropping in from above and one rising from below, while a rule draws across the gap and a thin vertical line grows at the right.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/lifeprompt-team/remotion-scenes/blob/02c7a84241da7010b5f59c420b0110aafd1d6f0d/src/scenes/TextAnimations/TextSplit.tsx\n\n  MIT License\n\n  Copyright (c) 2026 lifeprompt-team\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"text-split\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    {\"id\": \"text_top\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Top text\", \"description\": \"First line, drops in from above.\", \"default\": \"SPLIT\"},\n    {\"id\": \"text_bottom\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Bottom text\", \"description\": \"Second line, rises from below.\", \"default\": \"REVEAL\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Size of the text in pixels. Wide text shrinks to fit the frame.\", \"default\": 140, \"min\": 30, \"max\": 400, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Color of both lines.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Rule color\", \"description\": \"Color of the rule.\", \"default\": \"#2563eb\"},\n    {\"id\": \"background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Fill behind the text. Use transparent to lay the block over your own footage.\", \"default\": \"#fafafa\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Split Line Reveal</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100;300;400;500;600;700;800;900&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, -apple-system, sans-serif);\n          pointer-events: none;\n        }\n        .slr-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n\n        #root { color: var(--c, #0a0a0a); }\n        .slr-stage { display: block; }\n        .slr-t { position: absolute; left: 5.2%; font-weight: 800; letter-spacing: -0.0286em; line-height: 1; white-space: pre; transform: translateY(-50%); }\n        .slr-rule { position: absolute; left: 5.2%; top: 50%; height: 0.0286em; width: 0; background: var(--ac, #2563eb); transform: translateY(-50%); }\n        .slr-bar { position: absolute; right: 7.8%; top: 30%; width: 0.0214em; height: 0; background: #d4d4d4; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"text-split\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"slr-clip\" class=\"slr-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <div id=\"slr-top\" class=\"slr-t\"></div>\n          <div id=\"slr-rule\" class=\"slr-rule\"></div>\n          <div id=\"slr-bot\" class=\"slr-t\"></div>\n          <div id=\"slr-bar\" class=\"slr-bar\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function el(id) { return document.getElementById(id); }\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return value !== \"\" && value !== null && value !== undefined && Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function txt(value, fallback) {\n              return typeof value === \"string\" ? value : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function list(value, fallback, max) {\n              var a = (typeof value === \"string\" ? value : \"\").split(\",\").map(function (s) { return s.trim(); }).filter(Boolean);\n              if (!a.length) a = fallback.slice();\n              return a.slice(0, max || 12);\n            }\n            function bezier(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 32; i++) {\n                  var u = 1 - t;\n                  var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                var v = 1 - t;\n                return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n              };\n            }\n            var E = {\n              out: bezier(0.16, 1, 0.3, 1), \"in\": bezier(0.7, 0, 0.84, 0), inOut: bezier(0.87, 0, 0.13, 1),\n              overshoot: bezier(0.34, 1.56, 0.64, 1), smooth: bezier(0.4, 0, 0.2, 1),\n              quadIn: function (x) { return x * x; },\n              quadOut: function (x) { return 1 - (1 - x) * (1 - x); },\n              cubicOut: function (x) { return 1 - Math.pow(1 - x, 3); },\n              cubicInOut: function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }\n            };\n            function clamp01(p) { return Math.min(1, Math.max(0, p)); }\n            // the source framework interpolate with clamped ends, one input range and one output range.\n            function ip(x, a, b, from, to, ease) {\n              var p = b === a ? (x >= b ? 1 : 0) : clamp01((x - a) / (b - a));\n              return from + (to - from) * (ease ? ease(p) : p);\n            }\n            // Damped spring from 0 towards 1 (mass, stiffness, damping), frame at 30 fps, in closed form.\n            function spring(frame, cfg) {\n              if (frame <= 0) return 0;\n              var t = frame / 30, m = cfg.mass || 1, k = cfg.stiffness === undefined ? 100 : cfg.stiffness, c = cfg.damping === undefined ? 10 : cfg.damping;\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              if (z < 1) {\n                var wd = w0 * Math.sqrt(1 - z * z);\n                return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t));\n              }\n              var q = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + q, r2 = -z * w0 - q;\n              return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n            }\n            // Seeded generator (mulberry32).\n            function rng(seed) {\n              var a = seed >>> 0;\n              return function () {\n                a = (a + 0x6d2b79f5) >>> 0;\n                var t = a;\n                t = Math.imul(t ^ (t >>> 15), t | 1);\n                t ^= t + Math.imul(t ^ (t >>> 7), t | 61);\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            function onFonts(fn) {\n              if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn, function () {});\n            }\n            // Sets the group's font size, then shrinks it so the group (or its probe) fits the frame.\n            function fitG(g, size, probe, wf, hf, wmul) {\n              g.style.fontSize = size + \"px\";\n              var p = probe || g;\n              var w = Math.max(1, p.offsetWidth * (wmul || 1)), h = Math.max(1, p.offsetHeight);\n              var k = Math.min(1, root.clientWidth * (wf || 0.9) / w, root.clientHeight * (hf || 0.9) / h);\n              if (k < 1) { size = Math.max(6, size * k); g.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            function fillSizer(sizer, words) {\n              sizer.textContent = \"\";\n              words.forEach(function (w) {\n                var s = document.createElement(\"span\");\n                s.textContent = w;\n                sizer.appendChild(s);\n              });\n            }\n            function setText(node, value) {\n              if (node.__t !== value) { node.__t = value; node.textContent = value; }\n            }\n            var speed = num(vars.speed, 1, 0.25, 4);\n            var TOTAL = parseFloat(root.dataset.duration || \"3\");\n            var clock = { frame: 0 };\n            function start(draw) {\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { frame: Math.round(TOTAL * 30), duration: TOTAL, ease: \"none\", onUpdate: function () { draw(Math.round(clock.frame * speed * 1000) / 1000); } }, 0);\n              draw(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"text-split\"] = tl;\n            }\n\n            root.style.background = str(vars.background, \"#fafafa\");\n            \n            var stage = el(\"slr-clip\"), top = el(\"slr-top\"), bot = el(\"slr-bot\"), rule = el(\"slr-rule\"), bar = el(\"slr-bar\");\n            root.style.setProperty(\"--c\", str(vars.color, \"#0a0a0a\"));\n            root.style.setProperty(\"--ac\", str(vars.accent, \"#2563eb\"));\n            top.textContent = txt(vars.text_top, \"SPLIT\");\n            bot.textContent = txt(vars.text_bottom, \"REVEAL\");\n            var base = num(vars.font_size, 140, 30, 400);\n            function fit() {\n              stage.style.fontSize = base + \"px\";\n              var w = Math.max(top.offsetWidth, bot.offsetWidth, 1);\n              var k = Math.min(1, root.clientWidth * 0.76 / w);\n              stage.style.fontSize = Math.max(6, base * k) + \"px\";\n            }\n            fit();\n            onFonts(fit);\n\n            // remocn-scenes: the top line travels 100 px down over 30 frames, the bottom one starts 5 frames\n            // later and travels 100 px up over 30; the rule reaches 600 px at frame 50, the bar 300 px at 60.\n            // Vertical places (35 % and 55 % tops of a 1080 frame) become em offsets from the middle.\n            function draw(f) {\n              var U = 140;\n              var ty = ip(f, 0, 30, -100, 0, E.out), by = ip(f, 5, 35, 100, 0, E.out);\n              top.style.top = \"calc(50% - 0.55em)\";\n              bot.style.top = \"calc(50% + 0.99em)\";\n              top.style.transform = \"translateY(calc(-50% + \" + (ty / U) + \"em))\";\n              bot.style.transform = \"translateY(calc(-50% + \" + (by / U) + \"em))\";\n              top.style.opacity = ip(f, 0, 20, 0, 1);\n              bot.style.opacity = ip(f, 5, 25, 0, 1);\n              rule.style.width = (ip(f, 20, 50, 0, 600, E.out) / U) + \"em\";\n              bar.style.height = (ip(f, 30, 60, 0, 300, E.out) / U) + \"em\";\n            }\n            start(draw);\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "48b698e4e34f74e6a8c9b859aca1adadb902f154b678f3f341ba7d202920c05c",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#fafafa",
+ "demo_values": {
+  "font_size": 200
+ },
+ "variables": [
+  {
+   "id": "text_top",
+   "type": "string",
+   "role": "content",
+   "label": "Top text",
+   "default": "SPLIT"
+  },
+  {
+   "id": "text_bottom",
+   "type": "string",
+   "role": "content",
+   "label": "Bottom text",
+   "default": "REVEAL"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 140,
+   "min": 30,
+   "max": 400
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Rule color",
+   "default": "#2563eb"
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#fafafa"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/lifeprompt-team/remotion-scenes"
+}

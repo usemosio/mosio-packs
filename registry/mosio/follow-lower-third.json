@@ -1,0 +1,109 @@
+{
+ "name": "follow-lower-third",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/instagram-follow/instagram-follow.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Follow Lower Third\n\nA pill-shaped profile bar slides up from the bottom, its Follow button is pressed and flips to Following, then the bar slides away.\n\nCategory: ui-blocks. Length: 4.5 s. WebGL: no.\n\nUse when:\n- A creator or brand needs a quick 'follow me' call-out over footage.\n- A short, vertical-video lower third with a button press.\n\nAvoid when:\n- You want a full profile card with bio, tabs and a cursor: use profile-follow-card.\n- A real platform's look is required: this is a generic pill.\n\nVariables:\n- name (string): Name, default \"Studio Nova\"\n- handle (string): Handle, default \"@studionova\"\n- followers (string): Followers, default \"47.5K followers\"\n- follow_label (string): Button label, default \"Follow\"\n- following_label (string): Pressed label, default \"Following\"\n- verified (boolean): Check mark, default true\n- card_color (color): Card color, default \"#1a1a1a\"\n- button_color (color): Button color, default \"#3b82f6\"\n- following_color (color): Pressed color, default \"#2f2f2f\"\n- avatar_color_a (color): Avatar color A, default \"#ff8a3d\"\n- avatar_color_b (color): Avatar color B, default \"#c13584\"\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Follow Lower Third\n\n  A pill-shaped profile bar slides up from the bottom, its Follow button is pressed and flips to Following, then the bar slides away.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/instagram-follow/instagram-follow.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: adapted from a social-network follow overlay: the platform's name, handle, photo and blue are replaced with a generic profile (name, handle and follower count are variables, the avatar is a drawn gradient circle with the name's initial), the sizes are container units so it fills any frame, and DM Sans loads from Google Fonts.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"follow-lower-third\"\n  data-composition-duration=\"4.5\"\n  data-composition-variables='[\n    {\"id\": \"name\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Name\", \"description\": \"Display name on the card; its first letter fills the avatar.\", \"default\": \"Studio Nova\"},\n    {\"id\": \"handle\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Handle\", \"description\": \"Account handle line.\", \"default\": \"@studionova\"},\n    {\"id\": \"followers\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Followers\", \"description\": \"Follower count line.\", \"default\": \"47.5K followers\"},\n    {\"id\": \"follow_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Button label\", \"description\": \"Button text before the press.\", \"default\": \"Follow\"},\n    {\"id\": \"following_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Pressed label\", \"description\": \"Button text after the press.\", \"default\": \"Following\"},\n    {\"id\": \"verified\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Check mark\", \"description\": \"Show a check badge after the name.\", \"default\": true},\n    {\"id\": \"card_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Card color\", \"description\": \"Background of the pill.\", \"default\": \"#1a1a1a\"},\n    {\"id\": \"button_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Button color\", \"description\": \"Follow button and check badge.\", \"default\": \"#3b82f6\"},\n    {\"id\": \"following_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Pressed color\", \"description\": \"Button color after it is pressed.\", \"default\": \"#2f2f2f\"},\n    {\"id\": \"avatar_color_a\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Avatar color A\", \"description\": \"First color of the avatar gradient.\", \"default\": \"#ff8a3d\"},\n    {\"id\": \"avatar_color_b\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Avatar color B\", \"description\": \"Second color of the avatar gradient.\", \"default\": \"#c13584\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Follow Lower Third</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n          font-family: \"DM Sans\", sans-serif;\n        }\n        .flt-stage { position: absolute; inset: 0; }\n        #flt-card {\n          position: absolute;\n          bottom: max(14.815cqmin, 9cqh);\n          left: 50%;\n          transform: translateX(-50%);\n          display: flex;\n          align-items: center;\n          gap: 2.778cqmin;\n          background: var(--flt-card, #1a1a1a);\n          border-radius: 6.944cqmin;\n          padding: 2.315cqmin 3.704cqmin 2.315cqmin 2.315cqmin;\n          box-shadow: 0 0.741cqmin 3.704cqmin rgba(0, 0, 0, 0.4);\n          max-width: 96cqw;\n        }\n        #flt-avatar {\n          width: 11.111cqmin;\n          height: 11.111cqmin;\n          border-radius: 50%;\n          flex-shrink: 0;\n          border: 0.278cqmin solid #333;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n          color: #fff;\n          font-size: 5.185cqmin;\n          font-weight: 700;\n          background: linear-gradient(135deg, var(--flt-av-a, #ff8a3d), var(--flt-av-b, #c13584));\n        }\n        .flt-info { display: flex; flex-direction: column; gap: 0.185cqmin; margin-right: 1.852cqmin; min-width: 0; }\n        .flt-name-row { display: flex; align-items: center; gap: 0.926cqmin; }\n        #flt-name { font-size: 3.889cqmin; font-weight: 700; color: #fff; line-height: 1.3; letter-spacing: -0.01em; white-space: nowrap; }\n        #flt-badge { width: 3.148cqmin; height: 3.148cqmin; flex-shrink: 0; display: block; }\n        #flt-handle { font-size: 2.593cqmin; color: #a0a0a0; line-height: 1.3; white-space: nowrap; }\n        #flt-count { font-size: 2.315cqmin; color: #737373; line-height: 1.3; white-space: nowrap; }\n        #flt-btn {\n          position: relative;\n          width: 23.148cqmin;\n          height: 7.407cqmin;\n          border-radius: 3.704cqmin;\n          background: var(--flt-btn, #3b82f6);\n          flex-shrink: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n          overflow: hidden;\n        }\n        .flt-label {\n          position: absolute;\n          font-size: 2.778cqmin;\n          font-weight: 700;\n          color: #fff;\n          letter-spacing: 0.02em;\n          white-space: nowrap;\n          display: flex;\n          align-items: center;\n          gap: 0.741cqmin;\n        }\n        #flt-following { opacity: 0; }\n        #flt-following svg { width: 1.667cqmin; height: 1.667cqmin; display: block; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"follow-lower-third\" data-duration=\"4.5\" data-fps=\"30\">\n        <div id=\"flt-clip\" class=\"flt-stage clip\" data-start=\"0\" data-duration=\"4.5\" data-track-index=\"0\">\n          <div id=\"flt-card\">\n            <div id=\"flt-avatar\"></div>\n            <div class=\"flt-info\">\n              <div class=\"flt-name-row\">\n                <div id=\"flt-name\"></div>\n                <svg id=\"flt-badge\" viewBox=\"0 0 40 40\" fill=\"none\"><circle cx=\"20\" cy=\"20\" r=\"20\" fill=\"var(--flt-btn, #3b82f6)\" /><path d=\"M17.5 27.5L10 20l2.5-2.5 5 5 10-10L30 15 17.5 27.5z\" fill=\"#fff\" /></svg>\n              </div>\n              <div id=\"flt-handle\"></div>\n              <div id=\"flt-count\"></div>\n            </div>\n            <div id=\"flt-btn\">\n              <span id=\"flt-follow\" class=\"flt-label\"></span>\n              <span id=\"flt-following\" class=\"flt-label\"><span id=\"flt-following-text\"></span>\n                <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"6 9 12 15 18 9\"></polyline></svg>\n              </span>\n            </div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (value === true || value === \"true\") return true;\n              if (value === false || value === \"false\") return false;\n              return fallback;\n            }\n            function hex(value, fallback) {\n              return typeof value === \"string\" && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value.trim()) ? value.trim() : fallback;\n            }\n            function rgba(h, a) {\n              if (h.length === 4) h = \"#\" + h[1] + h[1] + h[2] + h[2] + h[3] + h[3];\n              return \"rgba(\" + parseInt(h.slice(1, 3), 16) + \",\" + parseInt(h.slice(3, 5), 16) + \",\" + parseInt(h.slice(5, 7), 16) + \",\" + a + \")\";\n            }\n\n            var name = str(vars.name, \"Studio Nova\");\n            var card = document.getElementById(\"flt-card\");\n            document.getElementById(\"flt-name\").textContent = name;\n            document.getElementById(\"flt-handle\").textContent = str(vars.handle, \"@studionova\");\n            document.getElementById(\"flt-count\").textContent = str(vars.followers, \"47.5K followers\");\n            document.getElementById(\"flt-follow\").textContent = str(vars.follow_label, \"Follow\");\n            document.getElementById(\"flt-following-text\").textContent = str(vars.following_label, \"Following\");\n            document.getElementById(\"flt-avatar\").textContent = Array.from(name.trim())[0] || \"S\";\n            document.getElementById(\"flt-badge\").style.display = bool(vars.verified, true) ? \"block\" : \"none\";\n            root.style.setProperty(\"--flt-card\", hex(vars.card_color, \"#1a1a1a\"));\n            root.style.setProperty(\"--flt-btn\", hex(vars.button_color, \"#3b82f6\"));\n            root.style.setProperty(\"--flt-av-a\", hex(vars.avatar_color_a, \"#ff8a3d\"));\n            root.style.setProperty(\"--flt-av-b\", hex(vars.avatar_color_b, \"#c13584\"));\n            var doneColor = hex(vars.following_color, \"#2f2f2f\");\n\n            var btn = document.getElementById(\"flt-btn\");\n            var slide = root.clientHeight;\n            var tl = gsap.timeline({ paused: true });\n            gsap.set(card, { y: slide * 0.2, opacity: 0 });\n            tl.to(card, { y: 0, opacity: 1, duration: 0.5, ease: \"power3.out\" }, 0.1);\n            tl.to(btn, { scale: 0.92, duration: 0.15, ease: \"power2.out\" }, 1.0);\n            tl.to(btn, { scale: 1, duration: 0.4, ease: \"elastic.out(1, 0.4)\" }, 1.15);\n            tl.to(btn, { backgroundColor: doneColor, duration: 0.12, ease: \"none\" }, 1.15);\n            tl.to(\"#flt-follow\", { opacity: 0, duration: 0.08, ease: \"none\" }, 1.15);\n            tl.to(\"#flt-following\", { opacity: 1, duration: 0.08, ease: \"none\" }, 1.18);\n            tl.to(card, { y: slide * 0.2, opacity: 0, duration: 0.25, ease: \"power3.in\" }, 3.8);\n            tl.set({}, {}, 4.5);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"follow-lower-third\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "29630f0b69ab69f3e456e73382bb0280fb0dd9fa420cf5af4fd49d11ff3cbc7f",
+ "duration": 4.5,
+ "webgl": false,
+ "demo_background": "#2a2a33",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "name",
+   "type": "string",
+   "role": "content",
+   "label": "Name",
+   "default": "Studio Nova"
+  },
+  {
+   "id": "handle",
+   "type": "string",
+   "role": "content",
+   "label": "Handle",
+   "default": "@studionova"
+  },
+  {
+   "id": "followers",
+   "type": "string",
+   "role": "content",
+   "label": "Followers",
+   "default": "47.5K followers"
+  },
+  {
+   "id": "follow_label",
+   "type": "string",
+   "role": "content",
+   "label": "Button label",
+   "default": "Follow"
+  },
+  {
+   "id": "following_label",
+   "type": "string",
+   "role": "content",
+   "label": "Pressed label",
+   "default": "Following"
+  },
+  {
+   "id": "verified",
+   "type": "boolean",
+   "role": "style",
+   "label": "Check mark",
+   "default": true
+  },
+  {
+   "id": "card_color",
+   "type": "color",
+   "role": "style",
+   "label": "Card color",
+   "default": "#1a1a1a"
+  },
+  {
+   "id": "button_color",
+   "type": "color",
+   "role": "style",
+   "label": "Button color",
+   "default": "#3b82f6"
+  },
+  {
+   "id": "following_color",
+   "type": "color",
+   "role": "style",
+   "label": "Pressed color",
+   "default": "#2f2f2f"
+  },
+  {
+   "id": "avatar_color_a",
+   "type": "color",
+   "role": "style",
+   "label": "Avatar color A",
+   "default": "#ff8a3d"
+  },
+  {
+   "id": "avatar_color_b",
+   "type": "color",
+   "role": "style",
+   "label": "Avatar color B",
+   "default": "#c13584"
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

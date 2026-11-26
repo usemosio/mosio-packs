@@ -1,0 +1,104 @@
+{
+ "name": "link-underline-loop",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Animata",
+ "source": {
+  "repo": "https://github.com/codse/animata",
+  "path": "animata/text/metis-text.tsx",
+  "commit": "25c27e5a874c60a56dcc1609df3b2c4f5f8456f8"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Link Underline Loop\n\nA thin line draws under a word from the left, then leaves to the right; it repeats like a hover on a link.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- A single word or label (a link, a nav item, a name) should get a quiet underline draw.\n- A clean line wipe is wanted, in on one side and out on the other.\n\nAvoid when:\n- A hand-drawn or marker underline is wanted: use ink-underline or marker-highlight.\n- Several lines of text need highlighting.\n\nVariables:\n- text (string): Text, default \"about us\"\n- font_size (number, 12-260): Font size, default 110\n- thickness (number, 1-16): Line thickness, default 4\n- gap (number, 0-60): Line gap, default 10\n- draw (number, 0.1-1.5): Draw time, default 0.3\n- hold (number, 0-4): Hold, default 1\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"500\"\n\nSource: https://github.com/codse/animata. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Link Underline Loop\n\n  A thin line draws under a word from the left, then leaves to the right; it repeats like a hover on a link.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/codse/animata/blob/25c27e5a874c60a56dcc1609df3b2c4f5f8456f8/animata/text/metis-text.tsx\n  and animata/text/line-hover.css (after Codrops LineHoverStyles, which that file credits)\n  MIT License\n\n  Copyright (c) Animata\n\n  Permission is hereby granted, free of charge, to any person obtaining\n  a copy of this software and associated documentation files (the\n  \"Software\"), to deal in the Software without restriction, including\n  without limitation the rights to use, copy, modify, merge, publish,\n  distribute, sublicense, and/or sell copies of the Software, and to\n  permit persons to whom the Software is furnished to do so, subject to\n  the following conditions:\n\n  The above copyright notice and this permission notice shall be\n  included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"link-underline-loop\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Label that gets the underline.\", \"default\": \"about us\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 110, \"min\": 12, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"thickness\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Line thickness\", \"description\": \"Thickness of the underline in pixels.\", \"default\": 4, \"min\": 1, \"max\": 16, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"gap\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Line gap\", \"description\": \"Space between the text and the line in pixels.\", \"default\": 10, \"min\": 0, \"max\": 60, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"draw\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Draw time\", \"description\": \"Seconds for the line to come in or leave.\", \"default\": 0.3, \"min\": 0.1, \"max\": 1.5, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"hold\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Hold\", \"description\": \"Seconds the line stays under the text.\", \"default\": 1, \"min\": 0, \"max\": 4, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text and line color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"500\", \"options\": [{\"value\": \"300\", \"label\": \"Light\"}, {\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"900\", \"label\": \"Black\"}]}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Link Underline Loop</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .mt-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .mt-label { position: relative; display: inline-block; line-height: 1.1; white-space: pre; text-transform: lowercase; }\n        .mt-line { position: absolute; left: 0; width: 100%; background: currentColor; transform-origin: 100% 50%; transform: scaleX(0); }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"link-underline-loop\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"mt-clip\" class=\"mt-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <span id=\"mt-label\" class=\"mt-label\"><span id=\"mt-text\"></span><span id=\"mt-line\" class=\"mt-line\"></span></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function opt(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : v === \"true\" ? true : v === \"false\" ? false : f; }\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > max) { size = Math.max(12, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            \n            var label = document.getElementById(\"mt-label\");\n            var line = document.getElementById(\"mt-line\");\n            document.getElementById(\"mt-text\").textContent = str(vars.text, \"about us\");\n            root.style.color = col(vars.color, \"#171717\");\n            root.style.fontWeight = opt(vars.font_weight, [\"300\",\"400\",\"500\",\"600\",\"700\",\"900\"], \"500\");\n            fit(label, num(vars.font_size, 110, 12, 260), 0.85);\n            line.style.height = num(vars.thickness, 4, 1, 16) + \"px\";\n            line.style.top = \"calc(100% + \" + num(vars.gap, 10, 0, 60) + \"px)\";\n            var d = num(vars.draw, 0.3, 0.1, 1.5), hold = num(vars.hold, 1, 0, 4);\n            gsap.registerPlugin(CustomEase);\n            var ease = CustomEase.create(\"mt-ease\", \"M0,0 C0.25,0.1 0.25,1 1,1\");\n            var tl = gsap.timeline({ paused: true });\n            var t = 0.3, cycle = d + hold + d + 0.6;\n            while (t + d + hold + d <= parseFloat(root.dataset.duration || \"5\") + 0.001) {\n              tl.fromTo(line, { scaleX: 0, transformOrigin: \"0% 50%\" }, { scaleX: 1, transformOrigin: \"0% 50%\", duration: d, ease: ease, immediateRender: false }, t);\n              tl.fromTo(line, { scaleX: 1, transformOrigin: \"100% 50%\" }, { scaleX: 0, transformOrigin: \"100% 50%\", duration: d, ease: ease, immediateRender: false }, t + d + hold);\n              t += cycle;\n            }\n            gsap.set(line, { scaleX: 0, transformOrigin: \"100% 50%\" });\n            var total = parseFloat(root.dataset.duration || \"5\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"link-underline-loop\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "14b9ac720442951d5b388bda724fbac35ed706d44aa32c813629bbe7c37d374b",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 150,
+  "thickness": 6
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "about us"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 110,
+   "min": 12,
+   "max": 260
+  },
+  {
+   "id": "thickness",
+   "type": "number",
+   "role": "style",
+   "label": "Line thickness",
+   "default": 4,
+   "min": 1,
+   "max": 16
+  },
+  {
+   "id": "gap",
+   "type": "number",
+   "role": "style",
+   "label": "Line gap",
+   "default": 10,
+   "min": 0,
+   "max": 60
+  },
+  {
+   "id": "draw",
+   "type": "number",
+   "role": "motion",
+   "label": "Draw time",
+   "default": 0.3,
+   "min": 0.1,
+   "max": 1.5
+  },
+  {
+   "id": "hold",
+   "type": "number",
+   "role": "motion",
+   "label": "Hold",
+   "default": 1,
+   "min": 0,
+   "max": 4
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "500"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://animata.design"
+}

@@ -1,0 +1,144 @@
+{
+ "name": "share-sheet-carousel",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/share-sheet-carousel/share-sheet-carousel.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Share Sheet Carousel\n\nA share sheet springs up over a blurred backdrop, its preview cycling through four slides in quick cuts, then the Accept button is pressed.\n\nCategory: ui-blocks. Length: 7.2333 s. WebGL: no.\n\nUse when:\n- A spot shows something being shared, received or accepted: an invite, a gift, a file.\n- A quick rhythmic slideshow sits inside a UI frame.\n\nAvoid when:\n- You need real photos in the preview: this draws coloured word cards.\n- The scene should be a full chat: use chat-flow.\n\nVariables:\n- share_title (string): Sheet title, default \"Share\"\n- sender_name (string): Sender, default \"Studio\"\n- item_label (string): Item, default \"a video\"\n- strip_text (string): Strip line, default \"MADE WITH CARE \\u00b7 FRESH EVERY WEEK\"\n- accept_label (string): Accept label, default \"Accept\"\n- decline_label (string): Decline label, default \"Decline\"\n- slide_color_1 (color): Slide 1 colour, default \"#e4572e\"\n- slide_color_2 (color): Slide 2 colour, default \"#2e86ab\"\n- slide_color_3 (color): Slide 3 colour, default \"#7b4fd6\"\n- slide_color_4 (color): Slide 4 colour, default \"#2a9d6a\"\n- slide_text_1 (string): Slide 1 text, default \"Fresh\"\n- slide_text_2 (string): Slide 2 text, default \"Bold\"\n- slide_text_3 (string): Slide 3 text, default \"Simple\"\n- slide_text_4 (string): Slide 4 text, default \"Yours\"\n- accent (color): Accept colour, default \"#087a57\"\n- strip_color (color): Strip colour, default \"#f2ecdf\"\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Share Sheet Carousel\n\n  A share sheet springs up over a blurred backdrop, its preview cycling through four slides in quick cuts, then the Accept button is pressed.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/share-sheet-carousel/share-sheet-carousel.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License,\n  Version 2.0 (the \"License\"); you may not use this file except in compliance with the License.\n  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless\n  required by applicable law or agreed to in writing, software distributed under the License is\n  distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express\n  or implied. See the License for the specific language governing permissions and limitations\n  under the License.\n\n  Changes by usemosio/blocks: made generic (no phone-OS wording or brand logo: the preview slides are four drawn colour cards with a word each, the logo strip is a drawn mark plus the sender name), the four photos and the logo file are replaced by variables for colours and words, Inter from Google Fonts, fills the host frame: the sheet is scaled to the frame and centred while the blurred backdrop fills it, the spring entry and cut rhythm are kept as measured.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"share-sheet-carousel\"\n  data-composition-duration=\"7.2333\"\n  data-composition-variables='[\n    {\"id\": \"share_title\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Sheet title\", \"description\": \"Heading at the top of the share sheet.\", \"default\": \"Share\", \"maxLength\": 30},\n    {\"id\": \"sender_name\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Sender\", \"description\": \"Name shown as the sender offering the item, and in the preview strip.\", \"default\": \"Studio\", \"maxLength\": 24},\n    {\"id\": \"item_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Item\", \"description\": \"What the sender is offering, completing the sentence 'would like to share ...'.\", \"default\": \"a video\", \"maxLength\": 40},\n    {\"id\": \"strip_text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Strip line\", \"description\": \"Small spaced caps line in the preview strip.\", \"default\": \"MADE WITH CARE · FRESH EVERY WEEK\", \"maxLength\": 48},\n    {\"id\": \"accept_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Accept label\", \"description\": \"Right-hand action button.\", \"default\": \"Accept\", \"maxLength\": 16},\n    {\"id\": \"decline_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Decline label\", \"description\": \"Left-hand action button.\", \"default\": \"Decline\", \"maxLength\": 16},\n    {\"id\": \"slide_color_1\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Slide 1 colour\", \"description\": \"Colour of the first carousel slide.\", \"default\": \"#e4572e\"},\n    {\"id\": \"slide_color_2\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Slide 2 colour\", \"description\": \"Colour of the second carousel slide.\", \"default\": \"#2e86ab\"},\n    {\"id\": \"slide_color_3\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Slide 3 colour\", \"description\": \"Colour of the third carousel slide.\", \"default\": \"#7b4fd6\"},\n    {\"id\": \"slide_color_4\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Slide 4 colour\", \"description\": \"Colour of the fourth carousel slide.\", \"default\": \"#2a9d6a\"},\n    {\"id\": \"slide_text_1\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Slide 1 text\", \"description\": \"Word on the first slide.\", \"default\": \"Fresh\", \"maxLength\": 14},\n    {\"id\": \"slide_text_2\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Slide 2 text\", \"description\": \"Word on the second slide.\", \"default\": \"Bold\", \"maxLength\": 14},\n    {\"id\": \"slide_text_3\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Slide 3 text\", \"description\": \"Word on the third slide.\", \"default\": \"Simple\", \"maxLength\": 14},\n    {\"id\": \"slide_text_4\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Slide 4 text\", \"description\": \"Word on the fourth slide.\", \"default\": \"Yours\", \"maxLength\": 14},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Accept colour\", \"description\": \"Colour of the Accept label.\", \"default\": \"#087a57\"},\n    {\"id\": \"strip_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Strip colour\", \"description\": \"Background of the preview strip.\", \"default\": \"#f2ecdf\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Share Sheet Carousel</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=block\" />\n      <style>\n        #root { position: absolute; inset: 0; overflow: hidden; container-type: size; font-family: Inter, system-ui, sans-serif; background: #111; pointer-events: none; }\n        .ssc-bg { position: absolute; inset: -220px; filter: blur(46px) saturate(1.1) brightness(0.88); }\n        #ssc-stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; }\n        .ssc-art { position: absolute; inset: 0; overflow: hidden; display: grid; place-items: center; }\n        .ssc-art::before { content: \"\"; position: absolute; width: 150%; aspect-ratio: 1; border-radius: 50%; left: -30%; top: -62%; background: rgba(255,255,255,0.14); }\n        .ssc-art::after { content: \"\"; position: absolute; width: 90%; aspect-ratio: 1; border-radius: 50%; right: -35%; bottom: -55%; background: rgba(0,0,0,0.16); }\n        .ssc-art b { position: relative; z-index: 1; color: #fff; font-size: 96px; font-weight: 700; letter-spacing: -2px; text-shadow: 0 4px 24px rgba(0,0,0,0.22); }\n        #ssc-card { position: absolute; left: 206px; top: 473px; width: 668px; height: 974px; background: #f9f9f9; border-radius: 34px; box-shadow: 0 18px 42px rgba(0,0,0,0.28); opacity: 0; }\n        #ssc-clipper { position: absolute; inset: 0; border-radius: 34px; overflow: hidden; }\n        #ssc-title { position: absolute; top: 49px; left: 0; width: 100%; text-align: center; font-size: 44px; font-weight: 600; color: #101010; line-height: 44px; }\n        #ssc-subtitle { position: absolute; top: 117px; left: 0; width: 100%; text-align: center; font-size: 29px; color: #313131; line-height: 29px; white-space: nowrap; }\n        #ssc-subtitle b { font-weight: 700; }\n        #ssc-imagebox { position: absolute; left: 43px; top: 191px; width: 582px; height: 632px; border-radius: 24px; overflow: hidden; }\n        .ssc-slide { position: absolute; left: 0; top: 0; width: 582px; height: 476px; }\n        #ssc-strip { position: absolute; left: 0; top: 476px; width: 582px; height: 156px; display: grid; place-items: center; align-content: center; gap: 14px; }\n        #ssc-wordmark { display: flex; align-items: center; gap: 12px; font-size: 34px; font-weight: 700; color: #1d1b16; }\n        #ssc-wordmark svg { width: 40px; height: 40px; }\n        #ssc-strip-text { font-size: 16px; font-weight: 600; letter-spacing: 2.4px; color: #4a4438; text-transform: uppercase; }\n        #ssc-h { position: absolute; left: 0; top: 859px; width: 100%; height: 1.5px; background: #dfdfdf; }\n        #ssc-v { position: absolute; left: 333px; top: 861px; width: 1.5px; bottom: 0; background: #dfdfdf; }\n        #ssc-press { position: absolute; left: 335px; top: 861px; right: 0; bottom: 0; background: #e9e9e9; border-radius: 0 0 34px 0; opacity: 0; }\n        .ssc-btn { position: absolute; top: 861px; bottom: 0; display: grid; place-items: center; font-size: 34px; }\n        #ssc-decline { left: 0; width: 333px; color: #6f6f73; }\n        #ssc-accept { left: 335px; right: 0; font-weight: 600; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"share-sheet-carousel\" data-duration=\"7.2333\" data-fps=\"30\">\n        <div id=\"ssc-scene\" class=\"clip\" data-start=\"0\" data-duration=\"7.2333\" data-track-index=\"0\" style=\"position:absolute;inset:0\">\n          <div id=\"ssc-bgs\"></div>\n          <div id=\"ssc-stage\">\n            <div id=\"ssc-card\">\n              <div id=\"ssc-clipper\">\n                <div id=\"ssc-title\"></div>\n                <div id=\"ssc-subtitle\"></div>\n                <div id=\"ssc-imagebox\">\n                  <div id=\"ssc-slides\"></div>\n                  <div id=\"ssc-strip\">\n                    <div id=\"ssc-wordmark\"><svg viewBox=\"0 0 100 100\"><rect x=\"6\" y=\"6\" width=\"88\" height=\"88\" rx=\"26\" fill=\"#1d1b16\"/><path d=\"M38 28 L72 50 L38 72 Z\" fill=\"#f2ecdf\"/></svg><span id=\"ssc-sender\"></span></div>\n                    <div id=\"ssc-strip-text\"></div>\n                  </div>\n                </div>\n                <div id=\"ssc-h\"></div><div id=\"ssc-press\"></div><div id=\"ssc-v\"></div>\n                <div id=\"ssc-decline\" class=\"ssc-btn\"></div><div id=\"ssc-accept\" class=\"ssc-btn\"></div>\n              </div>\n            </div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function str(v, f, max) { return typeof v === \"string\" && v.trim() ? v.trim().slice(0, max || 60) : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function $(id) { return document.getElementById(id); }\n            var DUR = 7.2333;\n            $(\"ssc-title\").textContent = str(vars.share_title, \"Share\", 30);\n            var sender = str(vars.sender_name, \"Studio\", 24);\n            var sub = $(\"ssc-subtitle\");\n            var b = document.createElement(\"b\"); b.textContent = sender;\n            sub.appendChild(b);\n            sub.appendChild(document.createTextNode(\" would like to share \" + str(vars.item_label, \"a video\", 40)));\n            $(\"ssc-sender\").textContent = sender;\n            $(\"ssc-strip\").style.background = col(vars.strip_color, \"#f2ecdf\");\n            $(\"ssc-strip-text\").textContent = str(vars.strip_text, \"MADE WITH CARE · FRESH EVERY WEEK\", 48);\n            $(\"ssc-decline\").textContent = str(vars.decline_label, \"Decline\", 16);\n            var acc = $(\"ssc-accept\");\n            acc.textContent = str(vars.accept_label, \"Accept\", 16);\n            acc.style.color = col(vars.accent, \"#087a57\");\n\n            var colors = [col(vars.slide_color_1, \"#e4572e\"), col(vars.slide_color_2, \"#2e86ab\"), col(vars.slide_color_3, \"#7b4fd6\"), col(vars.slide_color_4, \"#2a9d6a\")];\n            var words = [str(vars.slide_text_1, \"Fresh\", 14), str(vars.slide_text_2, \"Bold\", 14), str(vars.slide_text_3, \"Simple\", 14), str(vars.slide_text_4, \"Yours\", 14)];\n            function art(i) {\n              var d = document.createElement(\"div\");\n              d.className = \"ssc-art\";\n              d.style.background = \"linear-gradient(150deg, \" + colors[i] + \" 0%, color-mix(in srgb, \" + colors[i] + \", #000 38%) 100%)\";\n              var t = document.createElement(\"b\"); t.textContent = words[i]; d.appendChild(t);\n              return d;\n            }\n            var bgs = [], slides = [];\n            for (var i = 0; i < 4; i++) {\n              var bg = art(i); bg.className += \" ssc-bg\"; bg.id = \"ssc-bg-\" + (i + 1); $(\"ssc-bgs\").appendChild(bg); bgs.push(bg);\n              var sl = art(i); sl.className += \" ssc-slide\"; sl.id = \"ssc-slide-\" + (i + 1); $(\"ssc-slides\").appendChild(sl); slides.push(sl);\n            }\n            gsap.set([bgs[0], slides[0]], { autoAlpha: 1 });\n            gsap.set([bgs[1], bgs[2], bgs[3], slides[1], slides[2], slides[3]], { autoAlpha: 0 });\n\n            /* Fill the host: the sheet is scaled to the frame and centred. */\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920;\n            var s = Math.min((W * 0.8) / 668, (H * 0.9) / 974);\n            gsap.set(\"#ssc-stage\", { scale: s, x: W / 2 - 540 * s, y: H / 2 - 960 * s });\n\n            var tl = gsap.timeline({ paused: true });\n            tl.set(\"#ssc-card\", { y: 1450, autoAlpha: 0 }, 0.001);\n            tl.set(\"#ssc-press\", { autoAlpha: 0 }, 0.001);\n            var SPRING = [[0.056667,1198,0.13],[0.09,903,0.21],[0.123333,648,0.36],[0.156667,437,0.43],[0.19,262,0.5],[0.223333,120,0.62],[0.256667,8,0.78],[0.29,-76,0.89],[0.323333,-138,1.0],[0.356667,-175,null],[0.39,-191,null],[0.423333,-192,null],[0.456667,-181,null],[0.49,-159,null],[0.523333,-131,null],[0.556667,-100,null],[0.59,-68,null],[0.623333,-41,null],[0.656667,-18,null],[0.69,-5,null],[0.723333,0,null]];\n            SPRING.forEach(function (st) {\n              var props = { y: st[1] };\n              if (st[2] !== null) props.autoAlpha = st[2];\n              tl.set(\"#ssc-card\", props, st[0]);\n            });\n            var CUTS = [0.99,1.356667,1.69,2.023333,2.356667,2.69,3.09,3.456667,3.79,4.123333,4.456667,4.79,5.156667];\n            var cur = 0;\n            CUTS.forEach(function (t, i) {\n              var next = (i + 1) % 4;\n              tl.set([bgs[cur], slides[cur]], { autoAlpha: 0 }, t);\n              tl.set([bgs[next], slides[next]], { autoAlpha: 1 }, t);\n              cur = next;\n            });\n            tl.set(\"#ssc-card\", { y: 3 }, 6.323333);\n            tl.set(\"#ssc-press\", { autoAlpha: 1 }, 6.323333);\n            tl.set(\"#ssc-card\", { y: 0 }, 6.656667);\n            tl.set(\"#ssc-press\", { autoAlpha: 0 }, 6.656667);\n            tl.set({}, {}, DUR);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"share-sheet-carousel\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "13fc49ce28ba002d048516d585c2db3ec5896585f3f8bc814db62fba37b83bb4",
+ "duration": 7.2333,
+ "webgl": false,
+ "demo_background": "#111",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "share_title",
+   "type": "string",
+   "role": "content",
+   "label": "Sheet title",
+   "default": "Share"
+  },
+  {
+   "id": "sender_name",
+   "type": "string",
+   "role": "content",
+   "label": "Sender",
+   "default": "Studio"
+  },
+  {
+   "id": "item_label",
+   "type": "string",
+   "role": "content",
+   "label": "Item",
+   "default": "a video"
+  },
+  {
+   "id": "strip_text",
+   "type": "string",
+   "role": "content",
+   "label": "Strip line",
+   "default": "MADE WITH CARE · FRESH EVERY WEEK"
+  },
+  {
+   "id": "accept_label",
+   "type": "string",
+   "role": "content",
+   "label": "Accept label",
+   "default": "Accept"
+  },
+  {
+   "id": "decline_label",
+   "type": "string",
+   "role": "content",
+   "label": "Decline label",
+   "default": "Decline"
+  },
+  {
+   "id": "slide_color_1",
+   "type": "color",
+   "role": "style",
+   "label": "Slide 1 colour",
+   "default": "#e4572e"
+  },
+  {
+   "id": "slide_color_2",
+   "type": "color",
+   "role": "style",
+   "label": "Slide 2 colour",
+   "default": "#2e86ab"
+  },
+  {
+   "id": "slide_color_3",
+   "type": "color",
+   "role": "style",
+   "label": "Slide 3 colour",
+   "default": "#7b4fd6"
+  },
+  {
+   "id": "slide_color_4",
+   "type": "color",
+   "role": "style",
+   "label": "Slide 4 colour",
+   "default": "#2a9d6a"
+  },
+  {
+   "id": "slide_text_1",
+   "type": "string",
+   "role": "content",
+   "label": "Slide 1 text",
+   "default": "Fresh"
+  },
+  {
+   "id": "slide_text_2",
+   "type": "string",
+   "role": "content",
+   "label": "Slide 2 text",
+   "default": "Bold"
+  },
+  {
+   "id": "slide_text_3",
+   "type": "string",
+   "role": "content",
+   "label": "Slide 3 text",
+   "default": "Simple"
+  },
+  {
+   "id": "slide_text_4",
+   "type": "string",
+   "role": "content",
+   "label": "Slide 4 text",
+   "default": "Yours"
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Accept colour",
+   "default": "#087a57"
+  },
+  {
+   "id": "strip_color",
+   "type": "color",
+   "role": "style",
+   "label": "Strip colour",
+   "default": "#f2ecdf"
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

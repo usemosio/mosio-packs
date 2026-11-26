@@ -1,0 +1,129 @@
+{
+ "name": "exploded-view",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/exploded-view/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Exploded View\n\nAn isometric stack of slabs springs apart with leader lines and labels, holds, then clicks back together.\n\nCategory: camera. Length: 2.333 s. WebGL: no.\n\nUse when:\n- An architecture or a product stack should be explained layer by layer, such as interface, engine, storage and hardware.\n- One layer of a system is the point of the story and should be called out in brand color.\n\nAvoid when:\n- The object should turn to show its front and back rather than come apart: use turntable.\n- The layers are numbers to compare rather than parts of one thing: use animated-bar-chart.\n\nVariables:\n- layers (number, 2-6): Layers, default 4\n- labels (string): Labels, default \"Interface, Engine, Storage, Hardware\"\n- highlight (number, 0-5): Highlight, default 1\n- background_color (color): Background, default \"#111111\"\n- top_color (color): Top face, default \"#F4F4F4\"\n- left_color (color): Left face, default \"#A6A6A6\"\n- right_color (color): Right face, default \"#747474\"\n- highlight_top_color (color): Highlight top, default \"#E5322D\"\n- highlight_left_color (color): Highlight left, default \"#B5231F\"\n- highlight_right_color (color): Highlight right, default \"#8A1A17\"\n- line_color (color): Leader lines, default \"#FFFFFF\"\n- label_color (color): Labels, default \"#FFFFFF\"\n- speed (number, 0.25-3): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Exploded View\n\n  An isometric stack of slabs springs apart with leader lines and labels, holds, then clicks back together.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/exploded-view/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"exploded-view\"\n  data-composition-duration=\"2.333\"\n  data-composition-variables='[\n    {\"id\": \"layers\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Layers\", \"description\": \"Number of slabs, 2 to 6.\", \"default\": 4, \"min\": 2, \"max\": 6, \"step\": 1},\n    {\"id\": \"labels\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Labels\", \"description\": \"One label per slab, top slab first, comma separated.\", \"default\": \"Interface, Engine, Storage, Hardware\"},\n    {\"id\": \"highlight\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Highlight\", \"description\": \"Index of the highlighted slab, counted from the top (0 is the top slab).\", \"default\": 1, \"min\": 0, \"max\": 5, \"step\": 1},\n    {\"id\": \"background_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Background color.\", \"default\": \"#111111\"},\n    {\"id\": \"top_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Top face\", \"description\": \"Top face of a slab.\", \"default\": \"#F4F4F4\"},\n    {\"id\": \"left_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Left face\", \"description\": \"Left face of a slab.\", \"default\": \"#A6A6A6\"},\n    {\"id\": \"right_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Right face\", \"description\": \"Right face of a slab.\", \"default\": \"#747474\"},\n    {\"id\": \"highlight_top_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Highlight top\", \"description\": \"Top face of the highlighted slab.\", \"default\": \"#E5322D\"},\n    {\"id\": \"highlight_left_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Highlight left\", \"description\": \"Left face of the highlighted slab.\", \"default\": \"#B5231F\"},\n    {\"id\": \"highlight_right_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Highlight right\", \"description\": \"Right face of the highlighted slab.\", \"default\": \"#8A1A17\"},\n    {\"id\": \"line_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Leader lines\", \"description\": \"Leader line color.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"label_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Labels\", \"description\": \"Label text color.\", \"default\": \"#FFFFFF\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 3, \"step\": 0.05}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Exploded View</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Inter:wght@600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n\n        #root { background: var(--background); }\n        .ev-stage { position: absolute; inset: 0; overflow: hidden; }\n        .ev-svg { position: absolute; inset: 0; width: 100%; height: 100%; }\n        .ev-svg text { font-family: Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"exploded-view\" data-duration=\"2.333\" data-fps=\"30\">\n        <div id=\"ev-clip\" class=\"ev-stage clip\" data-start=\"0\" data-duration=\"2.333\" data-track-index=\"0\">\n          <svg class=\"ev-svg\" id=\"ev-svg\"></svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var NAME = \"exploded-view\";\n\nvar root = document.getElementById(\"root\");\nvar vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\nfunction num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : f; }\nfunction str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\nfunction col(v, f) { return typeof v === \"string\" && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v.trim()) ? v.trim() : f; }\nfunction bool(v, f) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : f; }\nvar FPS = 30;\nvar DUR = parseFloat(root.dataset.duration || \"2\");\nvar TOTAL = Math.round(DUR * FPS);\nfunction lerp(a, b, t) { return a + (b - a) * t; }\nfunction cl(x, a, b) { return Math.min(b, Math.max(a, x)); }\n// interpolate(x, [in...], [out...], easing): clamped on both sides, easing applied per segment.\nfunction interp(x, inp, out, easing) {\n  if (x <= inp[0]) return out[0];\n  if (x >= inp[inp.length - 1]) return out[out.length - 1];\n  var i = 0;\n  while (x > inp[i + 1]) i++;\n  var t = (x - inp[i]) / (inp[i + 1] - inp[i]);\n  if (easing) t = easing(t);\n  return out[i] + (out[i + 1] - out[i]) * t;\n}\nfunction bez(x1, y1, x2, y2) {\n  return function (x) {\n    if (x <= 0) return 0; if (x >= 1) return 1;\n    var t = x;\n    for (var i = 0; i < 8; i++) {\n      var cx = 3 * x1 * t * (1 - t) * (1 - t) + 3 * x2 * t * t * (1 - t) + t * t * t - x;\n      var d = 3 * x1 * (1 - t) * (1 - t) - 6 * x1 * t * (1 - t) + 6 * x2 * t * (1 - t) - 3 * x2 * t * t + 3 * t * t;\n      if (Math.abs(cx) < 1e-6 || Math.abs(d) < 1e-6) break;\n      t -= cx / d;\n    }\n    t = cl(t, 0, 1);\n    return 3 * y1 * t * (1 - t) * (1 - t) + 3 * y2 * t * t * (1 - t) + t * t * t;\n  };\n}\nvar E = {\n  lin: function (t) { return t; },\n  quad: function (t) { return t * t; },\n  cubic: function (t) { return t * t * t; },\n  sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); }\n};\nfunction eOut(f) { return function (t) { return 1 - f(1 - t); }; }\nfunction eInOut(f) { return function (t) { return t < 0.5 ? f(2 * t) / 2 : 1 - f(2 - 2 * t) / 2; }; }\nvar outCubic = eOut(E.cubic), outQuad = eOut(E.quad), inCubic = E.cubic, inQuad = E.quad;\nvar inOutCubic = eInOut(E.cubic), inOutQuad = eInOut(E.quad), inOutSin = eInOut(E.sin), outSin = eOut(E.sin);\n// Damped spring from 0 to 1 (rest at 1, no initial velocity), frames at 30 fps.\nfunction spring(frame, cfg) {\n  if (frame <= 0) return 0;\n  var m = cfg.mass || 1, k = cfg.stiffness, c = cfg.damping;\n  var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m)), t = frame / FPS;\n  if (z < 1) {\n    var wd = w0 * Math.sqrt(1 - z * z);\n    return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));\n  }\n  if (z === 1) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n  var s = w0 * Math.sqrt(z * z - 1), r1 = -z * w0 + s, r2 = -z * w0 - s;\n  return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n}\n// Seeded random: same string in, same number out.\nfunction rnd(seed) {\n  var sd = String(seed), h = 1779033703 ^ sd.length;\n  for (var i = 0; i < sd.length; i++) { h = Math.imul(h ^ sd.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }\n  h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); h ^= h >>> 16;\n  var a = (h >>> 0);\n  a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a);\n  t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n}\nfunction rgb(h) {\n  h = h.replace(\"#\", \"\");\n  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];\n  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];\n}\nfunction mixc(a, b, t) {\n  var x = rgb(a), y = rgb(b);\n  return \"rgb(\" + Math.round(lerp(x[0], y[0], t)) + \",\" + Math.round(lerp(x[1], y[1], t)) + \",\" + Math.round(lerp(x[2], y[2], t)) + \")\";\n}\nfunction rgba(h, a) { var x = rgb(h); return \"rgba(\" + x[0] + \",\" + x[1] + \",\" + x[2] + \",\" + a + \")\"; }\nvar SVGNS = \"http://www.w3.org/2000/svg\";\nfunction svgEl(tag, attrs, parent) {\n  var e = document.createElementNS(SVGNS, tag);\n  for (var k in attrs) e.setAttribute(k, attrs[k]);\n  if (parent) parent.appendChild(e);\n  return e;\n}\nfunction setA(e, attrs) { for (var k in attrs) e.setAttribute(k, attrs[k]); }\n// Drive draw(frame) from the timeline; frames run 0..frames over frames/30 seconds.\nfunction drive(draw, frames) {\n  var tl = gsap.timeline({ paused: true });\n  var clock = { frame: 0 };\n  tl.to(clock, { frame: frames, duration: frames / FPS, ease: \"none\", onUpdate: function () { draw(clock.frame); } }, 0);\n  draw(0);\n  return tl;\n}\nfunction finish(tl) {\n  if (tl.duration() < DUR) tl.to({}, { duration: DUR - tl.duration() });\n  tl.seek(0);\n  window.__timelines = window.__timelines || {};\n  window.__timelines[NAME] = tl;\n}\n\n\nvar svg = document.getElementById(\"ev-svg\");\nvar n = Math.round(num(vars.layers, 4, 2, 6)), highlight = Math.round(num(vars.highlight, 1, 0, 5)), speed = num(vars.speed, 1, 0, 4);\nvar labels = (typeof vars.labels === \"string\" && vars.labels.trim() ? vars.labels : \"Interface, Engine, Storage, Hardware\").split(\",\").map(function (s) { return s.trim(); });\nvar C = { background: col(vars.background_color, \"#111111\"), top: col(vars.top_color, \"#F4F4F4\"), left: col(vars.left_color, \"#A6A6A6\"), right: col(vars.right_color, \"#747474\"), hTop: col(vars.highlight_top_color, \"#E5322D\"), hLeft: col(vars.highlight_left_color, \"#B5231F\"), hRight: col(vars.highlight_right_color, \"#8A1A17\"), line: col(vars.line_color, \"#FFFFFF\"), label: col(vars.label_color, \"#FFFFFF\") };\nroot.style.setProperty(\"--background\", C.background);\nvar W = root.clientWidth, H0 = root.clientHeight;\n// Landscape frames use the frame height as the unit; tall frames use a width-based unit so the stack and labels fit.\nvar H = Math.min(H0, W * 0.6);\nsvg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H0);\nvar OPEN = 3, CLOSE = 38, COS30 = Math.cos(Math.PI / 6);\nvar side = H * 0.36, thick = H * 0.036, gap = (H * 0.27) / (n - 1), cx = W * 0.4, cy = H0 * 0.5;\nvar labelX = W * 0.66, fontSize = H * 0.042, h = side / 2, inset = h * 0.78;\nfunction iso(X, Y, Z) { return [(X - Y) * COS30, (X + Y) * 0.5 - Z]; }\nfunction pts(list) { return list.map(function (q) { return q[0].toFixed(1) + \",\" + q[1].toFixed(1); }).join(\" \"); }\nvar shadow = svgEl(\"ellipse\", { rx: side * COS30 * 1.05, ry: side * 0.16, fill: \"#000000\", opacity: 0.5, cx: cx }, svg);\nvar stack = svgEl(\"g\", {}, svg);\nvar slabs = [], leaders = [];\nfor (var i = 0; i < n; i++) {\n  var fromTop = n - 1 - i, hot = fromTop === highlight, ink = hot ? \"#FFFFFF\" : \"#111111\";\n  var g = svgEl(\"g\", {}, stack);\n  var s = { fromTop: fromTop, hot: hot, g: g };\n  s.left = svgEl(\"polygon\", { fill: hot ? C.hLeft : C.left }, g);\n  s.right = svgEl(\"polygon\", { fill: hot ? C.hRight : C.right }, g);\n  s.top = svgEl(\"polygon\", { fill: hot ? C.hTop : C.top }, g);\n  s.inner = svgEl(\"polygon\", { fill: \"none\", stroke: ink, \"stroke-opacity\": 0.18, \"stroke-width\": H * 0.002 }, g);\n  s.bars = [-0.4, 0, 0.4].map(function (k) { return { k: k, el: svgEl(\"line\", { stroke: ink, \"stroke-opacity\": 0.22, \"stroke-width\": H * 0.006, \"stroke-linecap\": \"round\" }, g) }; });\n  slabs.push(s);\n  var label = labels[fromTop];\n  if (label) {\n    var lg = svgEl(\"g\", {}, svg);\n    var L = { fromTop: fromTop, hot: hot, g: lg };\n    L.dot = svgEl(\"circle\", { r: H * 0.006, fill: C.line }, lg);\n    L.line = svgEl(\"line\", { stroke: C.line, \"stroke-opacity\": 0.6, \"stroke-width\": Math.max(1, H * 0.0022) }, lg);\n    L.text = svgEl(\"g\", {}, lg);\n    var num_ = svgEl(\"text\", { y: -fontSize * 0.62, fill: hot ? C.hTop : C.label, \"fill-opacity\": hot ? 1 : 0.5, \"font-size\": fontSize * 0.5, \"font-weight\": 600, \"letter-spacing\": \"0.12em\" }, L.text);\n    num_.textContent = \"0\" + (fromTop + 1);\n    var nm = svgEl(\"text\", { y: fontSize * 0.42, fill: C.label, \"font-size\": fontSize, \"font-weight\": 700, \"letter-spacing\": \"-0.02em\" }, L.text);\n    nm.textContent = label;\n    L.slab = i;\n    leaders.push(L);\n  }\n}\nfunction draw(frame) {\n  var t = frame * speed;\n  var close = spring(t - CLOSE, { damping: 26, stiffness: 320, mass: 0.8 });\n  var spread = [];\n  for (var i = 0; i < n; i++) spread.push(Math.max(0, spring(t - OPEN - (n - 1 - i) * 1.5, { damping: 12, stiffness: 110 }) * (1 - close)));\n  var offsets = [], z = 0;\n  for (i = 0; i < n; i++) { offsets.push(z); z += thick + (i < n - 1 ? gap * Math.max(spread[i + 1], 0) : 0); }\n  var total = z;\n  var knock = interp(t, [CLOSE + 5, CLOSE + 7, CLOSE + 12], [0, 1, 0], outQuad) * H * 0.008;\n  var baseY = cy + side * 0.02 + total / 2 + knock;\n  var labelOut = interp(t, [CLOSE - 5, CLOSE], [1, 0]);\n  shadow.setAttribute(\"cy\", baseY + side * 0.5 + H * 0.035);\n  stack.setAttribute(\"transform\", \"translate(\" + cx + \" \" + baseY + \")\");\n  slabs.forEach(function (s, i) {\n    var z0 = offsets[i], z1 = z0 + thick;\n    s.top.setAttribute(\"points\", pts([iso(-h, -h, z1), iso(h, -h, z1), iso(h, h, z1), iso(-h, h, z1)]));\n    s.left.setAttribute(\"points\", pts([iso(-h, h, z1), iso(h, h, z1), iso(h, h, z0), iso(-h, h, z0)]));\n    s.right.setAttribute(\"points\", pts([iso(h, -h, z1), iso(h, h, z1), iso(h, h, z0), iso(h, -h, z0)]));\n    s.inner.setAttribute(\"points\", pts([iso(-inset, -inset, z1), iso(inset, -inset, z1), iso(inset, inset, z1), iso(-inset, inset, z1)]));\n    s.bars.forEach(function (b) {\n      var a = iso(-inset * 0.7, b.k * inset, z1), c = iso(inset * (s.fromTop % 2 ? 0.2 : 0.7), b.k * inset, z1);\n      setA(b.el, { x1: a[0], y1: a[1], x2: c[0], y2: c[1] });\n    });\n  });\n  leaders.forEach(function (L) {\n    var i = L.slab, z0 = offsets[i], z1 = z0 + thick, anchor = iso(h, -h, (z0 + z1) / 2);\n    var draw_ = interp(t, [14 + L.fromTop * 2.5, 24 + L.fromTop * 2.5], [0, 1], inOutCubic);\n    var show = interp(t, [19 + L.fromTop * 2.5, 27 + L.fromTop * 2.5], [0, 1], outCubic) * labelOut;\n    var ax = cx + anchor[0] + H * 0.012, ay = baseY + anchor[1], length = (labelX - ax) * draw_ * labelOut;\n    setA(L.dot, { cx: ax, cy: ay, opacity: Math.min(1, draw_ * 3) * labelOut });\n    setA(L.line, { x1: ax, y1: ay, x2: ax + length, y2: ay });\n    setA(L.text, { opacity: show, transform: \"translate(\" + (labelX + H * 0.02 + (1 - show) * H * 0.03) + \" \" + ay + \")\" });\n  });\n}\nfinish(drive(draw, TOTAL));\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "5c09302dfc76778a8b285f0257d583ef349a8be1577aa5c3cabe7e070080333f",
+ "duration": 2.333,
+ "webgl": false,
+ "demo_background": "#111111",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "layers",
+   "type": "number",
+   "role": "style",
+   "label": "Layers",
+   "default": 4,
+   "min": 2,
+   "max": 6
+  },
+  {
+   "id": "labels",
+   "type": "string",
+   "role": "content",
+   "label": "Labels",
+   "default": "Interface, Engine, Storage, Hardware"
+  },
+  {
+   "id": "highlight",
+   "type": "number",
+   "role": "style",
+   "label": "Highlight",
+   "default": 1,
+   "min": 0,
+   "max": 5
+  },
+  {
+   "id": "background_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#111111"
+  },
+  {
+   "id": "top_color",
+   "type": "color",
+   "role": "style",
+   "label": "Top face",
+   "default": "#F4F4F4"
+  },
+  {
+   "id": "left_color",
+   "type": "color",
+   "role": "style",
+   "label": "Left face",
+   "default": "#A6A6A6"
+  },
+  {
+   "id": "right_color",
+   "type": "color",
+   "role": "style",
+   "label": "Right face",
+   "default": "#747474"
+  },
+  {
+   "id": "highlight_top_color",
+   "type": "color",
+   "role": "style",
+   "label": "Highlight top",
+   "default": "#E5322D"
+  },
+  {
+   "id": "highlight_left_color",
+   "type": "color",
+   "role": "style",
+   "label": "Highlight left",
+   "default": "#B5231F"
+  },
+  {
+   "id": "highlight_right_color",
+   "type": "color",
+   "role": "style",
+   "label": "Highlight right",
+   "default": "#8A1A17"
+  },
+  {
+   "id": "line_color",
+   "type": "color",
+   "role": "style",
+   "label": "Leader lines",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "label_color",
+   "type": "color",
+   "role": "style",
+   "label": "Labels",
+   "default": "#FFFFFF"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 3
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

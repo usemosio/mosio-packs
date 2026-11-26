@@ -1,0 +1,92 @@
+{
+ "name": "tracking-in",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/tracking-in/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Tracking In\n\nWide letter-spacing collapses to tight while blur clears, on a spring: the word focuses into place.\n\nCategory: typography. Length: 3 s. WebGL: no.\n\nUse when:\n- A title word or brand name should feel like it is focusing into place: precision, clarity, sharpness.\n- The design is typographic and the letter-spacing motion is the centerpiece of the entrance.\n- A premium or cinematic tone is wanted: the spring-driven collapse reads as designed.\n\nAvoid when:\n- You want per-character stagger: use soft-blur-in.\n- The text is a sentence rather than one bold word: wide tracking on a long phrase is illegible; use staggered-fade-up.\n- The scene is playful or casual: use spring-scale-in.\n\nVariables:\n- text (string): Text, default \"tracking in\"\n- start_tracking (number, 0-2): Start tracking, default 0.5\n- start_blur (number, 0-40): Start blur, default 12\n- font_size (number, 12-220): Font size, default 96\n- color (color): Color, default \"#171717\"\n- font_weight (enum): Font weight, default \"700\"\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Tracking In\n\n  Letter-spacing collapses and blur clears with a springy entrance.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/tracking-in/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"tracking-in\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Title word or short phrase.\", \"default\": \"tracking in\"},\n    {\"id\": \"start_tracking\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start tracking\", \"description\": \"Letter-spacing at the start, in em.\", \"default\": 0.5, \"min\": 0, \"max\": 2, \"step\": 0.05, \"unit\": \"em\"},\n    {\"id\": \"start_blur\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Start blur\", \"description\": \"Blur radius at the start.\", \"default\": 12, \"min\": 0, \"max\": 40, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 96, \"min\": 12, \"max\": 220, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#171717\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"700\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Tracking In</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n          color: var(--color, #171717);\n          font-family: var(--font-display, Geist, -apple-system, BlinkMacSystemFont, sans-serif);\n        }\n        .tri-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .tri-line { line-height: 1.2; white-space: nowrap; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"tracking-in\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"tri-clip\" class=\"tri-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n          <span id=\"tri-line\" class=\"tri-line\" role=\"img\"></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, list, fallback) {\n              return list.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            // Easing.bezier(x1, y1, x2, y2) as a function of t (Newton, then bisection).\n            function bez(x1, y1, x2, y2) {\n              function cx(s) { return 3 * x1 * s * (1 - s) * (1 - s) + 3 * x2 * s * s * (1 - s) + s * s * s; }\n              function cy(s) { return 3 * y1 * s * (1 - s) * (1 - s) + 3 * y2 * s * s * (1 - s) + s * s * s; }\n              return function (t) {\n                if (t <= 0) return 0;\n                if (t >= 1) return 1;\n                var lo = 0, hi = 1, s = t;\n                for (var i = 0; i < 40; i++) {\n                  var x = cx(s);\n                  if (Math.abs(x - t) < 1e-6) break;\n                  if (x < t) lo = s; else hi = s;\n                  s = (lo + hi) / 2;\n                }\n                return cy(s);\n              };\n            }\n            // interpolate(f, [a, b], [from, to]) with both ends clamped, like the source framework's extrapolate \"clamp\".\n            function interp(f, a, b, from, to, ease) {\n              var t = b === a ? 1 : Math.min(1, Math.max(0, (f - a) / (b - a)));\n              return from + (to - from) * (ease ? ease(t) : t);\n            }\n            // Fit one line to 90 % of the frame width: shrinks the font size when it overflows.\n            function fit(root, line, size) {\n              line.style.fontSize = size + \"px\";\n              var maxWidth = Math.max(1, root.clientWidth * 0.9);\n              if (line.scrollWidth > maxWidth) {\n                size = Math.max(12, size * (maxWidth / line.scrollWidth));\n                line.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            // Drives draw(frame) from the paused timeline: frame = time * 30 * speed (the source framework's useCurrentFrame() * speed).\n            function drive(tl, total, speed, draw) {\n              var clock = { t: 0 };\n              tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t * 30 * speed); } }, 0);\n              draw(0);\n            }\n\n            var text = str(vars.text, \"tracking in\");\n            var startTracking = num(vars.start_tracking, 0.5, 0, 2);\n            var startBlur = num(vars.start_blur, 12, 0, 40);\n            var speed = num(vars.speed, 1, 0.25, 4);\n            var line = document.getElementById(\"tri-line\");\n            line.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\"], \"700\");\n            line.setAttribute(\"aria-label\", text);\n            line.textContent = text;\n            if (typeof vars.color === \"string\" && vars.color) root.style.setProperty(\"--color\", vars.color);\n            // The final letter-spacing (-0.03em) decides the fitted size.\n            line.style.letterSpacing = \"-0.03em\";\n            fit(root, line, num(vars.font_size, 96, 12, 220));\n\n            // spring({ damping: 18, stiffness: 90 }) at 30 fps, mass 1: damped spring from 0 to 1, closed form.\n            function spring(frame) {\n              var t = Math.max(0, frame) / 30;\n              var w0 = Math.sqrt(90), z = 18 / (2 * Math.sqrt(90));\n              var wd = w0 * Math.sqrt(1 - z * z);\n              return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + (z * w0 / wd) * Math.sin(wd * t));\n            }\n            function draw(frame) {\n              var t = spring(frame);\n              line.style.letterSpacing = (startTracking + (-0.03 - startTracking) * t) + \"em\";\n              var b = Math.max(0, startBlur * (1 - t));\n              line.style.filter = b > 0.01 ? \"blur(\" + b + \"px)\" : \"none\";\n              line.style.opacity = interp(frame, 0, 15, 0, 1);\n            }\n            var total = parseFloat(root.dataset.duration || \"3\");\n            var tl = gsap.timeline({ paused: true });\n            drive(tl, total, speed, draw);\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"tracking-in\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "82925cb407d8954e6c308c4398ae46636ba974f9bdf28ec6bf8d287bbefd43b0",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "text": "tracking in",
+  "font_size": 150
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "tracking in"
+  },
+  {
+   "id": "start_tracking",
+   "type": "number",
+   "role": "motion",
+   "label": "Start tracking",
+   "default": 0.5,
+   "min": 0,
+   "max": 2
+  },
+  {
+   "id": "start_blur",
+   "type": "number",
+   "role": "motion",
+   "label": "Start blur",
+   "default": 12,
+   "min": 0,
+   "max": 40
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 96,
+   "min": 12,
+   "max": 220
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#171717"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "700"
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

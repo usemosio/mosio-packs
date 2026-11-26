@@ -1,0 +1,102 @@
+{
+ "name": "moving-pen",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Onda",
+ "source": {
+  "repo": "https://github.com/degueba/onda",
+  "path": "www/src/components/hero/MovingPenScene.tsx",
+  "commit": "3c814051269597b31fee1603bef7ccfb93d091b6"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Moving Pen\n\nA glowing pen-tip dot glides across the frame on a curve, drawing a luminous trail while a handwritten line fades in beneath its passing.\n\nCategory: typography. Length: 6 s. WebGL: no.\n\nUse when:\n- A line of text should be introduced by a moving graphic: a pen, a spark, a cursor drawing a wave.\n- A title beat needs a soft, premium glow on a dark background.\n\nAvoid when:\n- The text itself must be drawn stroke by stroke: use handwrite or outline-trace.\n- A light background: the glow reads best on dark.\n\nVariables:\n- text (string): Text, default \"Hello, there!\"\n- font_size (number, 24-300): Font size, default 130\n- text_color (color): Text color, default \"#f2f2f4\"\n- pen_color (color): Pen color, default \"#d96b82\"\n- trail_width (number, 1-14): Trail width, default 3\n- swing (number, 0-0.35): Swing, default 0.18\n- travel (number, 1.5-5): Travel time, default 4.3\n- background (color): Background, default \"\"\n\nSource: https://github.com/degueba/onda. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Moving Pen\n\n  A glowing dot glides in from off-screen along a curving path, leaving a luminous trail like ink; a line of handwriting fades in as the pen passes through the centre, then the dot exits on the far side.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/degueba/onda/blob/3c814051269597b31fee1603bef7ccfb93d091b6/www/src/components/hero/MovingPenScene.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Rodrigo Botelho\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"moving-pen\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Short line of handwriting that appears as the pen passes.\", \"default\": \"Hello, there!\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 130, \"min\": 24, \"max\": 300, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"text_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Color of the line of text.\", \"default\": \"#f2f2f4\"},\n    {\"id\": \"pen_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Pen color\", \"description\": \"Color of the pen tip, its trail and the glow.\", \"default\": \"#d96b82\"},\n    {\"id\": \"trail_width\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Trail width\", \"description\": \"Thickness of the trail in pixels.\", \"default\": 3, \"min\": 1, \"max\": 14, \"step\": 0.5, \"unit\": \"px\"},\n    {\"id\": \"swing\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Swing\", \"description\": \"How far the path bends away from the centre line, as a share of the frame (0 is a straight line).\", \"default\": 0.18, \"min\": 0, \"max\": 0.35, \"step\": 0.01},\n    {\"id\": \"travel\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Travel time\", \"description\": \"Seconds the pen takes to cross the frame.\", \"default\": 4.3, \"min\": 1.5, \"max\": 5, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Background\", \"description\": \"Fill behind the scene (empty keeps it transparent).\", \"default\": \"\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Moving Pen</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&amp;display=block\" />\n      <style>\n        #root { position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none; }\n        #root { font-family: var(--font-display, Caveat, cursive); }\n        .mp-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: hidden; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"moving-pen\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"mp-clip\" class=\"clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\" style=\"position:absolute;inset:0\">\n          <svg id=\"mp-svg\" class=\"mp-svg\" aria-hidden=\"true\">\n            <defs>\n              <linearGradient id=\"mp-grad\" gradientUnits=\"userSpaceOnUse\">\n                <stop id=\"mp-s0\" offset=\"0%\" stop-opacity=\"0.2\"></stop>\n                <stop id=\"mp-s1\" offset=\"50%\" stop-opacity=\"0.85\"></stop>\n                <stop id=\"mp-s2\" offset=\"100%\" stop-opacity=\"0.95\"></stop>\n              </linearGradient>\n            </defs>\n            <g id=\"mp-scene\">\n              <path id=\"mp-trail\" fill=\"none\" stroke=\"url(#mp-grad)\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n              <text id=\"mp-text\" text-anchor=\"middle\" font-weight=\"600\" fill=\"none\" opacity=\"0\"></text>\n              <circle id=\"mp-dot\" r=\"11\" opacity=\"0.96\"></circle>\n            </g>\n          </svg>\n        </div>\n\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, a, b) { var x = Number(v); return Number.isFinite(x) ? Math.min(b, Math.max(a, x)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n\n\n            var svg = document.getElementById(\"mp-svg\");\n            var trail = document.getElementById(\"mp-trail\"), textEl = document.getElementById(\"mp-text\"), dot = document.getElementById(\"mp-dot\"), scene = document.getElementById(\"mp-scene\");\n            var text = str(vars.text, \"Hello, there!\");\n            var size = num(vars.font_size, 130, 24, 300);\n            var pen = col(vars.pen_color, \"#d96b82\");\n            var trailW = num(vars.trail_width, 3, 1, 14);\n            var swing = num(vars.swing, 0.18, 0, 0.35);\n            var travel = num(vars.travel, 4.3, 1.5, 5);\n            var bg = typeof vars.background === \"string\" && vars.background.trim() ? vars.background : null;\n            if (bg) root.style.background = bg;\n            var W = root.clientWidth, H = root.clientHeight;\n            svg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n            // The pen's journey: in from off-screen left, through the centre, out to the right (one smooth curve).\n            var cy = H * 0.55, a = Math.min(H * swing, W * 0.25 * (swing / 0.18 > 1 ? swing / 0.18 : 1));\n            var d = \"M \" + (-0.06 * W) + \" \" + cy + \" C \" + (0.19 * W) + \" \" + (cy - a) + \", \" + (0.4 * W) + \" \" + (cy + a) + \", \" + (0.5 * W) + \" \" + cy + \" S \" + (0.81 * W) + \" \" + (cy - a) + \", \" + (1.06 * W) + \" \" + cy;\n            trail.setAttribute(\"d\", d);\n            trail.setAttribute(\"stroke-width\", trailW);\n            var L = trail.getTotalLength();\n            trail.style.strokeDasharray = L;\n            [\"mp-s0\", \"mp-s1\", \"mp-s2\"].forEach(function (id) { document.getElementById(id).setAttribute(\"stop-color\", pen); });\n            var grad = document.getElementById(\"mp-grad\");\n            grad.setAttribute(\"x1\", 0); grad.setAttribute(\"x2\", W); grad.setAttribute(\"y1\", 0); grad.setAttribute(\"y2\", 0);\n            trail.style.filter = \"drop-shadow(0 0 \" + Math.round(W * 0.015) + \"px \" + pen + \")\";\n            dot.setAttribute(\"fill\", pen);\n            dot.style.filter = \"drop-shadow(0 0 \" + Math.round(W * 0.02) + \"px \" + pen + \") drop-shadow(0 0 \" + Math.round(W * 0.007) + \"px rgba(255,255,255,0.6))\";\n            textEl.textContent = text;\n            textEl.setAttribute(\"fill\", col(vars.text_color, \"#f2f2f4\"));\n            textEl.setAttribute(\"font-size\", size);\n            // Shrink to 88 % of the frame width when the text is wider.\n            var tw = textEl.getComputedTextLength();\n            if (tw > W * 0.88) { size = Math.max(24, size * W * 0.88 / tw); textEl.setAttribute(\"font-size\", size); }\n            textEl.setAttribute(\"x\", W / 2);\n            textEl.setAttribute(\"y\", cy - a * 0.35 - size * 0.7);\n            textEl.style.filter = \"drop-shadow(0 4px \" + Math.round(W * 0.012) + \"px \" + pen + \")\";\n\n            gsap.registerPlugin(CustomEase);\n            var house = CustomEase.create(\"mp-house\", \"M0,0 C0.16,1 0.3,1 1,1\");\n            var tl = gsap.timeline({ paused: true });\n            var st = { p: 0 };\n            function place() {\n              var pt = trail.getPointAtLength(st.p * L);\n              dot.setAttribute(\"cx\", pt.x); dot.setAttribute(\"cy\", pt.y);\n              trail.style.strokeDashoffset = (1 - st.p) * L;\n            }\n            tl.to(st, { p: 1, duration: travel, ease: house, onUpdate: place }, 0);\n            // The text fades in while the pen approaches the centre; the dot grows from a speck as it enters.\n            tl.to(textEl, { opacity: 1, duration: 1.5, ease: house }, 1.5);\n            var ds = { s: 0.5 };\n            tl.to(ds, { s: 1, duration: 0.67, ease: house, onUpdate: function () { dot.setAttribute(\"r\", 11 * ds.s); } }, 0);\n            // The whole scene fades out at the end.\n            tl.to(scene, { opacity: 0, duration: 1, ease: house }, parseFloat(root.dataset.duration || \"6\") - 1);\n            place();\n            dot.setAttribute(\"r\", 5.5);\n\n            var total = parseFloat(root.dataset.duration || \"6\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"moving-pen\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "e1925ec3db578ac6e27548e4fe6ffe0e8b788893b73dbe2e281414a2adf9e405",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#08080a",
+ "demo_values": {
+  "text": "Hello, there!",
+  "font_size": 190
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Hello, there!"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 130,
+   "min": 24,
+   "max": 300
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#f2f2f4"
+  },
+  {
+   "id": "pen_color",
+   "type": "color",
+   "role": "style",
+   "label": "Pen color",
+   "default": "#d96b82"
+  },
+  {
+   "id": "trail_width",
+   "type": "number",
+   "role": "style",
+   "label": "Trail width",
+   "default": 3,
+   "min": 1,
+   "max": 14
+  },
+  {
+   "id": "swing",
+   "type": "number",
+   "role": "motion",
+   "label": "Swing",
+   "default": 0.18,
+   "min": 0,
+   "max": 0.35
+  },
+  {
+   "id": "travel",
+   "type": "number",
+   "role": "motion",
+   "label": "Travel time",
+   "default": 4.3,
+   "min": 1.5,
+   "max": 5
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": ""
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://onda.video"
+}

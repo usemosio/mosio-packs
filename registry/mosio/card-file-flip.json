@@ -1,0 +1,92 @@
+{
+ "name": "card-file-flip",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/rolodex-flip/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Card File Flip\n\nCycle a word through a list of values inside a held line, with a 3D card-file card flip.\n\nCategory: typography. Length: 3.6667 s. WebGL: no.\n\nUse when:\n- Cycling package, feature, or value names inside a held line: install commands, \"works with X\" beats, plan names.\n- The \"any component, same command\" bit.\n\nAvoid when:\n- The values are numbers with a counting story: use number-wheel or rolling-number.\n- Only two values swap once: value-swap or per-word-crossfade is lighter.\n- The line reflows per value: the fixed sizer width leaves a gap next to short values.\n\nVariables:\n- items (string): Items, default \"button, dialog, command, tabs, chart-area\"\n- prefix (string): Prefix, default \"$ npm run \"\n- interval (number, 10-40): Interval, default 20\n- flip_duration (number, 4-20): Flip duration, default 10\n- font_size (number, 12-160): Font size, default 36\n- color (color): Word color, default \"#f2f2f2\"\n- prefix_color (color): Prefix color, default \"#8a8794\"\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Card File Flip\n\n  Cycle a word through a list of values inside a held line, with a 3D card-file card flip. The source example scene (an install command whose last word flips) is built in.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/card-file-flip/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"card-file-flip\"\n  data-composition-duration=\"3.6667\"\n  data-composition-variables='[\n    {\"id\": \"items\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Items\", \"description\": \"Comma-separated values to flip through. The first shows from the start, the last stays.\", \"default\": \"button, dialog, command, tabs, chart-area\"},\n    {\"id\": \"prefix\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Prefix\", \"description\": \"Fixed text before the flipping word.\", \"default\": \"$ npm run \"},\n    {\"id\": \"interval\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Interval\", \"description\": \"Frames between flips (30 fps).\", \"default\": 20, \"min\": 10, \"max\": 40, \"step\": 2, \"unit\": \"frames\"},\n    {\"id\": \"flip_duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Flip duration\", \"description\": \"Frames each flip takes (30 fps).\", \"default\": 10, \"min\": 4, \"max\": 20, \"step\": 1, \"unit\": \"frames\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels.\", \"default\": 36, \"min\": 12, \"max\": 160, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Word color\", \"description\": \"Color of the flipping word.\", \"default\": \"#f2f2f2\"},\n    {\"id\": \"prefix_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Prefix color\", \"description\": \"Color of the fixed text.\", \"default\": \"#8a8794\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Card File Flip</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .rf-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono, \"Geist Mono\", ui-monospace, SFMono-Regular, Menlo, monospace); }\n        .rf-line { white-space: pre; }\n        .rf-slot { position: relative; display: inline-block; perspective: 420px; vertical-align: bottom; }\n        .rf-size { visibility: hidden; }\n        .rf-item { position: absolute; left: 0; top: 0; white-space: nowrap; transform-origin: 50% 50%; backface-visibility: hidden; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"card-file-flip\" data-duration=\"3.6667\" data-fps=\"30\">\n        <div id=\"rf-clip\" class=\"rf-stage clip\" data-start=\"0\" data-duration=\"3.6667\" data-track-index=\"0\">\n          <span id=\"rf-line\" class=\"rf-line\"><span id=\"rf-prefix\"></span><span id=\"rf-slot\" class=\"rf-slot\"></span></span>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            function fit(el, maxPx, size, ratio) {\n              // Shrink el's font size until its scrollWidth fits ratio of the frame width.\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * (ratio || 0.9));\n              if (el.scrollWidth > max) { size = Math.max(10, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            gsap.registerPlugin(CustomEase);\n            function ease(name, a, b, c, d) { return CustomEase.create(name, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\"); }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            var tl = gsap.timeline({ paused: true });\n            var TOTAL = parseFloat(root.dataset.duration || \"3.6667\");\n            function ip(t, a, b, from, to, e) {\n              var p = b === a ? 1 : (t - a) / (b - a);\n              p = Math.min(1, Math.max(0, p));\n              if (e) p = e(p);\n              return from + (to - from) * p;\n            }\n            function hash01(seed) {\n              var h = 2166136261;\n              for (var i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              return ((h ^ (h >>> 16)) >>> 0) / 4294967296;\n            }\n            function hashRange(seed, lo, hi) { return lo + hash01(seed) * (hi - lo); }\n            // Snap a frame number down to a stop-motion pose.\n            function qf(frame, step) { return Math.floor(frame / step + 1e-6) * step; }\n            function kf(t, keys, vals, e) {\n              if (t <= keys[0]) return vals[0];\n              for (var i = 0; i < keys.length - 1; i++) if (t <= keys[i + 1]) return ip(t, keys[i], keys[i + 1], vals[i], vals[i + 1], e);\n              return vals[vals.length - 1];\n            }\n            // Per-frame drawing: a pure function of the timeline time, run from a tween's onUpdate.\n            function tick(draw) {\n              tl.to({}, { duration: TOTAL, ease: \"none\", onUpdate: function () { draw(tl.time()); } }, 0);\n              draw(0);\n            }\n            var cubOut = ease(\"cub-out\", 0.215, 0.61, 0.355, 1);\n            var cubIn = ease(\"cub-in\", 0.55, 0.055, 0.675, 0.19);\n            var cubInOut = ease(\"cub-io\", 0.645, 0.045, 0.355, 1);\n\n            var line = document.getElementById(\"rf-line\");\n            var slot = document.getElementById(\"rf-slot\");\n            var prefix = document.getElementById(\"rf-prefix\");\n            var items = str(vars.items, \"button, dialog, command, tabs, chart-area\").split(\",\").map(function (s) { return s.trim(); }).filter(Boolean);\n            if (!items.length) items = [\"button\"];\n            var interval = num(vars.interval, 20, 10, 40);\n            var flip = num(vars.flip_duration, 10, 4, 20);\n            prefix.textContent = typeof vars.prefix === \"string\" ? vars.prefix : \"$ npm run \";\n            prefix.style.color = col(vars.prefix_color, \"#8a8794\");\n            slot.style.color = col(vars.color, \"#f2f2f2\");\n            var sizer = items.reduce(function (a, b) { return b.length > a.length ? b : a; }, \"\");\n            var sz = document.createElement(\"span\");\n            sz.className = \"rf-size\";\n            sz.textContent = sizer;\n            slot.appendChild(sz);\n            var els = items.map(function (t, i) {\n              var s = document.createElement(\"span\");\n              s.id = \"rf-item-\" + i;\n              s.className = \"rf-item\";\n              s.textContent = t;\n              slot.appendChild(s);\n              return s;\n            });\n            fit(line, 0, num(vars.font_size, 36, 12, 160), 0.92);\n            tick(function (t) {\n              var f = t * 30;\n              els.forEach(function (el, i) {\n                var rot = 0, y = 0, op = 1;\n                if (i > 0) {\n                  var inStart = (i - 1) * interval + flip / 2;\n                  var pIn = ip(f, inStart, inStart + flip, 0, 1, cubOut);\n                  rot = (1 - pIn) * -85; y = (1 - pIn) * 20; op = pIn;\n                }\n                if (i < els.length - 1) {\n                  var outStart = i * interval;\n                  var pOut = ip(f, outStart, outStart + flip, 0, 1, cubIn);\n                  rot += pOut * 85; y -= pOut * 20; op *= 1 - pOut;\n                }\n                el.style.opacity = op <= 0.001 ? 0 : op;\n                el.style.transform = \"translateY(\" + y + \"px) rotateX(\" + rot + \"deg)\";\n              });\n            });\n            var total = parseFloat(root.dataset.duration || \"3.6667\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"card-file-flip\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "3d954de159ed25df34d2f6d08542107a7e06ad2ef5870dd7222fd030aef7d472",
+ "duration": 3.6667,
+ "webgl": false,
+ "demo_background": "#141318",
+ "demo_values": {
+  "font_size": 64
+ },
+ "variables": [
+  {
+   "id": "items",
+   "type": "string",
+   "role": "content",
+   "label": "Items",
+   "default": "button, dialog, command, tabs, chart-area"
+  },
+  {
+   "id": "prefix",
+   "type": "string",
+   "role": "content",
+   "label": "Prefix",
+   "default": "$ npm run "
+  },
+  {
+   "id": "interval",
+   "type": "number",
+   "role": "motion",
+   "label": "Interval",
+   "default": 20,
+   "min": 10,
+   "max": 40
+  },
+  {
+   "id": "flip_duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Flip duration",
+   "default": 10,
+   "min": 4,
+   "max": 20
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 36,
+   "min": 12,
+   "max": 160
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Word color",
+   "default": "#f2f2f2"
+  },
+  {
+   "id": "prefix_color",
+   "type": "color",
+   "role": "style",
+   "label": "Prefix color",
+   "default": "#8a8794"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

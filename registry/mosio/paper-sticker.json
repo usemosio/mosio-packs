@@ -1,0 +1,105 @@
+{
+ "name": "paper-sticker",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/paper-sticker/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Paper Sticker\n\nTaped paper chips that slap onto a stop-motion scene over two poses, one after another.\n\nCategory: effects. Length: 4 s. WebGL: no.\n\nUse when:\n- Short labels, chips or callout notes should exist as physical taped paper on a stop-motion scene.\n- A group of tags should land one after another.\n\nAvoid when:\n- The content is long text or looks like interactive UI: this is a paper prop, not a component sim.\n- You need a media frame with a caption underneath: use instant-photo.\n\nVariables:\n- labels (string): Labels, default \"fresh, local, handmade, new, hot\"\n- at (number, 0-60): Slap frame, default 0\n- stagger (number, 0-20): Stagger, default 6\n- padding (string): Padding, default \"10px 16px\"\n- background (color): Paper, default \"#fbfaf6\"\n- color (color): Ink, default \"#26242c\"\n- max_tilt (number, 0-8): Max tilt, default 2.6\n- seed (string): Seed, default \"sticker\"\n- step (number, 1-6): Frames per pose, default 3\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Paper Sticker\n\n  Taped paper chips that slap onto a stop-motion scene over two poses, one after another.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/paper-sticker/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"paper-sticker\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[{\"id\":\"labels\",\"type\":\"string\",\"role\":\"content\",\"label\":\"Labels\",\"description\":\"Comma-separated labels, one sticker each.\",\"default\":\"fresh, local, handmade, new, hot\"},{\"id\":\"at\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Slap frame\",\"description\":\"Frame (30 fps) where the first sticker lands.\",\"default\":0,\"min\":0,\"max\":60,\"step\":1,\"unit\":\"frames\"},{\"id\":\"stagger\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Stagger\",\"description\":\"Frames between one sticker and the next.\",\"default\":6,\"min\":0,\"max\":20,\"step\":1,\"unit\":\"frames\"},{\"id\":\"padding\",\"type\":\"string\",\"role\":\"style\",\"label\":\"Padding\",\"description\":\"CSS padding of each chip.\",\"default\":\"10px 16px\"},{\"id\":\"background\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Paper\",\"description\":\"Chip paper colour.\",\"default\":\"#fbfaf6\"},{\"id\":\"color\",\"type\":\"color\",\"role\":\"style\",\"label\":\"Ink\",\"description\":\"Label colour.\",\"default\":\"#26242c\"},{\"id\":\"max_tilt\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Max tilt\",\"description\":\"Largest resting tilt per sticker.\",\"default\":2.6,\"min\":0,\"max\":8,\"step\":0.2,\"unit\":\"deg\"},{\"id\":\"seed\",\"type\":\"string\",\"role\":\"motion\",\"label\":\"Seed\",\"description\":\"Seed for tilt and jitter; each sticker gets its own.\",\"default\":\"sticker\"},{\"id\":\"step\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Frames per pose\",\"description\":\"How many frames each pose is held (30 fps).\",\"default\":3,\"min\":1,\"max\":6,\"step\":1,\"unit\":\"frames\"}]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Paper Sticker</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n\n        #root { font-family: \"Geist Mono\", ui-monospace, SFMono-Regular, Menlo, monospace; }\n        .ps-stage { position: absolute; inset: 0; }\n        #ps-scene { display: flex; flex-wrap: wrap; flex-direction: row; align-items: center; justify-content: center; align-content: center; gap: 24px; padding: 120px; }\n        .ps-chip { display: inline-block; border-radius: 3px; box-shadow: 0 2px 5px rgba(38,36,44,0.14); font-size: 28px; white-space: nowrap; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"paper-sticker\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"ps-clip\" class=\"ps-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n<div id=\"ps-scene\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Frame-based helpers, written from their definitions.\n            var Easing = (function () {\n              function bezier(x1, y1, x2, y2) {\n                return function (x) {\n                  if (x <= 0) return 0;\n                  if (x >= 1) return 1;\n                  var lo = 0, hi = 1, t = x;\n                  for (var i = 0; i < 40; i++) {\n                    var u = 1 - t;\n                    var cx = 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;\n                    if (Math.abs(cx - x) < 1e-6) break;\n                    if (cx < x) lo = t; else hi = t;\n                    t = (lo + hi) / 2;\n                  }\n                  var v = 1 - t;\n                  return 3 * v * v * t * y1 + 3 * v * t * t * y2 + t * t * t;\n                };\n              }\n              return {\n                bezier: bezier,\n                linear: function (t) { return t; },\n                quad: function (t) { return t * t; },\n                cubic: function (t) { return t * t * t; },\n                sin: function (t) { return 1 - Math.cos((t * Math.PI) / 2); },\n                poly: function (n) { return function (t) { return Math.pow(t, n); }; },\n                ease: bezier(0.42, 0, 1, 1),\n                out: function (f) { return function (t) { return 1 - f(1 - t); }; },\n                inOut: function (f) { return function (t) { return t < 0.5 ? f(t * 2) / 2 : 1 - f((1 - t) * 2) / 2; }; }\n              };\n            })();\n            function interpolate(input, inR, outR, o) {\n              o = o || {};\n              var n = inR.length;\n              var left = o.extrapolateLeft || \"extend\";\n              var right = o.extrapolateRight || \"extend\";\n              var i = 1;\n              while (i < n - 1 && input > inR[i]) i++;\n              var a = inR[i - 1], b = inR[i];\n              if (input < inR[0] && left === \"clamp\") return outR[0];\n              if (input > inR[n - 1] && right === \"clamp\") return outR[n - 1];\n              var t = b === a ? 0 : (input - a) / (b - a);\n              if (o.easing) t = o.easing(t);\n              return outR[i - 1] + (outR[i] - outR[i - 1]) * t;\n            }\n            // Damped spring from rest to 1. durationInFrames stretches time so the spring has settled by then.\n            function spring(o) {\n              var c = o.config || {};\n              var mass = c.mass != null ? c.mass : 1;\n              var k = c.stiffness != null ? c.stiffness : 100;\n              var damp = c.damping != null ? c.damping : 10;\n              function at(t) {\n                var w0 = Math.sqrt(k / mass);\n                var z = damp / (2 * Math.sqrt(k * mass));\n                if (z < 1) {\n                  var wd = w0 * Math.sqrt(1 - z * z);\n                  return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t));\n                }\n                return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n              }\n              var t = Math.max(0, o.frame) / o.fps;\n              if (o.durationInFrames) {\n                var settle = 4, step = 1 / o.fps;\n                for (var s = settle; s > 0.05; s -= step) {\n                  if (Math.abs(1 - at(s)) > 0.001) { settle = s + step; break; }\n                  settle = s;\n                }\n                t = (Math.max(0, o.frame) / o.durationInFrames) * settle;\n                if (o.frame >= o.durationInFrames) return 1;\n              }\n              return at(t);\n            }\n            function parseColor(c) {\n              var m;\n              c = String(c).trim();\n              if ((m = /^#([0-9a-f]{3,8})$/i.exec(c))) {\n                var h = m[1];\n                if (h.length <= 4) h = h.split(\"\").map(function (x) { return x + x; }).join(\"\");\n                return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16), h.length === 8 ? parseInt(h.slice(6, 8), 16) / 255 : 1];\n              }\n              if ((m = /^rgba?\\(([^)]+)\\)/i.exec(c))) {\n                var p = m[1].split(\",\").map(Number);\n                return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1];\n              }\n              return [0, 0, 0, 1];\n            }\n            function interpolateColors(t, inR, outR) {\n              var a = parseColor(outR[0]), b = parseColor(outR[1]);\n              var u = Math.min(1, Math.max(0, (t - inR[0]) / (inR[1] - inR[0])));\n              return \"rgba(\" + [0, 1, 2].map(function (i) { return Math.round(a[i] + (b[i] - a[i]) * u); }).join(\",\") + \",\" + (a[3] + (b[3] - a[3]) * u) + \")\";\n            }\n            // Seeded 0..1 value: the same seed always gives the same number.\n            function random(seed) {\n              var s = String(seed), h = 2166136261;\n              for (var i = 0; i < s.length; i++) {\n                h ^= s.charCodeAt(i);\n                h = Math.imul(h, 16777619);\n              }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              h = Math.imul(h ^ (h >>> 16), 3266489917);\n              return ((h ^ (h >>> 15)) >>> 0) / 4294967296;\n            }\n            // Fit a fixed-size design stage into the frame.\n            function fit(el, w, h, fill) {\n              var s = Math.min(root.clientWidth / w, root.clientHeight / h) * (fill || 1);\n              el.style.position = \"absolute\";\n              el.style.left = \"50%\";\n              el.style.top = \"50%\";\n              el.style.width = w + \"px\";\n              el.style.height = h + \"px\";\n              el.style.transform = \"translate(-50%, -50%) scale(\" + s + \")\";\n              return s;\n            }\n            // Drive draw(frame) from the timeline so seeking always draws the same picture.\n            function clockTween(tl, totalFrames, draw, rate) {\n              var clock = { frame: 0 };\n              tl.to(clock, { frame: totalFrames, duration: totalFrames / 30, ease: \"none\", onUpdate: function () { draw(clock.frame * (rate || 1)); } }, 0);\n              draw(0);\n            }\n            var SVGNS = \"http://www.w3.org/2000/svg\";\n            function svgEl(tag, attrs, parent) {\n              var e = document.createElementNS(SVGNS, tag);\n              for (var k in attrs) e.setAttribute(k, attrs[k]);\n              if (parent) parent.appendChild(e);\n              return e;\n            }\n\n\n                        // Stop-motion helpers: poses are held for `step` frames.\n            var DEFAULT_STEP = 3;\n            function qf(frame, step) { step = step || DEFAULT_STEP; return Math.floor(frame / step) * step; }\n            function qstep(frame, step) { step = step || DEFAULT_STEP; return Math.floor(frame / step); }\n            function hash01(seed) { return random(seed); }\n            function hashRange(seed, lo, hi) { return lo + hash01(seed) * (hi - lo); }\n            function paperJitter(frame, seed, o) {\n              o = o || {};\n              var amp = o.amp != null ? o.amp : 1.4, rotAmp = o.rotAmp != null ? o.rotAmp : 0.35;\n              var s = qstep(frame, o.step);\n              return { x: hashRange(seed + \":x:\" + s, -amp, amp), y: hashRange(seed + \":y:\" + s, -amp, amp), rot: hashRange(seed + \":r:\" + s, -rotAmp, rotAmp) };\n            }\n            function steppedRamp(frame, from, to, o) {\n              o = o || {};\n              var f = qf(frame, o.step);\n              if (f <= from) return 0;\n              if (f >= to) return 1;\n              var ease = o.ease || function (t) { return t; };\n              return ease((f - from) / (to - from));\n            }\n\n\n            // Scale a 1280x720 design to the frame (bigger on a tall frame).\n            function scaledStage(el, boost) {\n              var W = root.clientWidth, H = root.clientHeight;\n              var s = Math.min(W / 1280, H / 720) * (H > W ? (boost || 1.4) : 1);\n              el.style.position = \"absolute\"; el.style.left = \"0\"; el.style.top = \"0\";\n              el.style.width = W / s + \"px\"; el.style.height = H / s + \"px\";\n              el.style.transformOrigin = \"0 0\"; el.style.transform = \"scale(\" + s + \")\";\n              return s;\n            }\n\n            var scene = document.getElementById(\"ps-scene\");\n            scaledStage(scene, 2);\n            var labels = str(vars.labels, \"fresh, local, handmade, new, hot\").split(\",\").map(function (s) { return s.trim(); }).filter(Boolean);\n            var at0 = Math.round(num(vars.at, 0, 0, 60)), stagger = Math.round(num(vars.stagger, 6, 0, 20));\n            var maxTilt = num(vars.max_tilt, 2.6, 0, 8), step = Math.round(num(vars.step, 3, 1, 6));\n            var seed = str(vars.seed, \"sticker\");\n            var ink = str(vars.color, \"#26242c\"), paper = str(vars.background, \"#fbfaf6\");\n            var chips = labels.map(function (label, i) {\n              var el = document.createElement(\"div\");\n              el.id = \"ps-chip-\" + i; el.className = \"ps-chip\";\n              el.style.padding = str(vars.padding, \"10px 16px\");\n              el.style.background = paper; el.style.color = ink;\n              el.style.border = \"1px solid rgba(38,36,44,0.55)\";\n              el.textContent = label;\n              scene.appendChild(el);\n              var s = seed + \":\" + label;\n              return { el: el, at: at0 + i * stagger, seed: s, tilt: hashRange(s + \":rot\", -maxTilt, maxTilt) };\n            });\n            function draw(frame) {\n              chips.forEach(function (c) {\n                var p = steppedRamp(frame, c.at, c.at + 2 * step, { step: step });\n                if (p === 0) { c.el.style.visibility = \"hidden\"; return; }\n                c.el.style.visibility = \"visible\";\n                var j = paperJitter(frame, \"sticker:\" + c.seed, { amp: 0.7, rotAmp: 0.2, step: step });\n                c.el.style.transform = \"translate(\" + j.x + \"px, \" + j.y + \"px) rotate(\" + (c.tilt + j.rot) + \"deg) scale(\" + (p < 1 ? 1.12 : 1) + \")\";\n              });\n            }\n            var tl = gsap.timeline({ paused: true });\n            clockTween(tl, 120, draw);\n\n            var total = parseFloat(root.dataset.duration || \"4\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"paper-sticker\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "8b293f1b2faaf11858bb145bfa0d3ddacad5e0e086ae995928b76614a1f5c56f",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#f1eee7",
+ "demo_values": {
+  "labels": "fresh batch, 20% off, today only, free delivery, new menu"
+ },
+ "variables": [
+  {
+   "id": "labels",
+   "type": "string",
+   "role": "content",
+   "label": "Labels",
+   "default": "fresh, local, handmade, new, hot"
+  },
+  {
+   "id": "at",
+   "type": "number",
+   "role": "motion",
+   "label": "Slap frame",
+   "default": 0,
+   "min": 0,
+   "max": 60
+  },
+  {
+   "id": "stagger",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 6,
+   "min": 0,
+   "max": 20
+  },
+  {
+   "id": "padding",
+   "type": "string",
+   "role": "style",
+   "label": "Padding",
+   "default": "10px 16px"
+  },
+  {
+   "id": "background",
+   "type": "color",
+   "role": "style",
+   "label": "Paper",
+   "default": "#fbfaf6"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Ink",
+   "default": "#26242c"
+  },
+  {
+   "id": "max_tilt",
+   "type": "number",
+   "role": "motion",
+   "label": "Max tilt",
+   "default": 2.6,
+   "min": 0,
+   "max": 8
+  },
+  {
+   "id": "seed",
+   "type": "string",
+   "role": "motion",
+   "label": "Seed",
+   "default": "sticker"
+  },
+  {
+   "id": "step",
+   "type": "number",
+   "role": "motion",
+   "label": "Frames per pose",
+   "default": 3,
+   "min": 1,
+   "max": 6
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

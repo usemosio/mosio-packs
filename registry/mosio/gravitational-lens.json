@@ -1,0 +1,129 @@
+{
+ "name": "gravitational-lens",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/gravitational-lens/gravitational-lens.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Gravitational Lens\n\nContent warps toward a gravity well with chromatic aberration and event horizon darkening. Plays between two built-in panels (A and B) that a host swaps for its own scenes: copy the fragment shader into your composition and feed it your two frames as textures.\n\nCategory: transitions. Length: 4 s. WebGL: yes.\n\nUse when:\n- The outgoing scene should be pulled into a point at the centre, warped and darkened like light around a black hole, then give way to the next scene.\n- Sci-fi, space or dramatic reveals.\n\nAvoid when:\n- A friendly, light-hearted piece: the dark event horizon is heavy.\n- Scenes with important content at the centre of the frame.\n\nVariables:\n- label_a (string): Panel A label, default \"SCENE A\"\n- caption_a (string): Panel A caption, default \"Outgoing scene\"\n- label_b (string): Panel B label, default \"SCENE B\"\n- caption_b (string): Panel B caption, default \"Incoming scene\"\n- color_a (color): Panel A background, default \"#0a0a0a\"\n- ink_a (color): Panel A ink, default \"#fafafa\"\n- color_b (color): Panel B background, default \"#f5f5f5\"\n- ink_b (color): Panel B ink, default \"#0a0a0a\"\n- caption_ink_a (color): Panel A caption colour, default \"#a3a3a3\"\n- caption_ink_b (color): Panel B caption colour, default \"#2563eb\"\n- hold (number, 0-3): Start of transition, default 1\n- length (number, 0.3-3.5): Transition length, default 2\n- resolution (number, 0.25-1): Resolution, default 0.75\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Gravitational Lens\n\n  Content warps toward a gravity well with chromatic aberration and event horizon darkening. A WebGL transition between two built-in panels.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/gravitational-lens/gravitational-lens.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: fills the host frame instead of a fixed 1920×1080 scene with a side\n  panel; the two demo scenes are drawn on 2D canvases (text and colours from variables) instead of\n  being captured from DOM elements; the fragment shader is unchanged apart from GLSL ES 3.0 syntax\n  (WebGL2); the canvas is drawn at the `resolution` variable and its progress comes from the timeline;\n  without WebGL the panels cross-fade. The block applies the look to its own two panels, not to the\n  host's video.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"gravitational-lens\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[{\"id\": \"label_a\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Panel A label\", \"description\": \"Big word on the outgoing panel.\", \"default\": \"SCENE A\"},\n    {\"id\": \"caption_a\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Panel A caption\", \"description\": \"Small line under the label on the outgoing panel.\", \"default\": \"Outgoing scene\"},\n    {\"id\": \"label_b\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Panel B label\", \"description\": \"Big word on the incoming panel.\", \"default\": \"SCENE B\"},\n    {\"id\": \"caption_b\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Panel B caption\", \"description\": \"Small line under the label on the incoming panel.\", \"default\": \"Incoming scene\"},\n    {\"id\": \"color_a\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel A background\", \"description\": \"Background of the outgoing panel.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"ink_a\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel A ink\", \"description\": \"Text and line colour on the outgoing panel.\", \"default\": \"#fafafa\"},\n    {\"id\": \"color_b\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel B background\", \"description\": \"Background of the incoming panel.\", \"default\": \"#f5f5f5\"},\n    {\"id\": \"ink_b\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel B ink\", \"description\": \"Text and line colour on the incoming panel.\", \"default\": \"#0a0a0a\"}, {\"id\": \"caption_ink_a\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel A caption colour\", \"description\": \"Colour of the small caption on the outgoing panel.\", \"default\": \"#a3a3a3\"}, {\"id\": \"caption_ink_b\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel B caption colour\", \"description\": \"Colour of the small caption on the incoming panel.\", \"default\": \"#2563eb\"},\n    {\"id\": \"hold\", \"type\": \"number\", \"role\": \"timing\", \"label\": \"Start of transition\", \"description\": \"Seconds the outgoing panel holds before the transition starts.\", \"default\": 1, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"length\", \"type\": \"number\", \"role\": \"timing\", \"label\": \"Transition length\", \"description\": \"Seconds the transition takes (the block lasts 4 seconds in all).\", \"default\": 2, \"min\": 0.3, \"max\": 3.5, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"resolution\", \"type\": \"number\", \"role\": \"quality\", \"label\": \"Resolution\", \"description\": \"Share of the frame size the shader is drawn at, then scaled up. Lower renders faster; 0.75 matches 1 in the stills.\", \"default\": 0.75, \"min\": 0.25, \"max\": 1, \"step\": 0.05}]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Gravitational Lens</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Space+Mono:wght@400;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          background: #000;\n          pointer-events: none;\n        }\n        .grl-stage {\n          position: absolute;\n          inset: 0;\n        }\n        .grl-canvas,\n        .grl-scene {\n          position: absolute;\n          inset: 0;\n          width: 100%;\n          height: 100%;\n          display: block;\n        }\n        .grl-scene {\n          display: none;\n        }\n        .grl-off .grl-canvas {\n          display: none;\n        }\n        .grl-off .grl-scene {\n          display: block;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"gravitational-lens\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"grl-clip\" class=\"grl-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <canvas id=\"grl-scene0\" class=\"grl-scene\"></canvas>\n          <canvas id=\"grl-scene1\" class=\"grl-scene\"></canvas>\n          <canvas id=\"grl-canvas\" class=\"grl-canvas\"></canvas>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var NAME = \"gravitational-lens\";\n            var TAG = \"grl\";\n            var root = document.getElementById(\"root\");\n            var stage = document.getElementById(TAG + \"-clip\");\n            var canvas = document.getElementById(TAG + \"-canvas\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function clampNum(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function hex(value, fallback) {\n              var m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(value || \"\").trim());\n              if (!m) return fallback;\n              var h = m[1].length === 3 ? m[1].replace(/./g, \"$&$&\") : m[1];\n              return \"#\" + h.toLowerCase();\n            }\n            var DEFS = [{\"id\": \"label_a\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Panel A label\", \"description\": \"Big word on the outgoing panel.\", \"default\": \"SCENE A\"}, {\"id\": \"caption_a\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Panel A caption\", \"description\": \"Small line under the label on the outgoing panel.\", \"default\": \"Outgoing scene\"}, {\"id\": \"label_b\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Panel B label\", \"description\": \"Big word on the incoming panel.\", \"default\": \"SCENE B\"}, {\"id\": \"caption_b\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Panel B caption\", \"description\": \"Small line under the label on the incoming panel.\", \"default\": \"Incoming scene\"}, {\"id\": \"color_a\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel A background\", \"description\": \"Background of the outgoing panel.\", \"default\": \"#0a0a0a\"}, {\"id\": \"ink_a\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel A ink\", \"description\": \"Text and line colour on the outgoing panel.\", \"default\": \"#fafafa\"}, {\"id\": \"color_b\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel B background\", \"description\": \"Background of the incoming panel.\", \"default\": \"#f5f5f5\"}, {\"id\": \"ink_b\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel B ink\", \"description\": \"Text and line colour on the incoming panel.\", \"default\": \"#0a0a0a\"}, {\"id\": \"caption_ink_a\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel A caption colour\", \"description\": \"Colour of the small caption on the outgoing panel.\", \"default\": \"#a3a3a3\"}, {\"id\": \"caption_ink_b\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Panel B caption colour\", \"description\": \"Colour of the small caption on the incoming panel.\", \"default\": \"#2563eb\"}, {\"id\": \"hold\", \"type\": \"number\", \"role\": \"timing\", \"label\": \"Start of transition\", \"description\": \"Seconds the outgoing panel holds before the transition starts.\", \"default\": 1, \"min\": 0, \"max\": 3, \"step\": 0.05, \"unit\": \"s\"}, {\"id\": \"length\", \"type\": \"number\", \"role\": \"timing\", \"label\": \"Transition length\", \"description\": \"Seconds the transition takes (the block lasts 4 seconds in all).\", \"default\": 2, \"min\": 0.3, \"max\": 3.5, \"step\": 0.05, \"unit\": \"s\"}, {\"id\": \"resolution\", \"type\": \"number\", \"role\": \"quality\", \"label\": \"Resolution\", \"description\": \"Share of the frame size the shader is drawn at, then scaled up. Lower renders faster; 0.75 matches 1 in the stills.\", \"default\": 0.75, \"min\": 0.25, \"max\": 1, \"step\": 0.05}];\n            var V = {};\n            DEFS.forEach(function (d) {\n              var raw = vars[d.id];\n              if (d.type === \"number\") V[d.id] = clampNum(raw, d.default, d.min, d.max);\n              else if (d.type === \"color\") V[d.id] = hex(raw, d.default);\n              else V[d.id] = typeof raw === \"string\" && raw.trim() ? raw.trim() : d.default;\n            });\n\n            var TOTAL = 4;\n            var HOLD = Math.min(V.hold, TOTAL - 0.3);\n            var LEN = Math.min(V.length, TOTAL - HOLD);\n\n            var W = Math.max(2, root.clientWidth);\n            var H = Math.max(2, root.clientHeight);\n            var cw = Math.max(2, Math.round(W * V.resolution));\n            var ch = Math.max(2, Math.round(H * V.resolution));\n            var sceneCanvases = [0, 1].map(function (i) {\n              var el = document.getElementById(TAG + \"-scene\" + i);\n              el.width = cw;\n              el.height = ch;\n              return el;\n            });\n\n            // The two demo panels (the upstream \"SCENE A\" / \"SCENE B\"), laid out for any frame size.\n            var DISPLAY = \"'Bebas Neue', Impact, 'Arial Narrow', sans-serif\";\n            var MONO = \"'Space Mono', ui-monospace, Menlo, monospace\";\n            var S = Math.min(W, H) / 1080;\n            function drawScene(el, bg, ink, label, caption, capInk) {\n              var ctx = el.getContext(\"2d\");\n              ctx.setTransform(cw / W, 0, 0, ch / H, 0, 0);\n              ctx.fillStyle = bg;\n              ctx.fillRect(0, 0, W, H);\n              // faint blueprint grid and ring, so the shader has structure to bend\n              ctx.globalAlpha = 0.09;\n              ctx.strokeStyle = ink;\n              ctx.lineWidth = Math.max(1, 2 * S);\n              var step = 54 * S;\n              ctx.beginPath();\n              for (var x = (W / 2) % step; x < W; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }\n              for (var y = (H / 2) % step; y < H; y += step) { ctx.moveTo(0, y); ctx.lineTo(W, y); }\n              ctx.stroke();\n              ctx.globalAlpha = 0.28;\n              ctx.lineWidth = 3 * S;\n              ctx.beginPath();\n              ctx.arc(W / 2, H / 2, Math.min(W, H) * 0.34, 0, Math.PI * 2);\n              ctx.stroke();\n              ctx.globalAlpha = 1;\n              ctx.fillStyle = ink;\n              ctx.textAlign = \"center\";\n              ctx.textBaseline = \"middle\";\n              var size = 190 * S;\n              ctx.font = \"400 \" + size + \"px \" + DISPLAY;\n              if (\"letterSpacing\" in ctx) ctx.letterSpacing = size * 0.06 + \"px\";\n              var w = ctx.measureText(label).width;\n              if (w > W * 0.82) { size *= (W * 0.82) / w; ctx.font = \"400 \" + size + \"px \" + DISPLAY; }\n              ctx.fillText(label, W / 2, H / 2 - 10 * S);\n              if (\"letterSpacing\" in ctx) ctx.letterSpacing = \"0px\";\n              var csize = 36 * S;\n              ctx.globalAlpha = 1;\n              ctx.fillStyle = capInk;\n              ctx.font = \"700 \" + csize + \"px \" + MONO;\n              if (\"letterSpacing\" in ctx) ctx.letterSpacing = csize * 0.2 + \"px\";\n              var cwid = ctx.measureText(caption.toUpperCase()).width;\n              if (cwid > W * 0.82) { csize *= (W * 0.82) / cwid; ctx.font = \"700 \" + csize + \"px \" + MONO; }\n              ctx.fillText(caption.toUpperCase(), W / 2, H / 2 + size * 0.5 + 40 * S);\n              ctx.globalAlpha = 1;\n              if (\"letterSpacing\" in ctx) ctx.letterSpacing = \"0px\";\n            }\n            function drawScenes() {\n              drawScene(sceneCanvases[0], V.color_a, V.ink_a, V.label_a, V.caption_a, V.caption_ink_a);\n              drawScene(sceneCanvases[1], V.color_b, V.ink_b, V.label_b, V.caption_b, V.caption_ink_b);\n            }\n\n            var VERTEX = [\n              \"#version 300 es\",\n              \"in vec2 a_pos;\",\n              \"out vec2 v_uv;\",\n              \"void main() {\",\n              \"  v_uv = vec2(a_pos.x * 0.5 + 0.5, 0.5 - a_pos.y * 0.5);\",\n              \"  gl_Position = vec4(a_pos, 0.0, 1.0);\",\n              \"}\"\n            ].join(\"\\n\");\n            var HEAD = \"#version 300 es\\nprecision highp float;\\nin vec2 v_uv;\\nout vec4 outColor;\\nuniform sampler2D u_from;\\nuniform sampler2D u_to;\\nuniform float u_progress;\\nuniform vec2 u_resolution;\\n\";\n            // Fragment shader from Hyperframes (the transition), in GLSL ES 3.0 syntax.\n            var FRAGMENT = HEAD + `\nvoid main(){\n  vec4 B=texture(u_to,v_uv);\n  vec2 uv=v_uv-.5;\n  float dist=length(uv);\n  float pull=u_progress*2.;\n  float warpStr=pull*.3/(dist+.1);\n  vec2 warped=clamp(v_uv-uv*warpStr,0.,1.);\n  vec4 A=texture(u_from,warped);\n  float horizon=smoothstep(0.,.3,dist/(1.-u_progress*.85+.001));\n  float shift=pull*.02/(dist+.2);\n  float r=texture(u_from,clamp(v_uv-uv*(warpStr+shift),0.,1.)).r;\n  float b=texture(u_from,clamp(v_uv-uv*(warpStr-shift),0.,1.)).b;\n  vec3 lensed=vec3(r,A.g,b)*horizon;\n  outColor=vec4(mix(lensed,B.rgb,smoothstep(.3,.9,u_progress)),1.);\n}\n`;\n            var PASS = HEAD + \"void main() { outColor = u_progress < 0.5 ? texture(u_from, v_uv) : texture(u_to, v_uv); }\";\n\n            canvas.width = cw;\n            canvas.height = ch;\n            var gl = canvas.getContext(\"webgl2\", { antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true });\n            function compile(type, source) {\n              var shader = gl.createShader(type);\n              gl.shaderSource(shader, source);\n              gl.compileShader(shader);\n              if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(shader) || \"shader compile failed\");\n              return shader;\n            }\n            var paint = null;\n            var upload = function () {};\n            try {\n              if (!gl) throw new Error(\"WebGL2 is not available\");\n              var vs = compile(gl.VERTEX_SHADER, VERTEX);\n              function program(frag) {\n                var p = gl.createProgram();\n                gl.attachShader(p, vs);\n                gl.attachShader(p, compile(gl.FRAGMENT_SHADER, frag));\n                gl.bindAttribLocation(p, 0, \"a_pos\");\n                gl.linkProgram(p);\n                if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p) || \"link failed\");\n                gl.useProgram(p);\n                gl.uniform1i(gl.getUniformLocation(p, \"u_from\"), 0);\n                gl.uniform1i(gl.getUniformLocation(p, \"u_to\"), 1);\n                gl.uniform2f(gl.getUniformLocation(p, \"u_resolution\"), cw, ch);\n                return { p: p, progress: gl.getUniformLocation(p, \"u_progress\") };\n              }\n              var trans = program(FRAGMENT);\n              var pass = program(PASS);\n              var buffer = gl.createBuffer();\n              gl.bindBuffer(gl.ARRAY_BUFFER, buffer);\n              gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);\n              gl.enableVertexAttribArray(0);\n              gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);\n              [0, 1].forEach(function (unit) {\n                var texture = gl.createTexture();\n                gl.activeTexture(gl.TEXTURE0 + unit);\n                gl.bindTexture(gl.TEXTURE_2D, texture);\n                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);\n                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);\n                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);\n                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);\n              });\n              gl.viewport(0, 0, cw, ch);\n              upload = function () {\n                sceneCanvases.forEach(function (el, unit) {\n                  gl.activeTexture(gl.TEXTURE0 + unit);\n                  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, el);\n                });\n              };\n              paint = function (p) {\n                // before the transition the outgoing panel shows as is, after it the incoming one\n                var pick = p <= 0 || p >= 1;\n                var use = pick ? pass : trans;\n                gl.useProgram(use.p);\n                gl.uniform1f(use.progress, p);\n                gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);\n              };\n            } catch (err) {\n              stage.classList.add(TAG + \"-off\");\n              if (window.console) console.warn(NAME + \":\", err.message);\n            }\n\n            // The panels are redrawn whenever a web font finishes loading, so no frame keeps a fallback face.\n            var fontEpoch = 0;\n            var sceneEpoch = -1;\n            var lastFrame = 0;\n            function progressAt(frame) {\n              var t = frame / 30;\n              var x = Math.min(1, Math.max(0, (t - HOLD) / LEN));\n              return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;\n            }\n            function render(frame) {\n              lastFrame = frame;\n              if (sceneEpoch !== fontEpoch) {\n                sceneEpoch = fontEpoch;\n                drawScenes();\n                upload();\n              }\n              var p = progressAt(frame);\n              if (paint) paint(p);\n              else sceneCanvases[1].style.opacity = String(p);\n            }\n            if (document.fonts && document.fonts.load) {\n              [\"400 100px 'Bebas Neue'\", \"700 30px 'Space Mono'\"].forEach(function (face) {\n                document.fonts.load(face).then(function () { fontEpoch++; render(lastFrame); }, function () {});\n              });\n            }\n\n            var totalFrames = TOTAL * 30;\n            var clock = { frame: 0 };\n            var tl = gsap.timeline({ paused: true });\n            tl.to(clock, {\n              frame: totalFrames,\n              duration: TOTAL,\n              ease: \"none\",\n              onUpdate: function () { render(Math.round(clock.frame)); }\n            }, 0);\n            render(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[NAME] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "9b6fb89a1a23ca31330de0a6ace7025b596de4db46b6fb549e35f4a5d2e86074",
+ "duration": 4,
+ "webgl": true,
+ "demo_background": "#0a0a0a",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "label_a",
+   "type": "string",
+   "role": "content",
+   "label": "Panel A label",
+   "default": "SCENE A"
+  },
+  {
+   "id": "caption_a",
+   "type": "string",
+   "role": "content",
+   "label": "Panel A caption",
+   "default": "Outgoing scene"
+  },
+  {
+   "id": "label_b",
+   "type": "string",
+   "role": "content",
+   "label": "Panel B label",
+   "default": "SCENE B"
+  },
+  {
+   "id": "caption_b",
+   "type": "string",
+   "role": "content",
+   "label": "Panel B caption",
+   "default": "Incoming scene"
+  },
+  {
+   "id": "color_a",
+   "type": "color",
+   "role": "style",
+   "label": "Panel A background",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "ink_a",
+   "type": "color",
+   "role": "style",
+   "label": "Panel A ink",
+   "default": "#fafafa"
+  },
+  {
+   "id": "color_b",
+   "type": "color",
+   "role": "style",
+   "label": "Panel B background",
+   "default": "#f5f5f5"
+  },
+  {
+   "id": "ink_b",
+   "type": "color",
+   "role": "style",
+   "label": "Panel B ink",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "caption_ink_a",
+   "type": "color",
+   "role": "style",
+   "label": "Panel A caption colour",
+   "default": "#a3a3a3"
+  },
+  {
+   "id": "caption_ink_b",
+   "type": "color",
+   "role": "style",
+   "label": "Panel B caption colour",
+   "default": "#2563eb"
+  },
+  {
+   "id": "hold",
+   "type": "number",
+   "role": "timing",
+   "label": "Start of transition",
+   "default": 1,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "length",
+   "type": "number",
+   "role": "timing",
+   "label": "Transition length",
+   "default": 2,
+   "min": 0.3,
+   "max": 3.5
+  },
+  {
+   "id": "resolution",
+   "type": "number",
+   "role": "quality",
+   "label": "Resolution",
+   "default": 0.75,
+   "min": 0.25,
+   "max": 1
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

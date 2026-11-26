@@ -1,0 +1,121 @@
+{
+ "name": "speaker-label-captions",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "RemotionUI",
+ "source": {
+  "repo": "https://github.com/riaz37/remotion-ui",
+  "path": "apps/web/registry/bases/default/primitives/speaker-label-captions.tsx",
+  "commit": "0aecaca2b61a167992e1205d10e4da16d8a71331"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Speaker Label Captions\n\nA multi-speaker caption track: each line sits on a card with the speaker's name and colour, speakers alternate sides, and the previous line stays as quiet context.\n\nCategory: captions. Length: 13.5 s. WebGL: no.\n\nUse when:\n- An interview, podcast or dialogue needs captions that say who is speaking: a name tag, a colour and a side per speaker.\n- Cues come from an SRT or WebVTT file (with <v Name> voice tags) or from a JSON list.\n\nAvoid when:\n- You want word-by-word highlighting from a word-timed transcript: use caption-speaker or caption-karaoke.\n- There is one speaker: use a plain caption block.\n\nVariables:\n- cues (string): Cues, default \"[{\\\"text\\\": \\\"So what made you start making videos?\\\", \\\"startMs\\\": 300, \\\"endMs\\\": 2800, \\\"speaker\\\": \\\"Maya\\\"}, {\\\"text\\\": \\\"Honestly, I wanted to show the work instead of explaining it.\\\", \\\"startMs\\\": 3300, \\\"endMs\\\": 6800, \\\"speaker\\\": \\\"Jon\\\"}, {\\\"text\\\": \\\"And that changed how people respond?\\\", \\\"startMs\\\": 7300, \\\"endMs\\\": 9500, \\\"speaker\\\": \\\"Maya\\\"}, {\\\"text\\\": \\\"Completely. They finally see what we do.\\\", \\\"startMs\\\": 10000, \\\"endMs\\\": 12800, \\\"speaker\\\": \\\"Jon\\\"}]\"\n- speaker_colors (string): Speaker colors, default \"{}\"\n- default_speaker (string): Default speaker, default \"Speaker\"\n- font_size (number, 16-140): Font size, default 42\n- font_weight (number, 100-900): Font weight, default 600\n- color (color): Text color, default \"#fafafa\"\n- card_color (color): Card color, default \"#0c0c12\"\n- card_opacity (number, 0-1): Card opacity, default 0.82\n- max_width (number, 30-100): Max width, default 70\n- show_previous (boolean): Show previous line, default true\n- enter_frames (number, 1-40): Enter, default 10\n\nSource: https://github.com/riaz37/remotion-ui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Speaker Label Captions\n\n  Multi-speaker caption track with name tags and colour coding.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/riaz37/remotion-ui/blob/0aecaca2b61a167992e1205d10e4da16d8a71331/apps/web/registry/bases/default/primitives/speaker-label-captions.tsx\n\n  MIT License\n\n  Copyright (c) 2026 RemotionUI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"speaker-label-captions\"\n  data-composition-duration=\"13.5\"\n  data-composition-variables='[\n    [\n      {\n        \"id\": \"cues\",\n        \"type\": \"string\",\n        \"role\": \"content\",\n        \"label\": \"Cues\",\n        \"description\": \"JSON list [{\\\"text\\\",\\\"startMs\\\",\\\"endMs\\\",\\\"speaker\\\"}] (or start/end in seconds), or SubRip / WebVTT text where &lt;v Name&gt; tags name the speaker.\",\n        \"default\": \"[{\\\"text\\\": \\\"So what made you start making videos?\\\", \\\"startMs\\\": 300, \\\"endMs\\\": 2800, \\\"speaker\\\": \\\"Maya\\\"}, {\\\"text\\\": \\\"Honestly, I wanted to show the work instead of explaining it.\\\", \\\"startMs\\\": 3300, \\\"endMs\\\": 6800, \\\"speaker\\\": \\\"Jon\\\"}, {\\\"text\\\": \\\"And that changed how people respond?\\\", \\\"startMs\\\": 7300, \\\"endMs\\\": 9500, \\\"speaker\\\": \\\"Maya\\\"}, {\\\"text\\\": \\\"Completely. They finally see what we do.\\\", \\\"startMs\\\": 10000, \\\"endMs\\\": 12800, \\\"speaker\\\": \\\"Jon\\\"}]\"\n      },\n      {\n        \"id\": \"speaker_colors\",\n        \"type\": \"string\",\n        \"role\": \"style\",\n        \"label\": \"Speaker colors\",\n        \"description\": \"JSON object mapping a speaker name to a colour, for example {\\\"Maya\\\":\\\"#38bdf8\\\"}. Unlisted speakers take the palette in order.\",\n        \"default\": \"{}\"\n      },\n      {\n        \"id\": \"default_speaker\",\n        \"type\": \"string\",\n        \"role\": \"content\",\n        \"label\": \"Default speaker\",\n        \"description\": \"Name shown for cues that carry no speaker.\",\n        \"default\": \"Speaker\"\n      },\n      {\n        \"id\": \"font_size\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font size\",\n        \"description\": \"Caption text size in pixels; the name tag is half of it.\",\n        \"default\": 42,\n        \"min\": 16,\n        \"max\": 140,\n        \"step\": 1,\n        \"unit\": \"px\"\n      },\n      {\n        \"id\": \"font_weight\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font weight\",\n        \"description\": \"Weight of the caption text.\",\n        \"default\": 600,\n        \"min\": 100,\n        \"max\": 900,\n        \"step\": 100\n      },\n      {\n        \"id\": \"color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Text color\",\n        \"description\": \"Caption text colour.\",\n        \"default\": \"#fafafa\"\n      },\n      {\n        \"id\": \"card_color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Card color\",\n        \"description\": \"Background of each caption card.\",\n        \"default\": \"#0c0c12\"\n      },\n      {\n        \"id\": \"card_opacity\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Card opacity\",\n        \"description\": \"Opacity of the card background.\",\n        \"default\": 0.82,\n        \"min\": 0,\n        \"max\": 1,\n        \"step\": 0.02\n      },\n      {\n        \"id\": \"max_width\",\n        \"type\": \"number\",\n        \"role\": \"layout\",\n        \"label\": \"Max width\",\n        \"description\": \"Widest a card gets, as a percent of the frame.\",\n        \"default\": 70,\n        \"min\": 30,\n        \"max\": 100,\n        \"step\": 1,\n        \"unit\": \"%\"\n      },\n      {\n        \"id\": \"show_previous\",\n        \"type\": \"boolean\",\n        \"role\": \"style\",\n        \"label\": \"Show previous line\",\n        \"description\": \"Keep the previous cue above the current one, dimmed, as context.\",\n        \"default\": true\n      },\n      {\n        \"id\": \"enter_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Enter\",\n        \"description\": \"Frames (30 per second) a card takes to arrive.\",\n        \"default\": 10,\n        \"min\": 1,\n        \"max\": 40,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      }\n    ]\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Speaker Label Captions</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Poppins:wght@400;600;800&amp;family=Playfair+Display:wght@400..900&amp;family=Space+Grotesk:wght@300..700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #fafafa; }\n        .slc-stage { position: absolute; inset: 0; }\n        .slc-col { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; }\n        .slc-card { display: none; }\n        .slc-name { font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }\n        .slc-text { line-height: 1.25; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"speaker-label-captions\" data-duration=\"13.5\" data-fps=\"30\">\n        <div id=\"slc-clip\" class=\"slc-stage clip\" data-start=\"0\" data-duration=\"13.5\" data-track-index=\"0\">\n          <div id=\"slc-col\" class=\"slc-col\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) && v !== \"\" && v !== null ? Math.min(max, Math.max(min, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function bool(v, f) { if (v === undefined || v === null || v === \"\") return f; return !(v === false || v === \"false\" || v === 0 || v === \"0\"); }\n            function pick(v, list, f) { v = String(v); return list.indexOf(v) >= 0 ? v : f; }\n            function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }\n            function lerp(a, b, t) { return a + (b - a) * t; }\n            function ramp(v, a, b, from, to, ease) { var p = b === a ? 1 : clamp01((v - a) / (b - a)); if (ease) p = ease(p); return from + (to - from) * p; }\n            function bez(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 30; i++) {\n                  var cx = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;\n              };\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function mk(tag, parent, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; if (parent) parent.appendChild(e); return e; }\n            var TOTAL = parseFloat(root.dataset.duration || \"13.5\");\n            // Every frame is drawn from the frame number alone, so seeking anywhere draws the same frame.\n            function drive(name, frameFn) {\n              var clock = { f: 0 };\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: function () { frameFn(clock.f); } }, 0);\n              frameFn(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[name] = tl;\n            }\n\n            var FONTS = { geist: \"Geist, system-ui, sans-serif\", poppins: \"Poppins, system-ui, sans-serif\", playfair: '\"Playfair Display\", Georgia, serif', grotesk: '\"Space Grotesk\", system-ui, sans-serif' };\n            var fontKey = pick(vars.font, [\"geist\", \"poppins\", \"playfair\", \"grotesk\"], \"geist\");\n            root.style.fontFamily = FONTS[fontKey];\n            // ---- Cues: a JSON list, or SubRip / WebVTT text ----\n            var TS = \"(?:(\\\\d+):)?(\\\\d{1,2}):(\\\\d{1,2})[.,](\\\\d{1,3})\";\n            var CUE_RE = new RegExp(TS + \"\\\\s*-->\\\\s*\" + TS);\n            function tsMs(m, o) {\n              var frac = (m[o + 3] || \"0\");\n              return (Number(m[o] || 0) || 0) * 3600000 + (Number(m[o + 1]) || 0) * 60000 + (Number(m[o + 2]) || 0) * 1000 + (Number((\"\" + frac + \"00\").slice(0, 3)) || 0);\n            }\n            function cleanCue(text) {\n              var voice = /<v(?:\\.[^\\s>]+)*\\s+([^>]+)>/.exec(text);\n              return { speaker: voice ? voice[1].trim() : undefined, text: text.replace(/<[^>]*>/g, \"\").replace(/\\{\\\\an?\\d\\}/g, \"\").replace(/\\s+/g, \" \").trim() };\n            }\n            function parseSubtitles(src) {\n              var cues = [];\n              String(src).replace(/^﻿/, \"\").replace(/\\r\\n?/g, \"\\n\").split(/\\n{2,}/).forEach(function (block) {\n                var lines = block.split(\"\\n\").filter(function (l) { return l.trim().length > 0; });\n                if (!lines.length) return;\n                var ti = -1;\n                lines.forEach(function (l, i) { if (ti < 0 && CUE_RE.test(l)) ti = i; });\n                if (ti < 0) return;\n                var m = CUE_RE.exec(lines[ti]);\n                var c = cleanCue(lines.slice(ti + 1).join(\" \"));\n                var s = tsMs(m, 1), e = tsMs(m, 5);\n                if (!c.text || e <= s) return;\n                cues.push({ text: c.text, startMs: s, endMs: e, speaker: c.speaker });\n              });\n              return cues.sort(function (a, b) { return a.startMs - b.startMs; });\n            }\n            function parseCues(raw) {\n              var data = raw;\n              if (typeof raw === \"string\") {\n                var t = raw.trim();\n                if (t.charAt(0) === \"[\") { try { data = JSON.parse(t); } catch (e) { data = null; } }\n                else return parseSubtitles(t);\n              }\n              if (!Array.isArray(data)) return null;\n              var out = [];\n              data.forEach(function (c) {\n                if (!c || typeof c.text !== \"string\") return;\n                var s = c.startMs !== undefined ? Number(c.startMs) : Number(c.start) * 1000;\n                var e = c.endMs !== undefined ? Number(c.endMs) : Number(c.end) * 1000;\n                if (!Number.isFinite(s) || !Number.isFinite(e) || e <= s) return;\n                out.push({ text: c.text, startMs: s, endMs: e, speaker: typeof c.speaker === \"string\" ? c.speaker : undefined, translation: typeof c.translation === \"string\" ? c.translation : \"\" });\n              });\n              return out.length ? out.sort(function (a, b) { return a.startMs - b.startMs; }) : null;\n            }\n            function mixColor(a, b, t) { return \"color-mix(in srgb, \" + b + \" \" + (Math.round(clamp01(t) * 10000) / 100) + \"%, \" + a + \")\"; }\n            var ENTER = bez(0.16, 1, 0.3, 1);\n\n            var DEFAULT_CUES = \"[{\\\"text\\\": \\\"So what made you start making videos?\\\", \\\"startMs\\\": 300, \\\"endMs\\\": 2800, \\\"speaker\\\": \\\"Maya\\\"}, {\\\"text\\\": \\\"Honestly, I wanted to show the work instead of explaining it.\\\", \\\"startMs\\\": 3300, \\\"endMs\\\": 6800, \\\"speaker\\\": \\\"Jon\\\"}, {\\\"text\\\": \\\"And that changed how people respond?\\\", \\\"startMs\\\": 7300, \\\"endMs\\\": 9500, \\\"speaker\\\": \\\"Maya\\\"}, {\\\"text\\\": \\\"Completely. They finally see what we do.\\\", \\\"startMs\\\": 10000, \\\"endMs\\\": 12800, \\\"speaker\\\": \\\"Jon\\\"}]\";\n            var cues = parseCues(vars.cues) || parseCues(DEFAULT_CUES);\n            var defaultSpeaker = str(vars.default_speaker, \"Speaker\");\n            var fontSize = num(vars.font_size, 42, 16, 140), maxWidth = num(vars.max_width, 70, 30, 100), showPrev = bool(vars.show_previous, true), enterFrames = num(vars.enter_frames, 10, 1, 40);\n            var pinned = {};\n            try { var pj = JSON.parse(typeof vars.speaker_colors === \"string\" ? vars.speaker_colors : \"{}\"); if (pj && typeof pj === \"object\") pinned = pj; } catch (e) {}\n            var PALETTE = [\"#e8b86d\", \"#2dd4bf\", \"#f472b6\", \"#8b8bf5\"], names = [];\n            cues.forEach(function (c) { var n = c.speaker || defaultSpeaker; if (names.indexOf(n) < 0) names.push(n); });\n            function styleFor(name) {\n              var order = names.indexOf(name);\n              return { color: typeof pinned[name] === \"string\" ? pinned[name] : PALETTE[Math.max(0, order) % PALETTE.length], align: order % 2 === 0 ? \"left\" : \"right\" };\n            }\n            var col = document.getElementById(\"slc-col\");\n            col.style.gap = fontSize * 0.4 + \"px\";\n            col.style.padding = fontSize + \"px\";\n            var cardColor = mixColor(\"transparent\", str(vars.card_color, \"#0c0c12\"), num(vars.card_opacity, 0.82, 0, 1)), ink = str(vars.color, \"#fafafa\");\n            cues.forEach(function (c) {\n              var sp = styleFor(c.speaker || defaultSpeaker), left = sp.align === \"left\";\n              var card = mk(\"div\", col, \"slc-card\");\n              card.style.alignSelf = left ? \"flex-start\" : \"flex-end\";\n              card.style.maxWidth = maxWidth + \"%\";\n              card.style.background = cardColor;\n              card.style[left ? \"borderLeft\" : \"borderRight\"] = fontSize * 0.12 + \"px solid \" + sp.color;\n              card.style.borderRadius = fontSize * 0.35 + \"px\";\n              card.style.padding = fontSize * 0.42 + \"px \" + fontSize * 0.6 + \"px\";\n              var name = mk(\"div\", card, \"slc-name\", c.speaker || defaultSpeaker);\n              name.style.color = sp.color; name.style.fontSize = fontSize * 0.5 + \"px\"; name.style.marginBottom = fontSize * 0.18 + \"px\"; name.style.textAlign = left ? \"left\" : \"right\";\n              var tx = mk(\"div\", card, \"slc-text\", c.text);\n              tx.style.color = ink; tx.style.fontSize = fontSize + \"px\"; tx.style.fontWeight = String(num(vars.font_weight, 600, 100, 900)); tx.style.textAlign = left ? \"left\" : \"right\";\n              c.card = card;\n            });\n            function draw(frame) {\n              var t = (frame / 30) * 1000, active = -1, i;\n              for (i = 0; i < cues.length; i++) if (cues[i].startMs <= t && cues[i].endMs > t) { active = i; break; }\n              // Between cues the last one stays: a card blinking out in every pause is more distracting than one that holds.\n              var cur = active;\n              if (cur < 0) for (i = 0; i < cues.length; i++) if (cues[i].startMs <= t) cur = i;\n              cues.forEach(function (c, idx) {\n                var show = cur >= 0 && (idx === cur || (showPrev && idx === cur - 1));\n                c.card.style.display = show ? \"block\" : \"none\";\n                if (!show) return;\n                var startFrame = (c.startMs / 1000) * 30;\n                var enter = ramp(frame, startFrame, startFrame + enterFrames, 0, 1, ENTER);\n                c.card.style.opacity = String((idx === cur ? 1 : 0.38) * clamp01(enter * 1.4));\n                c.card.style.transform = \"translateY(\" + ((1 - clamp01(enter)) * fontSize * 0.5).toFixed(2) + \"px)\";\n              });\n            }\n            drive(\"speaker-label-captions\", draw);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "6c17909eb475b1042aa422d7f9a90c8ce7f633fe2ed42f2c3fffd4c8462b3ccd",
+ "duration": 13.5,
+ "webgl": false,
+ "demo_background": "#262626",
+ "demo_values": {
+  "font_size": 58
+ },
+ "variables": [
+  {
+   "id": "cues",
+   "type": "string",
+   "role": "content",
+   "label": "Cues",
+   "default": "[{\"text\": \"So what made you start making videos?\", \"startMs\": 300, \"endMs\": 2800, \"speaker\": \"Maya\"}, {\"text\": \"Honestly, I wanted to show the work instead of explaining it.\", \"startMs\": 3300, \"endMs\": 6800, \"speaker\": \"Jon\"}, {\"text\": \"And that changed how people respond?\", \"startMs\": 7300, \"endMs\": 9500, \"speaker\": \"Maya\"}, {\"text\": \"Completely. They finally see what we do.\", \"startMs\": 10000, \"endMs\": 12800, \"speaker\": \"Jon\"}]"
+  },
+  {
+   "id": "speaker_colors",
+   "type": "string",
+   "role": "style",
+   "label": "Speaker colors",
+   "default": "{}"
+  },
+  {
+   "id": "default_speaker",
+   "type": "string",
+   "role": "content",
+   "label": "Default speaker",
+   "default": "Speaker"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 42,
+   "min": 16,
+   "max": 140
+  },
+  {
+   "id": "font_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Font weight",
+   "default": 600,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#fafafa"
+  },
+  {
+   "id": "card_color",
+   "type": "color",
+   "role": "style",
+   "label": "Card color",
+   "default": "#0c0c12"
+  },
+  {
+   "id": "card_opacity",
+   "type": "number",
+   "role": "style",
+   "label": "Card opacity",
+   "default": 0.82,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "max_width",
+   "type": "number",
+   "role": "layout",
+   "label": "Max width",
+   "default": 70,
+   "min": 30,
+   "max": 100
+  },
+  {
+   "id": "show_previous",
+   "type": "boolean",
+   "role": "style",
+   "label": "Show previous line",
+   "default": true
+  },
+  {
+   "id": "enter_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Enter",
+   "default": 10,
+   "min": 1,
+   "max": 40
+  }
+ ],
+ "author_url": "https://remotionui.com"
+}

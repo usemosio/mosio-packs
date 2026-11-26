@@ -1,0 +1,108 @@
+{
+ "name": "text-animate",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Magic UI",
+ "source": {
+  "repo": "https://github.com/magicuidesign/magicui",
+  "path": "apps/www/registry/magicui/text-animate.tsx",
+  "commit": "166367b4e31a27f166fd6c2b71d7be290fe0c1bc"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Text Animate\n\nOne text block with ten entrance presets (fade, blur, slide, scale) that play by whole text, word, character or line, staggered.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- Any headline or sentence needs a standard staggered entrance and you want to pick the preset and the unit by variable.\n- You want to try blur-in-up by character, slide-up by word or similar without choosing a different block.\n\nAvoid when:\n- You need a particular signature entrance: use a dedicated block such as per-character-rise or soft-blur-in.\n\nVariables:\n- text (string): Text, default \"Blur in by character\"\n- font_size (number, 12-220): Font size, default 64\n- color (color): Colour, default \"#0a0a0a\"\n- font_weight (enum): Font weight, default \"600\"\n- animation (enum): Animation, default \"blurInUp\"\n- by (enum): By, default \"character\"\n- duration (number, 0.1-4): Stagger span, default 1\n- delay (number, 0-3): Delay, default 0.3\n- distance (number, 0-120): Distance, default 30\n\nSource: https://github.com/magicuidesign/magicui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Text Animate\n\n  One text block with ten entrance presets (fade, blur, slide, scale) that play by whole text, word, character or line, staggered.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/magicuidesign/magicui/blob/166367b4e31a27f166fd6c2b71d7be290fe0c1bc/apps/www/registry/magicui/text-animate.tsx\n\n  MIT License\n\n  Copyright (c) Magic UI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"text-animate\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"The text. Use | for line breaks (needed for By line).\", \"default\": \"Blur in by character\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 64, \"min\": 12, \"max\": 220, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Colour\", \"description\": \"Text colour.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}, {\"value\": \"800\", \"label\": \"Extra bold\"}]},\n    {\"id\": \"animation\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Animation\", \"description\": \"Entrance preset.\", \"default\": \"blurInUp\", \"options\": [{\"value\": \"fadeIn\", \"label\": \"Fade in\"}, {\"value\": \"blurIn\", \"label\": \"Blur in\"}, {\"value\": \"blurInUp\", \"label\": \"Blur in up\"}, {\"value\": \"blurInDown\", \"label\": \"Blur in down\"}, {\"value\": \"slideUp\", \"label\": \"Slide up\"}, {\"value\": \"slideDown\", \"label\": \"Slide down\"}, {\"value\": \"slideLeft\", \"label\": \"Slide left\"}, {\"value\": \"slideRight\", \"label\": \"Slide right\"}, {\"value\": \"scaleUp\", \"label\": \"Scale up\"}, {\"value\": \"scaleDown\", \"label\": \"Scale down\"}]},\n    {\"id\": \"by\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"By\", \"description\": \"What is staggered: the whole text, each word, each character or each line.\", \"default\": \"character\", \"options\": [{\"value\": \"text\", \"label\": \"Whole text\"}, {\"value\": \"word\", \"label\": \"Word\"}, {\"value\": \"character\", \"label\": \"Character\"}, {\"value\": \"line\", \"label\": \"Line\"}]},\n    {\"id\": \"duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger span\", \"description\": \"Seconds across which all segments start (each segment then takes 0.3 s). The source default is 0.3.\", \"default\": 1, \"min\": 0.1, \"max\": 4, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Delay\", \"description\": \"Seconds before the first segment starts.\", \"default\": 0.3, \"min\": 0, \"max\": 3, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"distance\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Distance\", \"description\": \"Slide and rise distance in pixels (the source uses 20 for small text).\", \"default\": 30, \"min\": 0, \"max\": 120, \"step\": 1, \"unit\": \"px\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Text Animate</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .txa-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .txa-line { font-family: var(--font-display, Geist, system-ui, sans-serif); letter-spacing: -0.03em; line-height: 1.2; text-align: center; white-space: pre-wrap; max-width: 92%; }\n        .txa-seg { display: inline-block; white-space: pre; opacity: 0; }\n        .txa-seg.txa-block { display: block; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"text-animate\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"txa-clip\" class=\"txa-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <p id=\"txa-line\" class=\"txa-line\"></p>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Shrink an element's font until it fits a share of the frame width.\n            function fit(el, size, share) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * share);\n              if (el.scrollWidth > max) {\n                size = Math.max(12, size * (max / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            // A seeded random generator, so every seek draws the same thing.\n            function mulberry32(a) {\n              return function () {\n                a |= 0; a = (a + 0x6d2b79f5) | 0;\n                var t = Math.imul(a ^ (a >>> 15), 1 | a);\n                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n            gsap.registerPlugin(CustomEase);\n            var TAG = \"txa\";\n            var bezN = 0;\n            function bez(x1, y1, x2, y2) {\n              return CustomEase.create(TAG + \"-\" + bezN++, \"M0,0 C\" + x1 + \",\" + y1 + \" \" + x2 + \",\" + y2 + \" 1,1\");\n            }\n            var tl = gsap.timeline({ paused: true });\n            function finish() {\n              var total = parseFloat(root.dataset.duration || \"4\");\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"text-animate\"] = tl;\n            }\n\n            var line = document.getElementById(\"txa-line\");\n            var raw = str(vars.text, \"Blur in by character\").split(\"|\").join(\"\\n\");\n            var anim = pick(vars.animation, [\"fadeIn\", \"blurIn\", \"blurInUp\", \"blurInDown\", \"slideUp\", \"slideDown\", \"slideLeft\", \"slideRight\", \"scaleUp\", \"scaleDown\"], \"blurInUp\");\n            var by = pick(vars.by, [\"text\", \"word\", \"character\", \"line\"], \"character\");\n            var span = num(vars.duration, 1, 0.1, 4);\n            var delay = num(vars.delay, 0.3, 0, 3);\n            var d = num(vars.distance, 30, 0, 120);\n            line.style.color = col(vars.color, \"#0a0a0a\");\n            line.style.fontWeight = pick(vars.font_weight, [\"400\", \"500\", \"600\", \"700\", \"800\"], \"600\");\n            line.setAttribute(\"aria-label\", raw);\n            var segs = by === \"word\" ? raw.split(/(\\s+)/) : by === \"character\" ? raw.split(\"\") : by === \"line\" ? raw.split(\"\\n\") : [raw];\n            var els = segs.map(function (sg, i) {\n              var e = document.createElement(\"span\");\n              e.className = \"txa-seg\" + (by === \"line\" ? \" txa-block\" : \"\");\n              e.id = \"txa-seg-\" + i;\n              e.setAttribute(\"aria-hidden\", \"true\");\n              e.textContent = sg;\n              line.appendChild(e);\n              return e;\n            });\n            var base = num(vars.font_size, 64, 12, 220);\n            line.style.fontSize = base + \"px\";\n            var maxW = root.clientWidth * 0.9;\n            if (line.scrollWidth > maxW) line.style.fontSize = Math.max(12, base * maxW / line.scrollWidth) + \"px\";\n            // Presets (hidden state -> shown): same as the source variants.\n            var P = {\n              fadeIn: { y: d },\n              blurIn: { blur: 10 },\n              blurInUp: { blur: 10, y: d },\n              blurInDown: { blur: 10, y: -d },\n              slideUp: { y: d },\n              slideDown: { y: -d },\n              slideLeft: { x: d },\n              slideRight: { x: -d },\n              scaleUp: { scale: 0.5, spring: true },\n              scaleDown: { scale: 1.5, spring: true }\n            }[anim];\n            var out = bez(0, 0, 0.58, 1); // motion's default easeOut\n            // Spring (damping 15, stiffness 300) sampled for the scale presets.\n            var samples = [0], x = 0, v = 0, dt = 1 / 480;\n            for (var si = 0; si < 480 * 3; si++) {\n              v += (-300 * (x - 1) - 15 * v) * dt; x += v * dt; samples.push(x);\n              if (Math.abs(x - 1) < 0.002 && Math.abs(v) < 0.02) break;\n            }\n            var springDur = (samples.length - 1) * dt;\n            function springAt(t) { if (t <= 0) return 0; if (t >= springDur) return 1; var p = t / dt, i0 = Math.floor(p); return samples[i0] + (samples[i0 + 1] - samples[i0]) * (p - i0); }\n            var step = span / segs.length;\n            var ITEM = 0.3;\n            els.forEach(function (e, i) {\n              var at = delay + i * step;\n              var from = { opacity: 0 };\n              var to = { opacity: 1, duration: ITEM, ease: out, immediateRender: true };\n              if (P.y !== undefined) { from.y = P.y; to.y = 0; }\n              if (P.x !== undefined) { from.x = P.x; to.x = 0; }\n              if (P.blur) {\n                var f = { b: P.blur };\n                e.style.filter = \"blur(\" + P.blur + \"px)\";\n                tl.to(f, { b: 0, duration: ITEM, ease: out, onUpdate: function () { e.style.filter = f.b > 0.01 ? \"blur(\" + f.b.toFixed(2) + \"px)\" : \"none\"; } }, at);\n              }\n              tl.fromTo(e, from, to, at);\n              if (P.scale) {\n                var sc = { p: 0 };\n                e.style.transform = \"scale(\" + P.scale + \")\";\n                tl.to(sc, { p: springDur, duration: springDur, ease: \"none\", onUpdate: function () { e.style.transform = \"scale(\" + (P.scale + (1 - P.scale) * springAt(sc.p)).toFixed(4) + \")\"; } }, at);\n              }\n            });\n\n            finish();\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "25d82346e7c13a14be6559f06fc90af16143c1db9372aee26f6cf5357dda5a1d",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 110
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Blur in by character"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 64,
+   "min": 12,
+   "max": 220
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "animation",
+   "type": "enum",
+   "role": "motion",
+   "label": "Animation",
+   "default": "blurInUp"
+  },
+  {
+   "id": "by",
+   "type": "enum",
+   "role": "motion",
+   "label": "By",
+   "default": "character"
+  },
+  {
+   "id": "duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger span",
+   "default": 1,
+   "min": 0.1,
+   "max": 4
+  },
+  {
+   "id": "delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Delay",
+   "default": 0.3,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "distance",
+   "type": "number",
+   "role": "motion",
+   "label": "Distance",
+   "default": 30,
+   "min": 0,
+   "max": 120
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://magicui.design"
+}

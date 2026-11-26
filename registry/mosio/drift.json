@@ -1,0 +1,59 @@
+{
+ "name": "drift",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/drift/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Drift\n\nA slow constant camera push-in, so no scene is ever frozen. Plays on a built-in placeholder scene.\n\nCategory: layout. Length: 3 s. WebGL: no.\n\nUse when:\n- Any static scene should feel alive: hero cards, feature panels, dashboards sitting between transitions.\n- You want an anti-static wrapper: a constant, barely noticeable creep.\n\nAvoid when:\n- The content already has strong motion: drift on top doubles the movement and muddies the read.\n- You need a dramatic zoom: this is a creep, not a statement; use a real scale animation or zoom-blur.\n\nVariables:\n- grow (number, -0.1-0.15): Grow, default 0.035\n- scene (boolean): Placeholder scene, default true\n- duration (number, 1-10): Duration, default 3\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Drift\n\n  A slow constant camera push-in, so no scene is ever frozen. Plays on a built-in placeholder scene.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/drift/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"drift\"\n  data-composition-duration=\"3\"\n  data-composition-variables='[{\"id\":\"grow\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Grow\",\"description\":\"Final scale is 1 + grow. Negative values pull back instead. 0.03 to 0.05 reads as ambient motion.\",\"default\":0.035,\"min\":-0.1,\"max\":0.15,\"step\":0.005},{\"id\":\"scene\",\"type\":\"boolean\",\"role\":\"content\",\"label\":\"Placeholder scene\",\"description\":\"Show the built-in placeholder scene. Turn off to leave the frame empty.\",\"default\":true},{\"id\":\"duration\",\"type\":\"number\",\"role\":\"motion\",\"label\":\"Duration\",\"description\":\"Seconds the push-in takes (the block length).\",\"default\":3,\"min\":1,\"max\":10,\"step\":0.5,\"unit\":\"s\"}]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Drift</title>\n  </head>\n  <body>\n    <template>\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n\n        #root { background: #141318; font-family: Geist, system-ui, sans-serif; color: #f4f3f7; }\n        .dr-stage { position: absolute; inset: 0; }\n        #dr-world { position: absolute; inset: 0; transform-origin: 50% 50%; display: flex; align-items: center; justify-content: center; }\n        .dr-card { width: min(78cqw, 150cqh); padding: min(5cqw, 9cqh); border-radius: 24px; background: linear-gradient(160deg, #26242f, #1b1a22); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 30px 80px rgba(0,0,0,0.5); }\n        .dr-eyebrow { font-size: min(2.6cqw, 4.6cqh); letter-spacing: 0.18em; text-transform: uppercase; color: #8b86a3; font-weight: 500; }\n        .dr-title { font-size: min(7cqw, 12.5cqh); font-weight: 600; letter-spacing: -0.04em; line-height: 1.02; margin-top: 0.4em; }\n        .dr-row { display: flex; gap: 3%; margin-top: min(4cqw, 7cqh); }\n        .dr-pill { flex: 1; height: min(9cqw, 16cqh); border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); }\n        .dr-pill:first-child { background: linear-gradient(135deg, #6366f1, #a855f7); border: 0; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"drift\" data-duration=\"3\" data-fps=\"30\">\n        <div id=\"dr-clip\" class=\"dr-stage clip\" data-start=\"0\" data-duration=\"3\" data-track-index=\"0\">\n<div id=\"dr-world\"><div id=\"dr-card\" class=\"dr-card\"><div class=\"dr-eyebrow\">Static scene</div><div class=\"dr-title\">Never quite still</div><div class=\"dr-row\"><div class=\"dr-pill\"></div><div class=\"dr-pill\"></div><div class=\"dr-pill\"></div></div></div></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              return typeof value === \"boolean\" ? value : value === \"true\" ? true : value === \"false\" ? false : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n\n\n            var grow = num(vars.grow, 0.035, -0.1, 0.15);\n            var dur = num(vars.duration, 3, 1, 10);\n            var world = document.getElementById(\"dr-world\");\n            if (!bool(vars.scene, true)) world.style.display = \"none\";\n            var tl = gsap.timeline({ paused: true });\n            // the source framework: scale = interpolate(frame, [0, durationInFrames], [1, 1 + grow]), linear.\n            tl.fromTo(world, { scale: 1 }, { scale: 1 + grow, duration: dur, ease: \"none\", immediateRender: true }, 0);\n\n            var total = parseFloat(root.dataset.duration || \"3\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"drift\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "936af74e65d65e978c37cd2c23b8519a608c85b09a3c17ad6bb35fc8a2c5cb9c",
+ "duration": 3,
+ "webgl": false,
+ "demo_background": "#141318",
+ "demo_values": {
+  "grow": 0.05
+ },
+ "variables": [
+  {
+   "id": "grow",
+   "type": "number",
+   "role": "motion",
+   "label": "Grow",
+   "default": 0.035,
+   "min": -0.1,
+   "max": 0.15
+  },
+  {
+   "id": "scene",
+   "type": "boolean",
+   "role": "content",
+   "label": "Placeholder scene",
+   "default": true
+  },
+  {
+   "id": "duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Duration",
+   "default": 3,
+   "min": 1,
+   "max": 10
+  }
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

@@ -1,0 +1,135 @@
+{
+ "name": "chat-review-typed",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "original": true
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Chat Review Typed\n\nA headline with the shop name on its own line, a customer's avatar and name, an incoming bubble with typing dots that then writes the review letter by letter, a dark reply bubble sliding in from the right, five stars with a score line, and a call-to-action pill. White page, hairline bubbles.\n\nCategory: commerce. Length: 10 s. WebGL: no.\n\nUse when:\n- A customer review, a viewer comment or a student message should be shown as proof.\n- A short message (up to about 110 characters) that is worth reading as it is typed.\n\nAvoid when:\n- A long text or several reviews: use one block per review, or a testimonial card layout.\n- You need the look of a specific messaging app: this is a generic bubble chat.\n\nVariables:\n- headline_lead (string): Headline lead, default \"Kata mereka tentang\"\n- subject (string): Subject, default \"Kue Rumahan Bunda\"\n- customer_name (string): Customer name, default \"Bu Sari\"\n- customer_note (string): Customer note, default \"pelanggan sejak 2023\"\n- review (string): Review, default \"Kue lapisnya lembut banget, anak-anak sampai rebutan. Minggu depan pesan lagi ya!\"\n- reply (string): Reply, default \"Terima kasih, Bu Sari! Ditunggu pesanannya\"\n- score_text (string): Score line, default \"4,9 dari 1.200+ ulasan\"\n- cta (string): Call to action, default \"Pesan: 0812-3456-7890\"\n- bg_color (color): Background, default \"#ffffff\"\n- surface_color (color): Bubble colour, default \"#fafafa\"\n- main_color (color): Main colour, default \"#2563eb\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- star_color (color): Star colour, default \"#f59e0b\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Chat Review Typed\n\n  A customer review typed letter by letter in a chat bubble, a reply, then star rating and a call to action.\n\n  Extracted from the Mosio recipe chat-testimoni by usemosio/blocks.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"chat-review-typed\"\n  data-composition-duration=\"10\"\n  data-composition-variables='[\n  {\n    \"id\": \"headline_lead\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Headline lead\",\n    \"description\": \"Plain words before the subject name.\",\n    \"default\": \"Kata mereka tentang\"\n  },\n  {\n    \"id\": \"subject\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Subject\",\n    \"description\": \"Shop or product name, on its own line under the lead.\",\n    \"default\": \"Kue Rumahan Bunda\"\n  },\n  {\n    \"id\": \"customer_name\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Customer name\",\n    \"description\": \"Name above the review. Its first letter fills the avatar.\",\n    \"default\": \"Bu Sari\"\n  },\n  {\n    \"id\": \"customer_note\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Customer note\",\n    \"description\": \"Small line under the name.\",\n    \"default\": \"pelanggan sejak 2023\"\n  },\n  {\n    \"id\": \"review\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Review\",\n    \"description\": \"The message typed letter by letter. About 60 to 110 characters reads best.\",\n    \"default\": \"Kue lapisnya lembut banget, anak-anak sampai rebutan. Minggu depan pesan lagi ya!\"\n  },\n  {\n    \"id\": \"reply\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Reply\",\n    \"description\": \"The shop's reply bubble. Leave empty to skip it.\",\n    \"default\": \"Terima kasih, Bu Sari! Ditunggu pesanannya\"\n  },\n  {\n    \"id\": \"score_text\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Score line\",\n    \"description\": \"Line under the stars. Leave empty to hide the stars and the line.\",\n    \"default\": \"4,9 dari 1.200+ ulasan\"\n  },\n  {\n    \"id\": \"cta\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Call to action\",\n    \"description\": \"Pill at the end.\",\n    \"default\": \"Pesan: 0812-3456-7890\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"surface_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Bubble colour\",\n    \"description\": \"Incoming bubble and avatar.\",\n    \"default\": \"#fafafa\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Main colour\",\n    \"description\": \"Call to action: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Headline, subject, reply bubble.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Headline lead and customer note.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"star_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Star colour\",\n    \"description\": \"Rating stars.\",\n    \"default\": \"#f59e0b\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Chat Review Typed</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n        }\n        #root * { box-sizing: border-box; }\n        .ct-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        #root { color: var(--ct-text); font-family: Geist, system-ui, sans-serif; font-variant-numeric: tabular-nums;\n          background: var(--ct-bg); }\n        .ct-grid { position: absolute; inset: 0; padding: 0 calc(var(--u) * 90); display: grid; align-content: center; justify-items: stretch; gap: calc(var(--u) * 50);\n          grid-template-columns: minmax(0, 1fr); grid-template-areas: \"head\" \"chat\" \"rating\" \"cta\"; }\n        .ct-head { grid-area: head; font-size: calc(var(--u) * 76); font-weight: 500; color: var(--ct-muted); letter-spacing: -0.04em; line-height: 1.12; }\n        .ct-head em { display: block; font-style: normal; font-weight: 600; font-size: 1.28em; letter-spacing: -0.05em; color: var(--ct-text); line-height: 1.05; }\n        .ct-chat { grid-area: chat; }\n        .ct-who { display: flex; align-items: center; gap: calc(var(--u) * 24); margin-bottom: calc(var(--u) * 30); }\n        .ct-ava { width: calc(var(--u) * 110); height: calc(var(--u) * 110); flex-shrink: 0; border-radius: 50%; background: var(--ct-surface); border: 1px solid color-mix(in oklab, var(--ct-text) 12%, transparent); color: var(--ct-text); font-weight: 600; font-size: calc(var(--u) * 50); display: flex; align-items: center; justify-content: center; }\n        .ct-who b { display: block; font-weight: 600; letter-spacing: -0.02em; font-size: calc(var(--u) * 48); line-height: 1.2; }\n        .ct-who span { font-size: calc(var(--u) * 34); color: var(--ct-muted); }\n        .ct-bub { position: relative; max-width: calc(var(--u) * 860); padding: calc(var(--u) * 34) calc(var(--u) * 44); border-radius: calc(var(--u) * 48); font-size: calc(var(--u) * 46); line-height: 1.35; background: var(--ct-surface); border: 1px solid color-mix(in oklab, var(--ct-text) 12%, transparent); margin-bottom: calc(var(--u) * 30); }\n        .ct-in { border-top-left-radius: calc(var(--u) * 12); }\n        .ct-out { margin-left: auto; border-top-right-radius: calc(var(--u) * 12); background: var(--ct-text); border-color: var(--ct-text); color: var(--ct-bg); }\n        .ct-typing { position: absolute; left: 0; top: 0; display: flex; gap: calc(var(--u) * 14); padding: calc(var(--u) * 40) calc(var(--u) * 44); }\n        .ct-typing i { width: calc(var(--u) * 22); height: calc(var(--u) * 22); border-radius: 50%; background: color-mix(in oklab, var(--ct-text) 45%, transparent); }\n        .ct-nw { white-space: nowrap; }\n        .ct-rating { grid-area: rating; text-align: center; }\n        .ct-stars { display: flex; justify-content: center; gap: calc(var(--u) * 18); }\n        .ct-stars svg { width: calc(var(--u) * 104); height: calc(var(--u) * 104); }\n        .ct-stars path { fill: var(--ct-star); }\n        .ct-score { margin-top: calc(var(--u) * 20); font-size: calc(var(--u) * 44); font-weight: 500; color: var(--ct-muted); }\n        .ct-ctaw { grid-area: cta; display: flex; justify-content: center; }\n        .ct-cta { display: inline-block; max-width: 100%; padding: calc(var(--u) * 34) calc(var(--u) * 64); border-radius: calc(var(--u) * 90); background: var(--ct-main); color: var(--ct-ink); font-size: calc(var(--u) * 42); font-weight: 600; letter-spacing: -0.01em; text-align: center; }\n        @container (aspect-ratio > 1) {\n          .ct-grid { padding: 0 calc(var(--u) * 120); column-gap: calc(var(--u) * 100); row-gap: calc(var(--u) * 40); grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);\n            grid-template-rows: auto auto auto; grid-template-areas: \"head chat\" \"rating chat\" \"cta chat\"; align-content: center; align-items: center; }\n          .ct-head { font-size: calc(var(--u) * 72); }\n          .ct-rating { text-align: left; } .ct-stars { justify-content: flex-start; }\n          .ct-ctaw { justify-content: flex-start; }\n          .ct-cta { font-size: calc(var(--u) * 34); padding: calc(var(--u) * 26) calc(var(--u) * 44); white-space: nowrap; }\n          .ct-stars svg { width: calc(var(--u) * 90); height: calc(var(--u) * 90); }\n        }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"chat-review-typed\" data-duration=\"10\" data-fps=\"30\">\n        <div id=\"ct-clip\" class=\"ct-stage clip\" data-start=\"0\" data-duration=\"10\" data-track-index=\"0\">\n          <div class=\"ct-grid\">\n            <div class=\"ct-head\" id=\"ct-head\"><span id=\"ct-lead\"></span><em id=\"ct-subject\"></em></div>\n            <div class=\"ct-chat\" id=\"ct-chat\">\n              <div class=\"ct-who\" id=\"ct-who\"><div class=\"ct-ava\" id=\"ct-ava\"></div><div><b id=\"ct-name\"></b><span id=\"ct-note\"></span></div></div>\n              <div class=\"ct-bub ct-in\" id=\"ct-b1\"><div class=\"ct-typing\" id=\"ct-typing\"><i></i><i></i><i></i></div><span id=\"ct-t1\"></span></div>\n              <div class=\"ct-bub ct-out\" id=\"ct-b2\"></div>\n            </div>\n            <div class=\"ct-rating\" id=\"ct-rating\"><div class=\"ct-stars\" id=\"ct-stars\"></div><div class=\"ct-score\" id=\"ct-score\"></div></div>\n            <div class=\"ct-ctaw\"><span class=\"ct-cta\" id=\"ct-cta\"></span></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function ink(c, thr) {\n              var m = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(String(c).trim());\n              if (!m) return \"#14161a\";\n              var h = m[1].length === 3 ? m[1].replace(/./g, \"$&$&\") : m[1];\n              var r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);\n              return 0.299 * r + 0.587 * g + 0.114 * b > (thr || 150) ? \"#14161a\" : \"#ffffff\";\n            }\n            function setColors(p, list) {\n              list.forEach(function (c) { root.style.setProperty(\"--\" + p + \"-\" + c[0], colr(vars[c[1]], c[2])); });\n            }\n            // Shrink a one-line element's wrapper (flex, centred) when its content is wider than the wrapper.\n            var fitList = [];\n            function fit(wrap) { fitList.push(wrap); refit(); }\n            function refit() {\n              fitList.forEach(function (w) {\n                w.style.transform = \"\";\n                var c = w.firstElementChild, cw = c ? c.offsetWidth : 0, aw = w.clientWidth;\n                if (cw > aw && aw > 0) w.style.transform = \"scale(\" + (aw / cw).toFixed(4) + \")\";\n              });\n            }\n            if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080;\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n\n            setColors(\"ct\", [[\"bg\", \"bg_color\", \"#ffffff\"], [\"surface\", \"surface_color\", \"#fafafa\"], [\"main\", \"main_color\", \"#2563eb\"],\n              [\"text\", \"text_color\", \"#0a0a0a\"], [\"muted\", \"muted_color\", \"#737373\"], [\"star\", \"star_color\", \"#f59e0b\"]]);\n            root.style.setProperty(\"--ct-ink\", ink(colr(vars.main_color, \"#2563eb\")));\n            var lead = typeof vars.headline_lead === \"string\" ? vars.headline_lead : \"Kata mereka tentang\";\n            var subject = str(vars.subject, \"Kue Rumahan Bunda\");\n            var name = str(vars.customer_name, \"Bu Sari\");\n            var note = typeof vars.customer_note === \"string\" ? vars.customer_note : \"pelanggan sejak 2023\";\n            var review = str(vars.review, \"Kue lapisnya lembut banget, anak-anak sampai rebutan. Minggu depan pesan lagi ya!\");\n            var reply = typeof vars.reply === \"string\" ? vars.reply.trim() : \"Terima kasih, Bu Sari! Ditunggu pesanannya\";\n            var score = typeof vars.score_text === \"string\" ? vars.score_text.trim() : \"4,9 dari 1.200+ ulasan\";\n            var cta = typeof vars.cta === \"string\" ? vars.cta.trim() : \"Pesan: 0812-3456-7890\";\n            document.getElementById(\"ct-lead\").textContent = lead;\n            document.getElementById(\"ct-subject\").textContent = subject;\n            document.getElementById(\"ct-ava\").textContent = Array.from(name)[0].toUpperCase();\n            document.getElementById(\"ct-name\").textContent = name;\n            document.getElementById(\"ct-note\").textContent = note;\n            var b2 = document.getElementById(\"ct-b2\"); b2.textContent = reply; if (!reply) b2.style.display = \"none\";\n            var ctaEl = document.getElementById(\"ct-cta\"); ctaEl.textContent = cta; if (!cta) ctaEl.style.display = \"none\";\n            var sc = document.getElementById(\"ct-score\"); sc.textContent = score;\n            var STAR = \"M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z\";\n            var stars = document.getElementById(\"ct-stars\");\n            for (var s = 0; s < 5; s++) stars.insertAdjacentHTML(\"beforeend\", '<svg viewBox=\"0 0 24 24\"><path d=\"' + STAR + '\"/></svg>');\n            if (!score) document.getElementById(\"ct-rating\").style.display = \"none\";\n\n            // The review is typed letter by letter: every letter is a span, words stay whole at line breaks.\n            var t1 = document.getElementById(\"ct-t1\");\n            t1.innerHTML = review.split(\" \").map(function (w) {\n              return '<span class=\"ct-nw\">' + Array.from(w).map(function (c) { return '<span class=\"ct-ch\">' + esc(c) + \"</span>\"; }).join(\"\") + \"</span>\";\n            }).join(\" \");\n            var chars = t1.querySelectorAll(\".ct-ch\");\n            var per = Math.min(0.035, 3.2 / Math.max(1, chars.length));\n\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(\"#ct-head\", { y: 60 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: \"power3.out\" }, 0.2);\n            tl.fromTo(\"#ct-who\", { x: -60 * U, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: \"power3.out\" }, 0.8);\n            tl.fromTo(\"#ct-b1\", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: \"power3.out\", transformOrigin: \"0% 0%\" }, 1.1);\n            tl.to(\"#ct-typing i\", { y: -14 * U, duration: 0.2, yoyo: true, repeat: 5, ease: \"sine.inOut\", stagger: 0.1 }, 1.3);\n            tl.to(\"#ct-typing\", { opacity: 0, duration: 0.15 }, 2.5);\n            var T0 = 2.55;\n            chars.forEach(function (c, i) {\n              tl.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: \"none\", immediateRender: true }, T0 + i * per);\n            });\n            var T1 = T0 + chars.length * per;\n            if (reply) tl.fromTo(\"#ct-b2\", { x: 120 * U, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: \"power3.out\", immediateRender: true }, T1 + 0.5);\n            var TS = T1 + (reply ? 1.5 : 0.7);\n            if (score) {\n              tl.fromTo(\"#ct-stars svg\", { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: \"power3.out\", stagger: 0.14 }, TS);\n              tl.fromTo(\"#ct-score\", { y: 30 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: \"power3.out\" }, TS + 0.9);\n              tl.to(\"#ct-stars svg\", { y: -16 * U, duration: 0.3, yoyo: true, repeat: 1, ease: \"power2.out\", stagger: 0.08 }, TS + 2.2);\n            }\n            var TC = TS + (score ? 1.4 : 0);\n            if (cta) {\n              tl.fromTo(\"#ct-cta\", { y: 200 * U, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: \"expo.out\" }, TC);\n              tl.to(\"#ct-cta\", { scale: 1.04, duration: 0.5, yoyo: true, repeat: 3, ease: \"sine.inOut\" }, TC + 0.9);\n            }\n\n            var total = parseFloat(root.dataset.duration || \"10\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"chat-review-typed\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "748e4db2a7a01fb4ace9bc03e315055fe365a3d3b5992bd0d4e7bfef4c851f19",
+ "duration": 10,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "headline_lead",
+   "type": "string",
+   "role": "content",
+   "label": "Headline lead",
+   "default": "Kata mereka tentang"
+  },
+  {
+   "id": "subject",
+   "type": "string",
+   "role": "content",
+   "label": "Subject",
+   "default": "Kue Rumahan Bunda"
+  },
+  {
+   "id": "customer_name",
+   "type": "string",
+   "role": "content",
+   "label": "Customer name",
+   "default": "Bu Sari"
+  },
+  {
+   "id": "customer_note",
+   "type": "string",
+   "role": "content",
+   "label": "Customer note",
+   "default": "pelanggan sejak 2023"
+  },
+  {
+   "id": "review",
+   "type": "string",
+   "role": "content",
+   "label": "Review",
+   "default": "Kue lapisnya lembut banget, anak-anak sampai rebutan. Minggu depan pesan lagi ya!"
+  },
+  {
+   "id": "reply",
+   "type": "string",
+   "role": "content",
+   "label": "Reply",
+   "default": "Terima kasih, Bu Sari! Ditunggu pesanannya"
+  },
+  {
+   "id": "score_text",
+   "type": "string",
+   "role": "content",
+   "label": "Score line",
+   "default": "4,9 dari 1.200+ ulasan"
+  },
+  {
+   "id": "cta",
+   "type": "string",
+   "role": "content",
+   "label": "Call to action",
+   "default": "Pesan: 0812-3456-7890"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "surface_color",
+   "type": "color",
+   "role": "style",
+   "label": "Bubble colour",
+   "default": "#fafafa"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Main colour",
+   "default": "#2563eb"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "star_color",
+   "type": "color",
+   "role": "style",
+   "label": "Star colour",
+   "default": "#f59e0b"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

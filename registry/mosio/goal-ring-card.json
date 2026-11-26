@@ -1,0 +1,143 @@
+{
+ "name": "goal-ring-card",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Animata",
+ "source": {
+  "repo": "https://github.com/codse/animata",
+  "path": "animata/widget/calorie-counter.tsx",
+  "commit": "25c27e5a874c60a56dcc1609df3b2c4f5f8456f8"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Goal Ring Card\n\nA day-summary card: a ring fills to the share of a daily goal while the figure inside counts up, above a bar that restates the goal.\n\nCategory: data. Length: 4 s. WebGL: no.\n\nUse when:\n- A single daily figure against a goal (steps, calories, sales, minutes) should fill a ring.\n- A fitness or habit style summary card in a vertical video.\n\nAvoid when:\n- Several metrics at once: use a chart or dashboard block.\n- A ring alone with no card: use conic-progress-ring.\n\nVariables:\n- weekday (string): Weekday, default \"Monday\"\n- date_label (string): Date, default \"25 October\"\n- initials (string): Initials, default \"AB\"\n- today_label (string): Ring label, default \"Today\"\n- goal_label (string): Goal label, default \"Your goal\"\n- unit (string): Unit, default \"Cal\"\n- goal (number, 1-1000000): Goal, default 4000\n- fulfilled (number, 0-1000000): Done so far, default 2600\n- ring_duration (number, 0.3-4): Fill time, default 1.4\n- scale (number, 0.5-5): Card scale, default 2.4\n- accent (color): Ring color, default \"#4ade80\"\n- goal_color (color): Goal color, default \"#fdba74\"\n- card_background (color): Card color, default \"#f3f4f6\"\n- color (color): Text color, default \"#111827\"\n\nSource: https://github.com/codse/animata. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Goal Ring Card\n\n  A day-summary card: a ring fills to the share of a daily goal while the figure inside counts up, above a bar that restates the goal.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/codse/animata/blob/25c27e5a874c60a56dcc1609df3b2c4f5f8456f8/animata/widget/calorie-counter.tsx\n  and animata/graphs/donut-chart.tsx (the ring)\n  MIT License\n\n  Copyright (c) Animata\n\n  Permission is hereby granted, free of charge, to any person obtaining\n  a copy of this software and associated documentation files (the\n  \"Software\"), to deal in the Software without restriction, including\n  without limitation the rights to use, copy, modify, merge, publish,\n  distribute, sublicense, and/or sell copies of the Software, and to\n  permit persons to whom the Software is furnished to do so, subject to\n  the following conditions:\n\n  The above copyright notice and this permission notice shall be\n  included in all copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"goal-ring-card\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"weekday\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Weekday\", \"description\": \"Small grey line at the top left.\", \"default\": \"Monday\"},\n    {\"id\": \"date_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Date\", \"description\": \"Date line under the weekday.\", \"default\": \"25 October\"},\n    {\"id\": \"initials\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Initials\", \"description\": \"Letters in the round badge at the top right.\", \"default\": \"AB\"},\n    {\"id\": \"today_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Ring label\", \"description\": \"Small label above the figure inside the ring.\", \"default\": \"Today\"},\n    {\"id\": \"goal_label\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Goal label\", \"description\": \"Label on the bar at the bottom.\", \"default\": \"Your goal\"},\n    {\"id\": \"unit\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Unit\", \"description\": \"Unit written after the figures.\", \"default\": \"Cal\"},\n    {\"id\": \"goal\", \"type\": \"number\", \"role\": \"content\", \"label\": \"Goal\", \"description\": \"Daily goal.\", \"default\": 4000, \"min\": 1, \"max\": 1000000, \"step\": 1},\n    {\"id\": \"fulfilled\", \"type\": \"number\", \"role\": \"content\", \"label\": \"Done so far\", \"description\": \"Amount reached today.\", \"default\": 2600, \"min\": 0, \"max\": 1000000, \"step\": 1},\n    {\"id\": \"ring_duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Fill time\", \"description\": \"Seconds the ring takes to fill.\", \"default\": 1.4, \"min\": 0.3, \"max\": 4, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"scale\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Card scale\", \"description\": \"Scale of the card (1 is 288 × 384 px); it never grows past the frame.\", \"default\": 2.4, \"min\": 0.5, \"max\": 5, \"step\": 0.1},\n    {\"id\": \"accent\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Ring color\", \"description\": \"Colour of the filled ring.\", \"default\": \"#4ade80\"},\n    {\"id\": \"goal_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Goal color\", \"description\": \"Colour of the goal figure.\", \"default\": \"#fdba74\"},\n    {\"id\": \"card_background\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Card color\", \"description\": \"Card fill.\", \"default\": \"#f3f4f6\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Main text colour.\", \"default\": \"#111827\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Goal Ring Card</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;900&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          font-family: var(--font-display, Geist, system-ui, sans-serif);\n          pointer-events: none;\n        }\n        .grc-stage {\n          position: absolute;\n          inset: 0;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n        }\n        .grc-card { position: relative; width: 288px; height: 384px; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 12px 20px; border-radius: 24px; border: 2px solid #e5e7eb; background: #f3f4f6; color: #111827; transform-origin: 50% 50%; }\n        .grc-head { display: flex; width: 100%; align-items: center; justify-content: space-between; padding-top: 8px; }\n        .grc-day { color: #9ca3af; font-size: 16px; line-height: 24px; }\n        .grc-date { font-size: 20px; line-height: 28px; }\n        .grc-badge { width: 40px; height: 40px; border-radius: 50%; background: #d1d5db; color: #4b5563; display: grid; place-items: center; font-size: 14px; font-weight: 600; }\n        .grc-ring { position: relative; width: 180px; height: 180px; margin: 8px; display: grid; place-items: center; flex-shrink: 0; }\n        .grc-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }\n        .grc-mid { position: relative; text-align: center; }\n        .grc-sub { color: #9ca3af; font-size: 16px; line-height: 24px; }\n        .grc-fig { font-size: 20px; line-height: 28px; }\n        .grc-bar { margin-top: auto; display: flex; width: 100%; height: 56px; align-items: center; justify-content: space-between; border-radius: 12px; background: rgba(156,163,175,0.12); padding: 0 16px; font-size: 16px; }\n        .grc-goal { font-weight: 700; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"goal-ring-card\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"grc-clip\" class=\"grc-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <div id=\"grc-card\" class=\"grc-card\">\n            <div class=\"grc-head\"><div><div id=\"grc-day\" class=\"grc-day\"></div><div id=\"grc-date\" class=\"grc-date\"></div></div><div id=\"grc-badge\" class=\"grc-badge\"></div></div>\n            <div class=\"grc-ring\">\n              <svg width=\"180\" height=\"180\" viewBox=\"0 0 180 180\"><circle id=\"grc-track\" cx=\"90\" cy=\"90\" r=\"81\" fill=\"none\" stroke-width=\"18\" stroke=\"rgba(0,0,0,0.1)\"/><circle id=\"grc-arc\" cx=\"90\" cy=\"90\" r=\"81\" fill=\"none\" stroke-width=\"18\" stroke-linecap=\"round\"/></svg>\n              <div class=\"grc-mid\"><div id=\"grc-sub\" class=\"grc-sub\"></div><div id=\"grc-fig\" class=\"grc-fig\"></div></div>\n            </div>\n            <div class=\"grc-bar\"><span id=\"grc-label\"></span><span id=\"grc-goal\" class=\"grc-goal\"></span></div>\n          </div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, mn, mx) { var n = Number(v); return Number.isFinite(n) ? Math.min(mx, Math.max(mn, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function col(v, f) { return typeof v === \"string\" && v ? v : f; }\n            function opt(v, list, f) { return list.indexOf(String(v)) >= 0 ? String(v) : f; }\n            function bool(v, f) { return typeof v === \"boolean\" ? v : v === \"true\" ? true : v === \"false\" ? false : f; }\n            function fit(el, size, frac) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * frac);\n              if (el.scrollWidth > max) { size = Math.max(12, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            \n            var card = document.getElementById(\"grc-card\"), arc = document.getElementById(\"grc-arc\"), fig = document.getElementById(\"grc-fig\");\n            var unit = str(vars.unit, \"Cal\");\n            var goal = num(vars.goal, 4000, 1, 1000000), done = num(vars.fulfilled, 2600, 0, 1000000);\n            document.getElementById(\"grc-day\").textContent = str(vars.weekday, \"Monday\");\n            document.getElementById(\"grc-date\").textContent = str(vars.date_label, \"25 October\");\n            document.getElementById(\"grc-badge\").textContent = str(vars.initials, \"AB\");\n            document.getElementById(\"grc-sub\").textContent = str(vars.today_label, \"Today\");\n            document.getElementById(\"grc-label\").textContent = str(vars.goal_label, \"Your goal\");\n            document.getElementById(\"grc-goal\").textContent = Math.round(goal) + unit;\n            document.getElementById(\"grc-goal\").style.color = col(vars.goal_color, \"#fdba74\");\n            card.style.background = col(vars.card_background, \"#f3f4f6\");\n            card.style.color = col(vars.color, \"#111827\");\n            card.style.transform = \"scale(\" + Math.min(num(vars.scale, 2.4, 0.5, 5), root.clientHeight * 0.92 / 384, root.clientWidth * 0.92 / 288) + \")\";\n            arc.setAttribute(\"stroke\", col(vars.accent, \"#4ade80\"));\n            var C = 2 * Math.PI * 81, share = Math.min(1, done / goal);\n            arc.setAttribute(\"stroke-dasharray\", C.toFixed(2));\n            var dur = num(vars.ring_duration, 1.4, 0.3, 4);\n            gsap.registerPlugin(CustomEase);\n            var ease = CustomEase.create(\"grc-ease\", \"M0,0 C0.25,0.1 0.25,1 1,1\");\n            var st = { p: 0 };\n            function draw() {\n              arc.setAttribute(\"stroke-dashoffset\", (C * (1 - share * st.p)).toFixed(2));\n              fig.textContent = Math.round(done * st.p) + unit;\n              arc.style.opacity = st.p > 0 ? 1 : 0;\n            }\n            var tl = gsap.timeline({ paused: true });\n            tl.fromTo(st, { p: 0 }, { p: 1, duration: dur, ease: ease, onUpdate: draw, immediateRender: false }, 0.5);\n            draw();\n            var total = parseFloat(root.dataset.duration || \"4\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"goal-ring-card\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "cc2e945e836543d5c5b8484ab78687ade434288f3a8f4195eb65b015475f08c2",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#e5e7eb",
+ "demo_values": {
+  "scale": 3
+ },
+ "variables": [
+  {
+   "id": "weekday",
+   "type": "string",
+   "role": "content",
+   "label": "Weekday",
+   "default": "Monday"
+  },
+  {
+   "id": "date_label",
+   "type": "string",
+   "role": "content",
+   "label": "Date",
+   "default": "25 October"
+  },
+  {
+   "id": "initials",
+   "type": "string",
+   "role": "content",
+   "label": "Initials",
+   "default": "AB"
+  },
+  {
+   "id": "today_label",
+   "type": "string",
+   "role": "content",
+   "label": "Ring label",
+   "default": "Today"
+  },
+  {
+   "id": "goal_label",
+   "type": "string",
+   "role": "content",
+   "label": "Goal label",
+   "default": "Your goal"
+  },
+  {
+   "id": "unit",
+   "type": "string",
+   "role": "content",
+   "label": "Unit",
+   "default": "Cal"
+  },
+  {
+   "id": "goal",
+   "type": "number",
+   "role": "content",
+   "label": "Goal",
+   "default": 4000,
+   "min": 1,
+   "max": 1000000
+  },
+  {
+   "id": "fulfilled",
+   "type": "number",
+   "role": "content",
+   "label": "Done so far",
+   "default": 2600,
+   "min": 0,
+   "max": 1000000
+  },
+  {
+   "id": "ring_duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Fill time",
+   "default": 1.4,
+   "min": 0.3,
+   "max": 4
+  },
+  {
+   "id": "scale",
+   "type": "number",
+   "role": "style",
+   "label": "Card scale",
+   "default": 2.4,
+   "min": 0.5,
+   "max": 5
+  },
+  {
+   "id": "accent",
+   "type": "color",
+   "role": "style",
+   "label": "Ring color",
+   "default": "#4ade80"
+  },
+  {
+   "id": "goal_color",
+   "type": "color",
+   "role": "style",
+   "label": "Goal color",
+   "default": "#fdba74"
+  },
+  {
+   "id": "card_background",
+   "type": "color",
+   "role": "style",
+   "label": "Card color",
+   "default": "#f3f4f6"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#111827"
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://animata.design"
+}

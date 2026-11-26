@@ -1,0 +1,150 @@
+{
+ "name": "letter-3d-swap",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Daniel Petho",
+ "source": {
+  "repo": "https://github.com/danielpetho/fancy",
+  "path": "src/fancy/components/text/letter-3d-swap.tsx",
+  "commit": "f9f62c61207b2dd3210476dd98af3c9a5be24094"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Letter 3D Swap\n\nEvery letter is a two-faced block that rolls a quarter turn in 3D, from the top, bottom, left or right, in a staggered wave that repeats.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- A headline should flip letter by letter like a split-flap or a rolling cube, with a clear stagger direction.\n- You need to choose which side the new face rolls in from (top, right, bottom, left).\n\nAvoid when:\n- The text should change into different words: use text-rotate or kinetic-type-swap.\n- A single smooth entrance is enough: use per-character-rise.\n\nVariables:\n- text (string): Text, default \"Set your mind to it\"\n- font_size (number, 24-300): Font size, default 110\n- color (color): Color, default \"#111111\"\n- font_weight (enum): Font weight, default \"600\"\n- solid_faces (boolean): Solid faces, default true\n- face_color (color): Face color, default \"#ffffff\"\n- direction (enum): Direction, default \"top\"\n- stagger (number, 0-0.3): Stagger, default 0.03\n- stagger_from (enum): Stagger from, default \"first\"\n- stiffness (number, 20-600): Stiffness, default 160\n- damping (number, 5-60): Damping, default 25\n- swaps (number, 1-6): Swaps, default 3\n- first_swap (number, 0-4): First swap, default 0.4\n- interval (number, 0.6-4): Interval, default 1.5\n\nSource: https://github.com/danielpetho/fancy. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Letter 3D Swap\n\n  Every letter is a two-faced block that rolls a quarter turn in 3D, from the top, bottom, left or right, in a staggered wave that repeats.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/danielpetho/fancy/blob/f9f62c61207b2dd3210476dd98af3c9a5be24094/src/fancy/components/text/letter-3d-swap.tsx\n\n  MIT License\n\n  Copyright (c) 2024 Daniel Petho\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"letter-3d-swap\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Words that roll.\", \"default\": \"Set your mind to it\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels.\", \"default\": 110, \"min\": 24, \"max\": 300, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#111111\"},\n    {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]},\n    {\"id\": \"solid_faces\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Solid faces\", \"description\": \"Fill each face with the face color so the outgoing letter is hidden behind the incoming one, as the source does. Turn off to see through.\", \"default\": true},\n    {\"id\": \"face_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Face color\", \"description\": \"Fill of the faces when solid. Match it to what sits behind the text.\", \"default\": \"#ffffff\"},\n    {\"id\": \"direction\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Direction\", \"description\": \"Side the new face rolls in from.\", \"default\": \"top\", \"options\": [{\"value\": \"top\", \"label\": \"Top\"}, {\"value\": \"right\", \"label\": \"Right\"}, {\"value\": \"bottom\", \"label\": \"Bottom\"}, {\"value\": \"left\", \"label\": \"Left\"}]},\n    {\"id\": \"stagger\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Seconds between neighbouring letters.\", \"default\": 0.03, \"min\": 0, \"max\": 0.3, \"step\": 0.005, \"unit\": \"s\"},\n    {\"id\": \"stagger_from\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Stagger from\", \"description\": \"Where the wave starts.\", \"default\": \"first\", \"options\": [{\"value\": \"first\", \"label\": \"First letter\"}, {\"value\": \"last\", \"label\": \"Last letter\"}, {\"value\": \"center\", \"label\": \"Center\"}, {\"value\": \"random\", \"label\": \"Random\"}]},\n    {\"id\": \"stiffness\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stiffness\", \"description\": \"Spring stiffness of the roll.\", \"default\": 160, \"min\": 20, \"max\": 600, \"step\": 5},\n    {\"id\": \"damping\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Damping\", \"description\": \"Spring damping of the roll.\", \"default\": 25, \"min\": 5, \"max\": 60, \"step\": 1},\n    {\"id\": \"swaps\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Swaps\", \"description\": \"How many times the wave plays.\", \"default\": 3, \"min\": 1, \"max\": 6, \"step\": 1},\n    {\"id\": \"first_swap\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"First swap\", \"description\": \"Seconds before the first wave.\", \"default\": 0.4, \"min\": 0, \"max\": 4, \"step\": 0.05, \"unit\": \"s\"},\n    {\"id\": \"interval\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Interval\", \"description\": \"Seconds between the start of one wave and the next.\", \"default\": 1.5, \"min\": 0.6, \"max\": 4, \"step\": 0.1, \"unit\": \"s\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Letter 3D Swap</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #111111; font-family: Geist, system-ui, sans-serif; }\n        .l3-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .l3-line { display: flex; flex-wrap: wrap; justify-content: center; max-width: 90cqw; line-height: 1.2; }\n        .l3-word { display: inline-flex; }\n        .l3-space { display: inline-block; white-space: pre; }\n        .l3-box { position: relative; display: inline-block; transform-style: preserve-3d; }\n        .l3-size { display: inline-block; visibility: hidden; white-space: pre; }\n        .l3-face { position: absolute; left: 0; top: 0; width: 100%; height: 100%; text-align: center; white-space: pre; backface-visibility: hidden; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"letter-3d-swap\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"l3-clip\" class=\"l3-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <div id=\"l3-line\" class=\"l3-line\" role=\"img\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var DEFS = [{\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Words that roll.\", \"default\": \"Set your mind to it\"}, {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels.\", \"default\": 110, \"min\": 24, \"max\": 300, \"step\": 1, \"unit\": \"px\"}, {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Color\", \"description\": \"Text color.\", \"default\": \"#111111\"}, {\"id\": \"font_weight\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Font weight\", \"description\": \"Weight of the text.\", \"default\": \"600\", \"options\": [{\"value\": \"400\", \"label\": \"Regular\"}, {\"value\": \"500\", \"label\": \"Medium\"}, {\"value\": \"600\", \"label\": \"Semibold\"}, {\"value\": \"700\", \"label\": \"Bold\"}]}, {\"id\": \"solid_faces\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Solid faces\", \"description\": \"Fill each face with the face color so the outgoing letter is hidden behind the incoming one, as the source does. Turn off to see through.\", \"default\": true}, {\"id\": \"face_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Face color\", \"description\": \"Fill of the faces when solid. Match it to what sits behind the text.\", \"default\": \"#ffffff\"}, {\"id\": \"direction\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Direction\", \"description\": \"Side the new face rolls in from.\", \"default\": \"top\", \"options\": [{\"value\": \"top\", \"label\": \"Top\"}, {\"value\": \"right\", \"label\": \"Right\"}, {\"value\": \"bottom\", \"label\": \"Bottom\"}, {\"value\": \"left\", \"label\": \"Left\"}]}, {\"id\": \"stagger\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stagger\", \"description\": \"Seconds between neighbouring letters.\", \"default\": 0.03, \"min\": 0, \"max\": 0.3, \"step\": 0.005, \"unit\": \"s\"}, {\"id\": \"stagger_from\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Stagger from\", \"description\": \"Where the wave starts.\", \"default\": \"first\", \"options\": [{\"value\": \"first\", \"label\": \"First letter\"}, {\"value\": \"last\", \"label\": \"Last letter\"}, {\"value\": \"center\", \"label\": \"Center\"}, {\"value\": \"random\", \"label\": \"Random\"}]}, {\"id\": \"stiffness\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Stiffness\", \"description\": \"Spring stiffness of the roll.\", \"default\": 160, \"min\": 20, \"max\": 600, \"step\": 5}, {\"id\": \"damping\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Damping\", \"description\": \"Spring damping of the roll.\", \"default\": 25, \"min\": 5, \"max\": 60, \"step\": 1}, {\"id\": \"swaps\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Swaps\", \"description\": \"How many times the wave plays.\", \"default\": 3, \"min\": 1, \"max\": 6, \"step\": 1}, {\"id\": \"first_swap\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"First swap\", \"description\": \"Seconds before the first wave.\", \"default\": 0.4, \"min\": 0, \"max\": 4, \"step\": 0.05, \"unit\": \"s\"}, {\"id\": \"interval\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Interval\", \"description\": \"Seconds between the start of one wave and the next.\", \"default\": 1.5, \"min\": 0.6, \"max\": 4, \"step\": 0.1, \"unit\": \"s\"}];\n            var root = document.getElementById(\"root\");\n            var raw = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            var D = parseFloat(root.dataset.duration || \"5\");\n            function V(id) {\n              var d = null;\n              for (var i = 0; i < DEFS.length; i++) if (DEFS[i].id === id) d = DEFS[i];\n              var v = raw[id];\n              if (v === undefined || v === null || (v === \"\" && d.type !== \"string\")) return d.default;\n              if (d.type === \"number\") { var n = Number(v); return Number.isFinite(n) ? Math.min(d.max, Math.max(d.min, n)) : d.default; }\n              if (d.type === \"boolean\") return v === true || v === \"true\";\n              if (d.type === \"enum\") { for (var j = 0; j < d.options.length; j++) if (String(d.options[j].value) === String(v)) return d.options[j].value; return d.default; }\n              if (d.type === \"string\") return typeof v === \"string\" ? v : d.default;\n              return typeof v === \"string\" && v ? v : d.default;\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function hash3(a, b, c) { return mulberry32((a * 7919 + b * 104729 + c * 1299709) | 0)(); }\n            // Stagger delays in seconds: \"first\", \"last\", \"center\", \"random\" (seeded shuffle) or an index.\n            function stagger(n, from, step, seed) {\n              var out = [], i;\n              if (from === \"random\") {\n                var rng = mulberry32(seed || 7), idx = [];\n                for (i = 0; i < n; i++) idx.push(i);\n                for (i = n - 1; i > 0; i--) { var j = Math.floor(rng() * (i + 1)); var tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp; }\n                for (i = 0; i < n; i++) out[idx[i]] = i * step;\n                return out;\n              }\n              for (i = 0; i < n; i++) {\n                var k = from === \"last\" ? n - 1 - i : from === \"center\" ? Math.abs(Math.floor(n / 2) - i) : typeof from === \"number\" ? Math.abs(from - i) : i;\n                out.push(k * step);\n              }\n              return out;\n            }\n            // Damped spring from 0 to 1 (stiffness/damping/mass or duration/bounce, as Motion defines them).\n            function spring(o) {\n              var m = o.mass || 1, k, c;\n              if (o.duration !== undefined) { var w = (2 * Math.PI) / o.duration; k = w * w * m; c = 2 * (1 - (o.bounce || 0)) * Math.sqrt(k * m); }\n              else { k = o.stiffness; c = o.damping; }\n              var w0 = Math.sqrt(k / m), z = c / (2 * Math.sqrt(k * m));\n              function at(t) {\n                if (t <= 0) return 0;\n                if (Math.abs(z - 1) < 1e-6) return 1 - Math.exp(-w0 * t) * (1 + w0 * t);\n                if (z < 1) { var wd = w0 * Math.sqrt(1 - z * z); return 1 - Math.exp(-z * w0 * t) * (Math.cos(wd * t) + ((z * w0) / wd) * Math.sin(wd * t)); }\n                var s = Math.sqrt(z * z - 1), r1 = -w0 * (z - s), r2 = -w0 * (z + s);\n                return 1 - (r2 * Math.exp(r1 * t) - r1 * Math.exp(r2 * t)) / (r2 - r1);\n              }\n              var settle = 6;\n              for (var t = 0.02; t < 6; t += 0.02) {\n                var ok = true;\n                for (var u = t; u < Math.min(t + 0.3, 6); u += 0.05) if (Math.abs(1 - at(u)) > 0.002) { ok = false; break; }\n                if (ok) { settle = t; break; }\n              }\n              return { at: at, duration: settle };\n            }\n            function fitText(text) { return Array.from(text); }\n\n            var line = document.getElementById(\"l3-line\");\n            var text = V(\"text\") || \"Set your mind to it\";\n            var dir = V(\"direction\"), vertical = dir === \"top\" || dir === \"bottom\";\n            line.setAttribute(\"aria-label\", text);\n            line.style.color = V(\"color\");\n            line.style.fontWeight = V(\"font_weight\");\n            line.style.fontSize = \"min(\" + V(\"font_size\") + \"px, calc(88cqw / \" + Math.max(2, text.length * 0.55).toFixed(2) + \"))\";\n            var boxes = [];\n            text.split(\" \").forEach(function (word, wi, words) {\n              var w = document.createElement(\"span\"); w.className = \"l3-word\";\n              fitText(word).forEach(function (ch) {\n                var box = document.createElement(\"span\"); box.className = \"l3-box\"; box.id = \"l3-box-\" + boxes.length;\n                box.innerHTML = '<span class=\"l3-size\"></span><span class=\"l3-face l3-f1\"></span><span class=\"l3-face l3-f2\"></span>';\n                box.children[0].textContent = ch; box.children[1].textContent = ch; box.children[2].textContent = ch;\n                w.appendChild(box); boxes.push(box);\n              });\n              line.appendChild(w);\n              if (wi < words.length - 1) { var sp = document.createElement(\"span\"); sp.className = \"l3-space\"; sp.textContent = \" \"; line.appendChild(sp); }\n            });\n            var delays = stagger(boxes.length, V(\"stagger_from\"), V(\"stagger\"));\n            var sp = spring({ stiffness: V(\"stiffness\"), damping: V(\"damping\") });\n            var swaps = V(\"swaps\"), first = V(\"first_swap\"), interval = V(\"interval\");\n            if (V(\"solid_faces\")) boxes.forEach(function (b) { b.children[1].style.background = V(\"face_color\"); b.children[2].style.background = V(\"face_color\"); });\n            var tl = gsap.timeline({ paused: true });\n            var sign = dir === \"top\" || dir === \"left\" ? 1 : -1; // box roll angle sign (right/bottom handled below)\n            var boxAngle = { right: -90, left: 90, top: -90, bottom: 90 }[dir];\n            var axis = vertical ? \"X\" : \"Y\";\n            var faceTurn = { right: \"rotateY(90deg)\", left: \"rotateY(-90deg)\", top: \"rotateX(90deg)\", bottom: \"rotateX(-90deg)\" }[dir];\n            function draw(t) {\n              for (var i = 0; i < boxes.length; i++) {\n                var b = boxes[i], size = b.children[0];\n                var d = vertical ? size.offsetHeight : size.offsetWidth;\n                var el = t - first - delays[i], p = 0;\n                if (el >= 0) {\n                  var k = Math.min(swaps - 1, Math.floor(el / interval)), e = el - k * interval;\n                  p = e >= sp.duration ? 0 : sp.at(e);\n                }\n                b.style.transform = \"translateZ(\" + (-d / 2) + \"px) rotate\" + axis + \"(\" + (boxAngle * p).toFixed(3) + \"deg)\";\n                b.children[1].style.transform = \"translateZ(\" + d / 2 + \"px)\";\n                b.children[2].style.transform = faceTurn + \" translateZ(\" + d / 2 + \"px)\";\n              }\n            }\n\n            var clock = { t: 0 };\n            tl.to(clock, { t: D, duration: D, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"letter-3d-swap\"] = tl;\n\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "bb66bf35b4cd091869a1da5e496d25a41d1130968b7570d175109d1ac9d5b927",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "text": "Set your mind to it",
+  "font_size": 150
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Set your mind to it"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 110,
+   "min": 24,
+   "max": 300
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Color",
+   "default": "#111111"
+  },
+  {
+   "id": "font_weight",
+   "type": "enum",
+   "role": "style",
+   "label": "Font weight",
+   "default": "600"
+  },
+  {
+   "id": "solid_faces",
+   "type": "boolean",
+   "role": "style",
+   "label": "Solid faces",
+   "default": true
+  },
+  {
+   "id": "face_color",
+   "type": "color",
+   "role": "style",
+   "label": "Face color",
+   "default": "#ffffff"
+  },
+  {
+   "id": "direction",
+   "type": "enum",
+   "role": "motion",
+   "label": "Direction",
+   "default": "top"
+  },
+  {
+   "id": "stagger",
+   "type": "number",
+   "role": "motion",
+   "label": "Stagger",
+   "default": 0.03,
+   "min": 0,
+   "max": 0.3
+  },
+  {
+   "id": "stagger_from",
+   "type": "enum",
+   "role": "motion",
+   "label": "Stagger from",
+   "default": "first"
+  },
+  {
+   "id": "stiffness",
+   "type": "number",
+   "role": "motion",
+   "label": "Stiffness",
+   "default": 160,
+   "min": 20,
+   "max": 600
+  },
+  {
+   "id": "damping",
+   "type": "number",
+   "role": "motion",
+   "label": "Damping",
+   "default": 25,
+   "min": 5,
+   "max": 60
+  },
+  {
+   "id": "swaps",
+   "type": "number",
+   "role": "motion",
+   "label": "Swaps",
+   "default": 3,
+   "min": 1,
+   "max": 6
+  },
+  {
+   "id": "first_swap",
+   "type": "number",
+   "role": "motion",
+   "label": "First swap",
+   "default": 0.4,
+   "min": 0,
+   "max": 4
+  },
+  {
+   "id": "interval",
+   "type": "number",
+   "role": "motion",
+   "label": "Interval",
+   "default": 1.5,
+   "min": 0.6,
+   "max": 4
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://fancycomponents.dev"
+}

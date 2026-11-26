@@ -1,0 +1,110 @@
+{
+ "name": "hw-path-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "Apache-2.0",
+ "author": "HeyGen (Hyperframes)",
+ "source": {
+  "repo": "heygen-com/hyperframes",
+  "path": "registry/blocks/hw-path-text/hw-path-text.html",
+  "commit": "bd6cff8157a1a0ed5075527e673cc4f321fe9123"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Handwriting Along a Path\n\nHandwriting flows along any SVG path, one letter at a time, over a faint dotted guide.\n\nCategory: typography. Length: 6 s. WebGL: no.\n\nUse when:\n- A line should trail along a curve: a route, a journey, a signature swoosh.\n- You want to supply your own path and have the lettering follow it.\n\nAvoid when:\n- The text must sit straight and centered: use hw-title or handwrite.\n- The path is much shorter than the text: letters past its end do not show.\n\nVariables:\n- text (string): Text, default \"come on this wild journey with me...\"\n- path (string): Path (wide frame), default \"M 220 700 C 520 480, 900 820, 1230 560 S 1700 380, 1780 420\"\n- path_portrait (string): Path (tall frame), default \"M 120 1560 C 120 1100, 960 1300, 900 900 S 160 620, 960 260\"\n- font_size (number, 24-220): Font size, default 92\n- ink (color): Ink, default \"#f4f2ec\"\n- show_guide (boolean): Guide line, default true\n- char_delay (number, 0.01-0.2): Letter delay, default 0.05\n- boil (boolean): Boil, default true\n- boil_amount (number, 0-6): Boil amount, default 1.4\n- seed (number, 1-99): Seed, default 12\n\nSource: heygen-com/hyperframes. Licence: Apache-2.0. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Handwriting Along a Path\n\n  Handwriting flows along any SVG path, one letter at a time, over a faint dotted guide.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/heygen-com/hyperframes/blob/bd6cff8157a1a0ed5075527e673cc4f321fe9123/registry/blocks/hw-path-text/hw-path-text.html\n\n  Copyright HeyGen, Inc. and the Hyperframes contributors. Licensed under the Apache License, Version\n  2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain\n  a copy of the License at http://www.apache.org/licenses/LICENSE-2.0. Unless required by applicable\n  law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\"\n  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for\n  the specific language governing permissions and limitations under the License.\n\n  Changes by usemosio/blocks: the Caveat font file becomes the same family from Google Fonts, the drawing space follows the frame (1920x1080 wide, 1080x1920 tall, each with its own default path), the shared helper functions are inlined, and the settings are variables. The overlay stays transparent; the demo supplies a dark plate.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"hw-path-text\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"The line written along the path.\", \"default\": \"come on this wild journey with me...\"},\n    {\"id\": \"path\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Path (wide frame)\", \"description\": \"SVG path data in a 1920x1080 space, used on a landscape frame. The text follows it.\", \"default\": \"M 220 700 C 520 480, 900 820, 1230 560 S 1700 380, 1780 420\"},\n    {\"id\": \"path_portrait\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Path (tall frame)\", \"description\": \"SVG path data in a 1080x1920 space, used on a portrait frame.\", \"default\": \"M 120 1560 C 120 1100, 960 1300, 900 900 S 160 620, 960 260\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in the drawing space (1920 or 1080 wide).\", \"default\": 92, \"min\": 24, \"max\": 220, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"ink\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Ink\", \"description\": \"Text color.\", \"default\": \"#f4f2ec\"},\n    {\"id\": \"show_guide\", \"type\": \"boolean\", \"role\": \"style\", \"label\": \"Guide line\", \"description\": \"A faint dotted line draws along the path first.\", \"default\": true},\n    {\"id\": \"char_delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Letter delay\", \"description\": \"Seconds between letters (it speeds up to fit long text).\", \"default\": 0.05, \"min\": 0.01, \"max\": 0.2, \"step\": 0.005, \"unit\": \"s\"},\n    {\"id\": \"boil\", \"type\": \"boolean\", \"role\": \"motion\", \"label\": \"Boil\", \"description\": \"Jitter the writing a little every third frame, like a hand-drawn loop.\", \"default\": true},\n    {\"id\": \"boil_amount\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Boil amount\", \"description\": \"How far the writing jitters, in pixels.\", \"default\": 1.4, \"min\": 0, \"max\": 6, \"step\": 0.1, \"unit\": \"px\"},\n    {\"id\": \"seed\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Seed\", \"description\": \"Changes the jitter pattern.\", \"default\": 12, \"min\": 1, \"max\": 99, \"step\": 1}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Handwriting Along a Path</title>\n  </head>\n  <body>\n    <template>\n      <link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@700&amp;display=block\" />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n          font-family: \"Caveat\", cursive;\n        }\n        .hwp-stage { position: absolute; inset: 0; }\n        #hwp-svg {\n          position: absolute;\n          inset: 0;\n          width: 100%;\n          height: 100%;\n          overflow: visible;\n        }\n        /* The textPath carrier is geometry only; without fill:none it renders as a solid blob. */\n        #hwp-path { fill: none; }\n        #hwp-guide {\n          fill: none;\n          stroke-width: 3;\n          stroke-linecap: round;\n        }\n        #hwp-svg text {\n          font-family: \"Caveat\", cursive;\n          font-weight: 700;\n        }\n        #hwp-svg tspan { opacity: 0; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"hw-path-text\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"hwp-clip\" class=\"hwp-stage clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\">\n          <svg id=\"hwp-svg\" viewBox=\"0 0 1920 1080\" preserveAspectRatio=\"xMidYMid meet\">\n            <path id=\"hwp-path\" d=\"\"></path>\n            <path id=\"hwp-guide\" d=\"\"></path>\n            <text id=\"hwp-text\" font-size=\"92\">\n              <textPath id=\"hwp-tp\" href=\"#hwp-path\" startOffset=\"4%\"></textPath>\n            </text>\n          </svg>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (value === true || value === \"true\") return true;\n              if (value === false || value === \"false\") return false;\n              return fallback;\n            }\n            function hex(value, fallback) {\n              return typeof value === \"string\" && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(value.trim()) ? value.trim() : fallback;\n            }\n            function rgba(h, a) {\n              if (h.length === 4) h = \"#\" + h[1] + h[1] + h[2] + h[2] + h[3] + h[3];\n              return \"rgba(\" + parseInt(h.slice(1, 3), 16) + \",\" + parseInt(h.slice(3, 5), 16) + \",\" + parseInt(h.slice(5, 7), 16) + \",\" + a + \")\";\n            }\n            function hash(n, seed) {\n              var x = Math.sin(n * 127.1 + (seed || 1) * 311.7) * 43758.5453;\n              return (x - Math.floor(x)) * 2 - 1;\n            }\n\n            var DUR = 6;\n            var text = str(vars.text, \"come on this wild journey with me...\");\n            var portrait = root.clientWidth < root.clientHeight;\n            var pathD = portrait\n              ? str(vars.path_portrait, \"M 120 1560 C 120 1100, 960 1300, 900 900 S 160 620, 960 260\")\n              : str(vars.path, \"M 220 700 C 520 480, 900 820, 1230 560 S 1700 380, 1780 420\");\n            var fontSize = num(vars.font_size, 92, 24, 220);\n            var ink = hex(vars.ink, \"#f4f2ec\");\n            var showGuide = bool(vars.show_guide, true);\n            var charDelay = num(vars.char_delay, 0.05, 0.01, 0.2);\n            var boilOn = bool(vars.boil, true);\n            var boilAmp = num(vars.boil_amount, 1.4, 0, 6);\n            var seed = num(vars.seed, 12, 1, 99);\n\n            // The drawing space is 1920x1080 on a wide frame and 1080x1920 on a tall one.\n            var svg = document.getElementById(\"hwp-svg\");\n            svg.setAttribute(\"viewBox\", portrait ? \"0 0 1080 1920\" : \"0 0 1920 1080\");\n            var pathEl = document.getElementById(\"hwp-path\");\n            var guide = document.getElementById(\"hwp-guide\");\n            var textEl = document.getElementById(\"hwp-text\");\n            pathEl.setAttribute(\"d\", pathD);\n            textEl.setAttribute(\"font-size\", fontSize);\n            textEl.style.fill = ink;\n            guide.style.stroke = rgba(ink, 0.22);\n            if (showGuide) guide.setAttribute(\"d\", pathD);\n\n            var NS = \"http://www.w3.org/2000/svg\";\n            var tp = document.getElementById(\"hwp-tp\");\n            Array.from(text).forEach(function (ch) {\n              var t = document.createElementNS(NS, \"tspan\");\n              t.textContent = ch;\n              tp.appendChild(t);\n            });\n\n            var OUT = Math.min(0.6, Math.max(0.25, DUR * 0.06));\n            var tl = gsap.timeline({ paused: true });\n            if (showGuide) {\n              var glen = guide.getTotalLength();\n              gsap.set(guide, { strokeDasharray: \"2 14\", strokeDashoffset: glen });\n              tl.to(guide, { strokeDashoffset: 0, duration: 0.9, ease: \"power2.inOut\" }, 0.2);\n            }\n            var chars = tp.querySelectorAll(\"tspan\");\n            var delay = Math.min(charDelay, 2.6 / Math.max(1, chars.length));\n            tl.to(chars, { opacity: 1, duration: 0.03, stagger: delay, ease: \"none\" }, 0.7);\n            if (boilOn) {\n              tl.eventCallback(\"onUpdate\", function () {\n                var step = Math.floor((tl.time() * 30) / 3);\n                gsap.set(svg, { x: hash(step * 3, seed) * boilAmp, y: hash(step * 3 + 1, seed) * boilAmp, rotation: hash(step * 3 + 2, seed) * boilAmp * 0.22 });\n              });\n            }\n            tl.to(svg, { opacity: 0, duration: OUT, ease: \"power2.in\" }, DUR - OUT - 0.05);\n            tl.set({}, {}, DUR);\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"hw-path-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "2d846b0f34b77a02b8e795baa3411eeeba30e63239b4781023cd74ac8c5d34ff",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#17161a",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "come on this wild journey with me..."
+  },
+  {
+   "id": "path",
+   "type": "string",
+   "role": "content",
+   "label": "Path (wide frame)",
+   "default": "M 220 700 C 520 480, 900 820, 1230 560 S 1700 380, 1780 420"
+  },
+  {
+   "id": "path_portrait",
+   "type": "string",
+   "role": "content",
+   "label": "Path (tall frame)",
+   "default": "M 120 1560 C 120 1100, 960 1300, 900 900 S 160 620, 960 260"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 92,
+   "min": 24,
+   "max": 220
+  },
+  {
+   "id": "ink",
+   "type": "color",
+   "role": "style",
+   "label": "Ink",
+   "default": "#f4f2ec"
+  },
+  {
+   "id": "show_guide",
+   "type": "boolean",
+   "role": "style",
+   "label": "Guide line",
+   "default": true
+  },
+  {
+   "id": "char_delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Letter delay",
+   "default": 0.05,
+   "min": 0.01,
+   "max": 0.2
+  },
+  {
+   "id": "boil",
+   "type": "boolean",
+   "role": "motion",
+   "label": "Boil",
+   "default": true
+  },
+  {
+   "id": "boil_amount",
+   "type": "number",
+   "role": "motion",
+   "label": "Boil amount",
+   "default": 1.4,
+   "min": 0,
+   "max": 6
+  },
+  {
+   "id": "seed",
+   "type": "number",
+   "role": "style",
+   "label": "Seed",
+   "default": 12,
+   "min": 1,
+   "max": 99
+  }
+ ],
+ "author_url": "https://github.com/heygen-com/hyperframes"
+}

@@ -1,0 +1,153 @@
+{
+ "name": "subtitle-translate",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "RemotionUI",
+ "source": {
+  "repo": "https://github.com/riaz37/remotion-ui",
+  "path": "apps/web/registry/bases/default/primitives/subtitle-translate.tsx",
+  "commit": "0aecaca2b61a167992e1205d10e4da16d8a71331"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Subtitle Translate\n\nDual-language stacked subtitles: the lead line arrives first, the translation follows a few frames later in a smaller, quieter size, with optional language tags.\n\nCategory: captions. Length: 11.5 s. WebGL: no.\n\nUse when:\n- A video needs subtitles in two languages at once: the spoken language and its translation.\n- Cues and translations are known per line (from a subtitle export or a translator).\n\nAvoid when:\n- You need word-by-word highlighting: use a word-timed caption block.\n- A single language: use a plain caption block.\n\nVariables:\n- cues (string): Cues, default \"[{\\\"text\\\": \\\"Welcome back to the studio.\\\", \\\"translation\\\": \\\"Selamat datang kembali di studio.\\\", \\\"startMs\\\": 400, \\\"endMs\\\": 3200}, {\\\"text\\\": \\\"Today we are shooting a short film.\\\", \\\"translation\\\": \\\"Hari ini kita syuting film pendek.\\\", \\\"startMs\\\": 3700, \\\"endMs\\\": 6800}, {\\\"text\\\": \\\"Keep the camera steady and the light soft.\\\", \\\"translation\\\": \\\"Jaga kamera tetap stabil dan cahaya tetap lembut.\\\", \\\"startMs\\\": 7300, \\\"endMs\\\": 10800}]\"\n- primary (enum): Lead line, default \"source\"\n- label_source (string): Source tag, default \"EN\"\n- label_translation (string): Translation tag, default \"ID\"\n- font_size (number, 16-140): Font size, default 46\n- secondary_scale (number, 0.4-1): Second line scale, default 0.72\n- font_weight (number, 100-900): Font weight, default 600\n- primary_color (color): Lead color, default \"#fafafa\"\n- secondary_color (color): Second line color, default \"#b8b8bc\"\n- label_color (color): Tag color, default \"#e8b86d\"\n- background_color (color): Background, default \"#0a0a0e\"\n- background_opacity (number, 0-1): Background opacity, default 0.72\n- max_width (number, 30-100): Max width, default 78\n- enter_frames (number, 1-40): Enter, default 10\n- second_offset_frames (number, 0-30): Second line delay, default 4\n\nSource: https://github.com/riaz37/remotion-ui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Subtitle Translate\n\n  Dual-language stacked subtitles.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/riaz37/remotion-ui/blob/0aecaca2b61a167992e1205d10e4da16d8a71331/apps/web/registry/bases/default/primitives/subtitle-translate.tsx\n\n  MIT License\n\n  Copyright (c) 2026 RemotionUI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"subtitle-translate\"\n  data-composition-duration=\"11.5\"\n  data-composition-variables='[\n    [\n      {\n        \"id\": \"cues\",\n        \"type\": \"string\",\n        \"role\": \"content\",\n        \"label\": \"Cues\",\n        \"description\": \"JSON list [{\\\"text\\\",\\\"translation\\\",\\\"startMs\\\",\\\"endMs\\\"}] (or start/end in seconds). Nothing shows between cues.\",\n        \"default\": \"[{\\\"text\\\": \\\"Welcome back to the studio.\\\", \\\"translation\\\": \\\"Selamat datang kembali di studio.\\\", \\\"startMs\\\": 400, \\\"endMs\\\": 3200}, {\\\"text\\\": \\\"Today we are shooting a short film.\\\", \\\"translation\\\": \\\"Hari ini kita syuting film pendek.\\\", \\\"startMs\\\": 3700, \\\"endMs\\\": 6800}, {\\\"text\\\": \\\"Keep the camera steady and the light soft.\\\", \\\"translation\\\": \\\"Jaga kamera tetap stabil dan cahaya tetap lembut.\\\", \\\"startMs\\\": 7300, \\\"endMs\\\": 10800}]\"\n      },\n      {\n        \"id\": \"primary\",\n        \"type\": \"enum\",\n        \"role\": \"content\",\n        \"label\": \"Lead line\",\n        \"description\": \"Which language is the large lead line.\",\n        \"default\": \"source\",\n        \"options\": [\n          {\n            \"value\": \"source\",\n            \"label\": \"Source text\"\n          },\n          {\n            \"value\": \"translation\",\n            \"label\": \"Translation\"\n          }\n        ]\n      },\n      {\n        \"id\": \"label_source\",\n        \"type\": \"string\",\n        \"role\": \"content\",\n        \"label\": \"Source tag\",\n        \"description\": \"Language tag shown beside the source line, for example EN. Empty hides it.\",\n        \"default\": \"EN\"\n      },\n      {\n        \"id\": \"label_translation\",\n        \"type\": \"string\",\n        \"role\": \"content\",\n        \"label\": \"Translation tag\",\n        \"description\": \"Language tag shown beside the translation. Empty hides it.\",\n        \"default\": \"ID\"\n      },\n      {\n        \"id\": \"font_size\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font size\",\n        \"description\": \"Lead line size in pixels.\",\n        \"default\": 46,\n        \"min\": 16,\n        \"max\": 140,\n        \"step\": 1,\n        \"unit\": \"px\"\n      },\n      {\n        \"id\": \"secondary_scale\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Second line scale\",\n        \"description\": \"Size of the second line relative to the lead.\",\n        \"default\": 0.72,\n        \"min\": 0.4,\n        \"max\": 1,\n        \"step\": 0.01\n      },\n      {\n        \"id\": \"font_weight\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Font weight\",\n        \"description\": \"Weight of the lead line.\",\n        \"default\": 600,\n        \"min\": 100,\n        \"max\": 900,\n        \"step\": 100\n      },\n      {\n        \"id\": \"primary_color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Lead color\",\n        \"description\": \"Colour of the lead line.\",\n        \"default\": \"#fafafa\"\n      },\n      {\n        \"id\": \"secondary_color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Second line color\",\n        \"description\": \"Colour of the second line.\",\n        \"default\": \"#b8b8bc\"\n      },\n      {\n        \"id\": \"label_color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Tag color\",\n        \"description\": \"Colour of the language tags.\",\n        \"default\": \"#e8b86d\"\n      },\n      {\n        \"id\": \"background_color\",\n        \"type\": \"color\",\n        \"role\": \"style\",\n        \"label\": \"Background\",\n        \"description\": \"Colour of the card behind the subtitles.\",\n        \"default\": \"#0a0a0e\"\n      },\n      {\n        \"id\": \"background_opacity\",\n        \"type\": \"number\",\n        \"role\": \"style\",\n        \"label\": \"Background opacity\",\n        \"description\": \"Opacity of the card behind the subtitles.\",\n        \"default\": 0.72,\n        \"min\": 0,\n        \"max\": 1,\n        \"step\": 0.02\n      },\n      {\n        \"id\": \"max_width\",\n        \"type\": \"number\",\n        \"role\": \"layout\",\n        \"label\": \"Max width\",\n        \"description\": \"Widest the card gets, as a percent of the frame.\",\n        \"default\": 78,\n        \"min\": 30,\n        \"max\": 100,\n        \"step\": 1,\n        \"unit\": \"%\"\n      },\n      {\n        \"id\": \"enter_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Enter\",\n        \"description\": \"Frames (30 per second) a line takes to arrive.\",\n        \"default\": 10,\n        \"min\": 1,\n        \"max\": 40,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      },\n      {\n        \"id\": \"second_offset_frames\",\n        \"type\": \"number\",\n        \"role\": \"motion\",\n        \"label\": \"Second line delay\",\n        \"description\": \"Frames the second line trails the first.\",\n        \"default\": 4,\n        \"min\": 0,\n        \"max\": 30,\n        \"step\": 1,\n        \"unit\": \"frames\"\n      }\n    ]\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Subtitle Translate</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Poppins:wght@400;600;800&amp;family=Playfair+Display:wght@400..900&amp;family=Space+Grotesk:wght@300..700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        #root { color: #fafafa; }\n        .sbt-stage { position: absolute; inset: 0; }\n        .sbt-wrap { position: absolute; inset: 0; display: none; align-items: flex-end; justify-content: center; }\n        .sbt-card { display: grid; text-align: center; }\n        .sbt-row { display: flex; align-items: baseline; justify-content: center; }\n        .sbt-tag { font-weight: 700; letter-spacing: 0.1em; text-align: right; flex-shrink: 0; }\n        .sbt-line { line-height: 1.25; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"subtitle-translate\" data-duration=\"11.5\" data-fps=\"30\">\n        <div id=\"sbt-clip\" class=\"sbt-stage clip\" data-start=\"0\" data-duration=\"11.5\" data-track-index=\"0\">\n          <div id=\"sbt-host\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() : {};\n            function num(v, f, min, max) { var n = Number(v); return Number.isFinite(n) && v !== \"\" && v !== null ? Math.min(max, Math.max(min, n)) : f; }\n            function str(v, f) { return typeof v === \"string\" && v.trim() ? v : f; }\n            function bool(v, f) { if (v === undefined || v === null || v === \"\") return f; return !(v === false || v === \"false\" || v === 0 || v === \"0\"); }\n            function pick(v, list, f) { v = String(v); return list.indexOf(v) >= 0 ? v : f; }\n            function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }\n            function lerp(a, b, t) { return a + (b - a) * t; }\n            function ramp(v, a, b, from, to, ease) { var p = b === a ? 1 : clamp01((v - a) / (b - a)); if (ease) p = ease(p); return from + (to - from) * p; }\n            function bez(x1, y1, x2, y2) {\n              return function (x) {\n                if (x <= 0) return 0;\n                if (x >= 1) return 1;\n                var lo = 0, hi = 1, t = x;\n                for (var i = 0; i < 30; i++) {\n                  var cx = 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t;\n                  if (cx < x) lo = t; else hi = t;\n                  t = (lo + hi) / 2;\n                }\n                return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t;\n              };\n            }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            function mk(tag, parent, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; if (parent) parent.appendChild(e); return e; }\n            var TOTAL = parseFloat(root.dataset.duration || \"11.5\");\n            // Every frame is drawn from the frame number alone, so seeking anywhere draws the same frame.\n            function drive(name, frameFn) {\n              var clock = { f: 0 };\n              var tl = gsap.timeline({ paused: true });\n              tl.to(clock, { f: TOTAL * 30, duration: TOTAL, ease: \"none\", onUpdate: function () { frameFn(clock.f); } }, 0);\n              frameFn(0);\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[name] = tl;\n            }\n\n            var FONTS = { geist: \"Geist, system-ui, sans-serif\", poppins: \"Poppins, system-ui, sans-serif\", playfair: '\"Playfair Display\", Georgia, serif', grotesk: '\"Space Grotesk\", system-ui, sans-serif' };\n            var fontKey = pick(vars.font, [\"geist\", \"poppins\", \"playfair\", \"grotesk\"], \"geist\");\n            root.style.fontFamily = FONTS[fontKey];\n            // ---- Cues: a JSON list, or SubRip / WebVTT text ----\n            var TS = \"(?:(\\\\d+):)?(\\\\d{1,2}):(\\\\d{1,2})[.,](\\\\d{1,3})\";\n            var CUE_RE = new RegExp(TS + \"\\\\s*-->\\\\s*\" + TS);\n            function tsMs(m, o) {\n              var frac = (m[o + 3] || \"0\");\n              return (Number(m[o] || 0) || 0) * 3600000 + (Number(m[o + 1]) || 0) * 60000 + (Number(m[o + 2]) || 0) * 1000 + (Number((\"\" + frac + \"00\").slice(0, 3)) || 0);\n            }\n            function cleanCue(text) {\n              var voice = /<v(?:\\.[^\\s>]+)*\\s+([^>]+)>/.exec(text);\n              return { speaker: voice ? voice[1].trim() : undefined, text: text.replace(/<[^>]*>/g, \"\").replace(/\\{\\\\an?\\d\\}/g, \"\").replace(/\\s+/g, \" \").trim() };\n            }\n            function parseSubtitles(src) {\n              var cues = [];\n              String(src).replace(/^﻿/, \"\").replace(/\\r\\n?/g, \"\\n\").split(/\\n{2,}/).forEach(function (block) {\n                var lines = block.split(\"\\n\").filter(function (l) { return l.trim().length > 0; });\n                if (!lines.length) return;\n                var ti = -1;\n                lines.forEach(function (l, i) { if (ti < 0 && CUE_RE.test(l)) ti = i; });\n                if (ti < 0) return;\n                var m = CUE_RE.exec(lines[ti]);\n                var c = cleanCue(lines.slice(ti + 1).join(\" \"));\n                var s = tsMs(m, 1), e = tsMs(m, 5);\n                if (!c.text || e <= s) return;\n                cues.push({ text: c.text, startMs: s, endMs: e, speaker: c.speaker });\n              });\n              return cues.sort(function (a, b) { return a.startMs - b.startMs; });\n            }\n            function parseCues(raw) {\n              var data = raw;\n              if (typeof raw === \"string\") {\n                var t = raw.trim();\n                if (t.charAt(0) === \"[\") { try { data = JSON.parse(t); } catch (e) { data = null; } }\n                else return parseSubtitles(t);\n              }\n              if (!Array.isArray(data)) return null;\n              var out = [];\n              data.forEach(function (c) {\n                if (!c || typeof c.text !== \"string\") return;\n                var s = c.startMs !== undefined ? Number(c.startMs) : Number(c.start) * 1000;\n                var e = c.endMs !== undefined ? Number(c.endMs) : Number(c.end) * 1000;\n                if (!Number.isFinite(s) || !Number.isFinite(e) || e <= s) return;\n                out.push({ text: c.text, startMs: s, endMs: e, speaker: typeof c.speaker === \"string\" ? c.speaker : undefined, translation: typeof c.translation === \"string\" ? c.translation : \"\" });\n              });\n              return out.length ? out.sort(function (a, b) { return a.startMs - b.startMs; }) : null;\n            }\n            function mixColor(a, b, t) { return \"color-mix(in srgb, \" + b + \" \" + (Math.round(clamp01(t) * 10000) / 100) + \"%, \" + a + \")\"; }\n            var ENTER = bez(0.16, 1, 0.3, 1);\n\n            var DEFAULT_CUES = \"[{\\\"text\\\": \\\"Welcome back to the studio.\\\", \\\"translation\\\": \\\"Selamat datang kembali di studio.\\\", \\\"startMs\\\": 400, \\\"endMs\\\": 3200}, {\\\"text\\\": \\\"Today we are shooting a short film.\\\", \\\"translation\\\": \\\"Hari ini kita syuting film pendek.\\\", \\\"startMs\\\": 3700, \\\"endMs\\\": 6800}, {\\\"text\\\": \\\"Keep the camera steady and the light soft.\\\", \\\"translation\\\": \\\"Jaga kamera tetap stabil dan cahaya tetap lembut.\\\", \\\"startMs\\\": 7300, \\\"endMs\\\": 10800}]\";\n            var cues = parseCues(vars.cues) || parseCues(DEFAULT_CUES);\n            var primary = pick(vars.primary, [\"source\", \"translation\"], \"source\");\n            var labels = { source: typeof vars.label_source === \"string\" ? vars.label_source : \"EN\", translation: typeof vars.label_translation === \"string\" ? vars.label_translation : \"ID\" };\n            var fontSize = num(vars.font_size, 46, 16, 140), secScale = num(vars.secondary_scale, 0.72, 0.4, 1);\n            var enterFrames = num(vars.enter_frames, 10, 1, 40), secOffset = num(vars.second_offset_frames, 4, 0, 30);\n            var primaryColor = str(vars.primary_color, \"#fafafa\"), secondaryColor = str(vars.secondary_color, \"#b8b8bc\"), labelColor = str(vars.label_color, \"#e8b86d\");\n            var host = document.getElementById(\"sbt-host\");\n            cues.forEach(function (c) {\n              var wrap = mk(\"div\", host, \"sbt-wrap\");\n              wrap.style.padding = fontSize + \"px\";\n              var card = mk(\"div\", wrap, \"sbt-card\");\n              card.style.maxWidth = num(vars.max_width, 78, 30, 100) + \"%\";\n              card.style.background = mixColor(\"transparent\", str(vars.background_color, \"#0a0a0e\"), num(vars.background_opacity, 0.72, 0, 1));\n              card.style.borderRadius = fontSize * 0.36 + \"px\";\n              card.style.padding = fontSize * 0.5 + \"px \" + fontSize * 0.75 + \"px\";\n              card.style.gap = fontSize * 0.22 + \"px\";\n              var order = primary === \"source\"\n                ? [{ text: c.text, label: labels.source, lead: true }, { text: c.translation, label: labels.translation, lead: false }]\n                : [{ text: c.translation, label: labels.translation, lead: true }, { text: c.text, label: labels.source, lead: false }];\n              c.rows = order.map(function (l) {\n                var row = mk(\"div\", card, \"sbt-row\");\n                row.style.gap = fontSize * 0.35 + \"px\";\n                var size = l.lead ? fontSize : fontSize * secScale;\n                if (l.label) {\n                  var tag = mk(\"span\", row, \"sbt-tag\", l.label);\n                  tag.style.color = labelColor; tag.style.fontSize = size * 0.5 + \"px\"; tag.style.minWidth = fontSize * 1.1 + \"px\";\n                }\n                var tx = mk(\"span\", row, \"sbt-line\", l.text);\n                tx.style.color = l.lead ? primaryColor : secondaryColor;\n                tx.style.fontSize = size + \"px\";\n                tx.style.fontWeight = l.lead ? String(num(vars.font_weight, 600, 100, 900)) : \"500\";\n                return row;\n              });\n              c.wrap = wrap;\n            });\n            function draw(frame) {\n              var t = (frame / 30) * 1000;\n              cues.forEach(function (c) {\n                var on = c.startMs <= t && c.endMs > t;\n                c.wrap.style.display = on ? \"flex\" : \"none\";\n                if (!on) return;\n                var startFrame = (c.startMs / 1000) * 30;\n                c.rows.forEach(function (row, i) {\n                  var p = ramp(frame, startFrame + (i === 0 ? 0 : secOffset), startFrame + (i === 0 ? 0 : secOffset) + enterFrames, 0, 1, ENTER);\n                  row.style.opacity = String(clamp01(p * 1.5));\n                  row.style.transform = \"translateY(\" + ((1 - clamp01(p)) * fontSize * 0.3).toFixed(2) + \"px)\";\n                });\n              });\n            }\n            drive(\"subtitle-translate\", draw);\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "f52d57f2a16094a0d432c7965654c59958e258fce61b6c60c96edca6a0c8822d",
+ "duration": 11.5,
+ "webgl": false,
+ "demo_background": "#262626",
+ "demo_values": {
+  "font_size": 58
+ },
+ "variables": [
+  {
+   "id": "cues",
+   "type": "string",
+   "role": "content",
+   "label": "Cues",
+   "default": "[{\"text\": \"Welcome back to the studio.\", \"translation\": \"Selamat datang kembali di studio.\", \"startMs\": 400, \"endMs\": 3200}, {\"text\": \"Today we are shooting a short film.\", \"translation\": \"Hari ini kita syuting film pendek.\", \"startMs\": 3700, \"endMs\": 6800}, {\"text\": \"Keep the camera steady and the light soft.\", \"translation\": \"Jaga kamera tetap stabil dan cahaya tetap lembut.\", \"startMs\": 7300, \"endMs\": 10800}]"
+  },
+  {
+   "id": "primary",
+   "type": "enum",
+   "role": "content",
+   "label": "Lead line",
+   "default": "source"
+  },
+  {
+   "id": "label_source",
+   "type": "string",
+   "role": "content",
+   "label": "Source tag",
+   "default": "EN"
+  },
+  {
+   "id": "label_translation",
+   "type": "string",
+   "role": "content",
+   "label": "Translation tag",
+   "default": "ID"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 46,
+   "min": 16,
+   "max": 140
+  },
+  {
+   "id": "secondary_scale",
+   "type": "number",
+   "role": "style",
+   "label": "Second line scale",
+   "default": 0.72,
+   "min": 0.4,
+   "max": 1
+  },
+  {
+   "id": "font_weight",
+   "type": "number",
+   "role": "style",
+   "label": "Font weight",
+   "default": 600,
+   "min": 100,
+   "max": 900
+  },
+  {
+   "id": "primary_color",
+   "type": "color",
+   "role": "style",
+   "label": "Lead color",
+   "default": "#fafafa"
+  },
+  {
+   "id": "secondary_color",
+   "type": "color",
+   "role": "style",
+   "label": "Second line color",
+   "default": "#b8b8bc"
+  },
+  {
+   "id": "label_color",
+   "type": "color",
+   "role": "style",
+   "label": "Tag color",
+   "default": "#e8b86d"
+  },
+  {
+   "id": "background_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#0a0a0e"
+  },
+  {
+   "id": "background_opacity",
+   "type": "number",
+   "role": "style",
+   "label": "Background opacity",
+   "default": 0.72,
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "max_width",
+   "type": "number",
+   "role": "layout",
+   "label": "Max width",
+   "default": 78,
+   "min": 30,
+   "max": 100
+  },
+  {
+   "id": "enter_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Enter",
+   "default": 10,
+   "min": 1,
+   "max": 40
+  },
+  {
+   "id": "second_offset_frames",
+   "type": "number",
+   "role": "motion",
+   "label": "Second line delay",
+   "default": 4,
+   "min": 0,
+   "max": 30
+  }
+ ],
+ "author_url": "https://remotionui.com"
+}

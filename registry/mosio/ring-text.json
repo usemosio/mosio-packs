@@ -1,0 +1,120 @@
+{
+ "name": "ring-text",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Remocn",
+ "source": {
+  "repo": "https://github.com/Remocn/remocn",
+  "path": "registry/remocn/ring-text/index.tsx",
+  "commit": "126221ae00ba86eb40b65731b125ff398687d3b7"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Ring Text\n\nText runs around a tilted 3D band that spins, reading on the near side and mirrored on the far side.\n\nCategory: typography. Length: 6 s. WebGL: no.\n\nUse when:\n- A headline needs a dimensional object next to it, and the object itself should carry a short phrase.\n- A tagline, a feature name or a slogan should loop continuously in a compact spot.\n- You want a badge-like accent that reads as 3D without any 3D library or assets.\n\nAvoid when:\n- The phrase should scroll flat across the frame: use infinite-marquee.\n- The text should pop out of the plane as a solid extruded word: use extrude-pop.\n- The motion should be ribbons bursting outward rather than a steady ring: use radial-burst.\n\nVariables:\n- text (string): Text, default \"Type in motion\"\n- separator (string): Separator, default \"\\u2022\"\n- color (color): Text color, default \"#d4ff1f\"\n- band (color): Band color, default \"#0a0a0a\"\n- radius (number, 80-340): Radius, default 210\n- font_size (number, 16-90): Font size, default 40\n- tilt (number, 0-80): Tilt, default 38\n- roll (number, -60-60): Roll, default -16\n- period (number, 60-900): Frames per turn, default 240\n- speed (number, 0.25-4): Speed, default 1\n\nSource: https://github.com/Remocn/remocn. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Ring Text\n\n  Text runs around a tilted 3D band that spins, reading on the near side and mirrored on the far side.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/Remocn/remocn/blob/126221ae00ba86eb40b65731b125ff398687d3b7/registry/remocn/ring-text/index.tsx\n\n  MIT License\n\n  Copyright (c) 2026 Remocn\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"ring-text\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"Phrase that runs around the ring.\", \"default\": \"Type in motion\"},\n    {\"id\": \"separator\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Separator\", \"description\": \"Mark between laps of the phrase.\", \"default\": \"•\"},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text color\", \"description\": \"Color of the letters.\", \"default\": \"#d4ff1f\"},\n    {\"id\": \"band\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Band color\", \"description\": \"Color of the band.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"radius\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Radius\", \"description\": \"Ring radius in reference pixels (1280×720 stage); a long phrase grows it.\", \"default\": 210, \"min\": 80, \"max\": 340, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Letter size in reference pixels.\", \"default\": 40, \"min\": 16, \"max\": 90, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"tilt\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Tilt\", \"description\": \"How far the ring leans toward the viewer, in degrees.\", \"default\": 38, \"min\": 0, \"max\": 80, \"step\": 1, \"unit\": \"deg\"},\n    {\"id\": \"roll\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Roll\", \"description\": \"In-plane rotation of the ring, in degrees.\", \"default\": -16, \"min\": -60, \"max\": 60, \"step\": 1, \"unit\": \"deg\"},\n    {\"id\": \"period\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Frames per turn\", \"description\": \"Frames for one full spin (30 fps).\", \"default\": 240, \"min\": 60, \"max\": 900, \"step\": 1, \"unit\": \"frames\"},\n    {\"id\": \"speed\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Speed\", \"description\": \"Playback speed multiplier.\", \"default\": 1, \"min\": 0.25, \"max\": 4, \"step\": 0.05, \"unit\": \"x\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Ring Text</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .rt-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; font-family: Inter, system-ui, sans-serif; }\n        .rt-ring { position: relative; width: 0; height: 0; transform-style: preserve-3d; }\n        .rt-panel { position: absolute; display: flex; align-items: center; justify-content: center; line-height: 1; white-space: pre; font-weight: 800; font-variation-settings: \"wght\" 800; backface-visibility: visible; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"ring-text\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"rt-clip\" class=\"rt-stage clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\">\n          <div id=\"rt-ring\" class=\"rt-ring\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function bool(value, fallback) {\n              if (typeof value === \"boolean\") return value;\n              if (value === \"true\") return true;\n              if (value === \"false\") return false;\n              return fallback;\n            }\n            function fit(el, maxPx, size, ratio) {\n              // Shrink el's font size until its scrollWidth fits ratio of the frame width.\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * (ratio || 0.9));\n              if (el.scrollWidth > max) { size = Math.max(10, size * (max / el.scrollWidth)); el.style.fontSize = size + \"px\"; }\n              return size;\n            }\n            gsap.registerPlugin(CustomEase);\n            function ease(name, a, b, c, d) { return CustomEase.create(name, \"M0,0 C\" + a + \",\" + b + \" \" + c + \",\" + d + \" 1,1\"); }\n            function mulberry32(a) { return function () { a |= 0; a = (a + 0x6d2b79f5) | 0; var t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }\n            var tl = gsap.timeline({ paused: true });\n            var TOTAL = parseFloat(root.dataset.duration || \"6\");\n            function ip(t, a, b, from, to, e) {\n              var p = b === a ? 1 : (t - a) / (b - a);\n              p = Math.min(1, Math.max(0, p));\n              if (e) p = e(p);\n              return from + (to - from) * p;\n            }\n            function hash01(seed) {\n              var h = 2166136261;\n              for (var i = 0; i < seed.length; i++) { h ^= seed.charCodeAt(i); h = Math.imul(h, 16777619); }\n              h = Math.imul(h ^ (h >>> 13), 2246822519);\n              return ((h ^ (h >>> 16)) >>> 0) / 4294967296;\n            }\n            function hashRange(seed, lo, hi) { return lo + hash01(seed) * (hi - lo); }\n            // Snap a frame number down to a stop-motion pose.\n            function qf(frame, step) { return Math.floor(frame / step + 1e-6) * step; }\n            function kf(t, keys, vals, e) {\n              if (t <= keys[0]) return vals[0];\n              for (var i = 0; i < keys.length - 1; i++) if (t <= keys[i + 1]) return ip(t, keys[i], keys[i + 1], vals[i], vals[i + 1], e);\n              return vals[vals.length - 1];\n            }\n            // Per-frame drawing: a pure function of the timeline time, run from a tween's onUpdate.\n            function tick(draw) {\n              tl.to({}, { duration: TOTAL, ease: \"none\", onUpdate: function () { draw(tl.time()); } }, 0);\n              draw(0);\n            }\n            var cubOut = ease(\"cub-out\", 0.215, 0.61, 0.355, 1);\n            var cubIn = ease(\"cub-in\", 0.55, 0.055, 0.675, 0.19);\n            var cubInOut = ease(\"cub-io\", 0.645, 0.045, 0.355, 1);\n\n            var stage = document.getElementById(\"rt-clip\"), ring = document.getElementById(\"rt-ring\");\n            var text = str(vars.text, \"Type in motion\"), sep = typeof vars.separator === \"string\" ? vars.separator : \"•\";\n            var color = col(vars.color, \"#d4ff1f\"), band = col(vars.band, \"#0a0a0a\");\n            var fontPx = num(vars.font_size, 40, 16, 90), radius0 = num(vars.radius, 210, 80, 340);\n            var tilt = num(vars.tilt, 38, 0, 80), roll = num(vars.roll, -16, -60, 60);\n            var period = num(vars.period, 240, 60, 900), speed = num(vars.speed, 1, 0.25, 4);\n            var unit = Math.min(root.clientWidth / 1280, root.clientHeight / 720);\n            var chars = Array.from(sep ? text + \" \" + sep + \" \" : text + \" \");\n            var fontSpec = \"800 \" + fontPx * unit + \"px Inter\";\n            var panels = [], builtReal = false, built = false, bandH = 1.5 * fontPx * unit, bleed = 1.5 * Math.max(1, unit);\n            var layoutRadius = radius0;\n            function build() {\n              ring.textContent = \"\"; panels = [];\n              var probe = document.createElement(\"span\");\n              probe.style.cssText = \"position:absolute;visibility:hidden;white-space:pre;font:\" + fontSpec;\n              stage.appendChild(probe);\n              var adv = chars.map(function (c) { probe.textContent = c; return probe.getBoundingClientRect().width / unit; });\n              stage.removeChild(probe);\n              var tokenW = adv.reduce(function (s, a) { return s + Math.max(0, a); }, 0);\n              var circ = Math.max(2 * Math.PI * radius0, tokenW);\n              var repeats = Math.max(1, Math.floor(circ / tokenW));\n              var spacing = (circ - repeats * tokenW) / (repeats * chars.length);\n              layoutRadius = circ / (2 * Math.PI);\n              var travelled = 0;\n              for (var r = 0; r < repeats; r++) for (var c = 0; c < chars.length; c++) {\n                var w = Math.max(0, adv[c]) + spacing, angle = (2 * Math.PI * (travelled + w / 2)) / circ;\n                travelled += w;\n                var wpx = w * unit, el = document.createElement(\"div\");\n                el.className = \"rt-panel\";\n                el.style.cssText += \"left:\" + (-wpx / 2 - bleed) + \"px;top:\" + -bandH / 2 + \"px;width:\" + (wpx + 2 * bleed) + \"px;height:\" + bandH + \"px;background:\" + band + \";color:\" + color + \";font-size:\" + fontPx * unit + \"px;transform:rotateY(\" + angle + \"rad) translateZ(\" + layoutRadius * unit + \"px)\";\n                var sp = document.createElement(\"span\"); sp.textContent = chars[c]; el.appendChild(sp);\n                ring.appendChild(el); panels.push({ el: sp, angle: angle });\n              }\n            }\n            var easeOutCubic = function (p) { return 1 - Math.pow(1 - p, 3); };\n            stage.style.perspective = 1600 * unit + \"px\";\n            tick(function (tt) {\n              var t = tt * 30 * speed;\n              var ok = !document.fonts || document.fonts.check(fontSpec);\n              if (!built || (ok && !builtReal)) { build(); built = true; builtReal = ok; }\n              var settle = easeOutCubic(Math.min(1, Math.max(0, t / 30)));\n              var spin = (360 * t) / period + 90 * settle;\n              var tl2 = tilt + 6 * Math.sin((2 * Math.PI * t) / 150);\n              stage.style.opacity = ip(t, 0, 12, 0, 1);\n              ring.style.transform = \"scale(\" + (0.85 + 0.15 * settle) + \") rotateZ(\" + roll + \"deg) rotateX(\" + -tl2 + \"deg) rotateY(\" + -spin + \"deg)\";\n              panels.forEach(function (p) {\n                var facing = Math.cos(p.angle - (spin * Math.PI) / 180);\n                p.el.style.opacity = 0.55 + (0.45 * (facing + 1)) / 2;\n              });\n            });\n            var total = parseFloat(root.dataset.duration || \"6\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"ring-text\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "f5991c1f98869c7ced59bbdc1fd12f24064f34c86e8bc4fe28ebe1b838c3e6a0",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#d4ff1f",
+ "demo_values": {
+  "radius": 340,
+  "font_size": 90
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Type in motion"
+  },
+  {
+   "id": "separator",
+   "type": "string",
+   "role": "content",
+   "label": "Separator",
+   "default": "•"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Text color",
+   "default": "#d4ff1f"
+  },
+  {
+   "id": "band",
+   "type": "color",
+   "role": "style",
+   "label": "Band color",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "radius",
+   "type": "number",
+   "role": "style",
+   "label": "Radius",
+   "default": 210,
+   "min": 80,
+   "max": 340
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 40,
+   "min": 16,
+   "max": 90
+  },
+  {
+   "id": "tilt",
+   "type": "number",
+   "role": "motion",
+   "label": "Tilt",
+   "default": 38,
+   "min": 0,
+   "max": 80
+  },
+  {
+   "id": "roll",
+   "type": "number",
+   "role": "motion",
+   "label": "Roll",
+   "default": -16,
+   "min": -60,
+   "max": 60
+  },
+  {
+   "id": "period",
+   "type": "number",
+   "role": "motion",
+   "label": "Frames per turn",
+   "default": 240,
+   "min": 60,
+   "max": 900
+  },
+  {
+   "id": "speed",
+   "type": "number",
+   "role": "motion",
+   "label": "Speed",
+   "default": 1,
+   "min": 0.25,
+   "max": 4
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://github.com/Remocn/remocn"
+}

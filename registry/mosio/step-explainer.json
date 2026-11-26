@@ -1,0 +1,100 @@
+{
+ "name": "step-explainer",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Mosio",
+ "source": {
+  "technique": "line-draw step timeline"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Step Explainer\n\nA how-to with three numbered steps. A line draws from one numbered circle to the next, each step appears in turn with a small drawn icon, a title and a short detail. Vertical in a portrait frame, horizontal in a landscape one. Steps and their icons come from one variable.\n\nCategory: commerce. Length: 6 s. WebGL: no.\n\nUse when:\n- How to order, how to join, how to claim: a three-step process.\n- A shop explaining its ordering flow.\n\nAvoid when:\n- Showing the real ordering interface: use checkout-flow or scroll-menu-phone.\n- More than three steps.\n\nVariables:\n- title (string): Title, default \"Cara pesan\"\n- steps (string): Steps, default \"Pilih menu|Lihat katalog dan tentukan pesananmu|list\\nKirim pesanan|Lewat chat, tanpa antre|chat\\nTerima di rumah|Dikirim di hari yang sama|box\"\n- bg_color (color): Background, default \"#ffffff\"\n- main_color (color): Main colour, default \"#2563eb\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- muted_color (color): Muted colour, default \"#737373\"\n- line_color (color): Line colour, default \"#d4d4d4\"\n- tile_color (color): Icon tile, default \"#f4f4f2\"\n- font_family (string): Font, default \"Geist\"\n- transparent (boolean): Transparent, default false\n\nSource: Mosio original. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Step Explainer\n\n  A how-to with three numbered steps. A line draws from one numbered circle to the next, each step appears in turn with a small drawn icon, a title and a short detail. Vertical in a portrait frame, horizontal in a landscape one. Steps and their icons come from one variable.\n\n  An original usemosio/blocks block (MIT, see LICENSE).\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"step-explainer\"\n  data-composition-duration=\"6\"\n  data-composition-variables='[\n  {\n    \"id\": \"title\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Title\",\n    \"description\": \"Heading above the steps.\",\n    \"default\": \"Cara pesan\"\n  },\n  {\n    \"id\": \"steps\",\n    \"type\": \"string\",\n    \"role\": \"content\",\n    \"label\": \"Steps\",\n    \"description\": \"Three lines, Title|Detail|icon. Icons: list, chat, box, card, clock, pin, check.\",\n    \"default\": \"Pilih menu|Lihat katalog dan tentukan pesananmu|list\\nKirim pesanan|Lewat chat, tanpa antre|chat\\nTerima di rumah|Dikirim di hari yang sama|box\"\n  },\n  {\n    \"id\": \"bg_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Background\",\n    \"description\": \"Background.\",\n    \"default\": \"#ffffff\"\n  },\n  {\n    \"id\": \"main_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Main colour\",\n    \"description\": \"The numbered circles: the one accent.\",\n    \"default\": \"#2563eb\"\n  },\n  {\n    \"id\": \"text_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Text colour\",\n    \"description\": \"Title, step titles and icons.\",\n    \"default\": \"#0a0a0a\"\n  },\n  {\n    \"id\": \"muted_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Muted colour\",\n    \"description\": \"Details.\",\n    \"default\": \"#737373\"\n  },\n  {\n    \"id\": \"line_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Line colour\",\n    \"description\": \"Line joining the steps.\",\n    \"default\": \"#d4d4d4\"\n  },\n  {\n    \"id\": \"tile_color\",\n    \"type\": \"color\",\n    \"role\": \"style\",\n    \"label\": \"Icon tile\",\n    \"description\": \"Background of the icon tiles.\",\n    \"default\": \"#f4f4f2\"\n  },\n  {\n    \"id\": \"font_family\",\n    \"type\": \"string\",\n    \"role\": \"style\",\n    \"label\": \"Font\",\n    \"description\": \"Google Fonts family name; Geist is loaded, others only if the host loads them.\",\n    \"default\": \"Geist\"\n  },\n  {\n    \"id\": \"transparent\",\n    \"type\": \"boolean\",\n    \"role\": \"style\",\n    \"label\": \"Transparent\",\n    \"description\": \"Leave the background clear so the block sits over your own scene.\",\n    \"default\": false\n  }\n]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Step Explainer</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none;\n          -webkit-font-smoothing: antialiased;\n          background: var(--sx-bg); color: var(--sx-text); font-family: var(--sx-font);\n        }\n        #root * { box-sizing: border-box; }\n        .sx-stage { position: absolute; inset: 0; --u: calc(100cqmin / 1080); }\n\n        .sx-svg { position: absolute; inset: 0; width: 100%; height: 100%; }\n        .sx-title { position: absolute; left: 0; right: 0; text-align: center; font-weight: 600; letter-spacing: -0.045em; white-space: nowrap; }\n        .sx-circle { position: absolute; border-radius: 50%; background: var(--sx-main); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-variant-numeric: tabular-nums; }\n        .sx-tile { position: absolute; border-radius: calc(var(--u) * 30); background: var(--sx-tile); display: flex; align-items: center; justify-content: center; }\n        .sx-tile svg { width: 56%; height: 56%; overflow: visible; }\n        .sx-txt { position: absolute; display: flex; flex-direction: column; gap: calc(var(--u) * 8); }\n        .sx-t { font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }\n        .sx-d { font-weight: 500; color: var(--sx-muted); line-height: 1.25; }\n\n      </style>\n\n      <div id=\"root\" data-composition-id=\"step-explainer\" data-duration=\"6\" data-fps=\"30\">\n        <div id=\"sx-clip\" class=\"sx-stage clip\" data-start=\"0\" data-duration=\"6\" data-track-index=\"0\">\n          <div class=\"sx-title\" id=\"sx-title\"></div><svg class=\"sx-svg\" id=\"sx-svg\"></svg><div id=\"sx-items\"></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars = window.__hyperframes && window.__hyperframes.getVariables ? window.__hyperframes.getVariables() || {} : {};\n            function num(v, d, a, b) { var n = Number(v); return Number.isFinite(n) ? Math.min(b, Math.max(a, n)) : d; }\n            function str(v, d) { return typeof v === \"string\" && v.trim() ? v : d; }\n            function colr(v, d) { return typeof v === \"string\" && v.trim() && window.CSS && CSS.supports(\"color\", v.trim()) ? v.trim() : d; }\n            function bool(v, d) { return v === true || v === \"true\" ? true : v === false || v === \"false\" ? false : d; }\n            function el(tag, cls, parent, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; if (parent) parent.appendChild(e); return e; }\n            function esc(s) { return String(s).replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\"); }\n            function lines(v, d) { var s = typeof v === \"string\" && v.trim() ? v : d; return s.split(/\\r?\\n/).map(function (l) { return l.trim(); }).filter(Boolean); }\n            function dots(n) { return String(Math.round(n)).replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\"); }\n            function ease(n, a, b) { return Math.min(1, Math.max(0, (n - a) / (b - a))); }\n            var W = root.clientWidth || 1080, H = root.clientHeight || 1920, U = Math.min(W, H) / 1080, PORTRAIT = H > W;\n            var PAL = [[\"bg\", \"bg_color\", \"#ffffff\"], [\"main\", \"main_color\", \"#2563eb\"], [\"text\", \"text_color\", \"#0a0a0a\"], [\"muted\", \"muted_color\", \"#737373\"], [\"line\", \"line_color\", \"#d4d4d4\"], [\"tile\", \"tile_color\", \"#f4f4f2\"]];\n            PAL.forEach(function (c) { root.style.setProperty(\"--sx-\" + c[0], colr(vars[c[1]], c[2])); });\n            root.style.setProperty(\"--sx-font\", '\"' + str(vars.font_family, \"Geist\") + '\", Geist, system-ui, sans-serif');\n            if (bool(vars.transparent, false)) root.style.background = \"transparent\";\n\n\n            var NS = \"http://www.w3.org/2000/svg\";\n            var ICONS = {\n              list: '<path d=\"M9 7h11M9 12h11M9 17h11\"/><circle cx=\"4.5\" cy=\"7\" r=\"1\"/><circle cx=\"4.5\" cy=\"12\" r=\"1\"/><circle cx=\"4.5\" cy=\"17\" r=\"1\"/>',\n              chat: '<path d=\"M4 5h16v11H11l-5 4v-4H4z\"/><path d=\"M8 9.5h8M8 12.5h5\"/>',\n              box: '<path d=\"M12 3l8 4v10l-8 4-8-4V7z\"/><path d=\"M4 7l8 4 8-4M12 11v10\"/>',\n              card: '<rect x=\"3\" y=\"6\" width=\"18\" height=\"12\" rx=\"2\"/><path d=\"M3 10h18M7 15h4\"/>',\n              clock: '<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 7v5l3.5 2\"/>',\n              pin: '<path d=\"M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.3\"/>',\n              check: '<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M8 12.5l3 3 5-6\"/>'\n            };\n            var steps = lines(vars.steps, \"Pilih menu|Lihat katalog dan tentukan pesananmu|list\\nKirim pesanan|Lewat chat, tanpa antre|chat\\nTerima di rumah|Dikirim di hari yang sama|box\").slice(0, 3).map(function (l) { var a = l.split(\"|\"); return { t: (a[0] || \"\").trim(), d: (a[1] || \"\").trim(), i: (a[2] || \"\").trim().toLowerCase() }; });\n            var order = [\"list\", \"chat\", \"box\"];\n            var te = document.getElementById(\"sx-title\"), tt = typeof vars.title === \"string\" ? vars.title.trim() : \"Cara pesan\";\n            te.textContent = tt; te.style.fontSize = (PORTRAIT ? 110 : 90) * U + \"px\"; te.style.top = (PORTRAIT ? 150 : 80) * U + \"px\"; if (!tt) te.style.display = \"none\";\n            var svg = document.getElementById(\"sx-svg\"); svg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n            var items = document.getElementById(\"sx-items\"), cd = (PORTRAIT ? 120 : 124) * U, tl = gsap.timeline({ paused: true }), pos = [];\n            var n = steps.length;\n            steps.forEach(function (st, i) {\n              if (PORTRAIT) { var top0 = (tt ? 420 : 260) * U, span = (H - 160 * U - top0 - cd) / Math.max(1, n - 1); pos.push({ x: 150 * U, y: top0 + cd / 2 + i * Math.min(span, 540 * U) }); }\n              else { var cw = (W - 2 * 140 * U) / n; pos.push({ x: 140 * U + cw * (i + 0.5), y: (tt ? 400 : 300) * U }); }\n            });\n            for (var i = 1; i < n; i++) {\n              var a = pos[i - 1], b = pos[i], pa = document.createElementNS(NS, \"path\");\n              var dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len, g = cd / 2 + 16 * U;\n              pa.setAttribute(\"d\", \"M\" + (a.x + ux * g) + \" \" + (a.y + uy * g) + \" L\" + (b.x - ux * g) + \" \" + (b.y - uy * g));\n              pa.setAttribute(\"stroke\", \"var(--sx-line)\"); pa.setAttribute(\"stroke-width\", 6 * U); pa.setAttribute(\"stroke-linecap\", \"round\"); pa.setAttribute(\"fill\", \"none\");\n              pa.setAttribute(\"pathLength\", \"1\"); pa.setAttribute(\"stroke-dasharray\", \"1\"); pa.setAttribute(\"stroke-dashoffset\", \"1\"); svg.appendChild(pa);\n              tl.to(pa, { strokeDashoffset: 0, duration: 0.55, ease: \"power2.inOut\" }, 0.7 + (i - 1) * 1.5 + 0.9);\n            }\n            tl.fromTo(\"#sx-title\", { opacity: 0, y: -24 * U }, { opacity: 1, y: 0, duration: 0.6, ease: \"power3.out\" }, 0.1);\n            steps.forEach(function (st, i) {\n              var p = pos[i], t0 = 0.7 + i * 1.5 - (i ? 0.0 : 0) + (i ? 0.9 + 0.35 : 0);\n              var c = el(\"div\", \"sx-circle\", items, String(i + 1)); c.style.cssText += \"width:\" + cd + \"px;height:\" + cd + \"px;left:\" + (p.x - cd / 2) + \"px;top:\" + (p.y - cd / 2) + \"px;font-size:\" + cd * 0.46 + \"px\";\n              var ts = (PORTRAIT ? 160 : 200) * U, tile = el(\"div\", \"sx-tile\", items, '<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"var(--sx-text)\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\">' + (ICONS[st.i] || ICONS[order[i % 3]]) + \"</svg>\");\n              var tx = el(\"div\", \"sx-txt\", items, '<span class=\"sx-t\">' + esc(st.t) + '</span><span class=\"sx-d\">' + esc(st.d) + \"</span>\");\n              tile.style.width = tile.style.height = ts + \"px\";\n              tx.firstChild.style.fontSize = (PORTRAIT ? 58 : 64) * U + \"px\"; tx.lastChild.style.fontSize = (PORTRAIT ? 38 : 40) * U + \"px\";\n              if (PORTRAIT) {\n                tile.style.left = 270 * U + \"px\"; tile.style.top = p.y - ts / 2 + \"px\";\n                tx.style.left = (270 + 160 + 40) * U + \"px\"; tx.style.width = W - (270 + 160 + 40 + 50) * U + \"px\"; tx.style.top = p.y - 66 * U + \"px\";\n              } else {\n                var cw = (W - 2 * 140 * U) / n;\n                tile.style.left = p.x - ts / 2 + \"px\"; tile.style.top = p.y + cd / 2 + 60 * U + \"px\";\n                tx.style.left = p.x - cw / 2 + 30 * U + \"px\"; tx.style.width = cw - 60 * U + \"px\"; tx.style.top = p.y + cd / 2 + 60 * U + ts + 36 * U + \"px\"; tx.style.textAlign = \"center\";\n              }\n              tl.fromTo(c, { scale: 0 }, { scale: 1, duration: 0.45, ease: \"back.out(1.7)\" }, t0);\n              tl.fromTo(tile, { opacity: 0, y: 20 * U }, { opacity: 1, y: 0, duration: 0.45, ease: \"power3.out\" }, t0 + 0.1);\n              [].forEach.call(tile.querySelectorAll(\"path,circle,rect\"), function (sh) { tl.fromTo(sh, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: \"power2.out\" }, t0 + 0.3); });\n              tl.fromTo(tx, { opacity: 0, y: 20 * U }, { opacity: 1, y: 0, duration: 0.5, ease: \"power3.out\" }, t0 + 0.2);\n            });\n\n            var total = parseFloat(root.dataset.duration || \"6\");\n            if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n            tl.seek(0);\n            window.__timelines = window.__timelines || {};\n            window.__timelines[\"step-explainer\"] = tl;\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "012a887a0b9f9f0b12914e6c9cf6bc817dc29d2c36254da8fc7b00458991b92c",
+ "duration": 6,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {},
+ "variables": [
+  {
+   "id": "title",
+   "type": "string",
+   "role": "content",
+   "label": "Title",
+   "default": "Cara pesan"
+  },
+  {
+   "id": "steps",
+   "type": "string",
+   "role": "content",
+   "label": "Steps",
+   "default": "Pilih menu|Lihat katalog dan tentukan pesananmu|list\nKirim pesanan|Lewat chat, tanpa antre|chat\nTerima di rumah|Dikirim di hari yang sama|box"
+  },
+  {
+   "id": "bg_color",
+   "type": "color",
+   "role": "style",
+   "label": "Background",
+   "default": "#ffffff"
+  },
+  {
+   "id": "main_color",
+   "type": "color",
+   "role": "style",
+   "label": "Main colour",
+   "default": "#2563eb"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "muted_color",
+   "type": "color",
+   "role": "style",
+   "label": "Muted colour",
+   "default": "#737373"
+  },
+  {
+   "id": "line_color",
+   "type": "color",
+   "role": "style",
+   "label": "Line colour",
+   "default": "#d4d4d4"
+  },
+  {
+   "id": "tile_color",
+   "type": "color",
+   "role": "style",
+   "label": "Icon tile",
+   "default": "#f4f4f2"
+  },
+  {
+   "id": "font_family",
+   "type": "string",
+   "role": "style",
+   "label": "Font",
+   "default": "Geist"
+  },
+  {
+   "id": "transparent",
+   "type": "boolean",
+   "role": "style",
+   "label": "Transparent",
+   "default": false
+  }
+ ],
+ "author_url": "https://mosio.me"
+}

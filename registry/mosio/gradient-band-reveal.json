@@ -1,0 +1,101 @@
+{
+ "name": "gradient-band-reveal",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Magic UI",
+ "source": {
+  "repo": "https://github.com/magicuidesign/magicui",
+  "path": "apps/www/registry/magicui/dia-text-reveal.tsx",
+  "commit": "166367b4e31a27f166fd6c2b71d7be290fe0c1bc"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Gradient Band Reveal\n\nA soft multi-colour gradient band sweeps left to right across the text, revealing the letters behind it; with several texts it then swaps to the next and sweeps again.\n\nCategory: typography. Length: 5 s. WebGL: no.\n\nUse when:\n- A headline should be revealed by a smooth colour wash that settles into the normal text colour.\n- A few phrases should take turns, each revealed the same way.\n\nAvoid when:\n- The reveal should be letter by letter or word by word: use per-character-rise or per-word-rise.\n- A gloss that passes over text already on screen is enough: use text-shimmer.\n\nVariables:\n- text (string): Text, default \"Welcome back|See you soon\"\n- font_size (number, 12-260): Font size, default 96\n- colors (string): Band colours, default \"#A97CF8,#F38CB8,#FDCC92\"\n- text_color (color): Text colour, default \"#0a0a0a\"\n- duration (number, 0.4-5): Sweep time, default 1.5\n- delay (number, 0-3): Delay, default 0.2\n- repeat (enum): Repeat, default \"loop\"\n- repeat_delay (number, 0-3): Pause between texts, default 0.5\n\nSource: https://github.com/magicuidesign/magicui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Gradient Band Reveal\n\n  A soft multi-colour gradient band sweeps left to right across the text, revealing the letters behind it; with several texts it then swaps to the next and sweeps again.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/magicuidesign/magicui/blob/166367b4e31a27f166fd6c2b71d7be290fe0c1bc/apps/www/registry/magicui/dia-text-reveal.tsx\n\n  MIT License\n\n  Copyright (c) Magic UI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"gradient-band-reveal\"\n  data-composition-duration=\"5\"\n  data-composition-variables='[\n    {\"id\": \"text\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text\", \"description\": \"The text to reveal. Separate several texts with | to take turns when Repeat is on.\", \"default\": \"Welcome back|See you soon\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Maximum text size in pixels. Longer text shrinks to fit the frame.\", \"default\": 96, \"min\": 12, \"max\": 260, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"colors\", \"type\": \"string\", \"role\": \"style\", \"label\": \"Band colours\", \"description\": \"Colours across the moving band, comma separated.\", \"default\": \"#A97CF8,#F38CB8,#FDCC92\"},\n    {\"id\": \"text_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text colour\", \"description\": \"Colour of the revealed text.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"duration\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Sweep time\", \"description\": \"Seconds one sweep takes (the source uses 1.5).\", \"default\": 1.5, \"min\": 0.4, \"max\": 5, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Delay\", \"description\": \"Seconds before each sweep starts.\", \"default\": 0.2, \"min\": 0, \"max\": 3, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"repeat\", \"type\": \"enum\", \"role\": \"motion\", \"label\": \"Repeat\", \"description\": \"With several texts, move on to the next after each sweep.\", \"default\": \"loop\", \"options\": [{\"value\": \"loop\", \"label\": \"Cycle through the texts\"}, {\"value\": \"once\", \"label\": \"Sweep the first text once\"}]},\n    {\"id\": \"repeat_delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Pause between texts\", \"description\": \"Seconds between a finished sweep and the next text.\", \"default\": 0.5, \"min\": 0, \"max\": 3, \"step\": 0.1, \"unit\": \"s\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Gradient Band Reveal</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700;800&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .dtr-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .dtr-line { font-family: var(--font-display, Geist, system-ui, sans-serif); font-weight: 700; letter-spacing: -0.025em; line-height: 1; white-space: nowrap; }\n        .dtr-text {\n          display: inline-block;\n          overflow: hidden;\n          vertical-align: bottom;\n          padding: 0.08em 0;\n          color: transparent;\n          -webkit-text-fill-color: transparent;\n          -webkit-background-clip: text;\n          background-clip: text;\n          background-size: 100% 100%;\n        }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"gradient-band-reveal\" data-duration=\"5\" data-fps=\"30\">\n        <div id=\"dtr-clip\" class=\"dtr-stage clip\" data-start=\"0\" data-duration=\"5\" data-track-index=\"0\">\n          <div id=\"dtr-line\" class=\"dtr-line\"><span id=\"dtr-text\" class=\"dtr-text\"></span></div>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Shrink an element's font until it fits a share of the frame width.\n            function fit(el, size, share) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * share);\n              if (el.scrollWidth > max) {\n                size = Math.max(12, size * (max / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            // A seeded random generator, so every seek draws the same thing.\n            function mulberry32(a) {\n              return function () {\n                a |= 0; a = (a + 0x6d2b79f5) | 0;\n                var t = Math.imul(a ^ (a >>> 15), 1 | a);\n                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n            gsap.registerPlugin(CustomEase);\n            var TAG = \"dtr\";\n            var bezN = 0;\n            function bez(x1, y1, x2, y2) {\n              return CustomEase.create(TAG + \"-\" + bezN++, \"M0,0 C\" + x1 + \",\" + y1 + \" \" + x2 + \",\" + y2 + \" 1,1\");\n            }\n            var tl = gsap.timeline({ paused: true });\n            function finish() {\n              var total = parseFloat(root.dataset.duration || \"5\");\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"gradient-band-reveal\"] = tl;\n            }\n\n            var line = document.getElementById(\"dtr-line\");\n            var el = document.getElementById(\"dtr-text\");\n            var texts = str(vars.text, \"Welcome back|See you soon\").split(\"|\").map(function (s) { return s.trim(); }).filter(Boolean);\n            if (!texts.length) texts = [\"Welcome back\"];\n            var looping = String(vars.repeat) !== \"once\" && texts.length > 1;\n            if (!looping) texts = texts.slice(0, 1);\n            var colors = str(vars.colors, \"#A97CF8,#F38CB8,#FDCC92\").split(\",\").map(function (c) { return c.trim(); }).filter(Boolean);\n            if (!colors.length) colors = [\"#A97CF8\"];\n            var textColor = col(vars.text_color, \"#0a0a0a\");\n            var dur = num(vars.duration, 1.5, 0.4, 5);\n            var delay = num(vars.delay, 0.2, 0, 3);\n            var gap = num(vars.repeat_delay, 0.5, 0, 3);\n            var total = parseFloat(root.dataset.duration || \"5\");\n            // Size to the widest text, then measure each text's width.\n            var size = num(vars.font_size, 96, 12, 260);\n            line.style.fontSize = size + \"px\";\n            // A hidden twin measures each text in the live font (re-measured per frame, so a\n            // late-loading font cannot leave the box too narrow).\n            var ghost = el.cloneNode(false);\n            ghost.id = \"dtr-ghost\";\n            ghost.style.cssText = \"position:absolute;visibility:hidden;width:auto;left:0;top:0;padding:0.08em 0\";\n            line.appendChild(ghost);\n            function widthOf(i) { ghost.textContent = texts[i]; return ghost.getBoundingClientRect().width; }\n            var widest = Math.max.apply(null, texts.map(function (_, i) { return widthOf(i); }));\n            if (widest > root.clientWidth * 0.9) {\n              size = Math.max(12, size * (root.clientWidth * 0.9) / widest);\n              line.style.fontSize = size + \"px\";\n            }\n            var BAND = 17, START = -BAND, END = 100 + BAND;\n            function sweepEase(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }\n            function gradient(pos) {\n              var bs = pos - BAND, be = pos + BAND;\n              if (bs >= 100) return \"linear-gradient(90deg, \" + textColor + \", \" + textColor + \")\";\n              var n = colors.length, parts = [];\n              if (bs > 0) parts.push(textColor + \" 0%\", textColor + \" \" + bs.toFixed(2) + \"%\");\n              colors.forEach(function (c, i) {\n                var pct = n === 1 ? pos : bs + (i / (n - 1)) * BAND * 2;\n                parts.push(c + \" \" + pct.toFixed(2) + \"%\");\n              });\n              if (be < 100) parts.push(\"transparent \" + be.toFixed(2) + \"%\", \"transparent 100%\");\n              return \"linear-gradient(90deg, \" + parts.join(\", \") + \")\";\n            }\n            // Cycle k: swap to text k, wait `delay`, sweep for `dur`, pause `gap`, next.\n            var cycles = [];\n            var swap = 0;\n            for (var k = 0; swap < total + 0.001; k++) {\n              var startSweep = swap + delay;\n              if (k > 0 && startSweep + dur > total + 0.001) break;\n              cycles.push({ swap: swap, start: startSweep, end: startSweep + dur, i: k % texts.length });\n              if (!looping) break;\n              swap = startSweep + dur + gap;\n            }\n            var wEase = bez(0.4, 0, 0.2, 1);\n            var shown = -1;\n            var clock = { t: 0 };\n            function draw(t) {\n              var c = cycles[0], idx = 0;\n              for (var j = 0; j < cycles.length; j++) if (cycles[j].swap <= t) { c = cycles[j]; idx = j; }\n              if (shown !== idx) { el.textContent = texts[c.i]; shown = idx; }\n              var pos = t <= c.start ? START : t >= c.end ? END : START + (END - START) * sweepEase((t - c.start) / dur);\n              el.style.backgroundImage = gradient(pos);\n              if (looping) {\n                var curW = widthOf(c.i);\n                var prevW = idx > 0 ? widthOf(cycles[idx - 1].i) : curW;\n                var f = idx > 0 ? wEase(Math.min(1, Math.max(0, (t - c.swap) / 0.4))) : 1;\n                el.style.width = (prevW + (curW - prevW) * f).toFixed(2) + \"px\";\n              } else {\n                el.style.width = \"auto\";\n              }\n            }\n            line.style.color = textColor;\n            tl.to(clock, { t: total, duration: total, ease: \"none\", onUpdate: function () { draw(clock.t); } }, 0);\n            draw(0);\n\n            finish();\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "3f989b42e3b2cfb458144481ee54d75397c73194abd0b11d73e400866a17cc1c",
+ "duration": 5,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 130
+ },
+ "variables": [
+  {
+   "id": "text",
+   "type": "string",
+   "role": "content",
+   "label": "Text",
+   "default": "Welcome back|See you soon"
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 96,
+   "min": 12,
+   "max": 260
+  },
+  {
+   "id": "colors",
+   "type": "string",
+   "role": "style",
+   "label": "Band colours",
+   "default": "#A97CF8,#F38CB8,#FDCC92"
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "duration",
+   "type": "number",
+   "role": "motion",
+   "label": "Sweep time",
+   "default": 1.5,
+   "min": 0.4,
+   "max": 5
+  },
+  {
+   "id": "delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Delay",
+   "default": 0.2,
+   "min": 0,
+   "max": 3
+  },
+  {
+   "id": "repeat",
+   "type": "enum",
+   "role": "motion",
+   "label": "Repeat",
+   "default": "loop"
+  },
+  {
+   "id": "repeat_delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Pause between texts",
+   "default": 0.5,
+   "min": 0,
+   "max": 3
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://magicui.design"
+}

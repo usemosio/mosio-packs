@@ -1,0 +1,133 @@
+{
+ "name": "highlighter",
+ "type": "mosio:scene",
+ "version": "1.0.0",
+ "license": "MIT",
+ "author": "Magic UI",
+ "source": {
+  "repo": "https://github.com/magicuidesign/magicui",
+  "path": "apps/www/registry/magicui/highlighter.tsx",
+  "commit": "166367b4e31a27f166fd6c2b71d7be290fe0c1bc"
+ },
+ "files": [
+  {
+   "path": "SCENE.md",
+   "role": "instructions",
+   "content": "# Highlighter\n\nA hand-drawn mark is scribbled over part of a sentence: marker highlight, underline, box, circle, strike-through, crossed-off or bracket, drawn stroke by stroke with a slightly wobbly line.\n\nCategory: typography. Length: 4 s. WebGL: no.\n\nUse when:\n- One phrase in a sentence needs a hand-drawn emphasis mark that draws itself on.\n- An explainer line should look annotated, like marker on paper.\n\nAvoid when:\n- You want a clean rectangular highlight bar: use inline-highlight.\n- The mark should follow a moving target or cursor.\n\nVariables:\n- text_before (string): Text before, default \"The \"\n- marked (string): Marked phrase, default \"Highlighter\"\n- text_after (string): Text after, default \" makes important text stand out effortlessly.\"\n- font_size (number, 12-200): Font size, default 64\n- text_color (color): Text colour, default \"#0a0a0a\"\n- action (enum): Mark, default \"highlight\"\n- color (color): Mark colour, default \"#ffd1dc\"\n- stroke_width (number, 0.5-8): Stroke width, default 1.5\n- iterations (number, 1-4): Passes, default 2\n- padding (number, 0-40): Padding, default 2\n- draw_seconds (number, 0.2-3): Draw time, default 0.6\n- delay (number, 0-3): Delay, default 0.6\n\nSource: https://github.com/magicuidesign/magicui. Licence: MIT. The scene file keeps the upstream notice.\n"
+  },
+  {
+   "path": "scene.html",
+   "role": "source",
+   "content": "<!doctype html>\n<!--\n  Highlighter\n\n  A hand-drawn mark is scribbled over part of a sentence: marker highlight, underline, box, circle, strike-through, crossed-off or bracket, drawn stroke by stroke with a slightly wobbly line.\n\n  Ported to an HTML + GSAP sub-composition by usemosio/blocks from:\n  https://github.com/magicuidesign/magicui/blob/166367b4e31a27f166fd6c2b71d7be290fe0c1bc/apps/www/registry/magicui/highlighter.tsx\n  Changes by usemosio/blocks: the source draws its marks with the rough-notation library; this block draws seeded, wobbly SVG strokes of its own in the same kinds.\n\n  MIT License\n\n  Copyright (c) Magic UI\n\n  Permission is hereby granted, free of charge, to any person obtaining a copy\n  of this software and associated documentation files (the \"Software\"), to deal\n  in the Software without restriction, including without limitation the rights\n  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n  copies of the Software, and to permit persons to whom the Software is\n  furnished to do so, subject to the following conditions:\n\n  The above copyright notice and this permission notice shall be included in all\n  copies or substantial portions of the Software.\n\n  THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n  SOFTWARE.\n-->\n<html\n  lang=\"en\"\n  data-composition-id=\"highlighter\"\n  data-composition-duration=\"4\"\n  data-composition-variables='[\n    {\"id\": \"text_before\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text before\", \"description\": \"Plain text before the marked phrase.\", \"default\": \"The \"},\n    {\"id\": \"marked\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Marked phrase\", \"description\": \"The phrase that receives the hand-drawn mark.\", \"default\": \"Highlighter\"},\n    {\"id\": \"text_after\", \"type\": \"string\", \"role\": \"content\", \"label\": \"Text after\", \"description\": \"Plain text after the marked phrase.\", \"default\": \" makes important text stand out effortlessly.\"},\n    {\"id\": \"font_size\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Font size\", \"description\": \"Text size in pixels. The paragraph wraps inside 86 % of the frame width.\", \"default\": 64, \"min\": 12, \"max\": 200, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"text_color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Text colour\", \"description\": \"Colour of the text.\", \"default\": \"#0a0a0a\"},\n    {\"id\": \"action\", \"type\": \"enum\", \"role\": \"style\", \"label\": \"Mark\", \"description\": \"Kind of mark.\", \"default\": \"highlight\", \"options\": [{\"value\": \"highlight\", \"label\": \"Highlight\"}, {\"value\": \"underline\", \"label\": \"Underline\"}, {\"value\": \"box\", \"label\": \"Box\"}, {\"value\": \"circle\", \"label\": \"Circle\"}, {\"value\": \"strike-through\", \"label\": \"Strike-through\"}, {\"value\": \"crossed-off\", \"label\": \"Crossed off\"}, {\"value\": \"bracket\", \"label\": \"Brackets\"}]},\n    {\"id\": \"color\", \"type\": \"color\", \"role\": \"style\", \"label\": \"Mark colour\", \"description\": \"Colour of the mark.\", \"default\": \"#ffd1dc\"},\n    {\"id\": \"stroke_width\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Stroke width\", \"description\": \"Line width of the mark in pixels (source 1.5; scaled with the text here). Ignored by highlight, which fills the text height.\", \"default\": 1.5, \"min\": 0.5, \"max\": 8, \"step\": 0.25, \"unit\": \"px\"},\n    {\"id\": \"iterations\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Passes\", \"description\": \"How many times the mark is drawn over itself.\", \"default\": 2, \"min\": 1, \"max\": 4, \"step\": 1},\n    {\"id\": \"padding\", \"type\": \"number\", \"role\": \"style\", \"label\": \"Padding\", \"description\": \"Space between the text and the mark, in pixels (source 2).\", \"default\": 2, \"min\": 0, \"max\": 40, \"step\": 1, \"unit\": \"px\"},\n    {\"id\": \"draw_seconds\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Draw time\", \"description\": \"Seconds the whole mark takes to draw (the source uses 0.6).\", \"default\": 0.6, \"min\": 0.2, \"max\": 3, \"step\": 0.1, \"unit\": \"s\"},\n    {\"id\": \"delay\", \"type\": \"number\", \"role\": \"motion\", \"label\": \"Delay\", \"description\": \"Seconds before the mark starts to draw.\", \"default\": 0.6, \"min\": 0, \"max\": 3, \"step\": 0.1, \"unit\": \"s\"}\n  ]'\n>\n  <head>\n    <meta charset=\"UTF-8\" />\n    <title>Highlighter</title>\n  </head>\n  <body>\n    <template>\n      <link\n        rel=\"stylesheet\"\n        href=\"https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;display=block\"\n      />\n      <style>\n        #root {\n          position: absolute;\n          inset: 0;\n          overflow: hidden;\n          container-type: size;\n          pointer-events: none;\n        }\n        .hlt-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }\n        .hlt-para { position: relative; z-index: 1; width: 86%; text-align: center; font-family: var(--font-display, Geist, system-ui, sans-serif); font-weight: 500; line-height: 1.5; white-space: pre-wrap; }\n        .hlt-mark { position: relative; display: inline; }\n        .hlt-svg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; overflow: visible; }\n        .hlt-svg path { fill: none; stroke-linecap: butt; stroke-linejoin: round; }\n      </style>\n\n      <div id=\"root\" data-composition-id=\"highlighter\" data-duration=\"4\" data-fps=\"30\">\n        <div id=\"hlt-clip\" class=\"hlt-stage clip\" data-start=\"0\" data-duration=\"4\" data-track-index=\"0\">\n          <svg id=\"hlt-svg\" class=\"hlt-svg\" xmlns=\"http://www.w3.org/2000/svg\"></svg>\n          <p id=\"hlt-para\" class=\"hlt-para\"><span id=\"hlt-before\"></span><span id=\"hlt-mark\" class=\"hlt-mark\"></span><span id=\"hlt-after\"></span></p>\n        </div>\n\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js\"></script>\n        <script src=\"https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/CustomEase.min.js\"></script>\n        <script>\n          (function () {\n            \"use strict\";\n            var root = document.getElementById(\"root\");\n            var vars =\n              window.__hyperframes && window.__hyperframes.getVariables\n                ? window.__hyperframes.getVariables()\n                : {};\n            function num(value, fallback, min, max) {\n              var n = Number(value);\n              return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback;\n            }\n            function str(value, fallback) {\n              return typeof value === \"string\" && value.trim() ? value : fallback;\n            }\n            function col(value, fallback) {\n              return typeof value === \"string\" && value ? value : fallback;\n            }\n            function pick(value, options, fallback) {\n              return options.indexOf(String(value)) >= 0 ? String(value) : fallback;\n            }\n            // Shrink an element's font until it fits a share of the frame width.\n            function fit(el, size, share) {\n              el.style.fontSize = size + \"px\";\n              var max = Math.max(1, root.clientWidth * share);\n              if (el.scrollWidth > max) {\n                size = Math.max(12, size * (max / el.scrollWidth));\n                el.style.fontSize = size + \"px\";\n              }\n              return size;\n            }\n            // A seeded random generator, so every seek draws the same thing.\n            function mulberry32(a) {\n              return function () {\n                a |= 0; a = (a + 0x6d2b79f5) | 0;\n                var t = Math.imul(a ^ (a >>> 15), 1 | a);\n                t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;\n                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;\n              };\n            }\n            function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }\n            gsap.registerPlugin(CustomEase);\n            var TAG = \"hlt\";\n            var bezN = 0;\n            function bez(x1, y1, x2, y2) {\n              return CustomEase.create(TAG + \"-\" + bezN++, \"M0,0 C\" + x1 + \",\" + y1 + \" \" + x2 + \",\" + y2 + \" 1,1\");\n            }\n            var tl = gsap.timeline({ paused: true });\n            function finish() {\n              var total = parseFloat(root.dataset.duration || \"4\");\n              if (tl.duration() < total) tl.to({}, { duration: total - tl.duration() });\n              tl.seek(0);\n              window.__timelines = window.__timelines || {};\n              window.__timelines[\"highlighter\"] = tl;\n            }\n\n            var para = document.getElementById(\"hlt-para\");\n            var svg = document.getElementById(\"hlt-svg\");\n            var markEl = document.getElementById(\"hlt-mark\");\n            document.getElementById(\"hlt-before\").textContent = typeof vars.text_before === \"string\" ? vars.text_before : \"The \";\n            markEl.textContent = str(vars.marked, \"Highlighter\");\n            document.getElementById(\"hlt-after\").textContent = typeof vars.text_after === \"string\" ? vars.text_after : \" makes important text stand out effortlessly.\";\n            para.style.color = col(vars.text_color, \"#0a0a0a\");\n            var size = num(vars.font_size, 64, 12, 200);\n            para.style.fontSize = size + \"px\";\n            var action = pick(vars.action, [\"highlight\", \"underline\", \"box\", \"circle\", \"strike-through\", \"crossed-off\", \"bracket\"], \"highlight\");\n            var color = col(vars.color, \"#ffd1dc\");\n            var sw = num(vars.stroke_width, 1.5, 0.5, 8) * Math.max(1, size / 24);\n            var passes = Math.round(num(vars.iterations, 2, 1, 4));\n            var pad = num(vars.padding, 2, 0, 40);\n            var drawS = num(vars.draw_seconds, 0.6, 0.2, 3);\n            var delay = num(vars.delay, 0.6, 0, 3);\n            var rnd = mulberry32(2024);\n            function j(a) { return (rnd() * 2 - 1) * a; }\n            var W = root.clientWidth, H = root.clientHeight;\n            svg.setAttribute(\"viewBox\", \"0 0 \" + W + \" \" + H);\n            var rootBox = root.getBoundingClientRect();\n            var rects = Array.from(markEl.getClientRects()).map(function (r) {\n              return { x: r.left - rootBox.left - pad, y: r.top - rootBox.top - pad, w: r.width + pad * 2, h: r.height + pad * 2 };\n            });\n            var NS = \"http://www.w3.org/2000/svg\";\n            var wob = Math.max(1.2, size / 28); // wobble amount grows with the text\n            function line(x1, y1, x2, y2) {\n              var mx = (x1 + x2) / 2 + j(wob), my = (y1 + y2) / 2 + j(wob);\n              return \"M\" + (x1 + j(wob)).toFixed(1) + \" \" + (y1 + j(wob)).toFixed(1) + \" Q\" + mx.toFixed(1) + \" \" + my.toFixed(1) + \" \" + (x2 + j(wob)).toFixed(1) + \" \" + (y2 + j(wob)).toFixed(1);\n            }\n            function ellipse(r) {\n              var cx = r.x + r.w / 2, cy = r.y + r.h / 2, rx = r.w / 2 * 1.08 + 4, ry = r.h / 2 * 1.2 + 2;\n              var a0 = -2.2 + j(0.2), steps = 28, turn = 6.28 + 0.5, pts = [];\n              for (var i = 0; i <= steps; i++) {\n                var a = a0 + (i / steps) * turn, w = 1 + j(0.03) + (i / steps) * 0.05;\n                pts.push([cx + Math.cos(a) * rx * w, cy + Math.sin(a) * ry * w]);\n              }\n              return \"M\" + pts.map(function (p) { return p[0].toFixed(1) + \" \" + p[1].toFixed(1); }).join(\" L\");\n            }\n            var paths = []; // {d, width, opacity}\n            rects.forEach(function (r) {\n              for (var k = 0; k < passes; k++) {\n                var dir = k % 2 === 0;\n                var L = r.x, R = r.x + r.w, T = r.y, B = r.y + r.h, M = r.y + r.h / 2;\n                if (action === \"highlight\") {\n                  paths.push({ d: dir ? line(L, M + j(2), R, M + j(2)) : line(R, M + j(2), L, M + j(2)), width: r.h * (k === 0 ? 0.92 : 0.7), opacity: k === 0 ? 1 : 0.55 });\n                } else if (action === \"underline\") {\n                  var y = B + 1 + j(1);\n                  paths.push({ d: dir ? line(L, y, R, y + j(2)) : line(R, y + j(2), L, y), width: sw });\n                } else if (action === \"strike-through\") {\n                  paths.push({ d: dir ? line(L, M, R, M + j(2)) : line(R, M + j(2), L, M), width: sw });\n                } else if (action === \"box\") {\n                  paths.push({ d: line(L, T, R, T) + \" \" + line(R, T, R, B).replace(\"M\", \"L\").replace(/Q/, \"Q\") + \" \" + line(R, B, L, B).replace(\"M\", \"L\") + \" \" + line(L, B, L, T).replace(\"M\", \"L\"), width: sw });\n                } else if (action === \"circle\") {\n                  paths.push({ d: ellipse(r), width: sw });\n                } else if (action === \"crossed-off\") {\n                  paths.push({ d: dir ? line(L, T, R, B) : line(R, T, L, B), width: sw });\n                } else if (action === \"bracket\") {\n                  var t = Math.max(6, size * 0.18);\n                  var left = \"M\" + (L + t) + \" \" + (T + j(1)) + \" Q\" + (L + j(2)) + \" \" + (T + j(2)) + \" \" + L + \" \" + (T + t) + \" L\" + (L + j(1)) + \" \" + (B - t) + \" Q\" + (L + j(2)) + \" \" + (B + j(2)) + \" \" + (L + t) + \" \" + B;\n                  var right = \"M\" + (R - t) + \" \" + (T + j(1)) + \" Q\" + (R + j(2)) + \" \" + (T + j(2)) + \" \" + R + \" \" + (T + t) + \" L\" + (R + j(1)) + \" \" + (B - t) + \" Q\" + (R + j(2)) + \" \" + (B + j(2)) + \" \" + (R - t) + \" \" + B;\n                  paths.push({ d: left, width: sw });\n                  paths.push({ d: right, width: sw });\n                }\n              }\n            });\n            // Each path draws in turn, over `draw_seconds` in all.\n            var each = drawS / Math.max(1, paths.length);\n            paths.forEach(function (p, i) {\n              var el = document.createElementNS(NS, \"path\");\n              el.setAttribute(\"d\", p.d);\n              el.setAttribute(\"pathLength\", \"1\");\n              el.setAttribute(\"stroke\", color);\n              el.setAttribute(\"stroke-width\", p.width);\n              el.setAttribute(\"stroke-dasharray\", \"1\");\n              el.setAttribute(\"stroke-dashoffset\", \"1\");\n              if (p.opacity) el.setAttribute(\"stroke-opacity\", p.opacity);\n              el.id = \"hlt-path-\" + i;\n              svg.appendChild(el);\n              tl.fromTo(el, { attr: { \"stroke-dashoffset\": 1 } }, { attr: { \"stroke-dashoffset\": 0 }, duration: each, ease: \"none\", immediateRender: true }, delay + i * each);\n            });\n\n            finish();\n          })();\n        </script>\n      </div>\n    </template>\n  </body>\n</html>\n"
+  }
+ ],
+ "sha256": "22b3d1c9d39bbdb47dfcb27c426e640d0401d8bfdc980c6e7c93c1b278c91172",
+ "duration": 4,
+ "webgl": false,
+ "demo_background": "#ffffff",
+ "demo_values": {
+  "font_size": 90
+ },
+ "variables": [
+  {
+   "id": "text_before",
+   "type": "string",
+   "role": "content",
+   "label": "Text before",
+   "default": "The "
+  },
+  {
+   "id": "marked",
+   "type": "string",
+   "role": "content",
+   "label": "Marked phrase",
+   "default": "Highlighter"
+  },
+  {
+   "id": "text_after",
+   "type": "string",
+   "role": "content",
+   "label": "Text after",
+   "default": " makes important text stand out effortlessly."
+  },
+  {
+   "id": "font_size",
+   "type": "number",
+   "role": "style",
+   "label": "Font size",
+   "default": 64,
+   "min": 12,
+   "max": 200
+  },
+  {
+   "id": "text_color",
+   "type": "color",
+   "role": "style",
+   "label": "Text colour",
+   "default": "#0a0a0a"
+  },
+  {
+   "id": "action",
+   "type": "enum",
+   "role": "style",
+   "label": "Mark",
+   "default": "highlight"
+  },
+  {
+   "id": "color",
+   "type": "color",
+   "role": "style",
+   "label": "Mark colour",
+   "default": "#ffd1dc"
+  },
+  {
+   "id": "stroke_width",
+   "type": "number",
+   "role": "style",
+   "label": "Stroke width",
+   "default": 1.5,
+   "min": 0.5,
+   "max": 8
+  },
+  {
+   "id": "iterations",
+   "type": "number",
+   "role": "style",
+   "label": "Passes",
+   "default": 2,
+   "min": 1,
+   "max": 4
+  },
+  {
+   "id": "padding",
+   "type": "number",
+   "role": "style",
+   "label": "Padding",
+   "default": 2,
+   "min": 0,
+   "max": 40
+  },
+  {
+   "id": "draw_seconds",
+   "type": "number",
+   "role": "motion",
+   "label": "Draw time",
+   "default": 0.6,
+   "min": 0.2,
+   "max": 3
+  },
+  {
+   "id": "delay",
+   "type": "number",
+   "role": "motion",
+   "label": "Delay",
+   "default": 0.6,
+   "min": 0,
+   "max": 3
+  }
+ ],
+ "plugins": [
+  "CustomEase"
+ ],
+ "author_url": "https://magicui.design"
+}
