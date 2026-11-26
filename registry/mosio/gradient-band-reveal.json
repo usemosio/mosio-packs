@@ -97,5 +97,8 @@
  "plugins": [
   "CustomEase"
  ],
- "author_url": "https://magicui.design"
+ "author_url": "https://magicui.design",
+ "registryDependencies": [
+  "@mosio/font-geist"
+ ]
 }

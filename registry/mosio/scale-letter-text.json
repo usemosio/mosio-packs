@@ -81,5 +81,8 @@
  "plugins": [
   "CustomEase"
  ],
- "author_url": "https://www.eldoraui.site"
+ "author_url": "https://www.eldoraui.site",
+ "registryDependencies": [
+  "@mosio/font-geist"
+ ]
 }

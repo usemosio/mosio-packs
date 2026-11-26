@@ -72,5 +72,8 @@
    "default": false
   }
  ],
- "author_url": "https://github.com/Remocn/remocn"
+ "author_url": "https://github.com/Remocn/remocn",
+ "registryDependencies": [
+  "@mosio/font-geist"
+ ]
 }

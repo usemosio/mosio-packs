@@ -95,5 +95,8 @@
    "default": "600"
   }
  ],
- "author_url": "https://kokonutui.com"
+ "author_url": "https://kokonutui.com",
+ "registryDependencies": [
+  "@mosio/font-geist"
+ ]
 }

@@ -96,5 +96,8 @@
    "default": true
   }
  ],
- "author_url": "https://github.com/heygen-com/hyperframes"
+ "author_url": "https://github.com/heygen-com/hyperframes",
+ "registryDependencies": [
+  "@mosio/font-caveat"
+ ]
 }

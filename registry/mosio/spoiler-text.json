@@ -102,5 +102,8 @@
  "plugins": [
   "CustomEase"
  ],
- "author_url": "https://kokonutui.com"
+ "author_url": "https://kokonutui.com",
+ "registryDependencies": [
+  "@mosio/font-geist"
+ ]
 }

@@ -113,5 +113,8 @@
  "plugins": [
   "CustomEase"
  ],
- "author_url": "https://fancycomponents.dev"
+ "author_url": "https://fancycomponents.dev",
+ "registryDependencies": [
+  "@mosio/font-geist"
+ ]
 }

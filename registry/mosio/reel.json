@@ -87,5 +87,8 @@
    "default": "#0b0b0c"
   }
  ],
- "author_url": "https://github.com/Remocn/remocn"
+ "author_url": "https://github.com/Remocn/remocn",
+ "registryDependencies": [
+  "@mosio/font-inter"
+ ]
 }

@@ -88,5 +88,8 @@
    "default": "900"
   }
  ],
- "author_url": "https://animata.design"
+ "author_url": "https://animata.design",
+ "registryDependencies": [
+  "@mosio/font-geist"
+ ]
 }

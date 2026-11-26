@@ -91,5 +91,9 @@
    "default": "#0b0f1c"
   }
  ],
- "author_url": "https://github.com/heygen-com/hyperframes"
+ "author_url": "https://github.com/heygen-com/hyperframes",
+ "registryDependencies": [
+  "@mosio/font-inter",
+  "@mosio/font-jetbrains-mono"
+ ]
 }

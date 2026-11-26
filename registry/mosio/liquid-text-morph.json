@@ -122,5 +122,11 @@
    "max": 10
   }
  ],
- "author_url": "https://remotionui.com"
+ "author_url": "https://remotionui.com",
+ "registryDependencies": [
+  "@mosio/font-geist",
+  "@mosio/font-playfair-display",
+  "@mosio/font-poppins",
+  "@mosio/font-space-grotesk"
+ ]
 }

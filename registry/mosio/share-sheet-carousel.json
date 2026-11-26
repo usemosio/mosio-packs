@@ -140,5 +140,8 @@
    "default": "#f2ecdf"
   }
  ],
- "author_url": "https://github.com/heygen-com/hyperframes"
+ "author_url": "https://github.com/heygen-com/hyperframes",
+ "registryDependencies": [
+  "@mosio/font-inter"
+ ]
 }

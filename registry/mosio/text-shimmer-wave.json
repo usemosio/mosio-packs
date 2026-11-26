@@ -133,5 +133,8 @@
  "plugins": [
   "CustomEase"
  ],
- "author_url": "https://motion-primitives.com"
+ "author_url": "https://motion-primitives.com",
+ "registryDependencies": [
+  "@mosio/font-geist"
+ ]
 }

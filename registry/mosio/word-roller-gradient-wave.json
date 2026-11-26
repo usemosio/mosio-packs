@@ -96,5 +96,8 @@
    "max": 4
   }
  ],
- "author_url": "https://github.com/lifeprompt-team/remotion-scenes"
+ "author_url": "https://github.com/lifeprompt-team/remotion-scenes",
+ "registryDependencies": [
+  "@mosio/font-geist"
+ ]
 }

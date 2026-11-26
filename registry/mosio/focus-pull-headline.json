@@ -91,5 +91,8 @@
    "default": false
   }
  ],
- "author_url": "https://mosio.me"
+ "author_url": "https://mosio.me",
+ "registryDependencies": [
+  "@mosio/font-geist"
+ ]
 }

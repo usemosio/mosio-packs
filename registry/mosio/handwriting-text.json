@@ -161,5 +161,8 @@
    "max": 999
   }
  ],
- "author_url": "https://remotionui.com"
+ "author_url": "https://remotionui.com",
+ "registryDependencies": [
+  "@mosio/font-caveat"
+ ]
 }

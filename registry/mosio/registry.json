@@ -16249,6 +16249,127 @@
       ],
       "version": "1.0.0",
       "license": "MIT"
+    },
+    {
+      "name": "font-bebas-neue",
+      "type": "mosio:font",
+      "title": "Bebas Neue",
+      "description": "Bebas Neue, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-caveat",
+      "type": "mosio:font",
+      "title": "Caveat",
+      "description": "Caveat, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-geist",
+      "type": "mosio:font",
+      "title": "Geist",
+      "description": "Geist, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-geist-mono",
+      "type": "mosio:font",
+      "title": "Geist Mono",
+      "description": "Geist Mono, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-inter",
+      "type": "mosio:font",
+      "title": "Inter",
+      "description": "Inter, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-jetbrains-mono",
+      "type": "mosio:font",
+      "title": "JetBrains Mono",
+      "description": "JetBrains Mono, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-manrope",
+      "type": "mosio:font",
+      "title": "Manrope",
+      "description": "Manrope, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-playfair-display",
+      "type": "mosio:font",
+      "title": "Playfair Display",
+      "description": "Playfair Display, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-poppins",
+      "type": "mosio:font",
+      "title": "Poppins",
+      "description": "Poppins, bundled as woff2 (5 files, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-space-grotesk",
+      "type": "mosio:font",
+      "title": "Space Grotesk",
+      "description": "Space Grotesk, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
+    },
+    {
+      "name": "font-space-mono",
+      "type": "mosio:font",
+      "title": "Space Mono",
+      "description": "Space Mono, bundled as woff2 (2 files, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1"
     }
   ]
 }

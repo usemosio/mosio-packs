@@ -119,5 +119,8 @@
    "default": "#f6f6f2"
   }
  ],
- "author_url": "https://github.com/heygen-com/hyperframes"
+ "author_url": "https://github.com/heygen-com/hyperframes",
+ "registryDependencies": [
+  "@mosio/font-inter"
+ ]
 }

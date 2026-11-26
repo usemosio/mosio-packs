@@ -98,5 +98,8 @@
  "plugins": [
   "CustomEase"
  ],
- "author_url": "https://onda.video"
+ "author_url": "https://onda.video",
+ "registryDependencies": [
+  "@mosio/font-caveat"
+ ]
 }
