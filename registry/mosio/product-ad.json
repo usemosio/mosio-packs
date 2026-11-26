@@ -6,7 +6,7 @@
   "author": "Mosio",
   "source": {
     "repo": "mosio recipes",
-    "commit": "fa390cbb6de8d4c73df625a7c91fd12e1292ea50",
+    "commit": "4f011ee74363466d2a953993f0fb21037f7cf6ad",
     "path": "recipes/product-ad"
   },
   "params": {
@@ -418,7 +418,7 @@
     {
       "path": "example/shared/base.css",
       "role": "example",
-      "content": "/* Fixed foundation of the recipe: fonts, reset and the scene frame. Brand values are in tokens.css, not here. */\n@font-face { font-family: \"Inter\"; font-weight: 400; src: url(\"/assets/fonts/Inter-Regular.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 700; src: url(\"/assets/fonts/Inter-Bold.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 800; src: url(\"/assets/fonts/Inter-ExtraBold.otf\") format(\"opentype\"); }\n* { margin: 0; padding: 0; box-sizing: border-box; }\nhtml, body { width: var(--w); height: var(--h); overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font-body); }\n.scene { position: absolute; inset: 0; overflow: hidden; }\nh1, h2 { font-family: var(--font-display); font-weight: 800; line-height: 1.04; letter-spacing: -0.02em; }\n.acc { color: var(--accent); }\n"
+      "content": "/* Fixed foundation of the recipe: fonts, reset and the scene frame. Brand values are in tokens.css, not here. */\n* { margin: 0; padding: 0; box-sizing: border-box; }\nhtml, body { width: var(--w); height: var(--h); overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font-body); }\n.scene { position: absolute; inset: 0; overflow: hidden; }\nh1, h2 { font-family: var(--font-display); font-weight: 800; line-height: 1.04; letter-spacing: -0.02em; }\n.acc { color: var(--accent); }\n"
     },
     {
       "path": "example/shared/tokens.css",
@@ -426,5 +426,5 @@
       "content": "/* Brand and layout tokens for every scene (recipe product-ad). Edit values here: every scene that imports this file\n   re-renders, which is correct, because they all depend on it. */\n:root {\n  --bg: #0b1020;\n  --main: #1e293b;\n  --accent: #f59e0b;\n  --text: #f8fafc;\n  --text-on-accent: #111111;\n  --surface: color-mix(in srgb, var(--text) 8%, var(--bg));\n  --text-dim: color-mix(in srgb, var(--text) 68%, var(--bg));\n  --font-display: \"Inter\", sans-serif;\n  --font-body: \"Inter\", sans-serif;\n  --w: 1920px;\n  --h: 1080px;\n  --type-scale: 1;\n  --pace: 1;\n  --fs-display: 120px;\n  --fs-body: 46px;\n  --fs-price: 96px;\n  --margin: 140px;\n}\n"
     }
   ],
-  "sha256": "9ad65c9714e9bd345181f0087813e42836dcca20e3dc9c9418888a4b199f73b0"
+  "sha256": "8e2fdab81ac2a55adfc392db5c6b92ff562253782d65ba7bca484db61d9487cd"
 }
