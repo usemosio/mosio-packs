@@ -48,7 +48,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "art-deco",
@@ -63,7 +63,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "ascii-crt",
@@ -78,7 +78,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "bauhaus-geometry",
@@ -123,7 +123,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "brick-toy",
@@ -169,7 +169,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "cel-anime-80s",
@@ -185,7 +185,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "chat-testimoni",
@@ -262,7 +262,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "crayon-book",
@@ -277,7 +277,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "dark-stage",
@@ -292,7 +292,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "dasbor-iklan",
@@ -355,7 +355,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "dataviz",
@@ -370,7 +370,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "dev-console",
@@ -401,7 +401,7 @@
         "9:16",
         "16:9"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "editorial-paper",
@@ -448,7 +448,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.1"
     },
     {
       "name": "etalase-hp",
@@ -525,7 +525,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "glass-product",
@@ -540,7 +540,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "halaman-produk",
@@ -556,7 +556,7 @@
         "9:16",
         "16:9"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "halftone-dossier",
@@ -572,7 +572,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "hologram-hud",
@@ -587,7 +587,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "impasto",
@@ -602,7 +602,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "ink-wash",
@@ -617,7 +617,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "instrument-panel",
@@ -647,7 +647,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "isometric-stack",
@@ -771,7 +771,7 @@
         "9:16",
         "16:9"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "ketik-jadi-produk",
@@ -835,7 +835,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.1"
     },
     {
       "name": "kolase-arsip",
@@ -914,7 +914,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "living-screencast",
@@ -929,7 +929,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "lowpoly-island",
@@ -944,7 +944,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "maskot-piksel",
@@ -1006,7 +1006,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "midcentury-toon",
@@ -1022,7 +1022,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "news-package",
@@ -1037,7 +1037,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "newsreel",
@@ -1053,7 +1053,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "one-line",
@@ -1068,7 +1068,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "orbit-kartu",
@@ -1129,7 +1129,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "paper-popup",
@@ -1145,7 +1145,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "papercut-red",
@@ -1160,7 +1160,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "particle-field",
@@ -1222,7 +1222,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "pixel-diorama",
@@ -1238,7 +1238,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "pixel-rpg",
@@ -1269,7 +1269,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "podcast-blur-fit",
@@ -1361,7 +1361,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "recap-panggung",
@@ -1392,7 +1392,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "sampul-majalah",
@@ -1423,7 +1423,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "scifi-toon",
@@ -1438,7 +1438,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.1"
     },
     {
       "name": "shadow-puppet",
@@ -1454,7 +1454,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "silent-film",
@@ -1470,7 +1470,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "silkscreen-poster",
@@ -1485,7 +1485,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "split-step",
@@ -1515,7 +1515,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "stained-glass",
@@ -1530,7 +1530,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "step-deck",
@@ -1545,7 +1545,7 @@
         "9:16",
         "16:9"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "stickman-garis",
@@ -1814,7 +1814,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "talking-head",
@@ -1848,7 +1848,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "tier-list",
@@ -1878,7 +1878,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "two-ink-print",
@@ -1941,7 +1941,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "visual-investigation",
@@ -1956,7 +1956,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "visual-story",
@@ -2002,7 +2002,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "white-model",
@@ -2017,7 +2017,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "whiteboard",
@@ -2032,7 +2032,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "woodcut",
@@ -2048,7 +2048,7 @@
         "16:9",
         "9:16"
       ],
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "accordion",
