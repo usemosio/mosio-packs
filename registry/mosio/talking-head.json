@@ -1,0 +1,542 @@
+{
+  "name": "talking-head",
+  "type": "mosio:recipe",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Mosio",
+  "source": {
+    "repo": "mosio recipes",
+    "commit": "4f011ee74363466d2a953993f0fb21037f7cf6ad",
+    "path": "recipes/talking-head"
+  },
+  "params": {
+    "schema": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "media"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{1,39}$",
+          "default": "talking-head",
+          "description": "Project name written to mosio.json."
+        },
+        "format": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "Output size. The length follows the cut transcript plus the end card.",
+          "properties": {
+            "ratio": {
+              "enum": [
+                "9:16",
+                "16:9"
+              ],
+              "default": "9:16",
+              "description": "9:16 reframes landscape footage to vertical around reframe.focus_x; 16:9 keeps it landscape."
+            }
+          }
+        },
+        "media": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "footage",
+            "transcript"
+          ],
+          "description": "The source files, relative to the params file. They are copied into the project's assets/media/.",
+          "properties": {
+            "footage": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The speaker footage (any format Mosio decodes), with its own audio."
+            },
+            "footage_size": {
+              "type": "object",
+              "additionalProperties": false,
+              "default": {},
+              "description": "Display size of the footage in pixels, for the reframe (the applier does not decode media).",
+              "properties": {
+                "width": {
+                  "type": "integer",
+                  "minimum": 16,
+                  "default": 1920,
+                  "description": "Display width in pixels."
+                },
+                "height": {
+                  "type": "integer",
+                  "minimum": 16,
+                  "default": 1080,
+                  "description": "Display height in pixels."
+                }
+              }
+            },
+            "transcript": {
+              "type": "string",
+              "pattern": "\\.srt$",
+              "description": "SubRip transcript of the footage, one cue per spoken line, timed to the footage. It drives the cuts and becomes the captions."
+            },
+            "music": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional music bed (any audio Mosio decodes), at least as long as the cut video."
+            },
+            "broll": {
+              "type": "array",
+              "maxItems": 8,
+              "default": [],
+              "description": "Picture-only clips cut over the speaker while they keep talking.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "src",
+                  "at_cue"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,23}$",
+                    "description": "Clip id in mosio.json. Defaults to broll-N."
+                  },
+                  "src": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The B-roll file, relative to the params file."
+                  },
+                  "at_cue": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Transcript cue the clip covers; it starts 0.2 s into the cue."
+                  },
+                  "frames": {
+                    "type": "integer",
+                    "minimum": 15,
+                    "description": "Length in frames; defaults to the rest of the cue."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "cut": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "What is cut out of the footage.",
+          "properties": {
+            "mode": {
+              "enum": [
+                "transcript",
+                "keep"
+              ],
+              "default": "transcript",
+              "description": "transcript: keep every cue (padded), cut the pauses between them. keep: keep only the given ranges."
+            },
+            "pad_s": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.5,
+              "default": 0.12,
+              "description": "transcript mode: seconds kept before and after each cue, so words are not clipped."
+            },
+            "merge_gap_s": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2,
+              "default": 0.35,
+              "description": "transcript mode: pauses shorter than this are kept (the cues are joined)."
+            },
+            "keep": {
+              "type": "array",
+              "default": [],
+              "description": "keep mode: source ranges in seconds, in any order.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "in",
+                  "out"
+                ],
+                "properties": {
+                  "in": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Start, seconds into the footage."
+                  },
+                  "out": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "description": "End, seconds into the footage."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "reframe": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "How the footage fills the frame.",
+          "properties": {
+            "focus_x": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "default": 0.5,
+              "description": "Horizontal position of the speaker in the footage (0 left, 1 right); 9:16 keeps it centred."
+            },
+            "punch_in": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 1.3,
+              "default": 1.08,
+              "description": "Zoom on every other cut, which hides the jump between two kept segments. 1 turns it off."
+            }
+          }
+        },
+        "mix": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "Music level (the speech plays at 0 dB).",
+          "properties": {
+            "music_db": {
+              "type": "number",
+              "minimum": -60,
+              "maximum": 0,
+              "default": -22,
+              "description": "Music gain under the speech (ducked)."
+            },
+            "music_db_end": {
+              "type": "number",
+              "minimum": -60,
+              "maximum": 0,
+              "default": -10,
+              "description": "Music gain under the end card."
+            },
+            "duck_frames": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60,
+              "default": 12,
+              "description": "Length of the equal-power crossfade between the two levels."
+            }
+          }
+        },
+        "captions": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "Burned-in captions from the transcript.",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true,
+              "description": "Write captions/captions.srt and burn it in with the brand colours."
+            }
+          }
+        },
+        "end_hold_s": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 6,
+          "default": 2.5,
+          "description": "Length of the end card after the last word."
+        },
+        "content": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "The overlays.",
+          "properties": {
+            "beats": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 8,
+              "description": "One overlay scene per beat, in order: an a-roll lower third first, a cta end card last, callouts and numbers in between, each starting at its transcript cue.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "role",
+                  "text"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9-]{0,23}$",
+                    "description": "Optional scene id (used in every data-mosio-id). Defaults to the role name; a repeated role gets -2, -3."
+                  },
+                  "role": {
+                    "enum": [
+                      "a-roll",
+                      "fact",
+                      "proof",
+                      "number",
+                      "cta"
+                    ],
+                    "description": "a-roll: the speaker's lower third (first beat). fact, proof: a callout card. number: a counting stat. cta: the end card after the speech (last beat)."
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "The words on screen, written literally into the scene HTML. For a-roll, the speaker's name."
+                  },
+                  "key": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "description": "The word or words of the text to stress with the accent colour. Must occur in the text."
+                  },
+                  "at_cue": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Transcript cue (1-based, in the original transcript) the overlay starts with. Required for every beat but cta; ignored for the first beat, which starts at 0."
+                  },
+                  "subtitle": {
+                    "type": "string",
+                    "maxLength": 48,
+                    "description": "a-roll: second line of the lower third (role, company)."
+                  },
+                  "tag": {
+                    "type": "string",
+                    "maxLength": 16,
+                    "default": "",
+                    "description": "fact, proof: small label above the callout text. Empty for none."
+                  },
+                  "value": {
+                    "type": "number",
+                    "description": "number: the value the counter runs to."
+                  },
+                  "decimals": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 3,
+                    "default": 0,
+                    "description": "number: decimals shown while counting."
+                  },
+                  "suffix": {
+                    "type": "string",
+                    "maxLength": 4,
+                    "default": "",
+                    "description": "number: text right after the value, e.g. % or x."
+                  },
+                  "button": {
+                    "type": "string",
+                    "maxLength": 28,
+                    "default": "",
+                    "description": "cta: text of the pill under the line. Empty for none."
+                  },
+                  "weight": {
+                    "enum": [
+                      "short",
+                      "medium",
+                      "long"
+                    ],
+                    "default": "medium",
+                    "description": "Kept for the shared params shape; media recipes time beats by the transcript, not by weight."
+                  }
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "properties": {
+                        "role": {
+                          "const": "number"
+                        }
+                      }
+                    },
+                    "then": {
+                      "required": [
+                        "value"
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "style": {
+          "type": "object",
+          "additionalProperties": false,
+          "default": {},
+          "description": "Look: brand colours, type size and motion speed.",
+          "properties": {
+            "brand": {
+              "type": "object",
+              "additionalProperties": false,
+              "default": {},
+              "description": "Brand colours. They are written to shared/tokens.css (overlays) and to the captions style in mosio.json.",
+              "properties": {
+                "bg": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Card and end-card background, caption outline (--bg).",
+                  "default": "#111827"
+                },
+                "main": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Tag pill and end-card glow (--main).",
+                  "default": "#38bdf8"
+                },
+                "accent": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Key words, the lower-third bar, the stat and the button (--accent).",
+                  "default": "#f59e0b"
+                },
+                "text": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Overlay and caption text (--text).",
+                  "default": "#f9fafb"
+                },
+                "text_on_accent": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$",
+                  "description": "Text on the accent colour, the button label (--text-on-accent).",
+                  "default": "#111827"
+                }
+              }
+            },
+            "font_scale": {
+              "type": "number",
+              "minimum": 0.6,
+              "maximum": 1.25,
+              "default": 1,
+              "description": "Multiplier on every overlay and caption size (--type-scale)."
+            },
+            "pacing": {
+              "enum": [
+                "calm",
+                "medium",
+                "brisk"
+              ],
+              "default": "medium",
+              "description": "Speed of the overlay entrances (--pace)."
+            }
+          }
+        }
+      }
+    },
+    "example": {
+      "name": "talking-head-demo",
+      "format": {
+        "ratio": "9:16"
+      },
+      "media": {
+        "footage": "../../fixtures/nm-talking-head/assets/th-footage.mp4",
+        "transcript": "../../fixtures/nm-talking-head/assets/th-transcript.srt",
+        "music": "../../fixtures/nm-talking-head/assets/th-music.wav"
+      },
+      "reframe": {
+        "focus_x": 0.5
+      },
+      "content": {
+        "beats": [
+          {
+            "role": "a-roll",
+            "text": "Rina Halim",
+            "subtitle": "Video editor, small teams"
+          },
+          {
+            "role": "fact",
+            "at_cue": 2,
+            "text": "Pauses and captions eat the edit",
+            "key": "Pauses captions",
+            "tag": "Before"
+          },
+          {
+            "role": "proof",
+            "at_cue": 3,
+            "text": "The transcript drives every cut",
+            "key": "transcript",
+            "tag": "Now"
+          },
+          {
+            "role": "number",
+            "at_cue": 5,
+            "value": 1,
+            "text": "moment re-renders",
+            "key": "moment"
+          },
+          {
+            "role": "cta",
+            "text": "Try it on your next video",
+            "key": "next",
+            "button": "mosio render"
+          }
+        ]
+      },
+      "style": {
+        "brand": {
+          "bg": "#111827",
+          "main": "#38bdf8",
+          "accent": "#f59e0b",
+          "text": "#f9fafb",
+          "text_on_accent": "#111827"
+        },
+        "pacing": "medium"
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "RECIPE.md",
+      "role": "instructions",
+      "content": "# Talking head\n\nA speaker on camera, edited from the transcript. You bring the footage and its SubRip transcript (from any\nspeech-to-text tool). The recipe does the rest:\n\n- cuts the pauses between lines (`cut.mode: transcript`), or keeps the ranges you give (`cut.mode: keep`);\n- reframes landscape footage to 9:16 around the speaker (`reframe.focus_x`), with a small punch-in on every other cut\n  so the jump does not show;\n- burns in captions in the brand colours, retimed to the cut;\n- adds a lower third, callouts, stats and an end card (the timeline overlays, each starting with a transcript cue);\n- cuts picture-only B-roll over the speaker while they keep talking;\n- adds a music bed that sits low under the speech and comes up for the end card.\n\nUse it for interviews, tips, founder updates, course clips: one person talking, whose words carry the video.\n\n## Taste\n\n- **Let the face lead.** Overlays come and go within about four seconds and never cover the speaker's face (callouts\n  sit at the top, the lower third above the captions). One overlay at a time.\n- **Callouts stress, they do not repeat.** Pick the two or three claims worth remembering. Keep them to one short line,\n  with the key word in the accent colour.\n- **Numbers count.** Use `number` only for a figure the speaker says out loud.\n- **B-roll proves what is said**, for one cue at a time. The speech keeps going under it.\n- **Cut tight, not breathless.** `pad_s` 0.1–0.15 s keeps the breath before a word. Raise `merge_gap_s` to keep short,\n  meaningful pauses.\n- **The end card is a pause.** 2–3 s, one line and one action.\n\n## Inputs\n\n| Param | Notes |\n|---|---|\n| `media.footage` | Speaker footage with its own audio. Give `media.footage_size` if it is not 1920×1080. |\n| `media.transcript` | `.srt`, one cue per line, timed to the footage. Cue numbers (1-based) are what `at_cue` refers to. |\n| `media.music` | Optional. It should run at least as long as the cut video. |\n| `media.broll[]` | `{src, at_cue, frames?}`: picture only, starting 0.2 s into the cue. Clips may not overlap. |\n| `content.beats[]` | First `a-roll` (name + `subtitle`), last `cta` (end card); in between, `fact`, `proof` or `number`, each with `at_cue`. |\n\n## After applying\nThe result is an ordinary Mosio project: edit words in place, change a brand token in `shared/tokens.css` and only the scenes that import it re-render.\n"
+    },
+    {
+      "path": "plan.md",
+      "role": "beats",
+      "content": "# Talking head: beat plan\n\nLength 6 to 180 s (default 20). Roles: a-roll, fact, proof, number, cta; 2 to 8 beats.\nTempo per beat (seconds): short 2, medium 3, long 4.\n\n## a-roll\n\n- scene: scenes/lower-third.html\n- technique: accent bar grows, card wipes in, name words rise, subtitle fades; leaves after ~4 s\n- primitives: bar-grow, wipe-in, rise-fade\n- limits: {\"max_words\": 4}\n\n## fact / proof\n\n- scene: scenes/callout.html\n- technique: card pops in near the top, tag slides, words rise one by one, underline draws\n- primitives: pop, rise-fade, draw\n- limits: {\"max_words\": 9}\n\n## number\n\n- scene: scenes/number.html\n- technique: card pops, value counts up from zero, label words rise\n- primitives: pop, count-up, rise-fade\n- limits: {\"max_words\": 6}\n\n## cta\n\n- scene: scenes/end-card.html\n- technique: brand end card fades over the last frame, words rise, button pops\n- primitives: fade, rise-fade, pop\n- limits: {\"max_words\": 6}\n\n## Controls\n\n- Speaker position (`/reframe/focus_x`): Where the 9:16 crop sits on the landscape footage: transform.x of every a-roll clip in mosio.json.\n- Cut tightness (`/cut/pad_s`): How much air is kept around each line: the a-roll clip ranges, caption times and overlay starts all move, so most windows re-render.\n- Accent colour (`/style/brand/accent`): Key words, bar, stat and button: --accent in shared/tokens.css, so every overlay re-renders.\n- Callout text (`/content/beats/1/text`): Edit the words of one callout directly in its scene file; only that callout's windows re-render.\n"
+    },
+    {
+      "path": "params.json",
+      "role": "params",
+      "content": "{\n  \"example\": {\n    \"content\": {\n      \"beats\": [\n        {\n          \"role\": \"a-roll\",\n          \"subtitle\": \"Video editor, small teams\",\n          \"text\": \"Rina Halim\"\n        },\n        {\n          \"at_cue\": 2,\n          \"key\": \"Pauses captions\",\n          \"role\": \"fact\",\n          \"tag\": \"Before\",\n          \"text\": \"Pauses and captions eat the edit\"\n        },\n        {\n          \"at_cue\": 3,\n          \"key\": \"transcript\",\n          \"role\": \"proof\",\n          \"tag\": \"Now\",\n          \"text\": \"The transcript drives every cut\"\n        },\n        {\n          \"at_cue\": 5,\n          \"key\": \"moment\",\n          \"role\": \"number\",\n          \"text\": \"moment re-renders\",\n          \"value\": 1\n        },\n        {\n          \"button\": \"mosio render\",\n          \"key\": \"next\",\n          \"role\": \"cta\",\n          \"text\": \"Try it on your next video\"\n        }\n      ]\n    },\n    \"format\": {\n      \"ratio\": \"9:16\"\n    },\n    \"media\": {\n      \"footage\": \"../../fixtures/nm-talking-head/assets/th-footage.mp4\",\n      \"music\": \"../../fixtures/nm-talking-head/assets/th-music.wav\",\n      \"transcript\": \"../../fixtures/nm-talking-head/assets/th-transcript.srt\"\n    },\n    \"name\": \"talking-head-demo\",\n    \"reframe\": {\n      \"focus_x\": 0.5\n    },\n    \"style\": {\n      \"brand\": {\n        \"accent\": \"#f59e0b\",\n        \"bg\": \"#111827\",\n        \"main\": \"#38bdf8\",\n        \"text\": \"#f9fafb\",\n        \"text_on_accent\": \"#111827\"\n      },\n      \"pacing\": \"medium\"\n    }\n  },\n  \"schema\": {\n    \"additionalProperties\": false,\n    \"properties\": {\n      \"captions\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Burned-in captions from the transcript.\",\n        \"properties\": {\n          \"enabled\": {\n            \"default\": true,\n            \"description\": \"Write captions/captions.srt and burn it in with the brand colours.\",\n            \"type\": \"boolean\"\n          }\n        },\n        \"type\": \"object\"\n      },\n      \"content\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"The overlays.\",\n        \"properties\": {\n          \"beats\": {\n            \"description\": \"One overlay scene per beat, in order: an a-roll lower third first, a cta end card last, callouts and numbers in between, each starting at its transcript cue.\",\n            \"items\": {\n              \"additionalProperties\": false,\n              \"allOf\": [\n                {\n                  \"if\": {\n                    \"properties\": {\n                      \"role\": {\n                        \"const\": \"number\"\n                      }\n                    }\n                  },\n                  \"then\": {\n                    \"required\": [\n                      \"value\"\n                    ]\n                  }\n                }\n              ],\n              \"properties\": {\n                \"at_cue\": {\n                  \"description\": \"Transcript cue (1-based, in the original transcript) the overlay starts with. Required for every beat but cta; ignored for the first beat, which starts at 0.\",\n                  \"minimum\": 1,\n                  \"type\": \"integer\"\n                },\n                \"button\": {\n                  \"default\": \"\",\n                  \"description\": \"cta: text of the pill under the line. Empty for none.\",\n                  \"maxLength\": 28,\n                  \"type\": \"string\"\n                },\n                \"decimals\": {\n                  \"default\": 0,\n                  \"description\": \"number: decimals shown while counting.\",\n                  \"maximum\": 3,\n                  \"minimum\": 0,\n                  \"type\": \"integer\"\n                },\n                \"id\": {\n                  \"description\": \"Optional scene id (used in every data-mosio-id). Defaults to the role name; a repeated role gets -2, -3.\",\n                  \"pattern\": \"^[a-z][a-z0-9-]{0,23}$\",\n                  \"type\": \"string\"\n                },\n                \"key\": {\n                  \"description\": \"The word or words of the text to stress with the accent colour. Must occur in the text.\",\n                  \"maxLength\": 40,\n                  \"type\": \"string\"\n                },\n                \"role\": {\n                  \"description\": \"a-roll: the speaker's lower third (first beat). fact, proof: a callout card. number: a counting stat. cta: the end card after the speech (last beat).\",\n                  \"enum\": [\n                    \"a-roll\",\n                    \"fact\",\n                    \"proof\",\n                    \"number\",\n                    \"cta\"\n                  ]\n                },\n                \"subtitle\": {\n                  \"description\": \"a-roll: second line of the lower third (role, company).\",\n                  \"maxLength\": 48,\n                  \"type\": \"string\"\n                },\n                \"suffix\": {\n                  \"default\": \"\",\n                  \"description\": \"number: text right after the value, e.g. % or x.\",\n                  \"maxLength\": 4,\n                  \"type\": \"string\"\n                },\n                \"tag\": {\n                  \"default\": \"\",\n                  \"description\": \"fact, proof: small label above the callout text. Empty for none.\",\n                  \"maxLength\": 16,\n                  \"type\": \"string\"\n                },\n                \"text\": {\n                  \"description\": \"The words on screen, written literally into the scene HTML. For a-roll, the speaker's name.\",\n                  \"maxLength\": 60,\n                  \"minLength\": 1,\n                  \"type\": \"string\"\n                },\n                \"value\": {\n                  \"description\": \"number: the value the counter runs to.\",\n                  \"type\": \"number\"\n                },\n                \"weight\": {\n                  \"default\": \"medium\",\n                  \"description\": \"Kept for the shared params shape; media recipes time beats by the transcript, not by weight.\",\n                  \"enum\": [\n                    \"short\",\n                    \"medium\",\n                    \"long\"\n                  ]\n                }\n              },\n              \"required\": [\n                \"role\",\n                \"text\"\n              ],\n              \"type\": \"object\"\n            },\n            \"maxItems\": 8,\n            \"minItems\": 2,\n            \"type\": \"array\"\n          }\n        },\n        \"type\": \"object\"\n      },\n      \"cut\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"What is cut out of the footage.\",\n        \"properties\": {\n          \"keep\": {\n            \"default\": [],\n            \"description\": \"keep mode: source ranges in seconds, in any order.\",\n            \"items\": {\n              \"additionalProperties\": false,\n              \"properties\": {\n                \"in\": {\n                  \"description\": \"Start, seconds into the footage.\",\n                  \"minimum\": 0,\n                  \"type\": \"number\"\n                },\n                \"out\": {\n                  \"description\": \"End, seconds into the footage.\",\n                  \"exclusiveMinimum\": 0,\n                  \"type\": \"number\"\n                }\n              },\n              \"required\": [\n                \"in\",\n                \"out\"\n              ],\n              \"type\": \"object\"\n            },\n            \"type\": \"array\"\n          },\n          \"merge_gap_s\": {\n            \"default\": 0.35,\n            \"description\": \"transcript mode: pauses shorter than this are kept (the cues are joined).\",\n            \"maximum\": 2,\n            \"minimum\": 0,\n            \"type\": \"number\"\n          },\n          \"mode\": {\n            \"default\": \"transcript\",\n            \"description\": \"transcript: keep every cue (padded), cut the pauses between them. keep: keep only the given ranges.\",\n            \"enum\": [\n              \"transcript\",\n              \"keep\"\n            ]\n          },\n          \"pad_s\": {\n            \"default\": 0.12,\n            \"description\": \"transcript mode: seconds kept before and after each cue, so words are not clipped.\",\n            \"maximum\": 0.5,\n            \"minimum\": 0,\n            \"type\": \"number\"\n          }\n        },\n        \"type\": \"object\"\n      },\n      \"end_hold_s\": {\n        \"default\": 2.5,\n        \"description\": \"Length of the end card after the last word.\",\n        \"maximum\": 6,\n        \"minimum\": 1,\n        \"type\": \"number\"\n      },\n      \"format\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Output size. The length follows the cut transcript plus the end card.\",\n        \"properties\": {\n          \"ratio\": {\n            \"default\": \"9:16\",\n            \"description\": \"9:16 reframes landscape footage to vertical around reframe.focus_x; 16:9 keeps it landscape.\",\n            \"enum\": [\n              \"9:16\",\n              \"16:9\"\n            ]\n          }\n        },\n        \"type\": \"object\"\n      },\n      \"media\": {\n        \"additionalProperties\": false,\n        \"description\": \"The source files, relative to the params file. They are copied into the project's assets/media/.\",\n        \"properties\": {\n          \"broll\": {\n            \"default\": [],\n            \"description\": \"Picture-only clips cut over the speaker while they keep talking.\",\n            \"items\": {\n              \"additionalProperties\": false,\n              \"properties\": {\n                \"at_cue\": {\n                  \"description\": \"Transcript cue the clip covers; it starts 0.2 s into the cue.\",\n                  \"minimum\": 1,\n                  \"type\": \"integer\"\n                },\n                \"frames\": {\n                  \"description\": \"Length in frames; defaults to the rest of the cue.\",\n                  \"minimum\": 15,\n                  \"type\": \"integer\"\n                },\n                \"id\": {\n                  \"description\": \"Clip id in mosio.json. Defaults to broll-N.\",\n                  \"pattern\": \"^[a-z][a-z0-9-]{0,23}$\",\n                  \"type\": \"string\"\n                },\n                \"src\": {\n                  \"description\": \"The B-roll file, relative to the params file.\",\n                  \"minLength\": 1,\n                  \"type\": \"string\"\n                }\n              },\n              \"required\": [\n                \"src\",\n                \"at_cue\"\n              ],\n              \"type\": \"object\"\n            },\n            \"maxItems\": 8,\n            \"type\": \"array\"\n          },\n          \"footage\": {\n            \"description\": \"The speaker footage (any format Mosio decodes), with its own audio.\",\n            \"minLength\": 1,\n            \"type\": \"string\"\n          },\n          \"footage_size\": {\n            \"additionalProperties\": false,\n            \"default\": {},\n            \"description\": \"Display size of the footage in pixels, for the reframe (the applier does not decode media).\",\n            \"properties\": {\n              \"height\": {\n                \"default\": 1080,\n                \"description\": \"Display height in pixels.\",\n                \"minimum\": 16,\n                \"type\": \"integer\"\n              },\n              \"width\": {\n                \"default\": 1920,\n                \"description\": \"Display width in pixels.\",\n                \"minimum\": 16,\n                \"type\": \"integer\"\n              }\n            },\n            \"type\": \"object\"\n          },\n          \"music\": {\n            \"description\": \"Optional music bed (any audio Mosio decodes), at least as long as the cut video.\",\n            \"minLength\": 1,\n            \"type\": \"string\"\n          },\n          \"transcript\": {\n            \"description\": \"SubRip transcript of the footage, one cue per spoken line, timed to the footage. It drives the cuts and becomes the captions.\",\n            \"pattern\": \"\\\\.srt$\",\n            \"type\": \"string\"\n          }\n        },\n        \"required\": [\n          \"footage\",\n          \"transcript\"\n        ],\n        \"type\": \"object\"\n      },\n      \"mix\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Music level (the speech plays at 0 dB).\",\n        \"properties\": {\n          \"duck_frames\": {\n            \"default\": 12,\n            \"description\": \"Length of the equal-power crossfade between the two levels.\",\n            \"maximum\": 60,\n            \"minimum\": 1,\n            \"type\": \"integer\"\n          },\n          \"music_db\": {\n            \"default\": -22,\n            \"description\": \"Music gain under the speech (ducked).\",\n            \"maximum\": 0,\n            \"minimum\": -60,\n            \"type\": \"number\"\n          },\n          \"music_db_end\": {\n            \"default\": -10,\n            \"description\": \"Music gain under the end card.\",\n            \"maximum\": 0,\n            \"minimum\": -60,\n            \"type\": \"number\"\n          }\n        },\n        \"type\": \"object\"\n      },\n      \"name\": {\n        \"default\": \"talking-head\",\n        \"description\": \"Project name written to mosio.json.\",\n        \"pattern\": \"^[a-z0-9][a-z0-9-]{1,39}$\",\n        \"type\": \"string\"\n      },\n      \"reframe\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"How the footage fills the frame.\",\n        \"properties\": {\n          \"focus_x\": {\n            \"default\": 0.5,\n            \"description\": \"Horizontal position of the speaker in the footage (0 left, 1 right); 9:16 keeps it centred.\",\n            \"maximum\": 1,\n            \"minimum\": 0,\n            \"type\": \"number\"\n          },\n          \"punch_in\": {\n            \"default\": 1.08,\n            \"description\": \"Zoom on every other cut, which hides the jump between two kept segments. 1 turns it off.\",\n            \"maximum\": 1.3,\n            \"minimum\": 1,\n            \"type\": \"number\"\n          }\n        },\n        \"type\": \"object\"\n      },\n      \"style\": {\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Look: brand colours, type size and motion speed.\",\n        \"properties\": {\n          \"brand\": {\n            \"additionalProperties\": false,\n            \"default\": {},\n            \"description\": \"Brand colours. They are written to shared/tokens.css (overlays) and to the captions style in mosio.json.\",\n            \"properties\": {\n              \"accent\": {\n                \"default\": \"#f59e0b\",\n                \"description\": \"Key words, the lower-third bar, the stat and the button (--accent).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"bg\": {\n                \"default\": \"#111827\",\n                \"description\": \"Card and end-card background, caption outline (--bg).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"main\": {\n                \"default\": \"#38bdf8\",\n                \"description\": \"Tag pill and end-card glow (--main).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"text\": {\n                \"default\": \"#f9fafb\",\n                \"description\": \"Overlay and caption text (--text).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              },\n              \"text_on_accent\": {\n                \"default\": \"#111827\",\n                \"description\": \"Text on the accent colour, the button label (--text-on-accent).\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"type\": \"string\"\n              }\n            },\n            \"type\": \"object\"\n          },\n          \"font_scale\": {\n            \"default\": 1,\n            \"description\": \"Multiplier on every overlay and caption size (--type-scale).\",\n            \"maximum\": 1.25,\n            \"minimum\": 0.6,\n            \"type\": \"number\"\n          },\n          \"pacing\": {\n            \"default\": \"medium\",\n            \"description\": \"Speed of the overlay entrances (--pace).\",\n            \"enum\": [\n              \"calm\",\n              \"medium\",\n              \"brisk\"\n            ]\n          }\n        },\n        \"type\": \"object\"\n      }\n    },\n    \"required\": [\n      \"media\"\n    ],\n    \"type\": \"object\"\n  }\n}\n"
+    },
+    {
+      "path": "recipe/recipe.json",
+      "role": "template",
+      "content": "{\n  \"schema\": \"mosio.recipe/1\",\n  \"id\": \"talking-head\",\n  \"title\": \"Talking head\",\n  \"description\": \"A speaker video edited from its transcript: pauses cut, landscape footage reframed to vertical, captions, a lower third, callouts and stats, B-roll and a ducked music bed, then an end card.\",\n  \"version\": \"0.1.0\",\n  \"tags\": [\n    \"talking-head\",\n    \"footage\",\n    \"captions\",\n    \"social\"\n  ],\n  \"license\": \"MIT\",\n  \"provenance\": {\n    \"authors\": [\n      \"Mosio\"\n    ],\n    \"sources\": [\n      {\n        \"kind\": \"own\",\n        \"name\": \"fixtures/nm-hybrid-demo\",\n        \"path\": \"fixtures/nm-hybrid-demo\",\n        \"what\": \"GSAP overlays over native footage with libass captions; re-authored as transcript-timed overlays\"\n      }\n    ]\n  },\n  \"formats\": [\n    {\n      \"ratio\": \"9:16\",\n      \"width\": 1080,\n      \"height\": 1920,\n      \"fps\": 30,\n      \"vars\": {\n        \"fs_name\": 64,\n        \"fs_sub\": 36,\n        \"fs_callout\": 76,\n        \"fs_number\": 200,\n        \"fs_end\": 96,\n        \"margin\": 72,\n        \"lower_bottom\": 560,\n        \"callout_top\": 110,\n        \"cap_size\": 58,\n        \"cap_margin\": 300\n      }\n    },\n    {\n      \"ratio\": \"16:9\",\n      \"width\": 1920,\n      \"height\": 1080,\n      \"fps\": 30,\n      \"vars\": {\n        \"fs_name\": 56,\n        \"fs_sub\": 30,\n        \"fs_callout\": 62,\n        \"fs_number\": 170,\n        \"fs_end\": 88,\n        \"margin\": 96,\n        \"lower_bottom\": 200,\n        \"callout_top\": 110,\n        \"cap_size\": 48,\n        \"cap_margin\": 80\n      }\n    }\n  ],\n  \"duration_s\": {\n    \"min\": 6,\n    \"default\": 20,\n    \"max\": 180\n  },\n  \"beats\": {\n    \"roles\": [\n      \"a-roll\",\n      \"fact\",\n      \"proof\",\n      \"number\",\n      \"cta\"\n    ],\n    \"min\": 2,\n    \"max\": 8,\n    \"tempo_s\": {\n      \"short\": 2,\n      \"medium\": 3,\n      \"long\": 4\n    },\n    \"ending_min_s\": 1.5\n  },\n  \"plan\": [\n    {\n      \"roles\": [\n        \"a-roll\"\n      ],\n      \"scene\": \"scenes/lower-third.html\",\n      \"technique\": \"accent bar grows, card wipes in, name words rise, subtitle fades; leaves after ~4 s\",\n      \"primitives\": [\n        \"bar-grow\",\n        \"wipe-in\",\n        \"rise-fade\"\n      ],\n      \"limits\": {\n        \"max_words\": 4\n      }\n    },\n    {\n      \"roles\": [\n        \"fact\",\n        \"proof\"\n      ],\n      \"scene\": \"scenes/callout.html\",\n      \"technique\": \"card pops in near the top, tag slides, words rise one by one, underline draws\",\n      \"primitives\": [\n        \"pop\",\n        \"rise-fade\",\n        \"draw\"\n      ],\n      \"limits\": {\n        \"max_words\": 9\n      }\n    },\n    {\n      \"roles\": [\n        \"number\"\n      ],\n      \"scene\": \"scenes/number.html\",\n      \"technique\": \"card pops, value counts up from zero, label words rise\",\n      \"primitives\": [\n        \"pop\",\n        \"count-up\",\n        \"rise-fade\"\n      ],\n      \"limits\": {\n        \"max_words\": 6\n      }\n    },\n    {\n      \"roles\": [\n        \"cta\"\n      ],\n      \"scene\": \"scenes/end-card.html\",\n      \"technique\": \"brand end card fades over the last frame, words rise, button pops\",\n      \"primitives\": [\n        \"fade\",\n        \"rise-fade\",\n        \"pop\"\n      ],\n      \"limits\": {\n        \"max_words\": 6\n      }\n    }\n  ],\n  \"controls\": [\n    {\n      \"param\": \"/reframe/focus_x\",\n      \"label\": \"Speaker position\",\n      \"effect\": \"Where the 9:16 crop sits on the landscape footage: transform.x of every a-roll clip in mosio.json.\"\n    },\n    {\n      \"param\": \"/cut/pad_s\",\n      \"label\": \"Cut tightness\",\n      \"effect\": \"How much air is kept around each line: the a-roll clip ranges, caption times and overlay starts all move, so most windows re-render.\"\n    },\n    {\n      \"param\": \"/style/brand/accent\",\n      \"label\": \"Accent colour\",\n      \"effect\": \"Key words, bar, stat and button: --accent in shared/tokens.css, so every overlay re-renders.\"\n    },\n    {\n      \"param\": \"/content/beats/1/text\",\n      \"label\": \"Callout text\",\n      \"effect\": \"Edit the words of one callout directly in its scene file; only that callout's windows re-render.\"\n    }\n  ],\n  \"inputs\": {\n    \"type\": \"object\",\n    \"additionalProperties\": false,\n    \"required\": [\n      \"media\"\n    ],\n    \"properties\": {\n      \"name\": {\n        \"type\": \"string\",\n        \"pattern\": \"^[a-z0-9][a-z0-9-]{1,39}$\",\n        \"default\": \"talking-head\",\n        \"description\": \"Project name written to mosio.json.\"\n      },\n      \"format\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Output size. The length follows the cut transcript plus the end card.\",\n        \"properties\": {\n          \"ratio\": {\n            \"enum\": [\n              \"9:16\",\n              \"16:9\"\n            ],\n            \"default\": \"9:16\",\n            \"description\": \"9:16 reframes landscape footage to vertical around reframe.focus_x; 16:9 keeps it landscape.\"\n          }\n        }\n      },\n      \"media\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"required\": [\n          \"footage\",\n          \"transcript\"\n        ],\n        \"description\": \"The source files, relative to the params file. They are copied into the project's assets/media/.\",\n        \"properties\": {\n          \"footage\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"The speaker footage (any format Mosio decodes), with its own audio.\"\n          },\n          \"footage_size\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"default\": {},\n            \"description\": \"Display size of the footage in pixels, for the reframe (the applier does not decode media).\",\n            \"properties\": {\n              \"width\": {\n                \"type\": \"integer\",\n                \"minimum\": 16,\n                \"default\": 1920,\n                \"description\": \"Display width in pixels.\"\n              },\n              \"height\": {\n                \"type\": \"integer\",\n                \"minimum\": 16,\n                \"default\": 1080,\n                \"description\": \"Display height in pixels.\"\n              }\n            }\n          },\n          \"transcript\": {\n            \"type\": \"string\",\n            \"pattern\": \"\\\\.srt$\",\n            \"description\": \"SubRip transcript of the footage, one cue per spoken line, timed to the footage. It drives the cuts and becomes the captions.\"\n          },\n          \"music\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Optional music bed (any audio Mosio decodes), at least as long as the cut video.\"\n          },\n          \"broll\": {\n            \"type\": \"array\",\n            \"maxItems\": 8,\n            \"default\": [],\n            \"description\": \"Picture-only clips cut over the speaker while they keep talking.\",\n            \"items\": {\n              \"type\": \"object\",\n              \"additionalProperties\": false,\n              \"required\": [\n                \"src\",\n                \"at_cue\"\n              ],\n              \"properties\": {\n                \"id\": {\n                  \"type\": \"string\",\n                  \"pattern\": \"^[a-z][a-z0-9-]{0,23}$\",\n                  \"description\": \"Clip id in mosio.json. Defaults to broll-N.\"\n                },\n                \"src\": {\n                  \"type\": \"string\",\n                  \"minLength\": 1,\n                  \"description\": \"The B-roll file, relative to the params file.\"\n                },\n                \"at_cue\": {\n                  \"type\": \"integer\",\n                  \"minimum\": 1,\n                  \"description\": \"Transcript cue the clip covers; it starts 0.2 s into the cue.\"\n                },\n                \"frames\": {\n                  \"type\": \"integer\",\n                  \"minimum\": 15,\n                  \"description\": \"Length in frames; defaults to the rest of the cue.\"\n                }\n              }\n            }\n          }\n        }\n      },\n      \"cut\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"What is cut out of the footage.\",\n        \"properties\": {\n          \"mode\": {\n            \"enum\": [\n              \"transcript\",\n              \"keep\"\n            ],\n            \"default\": \"transcript\",\n            \"description\": \"transcript: keep every cue (padded), cut the pauses between them. keep: keep only the given ranges.\"\n          },\n          \"pad_s\": {\n            \"type\": \"number\",\n            \"minimum\": 0,\n            \"maximum\": 0.5,\n            \"default\": 0.12,\n            \"description\": \"transcript mode: seconds kept before and after each cue, so words are not clipped.\"\n          },\n          \"merge_gap_s\": {\n            \"type\": \"number\",\n            \"minimum\": 0,\n            \"maximum\": 2,\n            \"default\": 0.35,\n            \"description\": \"transcript mode: pauses shorter than this are kept (the cues are joined).\"\n          },\n          \"keep\": {\n            \"type\": \"array\",\n            \"default\": [],\n            \"description\": \"keep mode: source ranges in seconds, in any order.\",\n            \"items\": {\n              \"type\": \"object\",\n              \"additionalProperties\": false,\n              \"required\": [\n                \"in\",\n                \"out\"\n              ],\n              \"properties\": {\n                \"in\": {\n                  \"type\": \"number\",\n                  \"minimum\": 0,\n                  \"description\": \"Start, seconds into the footage.\"\n                },\n                \"out\": {\n                  \"type\": \"number\",\n                  \"exclusiveMinimum\": 0,\n                  \"description\": \"End, seconds into the footage.\"\n                }\n              }\n            }\n          }\n        }\n      },\n      \"reframe\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"How the footage fills the frame.\",\n        \"properties\": {\n          \"focus_x\": {\n            \"type\": \"number\",\n            \"minimum\": 0,\n            \"maximum\": 1,\n            \"default\": 0.5,\n            \"description\": \"Horizontal position of the speaker in the footage (0 left, 1 right); 9:16 keeps it centred.\"\n          },\n          \"punch_in\": {\n            \"type\": \"number\",\n            \"minimum\": 1,\n            \"maximum\": 1.3,\n            \"default\": 1.08,\n            \"description\": \"Zoom on every other cut, which hides the jump between two kept segments. 1 turns it off.\"\n          }\n        }\n      },\n      \"mix\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Music level (the speech plays at 0 dB).\",\n        \"properties\": {\n          \"music_db\": {\n            \"type\": \"number\",\n            \"minimum\": -60,\n            \"maximum\": 0,\n            \"default\": -22,\n            \"description\": \"Music gain under the speech (ducked).\"\n          },\n          \"music_db_end\": {\n            \"type\": \"number\",\n            \"minimum\": -60,\n            \"maximum\": 0,\n            \"default\": -10,\n            \"description\": \"Music gain under the end card.\"\n          },\n          \"duck_frames\": {\n            \"type\": \"integer\",\n            \"minimum\": 1,\n            \"maximum\": 60,\n            \"default\": 12,\n            \"description\": \"Length of the equal-power crossfade between the two levels.\"\n          }\n        }\n      },\n      \"captions\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Burned-in captions from the transcript.\",\n        \"properties\": {\n          \"enabled\": {\n            \"type\": \"boolean\",\n            \"default\": true,\n            \"description\": \"Write captions/captions.srt and burn it in with the brand colours.\"\n          }\n        }\n      },\n      \"end_hold_s\": {\n        \"type\": \"number\",\n        \"minimum\": 1,\n        \"maximum\": 6,\n        \"default\": 2.5,\n        \"description\": \"Length of the end card after the last word.\"\n      },\n      \"content\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"The overlays.\",\n        \"properties\": {\n          \"beats\": {\n            \"type\": \"array\",\n            \"minItems\": 2,\n            \"maxItems\": 8,\n            \"description\": \"One overlay scene per beat, in order: an a-roll lower third first, a cta end card last, callouts and numbers in between, each starting at its transcript cue.\",\n            \"items\": {\n              \"type\": \"object\",\n              \"additionalProperties\": false,\n              \"required\": [\n                \"role\",\n                \"text\"\n              ],\n              \"properties\": {\n                \"id\": {\n                  \"type\": \"string\",\n                  \"pattern\": \"^[a-z][a-z0-9-]{0,23}$\",\n                  \"description\": \"Optional scene id (used in every data-mosio-id). Defaults to the role name; a repeated role gets -2, -3.\"\n                },\n                \"role\": {\n                  \"enum\": [\n                    \"a-roll\",\n                    \"fact\",\n                    \"proof\",\n                    \"number\",\n                    \"cta\"\n                  ],\n                  \"description\": \"a-roll: the speaker's lower third (first beat). fact, proof: a callout card. number: a counting stat. cta: the end card after the speech (last beat).\"\n                },\n                \"text\": {\n                  \"type\": \"string\",\n                  \"minLength\": 1,\n                  \"maxLength\": 60,\n                  \"description\": \"The words on screen, written literally into the scene HTML. For a-roll, the speaker's name.\"\n                },\n                \"key\": {\n                  \"type\": \"string\",\n                  \"maxLength\": 40,\n                  \"description\": \"The word or words of the text to stress with the accent colour. Must occur in the text.\"\n                },\n                \"at_cue\": {\n                  \"type\": \"integer\",\n                  \"minimum\": 1,\n                  \"description\": \"Transcript cue (1-based, in the original transcript) the overlay starts with. Required for every beat but cta; ignored for the first beat, which starts at 0.\"\n                },\n                \"subtitle\": {\n                  \"type\": \"string\",\n                  \"maxLength\": 48,\n                  \"description\": \"a-roll: second line of the lower third (role, company).\"\n                },\n                \"tag\": {\n                  \"type\": \"string\",\n                  \"maxLength\": 16,\n                  \"default\": \"\",\n                  \"description\": \"fact, proof: small label above the callout text. Empty for none.\"\n                },\n                \"value\": {\n                  \"type\": \"number\",\n                  \"description\": \"number: the value the counter runs to.\"\n                },\n                \"decimals\": {\n                  \"type\": \"integer\",\n                  \"minimum\": 0,\n                  \"maximum\": 3,\n                  \"default\": 0,\n                  \"description\": \"number: decimals shown while counting.\"\n                },\n                \"suffix\": {\n                  \"type\": \"string\",\n                  \"maxLength\": 4,\n                  \"default\": \"\",\n                  \"description\": \"number: text right after the value, e.g. % or x.\"\n                },\n                \"button\": {\n                  \"type\": \"string\",\n                  \"maxLength\": 28,\n                  \"default\": \"\",\n                  \"description\": \"cta: text of the pill under the line. Empty for none.\"\n                },\n                \"weight\": {\n                  \"enum\": [\n                    \"short\",\n                    \"medium\",\n                    \"long\"\n                  ],\n                  \"default\": \"medium\",\n                  \"description\": \"Kept for the shared params shape; media recipes time beats by the transcript, not by weight.\"\n                }\n              },\n              \"allOf\": [\n                {\n                  \"if\": {\n                    \"properties\": {\n                      \"role\": {\n                        \"const\": \"number\"\n                      }\n                    }\n                  },\n                  \"then\": {\n                    \"required\": [\n                      \"value\"\n                    ]\n                  }\n                }\n              ]\n            }\n          }\n        }\n      },\n      \"style\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"default\": {},\n        \"description\": \"Look: brand colours, type size and motion speed.\",\n        \"properties\": {\n          \"brand\": {\n            \"type\": \"object\",\n            \"additionalProperties\": false,\n            \"default\": {},\n            \"description\": \"Brand colours. They are written to shared/tokens.css (overlays) and to the captions style in mosio.json.\",\n            \"properties\": {\n              \"bg\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Card and end-card background, caption outline (--bg).\",\n                \"default\": \"#111827\"\n              },\n              \"main\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Tag pill and end-card glow (--main).\",\n                \"default\": \"#38bdf8\"\n              },\n              \"accent\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Key words, the lower-third bar, the stat and the button (--accent).\",\n                \"default\": \"#f59e0b\"\n              },\n              \"text\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Overlay and caption text (--text).\",\n                \"default\": \"#f9fafb\"\n              },\n              \"text_on_accent\": {\n                \"type\": \"string\",\n                \"pattern\": \"^#[0-9a-fA-F]{6}$\",\n                \"description\": \"Text on the accent colour, the button label (--text-on-accent).\",\n                \"default\": \"#111827\"\n              }\n            }\n          },\n          \"font_scale\": {\n            \"type\": \"number\",\n            \"minimum\": 0.6,\n            \"maximum\": 1.25,\n            \"default\": 1,\n            \"description\": \"Multiplier on every overlay and caption size (--type-scale).\"\n          },\n          \"pacing\": {\n            \"enum\": [\n              \"calm\",\n              \"medium\",\n              \"brisk\"\n            ],\n            \"default\": \"medium\",\n            \"description\": \"Speed of the overlay entrances (--pace).\"\n          }\n        }\n      }\n    }\n  },\n  \"files\": {\n    \"scenes\": [\n      \"scenes/lower-third.html\",\n      \"scenes/callout.html\",\n      \"scenes/number.html\",\n      \"scenes/end-card.html\"\n    ],\n    \"shared\": [\n      \"shared/tokens.css\",\n      \"shared/base.css\"\n    ],\n    \"fonts\": [\n      \"Inter-Regular.otf\",\n      \"Inter-Bold.otf\",\n      \"Inter-ExtraBold.otf\"\n    ]\n  },\n  \"example\": {\n    \"project\": \"example/\",\n    \"params\": \"example.params.json\"\n  },\n  \"engine\": {\n    \"libraries\": [\n      \"gsap@3.15.1\"\n    ]\n  },\n  \"requires\": [],\n  \"media\": {\n    \"timeline\": \"a-roll/1\"\n  },\n  \"derive\": [\n    {\n      \"as\": \"pace\",\n      \"from\": \"/style/pacing\",\n      \"map\": {\n        \"calm\": 1.3,\n        \"medium\": 1,\n        \"brisk\": 0.75\n      }\n    }\n  ]\n}\n"
+    },
+    {
+      "path": "recipe/scenes/callout.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <script src=\"/_lib/gsap@3.15.1/gsap.min.js\"></script>\n  <style>\n    .call { position: absolute; left: var(--margin); right: var(--margin); top: var(--callout-top); display: flex; justify-content: center; }\n    .card { max-width: 100%; padding: 30px 40px 36px; border-radius: 26px; background: var(--card); box-shadow: 0 18px 50px #0006; }\n    .tag { display: inline-block; padding: 8px 18px; border-radius: 999px; background: var(--main); color: var(--bg);\n           font-weight: 800; font-size: calc(0.42 * var(--fs-callout) * var(--type-scale)); letter-spacing: 0.12em; text-transform: uppercase; }\n    .line { margin-top: 18px; font-family: var(--font-display); font-weight: 800; font-size: calc(var(--fs-callout) * var(--type-scale));\n            line-height: 1.08; letter-spacing: -0.015em; display: flex; flex-wrap: wrap; gap: 0.1em 0.28em; }\n    .ul { height: 8px; width: 0; margin-top: 18px; border-radius: 4px; background: var(--accent); }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"call\" data-mosio-id=\"{{beat.id}}/callout\">\n      <div class=\"card\" data-mosio-id=\"{{beat.id}}/card\">\n        {{#if beat.tag}}<div class=\"tag\" data-mosio-id=\"{{beat.id}}/tag\">{{beat.tag}}</div>{{/if}}\n        <div class=\"line\" data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"w{{#if accent}} acc{{/if}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span>{{/each}}</div>\n        <div class=\"ul\" data-mosio-id=\"{{beat.id}}/underline\"></div>\n      </div>\n    </div>\n  </div>\n<script>\nconst pace = {{derived.pace}};\nconst tl = gsap.timeline({ paused: true });\ntl.fromTo('.card', { opacity: 0, y: -40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.5 * pace, ease: 'back.out(1.6)' }, 0.15);\ntl.fromTo('.tag', { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.35 * pace, ease: 'power2.out' }, 0.35);\ntl.fromTo('.line .w', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4 * pace, stagger: 0.07 * pace, ease: 'power3.out' }, 0.45);\ntl.to('.ul', { width: '46%', duration: 0.6 * pace, ease: 'power3.inOut' }, 0.8);\ntl.to('.card', { opacity: 0, y: -30, duration: 0.4, ease: 'power2.in' }, {{beat.out_s}});\n__mosio.timeline(tl);\n</script>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/scenes/end-card.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <script src=\"/_lib/gsap@3.15.1/gsap.min.js\"></script>\n  <style>\n    .end { position: absolute; inset: 0; background: radial-gradient(70% 50% at 50% 42%, color-mix(in srgb, var(--main) 30%, var(--bg)), var(--bg)); }\n    .copy { position: absolute; inset: var(--margin); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 40px; }\n    .line { font-family: var(--font-display); font-weight: 800; font-size: calc(var(--fs-end) * var(--type-scale)); line-height: 1.05; letter-spacing: -0.02em;\n            display: flex; flex-wrap: wrap; justify-content: center; gap: 0.1em 0.3em; }\n    .pill { padding: 22px 44px; border-radius: 999px; background: var(--accent); color: var(--text-on-accent); font-weight: 800;\n            font-size: calc(0.42 * var(--fs-end) * var(--type-scale)); }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"end\" data-mosio-id=\"{{beat.id}}/background\"></div>\n    <div class=\"copy\">\n      <div class=\"line\" data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"w{{#if accent}} acc{{/if}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span>{{/each}}</div>\n      {{#if beat.button}}<div class=\"pill\" data-mosio-id=\"{{beat.id}}/button\">{{beat.button}}</div>{{/if}}\n    </div>\n  </div>\n<script>\nconst pace = {{derived.pace}};\nconst tl = gsap.timeline({ paused: true });\ntl.fromTo('.end', { opacity: 0 }, { opacity: 1, duration: 0.35, ease: 'none' }, 0);\ntl.fromTo('.line .w', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.5 * pace, stagger: 0.09 * pace, ease: 'power3.out' }, 0.25);\ntl.fromTo('.pill', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.45 * pace, ease: 'back.out(1.7)' }, 0.75);\n__mosio.timeline(tl);\n</script>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/scenes/lower-third.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <script src=\"/_lib/gsap@3.15.1/gsap.min.js\"></script>\n  <style>\n    .lt { position: absolute; left: var(--margin); bottom: var(--lower-bottom); display: flex; align-items: stretch; gap: 0; }\n    .bar { width: 14px; border-radius: 7px; background: var(--accent); transform-origin: 50% 100%; }\n    .card { margin-left: 18px; padding: 22px 34px 24px 30px; border-radius: 18px; background: var(--card); overflow: hidden; }\n    .name { font-family: var(--font-display); font-weight: 800; font-size: calc(var(--fs-name) * var(--type-scale)); line-height: 1.05; letter-spacing: -0.01em; }\n    .sub { margin-top: 10px; font-weight: 700; font-size: calc(var(--fs-sub) * var(--type-scale)); color: var(--text-dim); }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"lt\" data-mosio-id=\"{{beat.id}}/lower-third\">\n      <div class=\"bar\" data-mosio-id=\"{{beat.id}}/bar\"></div>\n      <div class=\"card\" data-mosio-id=\"{{beat.id}}/card\">\n        <div class=\"name\" data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"w{{#if accent}} acc{{/if}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span> {{/each}}</div>\n        {{#if beat.subtitle}}<div class=\"sub\" data-mosio-id=\"{{beat.id}}/subtitle\">{{beat.subtitle}}</div>{{/if}}\n      </div>\n    </div>\n  </div>\n<script>\nconst pace = {{derived.pace}};\nconst tl = gsap.timeline({ paused: true });\ntl.fromTo('.bar', { scaleY: 0 }, { scaleY: 1, duration: 0.35 * pace, ease: 'power3.out' }, 0.3);\ntl.fromTo('.card', { opacity: 0, x: -60, clipPath: 'inset(0 100% 0 0)' }, { opacity: 1, x: 0, clipPath: 'inset(0 0% 0 0)', duration: 0.6 * pace, ease: 'power3.out' }, 0.45);\ntl.fromTo('.name .w', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.4 * pace, stagger: 0.08 * pace, ease: 'power2.out' }, 0.7);\ntl.fromTo('.sub', { opacity: 0 }, { opacity: 1, duration: 0.4 * pace, ease: 'none' }, 0.95);\ntl.to('.lt', { opacity: 0, x: -40, duration: 0.45, ease: 'power2.in' }, {{beat.out_s}});\n__mosio.timeline(tl);\n</script>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/scenes/number.html",
+      "role": "template",
+      "content": "<!doctype html>\n<html lang=\"en\" data-ratio=\"{{format.ratio}}\">\n<head>\n  <meta charset=\"utf-8\">\n  <link rel=\"stylesheet\" href=\"/shared/tokens.css\">\n  <link rel=\"stylesheet\" href=\"/shared/base.css\">\n  <script src=\"/_lib/gsap@3.15.1/gsap.min.js\"></script>\n  <style>\n    .stat { position: absolute; left: var(--margin); right: var(--margin); top: var(--callout-top); display: flex; justify-content: center; }\n    .card { padding: 26px 48px 34px; border-radius: 26px; background: var(--card); text-align: center; box-shadow: 0 18px 50px #0006; }\n    .num { font-family: var(--font-display); font-weight: 800; font-size: calc(var(--fs-number) * var(--type-scale)); line-height: 1; color: var(--accent);\n           letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }\n    .label { margin-top: 8px; font-weight: 700; font-size: calc(0.5 * var(--fs-callout) * var(--type-scale)); display: flex; flex-wrap: wrap; justify-content: center; gap: 0.1em 0.28em; }\n  </style>\n</head>\n<body>\n  <div class=\"scene\" data-mosio-id=\"{{beat.id}}/scene\">\n    <div class=\"stat\" data-mosio-id=\"{{beat.id}}/stat\">\n      <div class=\"card\" data-mosio-id=\"{{beat.id}}/card\">\n        <div class=\"num\"><span id=\"n\" data-mosio-id=\"{{beat.id}}/value\">{{beat.value_text}}</span>{{beat.suffix}}</div>\n        <div class=\"label\" data-mosio-id=\"{{beat.id}}/text\">{{#each beat.words}}<span class=\"w{{#if accent}} acc{{/if}}\" data-mosio-id=\"{{beat.id}}/w{{i}}\">{{w}}</span>{{/each}}</div>\n      </div>\n    </div>\n  </div>\n<script>\nconst pace = {{derived.pace}};\nconst n = document.getElementById('n'), target = {{beat.value}}, decimals = {{beat.decimals}};\nconst counter = { v: 0 };\nconst tl = gsap.timeline({ paused: true });\ntl.fromTo('.card', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.45 * pace, ease: 'back.out(1.8)' }, 0.1);\ntl.fromTo(counter, { v: 0 }, { v: target, duration: 1.1 * pace, ease: 'power2.out', onUpdate: () => { n.textContent = counter.v.toFixed(decimals) } }, 0.25);\ntl.fromTo('.label .w', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.35 * pace, stagger: 0.06 * pace, ease: 'power2.out' }, 0.6);\ntl.to('.card', { opacity: 0, scale: 0.92, duration: 0.4, ease: 'power2.in' }, {{beat.out_s}});\n__mosio.timeline(tl);\n</script>\n</body>\n</html>\n"
+    },
+    {
+      "path": "recipe/shared/base.css",
+      "role": "template",
+      "content": "/* Fixed foundation of the recipe: fonts, reset and the scene frame. Overlays are transparent: the footage shows\n   through everywhere they do not draw. Brand values are in tokens.css, not here. */\n@font-face { font-family: \"Inter\"; font-weight: 400; src: url(\"/assets/fonts/Inter-Regular.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 700; src: url(\"/assets/fonts/Inter-Bold.otf\") format(\"opentype\"); }\n@font-face { font-family: \"Inter\"; font-weight: 800; src: url(\"/assets/fonts/Inter-ExtraBold.otf\") format(\"opentype\"); }\n* { margin: 0; padding: 0; box-sizing: border-box; }\nhtml, body { width: var(--w); height: var(--h); overflow: hidden; background: transparent; color: var(--text); font-family: var(--font-body); }\n.scene { position: absolute; inset: 0; overflow: hidden; }\n.w { display: inline-block; white-space: nowrap; }\n.acc { color: var(--accent); }\n"
+    },
+    {
+      "path": "recipe/shared/tokens.css",
+      "role": "template",
+      "content": "/* Brand and layout tokens for every overlay (recipe talking-head). Edit values here: every scene that imports this\n   file re-renders, which is correct, because they all depend on it. Captions take their colours from mosio.json. */\n:root {\n  --bg: {{brand.bg}};\n  --main: {{brand.main}};\n  --accent: {{brand.accent}};\n  --text: {{brand.text}};\n  --text-on-accent: {{brand.text_on_accent}};\n  --card: color-mix(in srgb, var(--bg) 86%, transparent);\n  --text-dim: color-mix(in srgb, var(--text) 72%, var(--bg));\n  --font-display: \"Inter\", sans-serif;\n  --font-body: \"Inter\", sans-serif;\n  --w: {{format.width}}px;\n  --h: {{format.height}}px;\n  --type-scale: {{style.font_scale}};\n  --pace: {{derived.pace}};\n  --fs-name: {{format.vars.fs_name}}px;\n  --fs-sub: {{format.vars.fs_sub}}px;\n  --fs-callout: {{format.vars.fs_callout}}px;\n  --fs-number: {{format.vars.fs_number}}px;\n  --fs-end: {{format.vars.fs_end}}px;\n  --margin: {{format.vars.margin}}px;\n  --lower-bottom: {{format.vars.lower_bottom}}px;\n  --callout-top: {{format.vars.callout_top}}px;\n}\n"
+    }
+  ],
+  "sha256": "6163ba033f1ded222509bd98052d603490a7c9a0b8365090cfd144e4d31df57e"
+}
