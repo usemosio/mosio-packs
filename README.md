@@ -25,3 +25,7 @@ Every pack is published together with its own license and notice files, taken fr
 - ONNX Runtime: [microsoft/onnxruntime](https://github.com/microsoft/onnxruntime), MIT; the official NuGet package is redistributed unmodified with its `LICENSE` and `ThirdPartyNotices.txt`.
 
 Model and runtime releases attach a `*-LICENSE.txt` and `*-NOTICE.txt` next to the file. All files are redistributed byte for byte as published by their sources. Rights remain with the original authors; check the license of an item before reusing it outside the Mosio engine.
+
+## `@gfonts` registry data
+
+`registry/gfonts/` is the data of the built-in `@gfonts` namespace of the engine: every [Google Fonts](https://github.com/google/fonts) family with a latin subset as a `mosio:font` item (`font-<kebab-family>.json`), an index (`registry.json`) and `manifest.json` (the pinned `google/fonts` commit, counts, every skipped family with its reason). Font files are not stored here: each face is a URL below `raw.githubusercontent.com/google/fonts/<commit>/` with its sha256 and size, and the licence text (OFL, Apache or UFL) is inline. Regenerate with `python3 -I scripts/gfonts/generate.py --sha <commit> --workdir <fresh dir>`; unchanged families are left as they are and changed ones get the next patch version. Reserved Font Names are kept unrenamed and listed per item.
