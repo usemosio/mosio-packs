@@ -4647,34 +4647,73 @@
       "name": "font-bebas-neue",
       "type": "mosio:font",
       "title": "Bebas Neue",
-      "description": "Bebas Neue, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "description": "A tall, clean all-caps headline face that became a poster staple. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
       "tags": [
-        "font"
+        "font",
+        "tall",
+        "caps",
+        "poster",
+        "bold",
+        "clean",
+        "headline"
       ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
+      "version": "1.1.0",
+      "license": "OFL-1.1",
+      "family": "Bebas Neue",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
     },
     {
       "name": "font-caveat",
       "type": "mosio:font",
       "title": "Caveat",
-      "description": "Caveat, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "description": "A lively, natural handwriting with a quick pen feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
       "tags": [
-        "font"
+        "font",
+        "casual",
+        "pen",
+        "natural",
+        "notes",
+        "lively",
+        "friendly"
       ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
+      "version": "1.1.0",
+      "license": "OFL-1.1",
+      "family": "Caveat",
+      "category": "handwritten",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
     },
     {
       "name": "font-geist",
       "type": "mosio:font",
       "title": "Geist",
-      "description": "Geist, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "description": "A precise, Swiss-inspired sans designed for modern web and developer content. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
       "tags": [
-        "font"
+        "font",
+        "swiss",
+        "minimal",
+        "vercel",
+        "clean",
+        "modern",
+        "precise"
       ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
+      "version": "1.1.0",
+      "license": "OFL-1.1",
+      "family": "Geist",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
     },
     {
       "name": "font-geist-mono",
@@ -4691,23 +4730,49 @@
       "name": "font-inter",
       "type": "mosio:font",
       "title": "Inter",
-      "description": "Inter, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "description": "A neutral sans tuned for screens with a tall x-height. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
       "tags": [
-        "font"
+        "font",
+        "neutral",
+        "ui",
+        "screen",
+        "tall x-height",
+        "workhorse",
+        "modern"
       ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
+      "version": "1.1.0",
+      "license": "OFL-1.1",
+      "family": "Inter",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
     },
     {
       "name": "font-jetbrains-mono",
       "type": "mosio:font",
       "title": "JetBrains Mono",
-      "description": "JetBrains Mono, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "description": "A coding monospace with a tall x-height and programming ligatures. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
       "tags": [
-        "font"
+        "font",
+        "coding",
+        "ides",
+        "tall x-height",
+        "ligatures",
+        "developer",
+        "clear"
       ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
+      "version": "1.1.0",
+      "license": "OFL-1.1",
+      "family": "JetBrains Mono",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
     },
     {
       "name": "font-manrope",
@@ -4724,34 +4789,73 @@
       "name": "font-playfair-display",
       "type": "mosio:font",
       "title": "Playfair Display",
-      "description": "Playfair Display, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "description": "A high-contrast transitional serif made for elegant editorial headlines. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
       "tags": [
-        "font"
+        "font",
+        "transitional",
+        "high-contrast",
+        "editorial",
+        "elegant",
+        "display",
+        "magazine"
       ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
+      "version": "1.1.0",
+      "license": "OFL-1.1",
+      "family": "Playfair Display",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
     },
     {
       "name": "font-poppins",
       "type": "mosio:font",
       "title": "Poppins",
-      "description": "Poppins, bundled as woff2 (5 files, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "description": "A popular geometric sans with near-circular letters and nine real weights. Bundled as woff2 (9 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
       "tags": [
-        "font"
+        "font",
+        "geometric",
+        "round",
+        "friendly",
+        "popular",
+        "clean",
+        "devanagari-roots"
       ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
+      "version": "1.1.0",
+      "license": "OFL-1.1",
+      "family": "Poppins",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
     },
     {
       "name": "font-space-grotesk",
       "type": "mosio:font",
       "title": "Space Grotesk",
-      "description": "Space Grotesk, bundled as woff2 (1 file, OFL-1.1). Scenes that need it list it in registryDependencies.",
+      "description": "A quirky geometric grotesk with a techy, space-age character. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
       "tags": [
-        "font"
+        "font",
+        "grotesk",
+        "quirky",
+        "techy",
+        "geometric",
+        "modern",
+        "space"
       ],
-      "version": "1.0.0",
-      "license": "OFL-1.1"
+      "version": "1.1.0",
+      "license": "OFL-1.1",
+      "family": "Space Grotesk",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
     },
     {
       "name": "font-space-mono",
@@ -18325,6 +18429,2383 @@
       ],
       "version": "1.0.0",
       "license": "MIT"
+    },
+    {
+      "name": "font-lora",
+      "type": "mosio:font",
+      "title": "Lora",
+      "description": "A well-balanced contemporary serif with calligraphic roots and a warm book feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "calligraphic",
+        "contemporary",
+        "warm",
+        "editorial",
+        "body",
+        "storytelling"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Lora",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-crimson-pro",
+      "type": "mosio:font",
+      "title": "Crimson Pro",
+      "description": "An elegant old-style text serif inspired by classic book typography. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "oldstyle",
+        "bookish",
+        "classical",
+        "elegant",
+        "essay",
+        "literary"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Crimson Pro",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-eb-garamond",
+      "type": "mosio:font",
+      "title": "EB Garamond",
+      "description": "A faithful revival of the Garamond old-style text serif of the 16th century. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "garamond",
+        "renaissance",
+        "classical",
+        "refined",
+        "1500s",
+        "books"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "EB Garamond",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-cormorant-garamond",
+      "type": "mosio:font",
+      "title": "Cormorant Garamond",
+      "description": "A delicate high-contrast Garamond-inspired serif that shines at large sizes. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "high-contrast",
+        "delicate",
+        "fashion",
+        "elegant",
+        "display",
+        "poetic"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Cormorant Garamond",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-libre-baskerville",
+      "type": "mosio:font",
+      "title": "Libre Baskerville",
+      "description": "A web-tuned take on Baskerville, a clear transitional serif for body text. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "baskerville",
+        "1700s",
+        "formal",
+        "transitional",
+        "web",
+        "headlines"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Libre Baskerville",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-source-serif-4",
+      "type": "mosio:font",
+      "title": "Source Serif 4",
+      "description": "A neutral transitional serif from Adobe that pairs well with almost anything. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "transitional",
+        "neutral",
+        "versatile",
+        "textbook",
+        "clean",
+        "modern"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Source Serif 4",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-spectral",
+      "type": "mosio:font",
+      "title": "Spectral",
+      "description": "A screen-first serif with seven real weights and quiet, refined shapes. Bundled as woff2 (7 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "screen-first",
+        "refined",
+        "7 weights",
+        "editorial",
+        "literary",
+        "calm"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Spectral",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-libre-caslon-text",
+      "type": "mosio:font",
+      "title": "Libre Caslon Text",
+      "description": "A text revival of Caslon, the classic English book face. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "caslon",
+        "1700s",
+        "bookish",
+        "classic",
+        "traditional",
+        "text"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Libre Caslon Text",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-fraunces",
+      "type": "mosio:font",
+      "title": "Fraunces",
+      "description": "A soft old-style serif with a warm 1970s flavour and friendly curves. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "soft",
+        "old-style",
+        "wonky",
+        "quirky",
+        "1970s",
+        "warm",
+        "friendly"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Fraunces",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-newsreader",
+      "type": "mosio:font",
+      "title": "Newsreader",
+      "description": "A serif made for on-screen news and long reading. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "news",
+        "editorial",
+        "text",
+        "journalistic",
+        "readable",
+        "modern"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Newsreader",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-literata",
+      "type": "mosio:font",
+      "title": "Literata",
+      "description": "A contemporary reading serif designed for long-form e-book text. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "reading",
+        "e-book",
+        "sturdy",
+        "open",
+        "textbook",
+        "humanist"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Literata",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-gelasio",
+      "type": "mosio:font",
+      "title": "Gelasio",
+      "description": "A metric-compatible alternative to Georgia with a familiar classroom feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "georgia-metric",
+        "web",
+        "familiar",
+        "sturdy",
+        "classroom",
+        "neutral"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Gelasio",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-vollkorn",
+      "type": "mosio:font",
+      "title": "Vollkorn",
+      "description": "A dark, sturdy text serif made for everyday reading. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "bread-and-butter",
+        "dark",
+        "sturdy",
+        "text",
+        "warm",
+        "german"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Vollkorn",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-ibm-plex-serif",
+      "type": "mosio:font",
+      "title": "IBM Plex Serif",
+      "description": "IBM's slab-leaning serif with a technical, typewriter-touched character. Bundled as woff2 (7 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "corporate",
+        "technical",
+        "typewriter-touch",
+        "slab-leaning",
+        "tech",
+        "seven weights"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "IBM Plex Serif",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-bodoni-moda",
+      "type": "mosio:font",
+      "title": "Bodoni Moda",
+      "description": "A high-contrast Didone with a wide optical range, from text to fashion display. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "didone",
+        "fashion",
+        "high-contrast",
+        "luxury",
+        "magazine",
+        "display"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Bodoni Moda",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-young-serif",
+      "type": "mosio:font",
+      "title": "Young Serif",
+      "description": "A chunky old-style display serif with a friendly, hand-cut feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "chunky",
+        "friendly",
+        "old-style",
+        "soft",
+        "display",
+        "warm"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Young Serif",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-cardo",
+      "type": "mosio:font",
+      "title": "Cardo",
+      "description": "A scholarly old-style serif designed for classicists and humanities. Bundled as woff2 (2 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "scholarly",
+        "classical",
+        "humanities",
+        "latin",
+        "polytonic",
+        "academic"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Cardo",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-instrument-serif",
+      "type": "mosio:font",
+      "title": "Instrument Serif",
+      "description": "A tall condensed display serif with a fresh editorial look. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "condensed-serif",
+        "editorial",
+        "trendy",
+        "display",
+        "tall",
+        "modern"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Instrument Serif",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-zilla-slab",
+      "type": "mosio:font",
+      "title": "Zilla Slab",
+      "description": "Mozilla's friendly geometric slab serif in five real weights. Bundled as woff2 (5 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "mozilla",
+        "friendly",
+        "geometric slab",
+        "techy",
+        "bold",
+        "approachable"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Zilla Slab",
+      "category": "slab",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-bitter",
+      "type": "mosio:font",
+      "title": "Bitter",
+      "description": "A contemporary slab serif designed for comfortable text on screens. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "text slab",
+        "screen",
+        "readable",
+        "contemporary",
+        "editorial",
+        "body"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Bitter",
+      "category": "slab",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-aleo",
+      "type": "mosio:font",
+      "title": "Aleo",
+      "description": "A friendly modern slab with soft, lively detailing. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "soft slab",
+        "friendly",
+        "modern",
+        "versatile",
+        "readable",
+        "lively"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Aleo",
+      "category": "slab",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-rokkitt",
+      "type": "mosio:font",
+      "title": "Rokkitt",
+      "description": "A compact geometric slab with a quirky personality. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "geometric slab",
+        "quirky",
+        "compact",
+        "display",
+        "playful",
+        "bold"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Rokkitt",
+      "category": "slab",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-open-sans",
+      "type": "mosio:font",
+      "title": "Open Sans",
+      "description": "The ubiquitous humanist sans with open shapes and excellent legibility. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "humanist",
+        "neutral",
+        "friendly",
+        "ubiquitous",
+        "legible",
+        "body"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Open Sans",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-roboto",
+      "type": "mosio:font",
+      "title": "Roboto",
+      "description": "Google's modern neo-grotesque with a mechanical skeleton and friendly curves. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "neo-grotesque",
+        "mechanical",
+        "android",
+        "neutral",
+        "modern",
+        "ui"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Roboto",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-lato",
+      "type": "mosio:font",
+      "title": "Lato",
+      "description": "A warm semi-rounded humanist sans with a balanced, professional look. Bundled as woff2 (4 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "humanist",
+        "warm",
+        "semi-rounded",
+        "corporate",
+        "balanced",
+        "clean"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Lato",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-montserrat",
+      "type": "mosio:font",
+      "title": "Montserrat",
+      "description": "A wide geometric sans inspired by urban signage in Buenos Aires. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "geometric",
+        "urban",
+        "buenos aires",
+        "wide",
+        "bold",
+        "headline"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Montserrat",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-work-sans",
+      "type": "mosio:font",
+      "title": "Work Sans",
+      "description": "A grotesque sans tuned for screens, from text to headline sizes. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "grotesque",
+        "screen",
+        "onscreen",
+        "neutral",
+        "workhorse",
+        "text"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Work Sans",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-dm-sans",
+      "type": "mosio:font",
+      "title": "DM Sans",
+      "description": "A low-contrast geometric sans with a clean, minimal startup look. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "geometric",
+        "low-contrast",
+        "clean",
+        "startup",
+        "modern",
+        "minimal"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "DM Sans",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-plus-jakarta-sans",
+      "type": "mosio:font",
+      "title": "Plus Jakarta Sans",
+      "description": "A crisp modern sans designed for Jakarta's Tokopedia-era tech scene. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "geometric",
+        "modern",
+        "jakarta",
+        "crisp",
+        "startup",
+        "indonesian"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Plus Jakarta Sans",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-outfit",
+      "type": "mosio:font",
+      "title": "Outfit",
+      "description": "A clean geometric sans with a brand-ready, friendly feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "geometric",
+        "clean",
+        "brand",
+        "rounded-ish",
+        "minimal",
+        "headline"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Outfit",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-figtree",
+      "type": "mosio:font",
+      "title": "Figtree",
+      "description": "A friendly geometric sans with approachable, product-ready shapes. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "geometric",
+        "friendly",
+        "approachable",
+        "clean",
+        "product",
+        "soft"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Figtree",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-sora",
+      "type": "mosio:font",
+      "title": "Sora",
+      "description": "A wide geometric sans made for digital and technology topics. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "geometric",
+        "wide",
+        "digital",
+        "web3",
+        "technical",
+        "future"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Sora",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-lexend",
+      "type": "mosio:font",
+      "title": "Lexend",
+      "description": "A sans designed to improve reading fluency with generous letter shapes. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "reading",
+        "accessible",
+        "wide spacing",
+        "dyslexia-friendly",
+        "learning",
+        "clear"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Lexend",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-ibm-plex-sans",
+      "type": "mosio:font",
+      "title": "IBM Plex Sans",
+      "description": "IBM's engineered grotesque with a neutral, technical personality. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "corporate",
+        "technical",
+        "grotesque",
+        "engineered",
+        "neutral",
+        "tech"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "IBM Plex Sans",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-public-sans",
+      "type": "mosio:font",
+      "title": "Public Sans",
+      "description": "A strong, neutral sans built for public-sector clarity. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "neutral",
+        "institutional",
+        "plain",
+        "strong",
+        "public",
+        "government"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Public Sans",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-source-sans-3",
+      "type": "mosio:font",
+      "title": "Source Sans 3",
+      "description": "Adobe's clean humanist sans for user interfaces and body text. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "humanist",
+        "adobe",
+        "clean",
+        "legible",
+        "ui",
+        "versatile"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Source Sans 3",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-karla",
+      "type": "mosio:font",
+      "title": "Karla",
+      "description": "A quirky grotesque sans with a casual, compact character. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "grotesque",
+        "quirky",
+        "compact",
+        "indie",
+        "editorial",
+        "casual"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Karla",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-barlow",
+      "type": "mosio:font",
+      "title": "Barlow",
+      "description": "A slightly rounded grotesk inspired by California highway signs, nine weights. Bundled as woff2 (9 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "california",
+        "highway signage",
+        "slightly rounded",
+        "industrial",
+        "nine weights",
+        "versatile"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Barlow",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-jost",
+      "type": "mosio:font",
+      "title": "Jost",
+      "description": "A Futura-inspired geometric sans with Bauhaus-era elegance. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "futura-like",
+        "geometric",
+        "1920s",
+        "bauhaus",
+        "elegant",
+        "minimal"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Jost",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-archivo",
+      "type": "mosio:font",
+      "title": "Archivo",
+      "description": "A sturdy grotesque sans that works from captions to headlines. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "grotesque",
+        "sturdy",
+        "workhorse",
+        "editorial",
+        "bold",
+        "neutral"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Archivo",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-bricolage-grotesque",
+      "type": "mosio:font",
+      "title": "Bricolage Grotesque",
+      "description": "A characterful grotesque with ink traps and a lively, editorial attitude. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "quirky grotesque",
+        "ink-trap",
+        "characterful",
+        "editorial",
+        "bold",
+        "trendy"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Bricolage Grotesque",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-syne",
+      "type": "mosio:font",
+      "title": "Syne",
+      "description": "An art-gallery sans whose heavy weights get dramatically wide. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "experimental",
+        "art",
+        "wide extra-bold",
+        "gallery",
+        "avant-garde",
+        "poster"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Syne",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-instrument-sans",
+      "type": "mosio:font",
+      "title": "Instrument Sans",
+      "description": "A crisp, neutral modern sans suited to product and editorial design. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "neutral",
+        "modern",
+        "editorial",
+        "clean",
+        "product",
+        "crisp"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Instrument Sans",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-fira-sans",
+      "type": "mosio:font",
+      "title": "Fira Sans",
+      "description": "Mozilla's humanist sans with a warm tone and nine real weights. Bundled as woff2 (5 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "humanist",
+        "mozilla",
+        "firefox os",
+        "legible",
+        "warm",
+        "nine weights"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Fira Sans",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-rubik",
+      "type": "mosio:font",
+      "title": "Rubik",
+      "description": "A geometric sans with gently rounded corners and a friendly digital feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "slightly rounded",
+        "geometric",
+        "friendly",
+        "digital",
+        "soft corners",
+        "bold"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Rubik",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-ibm-plex-mono",
+      "type": "mosio:font",
+      "title": "IBM Plex Mono",
+      "description": "IBM's humanist monospace with a typewriter touch, in seven weights. Bundled as woff2 (7 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "typewriter",
+        "technical",
+        "corporate",
+        "code",
+        "seven weights",
+        "humanist"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "IBM Plex Mono",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-fira-code",
+      "type": "mosio:font",
+      "title": "Fira Code",
+      "description": "A coding monospace with programming ligatures for arrows and operators. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "ligatures",
+        "code",
+        "developer",
+        "programming",
+        "editor",
+        "popular"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Fira Code",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-source-code-pro",
+      "type": "mosio:font",
+      "title": "Source Code Pro",
+      "description": "Adobe's clean, neutral monospace built for source code. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "adobe",
+        "code",
+        "clean",
+        "neutral",
+        "terminal",
+        "readable"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Source Code Pro",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-roboto-mono",
+      "type": "mosio:font",
+      "title": "Roboto Mono",
+      "description": "The monospace sibling of Roboto with a neutral, mechanical tone. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "code",
+        "neutral",
+        "android",
+        "mechanical",
+        "terminal",
+        "readable"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Roboto Mono",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-dm-mono",
+      "type": "mosio:font",
+      "title": "DM Mono",
+      "description": "A friendly, geometric monospace with soft shapes. Bundled as woff2 (3 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "geometric",
+        "friendly",
+        "rounded",
+        "minimal",
+        "code",
+        "soft"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "DM Mono",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-inconsolata",
+      "type": "mosio:font",
+      "title": "Inconsolata",
+      "description": "A humanist, compact monospace long loved for terminals. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "humanist",
+        "code",
+        "terminal",
+        "classic",
+        "compact",
+        "readable"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Inconsolata",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-red-hat-mono",
+      "type": "mosio:font",
+      "title": "Red Hat Mono",
+      "description": "Red Hat's clean, modern monospace. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "code",
+        "clean",
+        "open-source",
+        "geometric",
+        "terminal",
+        "modern"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Red Hat Mono",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-martian-mono",
+      "type": "mosio:font",
+      "title": "Martian Mono",
+      "description": "A wide, futuristic monospace with a space-age display feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "wide",
+        "futuristic",
+        "soviet-space",
+        "techno",
+        "display",
+        "bold"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Martian Mono",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-courier-prime",
+      "type": "mosio:font",
+      "title": "Courier Prime",
+      "description": "A refined Courier made for screenplays, with a typewriter feel. Bundled as woff2 (2 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "typewriter",
+        "screenplay",
+        "courier",
+        "slab",
+        "vintage",
+        "script"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Courier Prime",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-sometype-mono",
+      "type": "mosio:font",
+      "title": "Sometype Mono",
+      "description": "A monospace with grotesque character and compact, quirky letters. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "grotesque mono",
+        "quirky",
+        "compact",
+        "characterful",
+        "modern",
+        "code"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Sometype Mono",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-patrick-hand",
+      "type": "mosio:font",
+      "title": "Patrick Hand",
+      "description": "A neat, legible hand-printed marker style. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "marker",
+        "casual",
+        "legible",
+        "classroom",
+        "notes",
+        "friendly"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Patrick Hand",
+      "category": "handwritten",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-indie-flower",
+      "type": "mosio:font",
+      "title": "Indie Flower",
+      "description": "A round, friendly hand with a light notebook-doodle feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "girly",
+        "round",
+        "friendly",
+        "doodle",
+        "notebook",
+        "light"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Indie Flower",
+      "category": "handwritten",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-kalam",
+      "type": "mosio:font",
+      "title": "Kalam",
+      "description": "A natural, smooth pen handwriting in three weights. Bundled as woff2 (3 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "devanagari-roots",
+        "natural",
+        "pen",
+        "smooth",
+        "handwritten",
+        "three weights"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Kalam",
+      "category": "handwritten",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-amatic-sc",
+      "type": "mosio:font",
+      "title": "Amatic SC",
+      "description": "A tall, condensed hand-drawn small-caps style. Bundled as woff2 (2 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "condensed",
+        "tall",
+        "quirky",
+        "small caps",
+        "poster",
+        "hand-drawn"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Amatic SC",
+      "category": "handwritten",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-dancing-script",
+      "type": "mosio:font",
+      "title": "Dancing Script",
+      "description": "A lively casual script with bouncy, flowing connections. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "script",
+        "lively",
+        "casual",
+        "bouncy",
+        "brush",
+        "flowing"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Dancing Script",
+      "category": "handwritten",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-pacifico",
+      "type": "mosio:font",
+      "title": "Pacifico",
+      "description": "A bold retro brush script inspired by 1950s surf culture. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "surf",
+        "retro",
+        "brush script",
+        "1950s",
+        "casual",
+        "bold"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Pacifico",
+      "category": "handwritten",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-great-vibes",
+      "type": "mosio:font",
+      "title": "Great Vibes",
+      "description": "A formal copperplate-style calligraphic script. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "formal script",
+        "wedding",
+        "calligraphy",
+        "elegant",
+        "flourish",
+        "copperplate"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Great Vibes",
+      "category": "handwritten",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-caveat-brush",
+      "type": "mosio:font",
+      "title": "Caveat Brush",
+      "description": "An energetic brush-marker hand. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "brush",
+        "marker",
+        "energetic",
+        "casual",
+        "quick",
+        "bold"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Caveat Brush",
+      "category": "handwritten",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-lobster",
+      "type": "mosio:font",
+      "title": "Lobster",
+      "description": "A bold connected script with a retro advertising look. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "retro",
+        "bold script",
+        "1950s",
+        "signage",
+        "diner",
+        "advertising"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Lobster",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-abril-fatface",
+      "type": "mosio:font",
+      "title": "Abril Fatface",
+      "description": "A fat-face Didone for striking posters and headlines. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "didone",
+        "fat face",
+        "poster",
+        "fashion",
+        "high-contrast",
+        "headline"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Abril Fatface",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-bungee",
+      "type": "mosio:font",
+      "title": "Bungee",
+      "description": "A signage face designed to work horizontally or stacked vertically. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "signage",
+        "vertical",
+        "urban",
+        "bold",
+        "sign painters",
+        "caps"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Bungee",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-righteous",
+      "type": "mosio:font",
+      "title": "Righteous",
+      "description": "A retro-futurist, art-deco-flavoured display face. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "art deco",
+        "retro-futurist",
+        "geometric",
+        "caps",
+        "sign",
+        "bold"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Righteous",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-alfa-slab-one",
+      "type": "mosio:font",
+      "title": "Alfa Slab One",
+      "description": "A very heavy slab serif for high-impact headlines. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "heavy slab",
+        "bold",
+        "poster",
+        "impact",
+        "1900s",
+        "headline"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Alfa Slab One",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-unbounded",
+      "type": "mosio:font",
+      "title": "Unbounded",
+      "description": "A wide, rounded display sans with a futuristic globe feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "wide",
+        "globe",
+        "rounded",
+        "web3",
+        "futuristic",
+        "bold"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Unbounded",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-gloock",
+      "type": "mosio:font",
+      "title": "Gloock",
+      "description": "A high-contrast display serif with striking, editorial presence. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "high-contrast serif",
+        "editorial",
+        "bold",
+        "fashion",
+        "poster",
+        "striking"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Gloock",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-cinzel",
+      "type": "mosio:font",
+      "title": "Cinzel",
+      "description": "A classical Roman inscription-style capitals face. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "roman capitals",
+        "classical",
+        "inscriptional",
+        "epic",
+        "cinematic",
+        "caps"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Cinzel",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-archivo-black",
+      "type": "mosio:font",
+      "title": "Archivo Black",
+      "description": "A heavy black grotesque for punchy headlines. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "heavy grotesque",
+        "bold",
+        "poster",
+        "impact",
+        "headline",
+        "black"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Archivo Black",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-press-start-2p",
+      "type": "mosio:font",
+      "title": "Press Start 2P",
+      "description": "An 8-bit arcade pixel face based on 1980s game fonts. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "pixel",
+        "8-bit",
+        "arcade",
+        "retro game",
+        "bitmap",
+        "1980s"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Press Start 2P",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-bangers",
+      "type": "mosio:font",
+      "title": "Bangers",
+      "description": "A bold comic-book caps face with an action feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "comic",
+        "caps",
+        "action",
+        "bold",
+        "superhero",
+        "energetic"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Bangers",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-anton",
+      "type": "mosio:font",
+      "title": "Anton",
+      "description": "A tall bold condensed headline sans in the Impact tradition. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "tall",
+        "bold",
+        "impact",
+        "poster",
+        "news",
+        "headline"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Anton",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-oswald",
+      "type": "mosio:font",
+      "title": "Oswald",
+      "description": "A reworked classic gothic, condensed with six real weights. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "gothic",
+        "tall",
+        "news",
+        "reworked",
+        "versatile",
+        "headline"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Oswald",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-fjalla-one",
+      "type": "mosio:font",
+      "title": "Fjalla One",
+      "description": "A strong tall headline sans in a single bold weight. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "tall",
+        "headline",
+        "strong",
+        "nordic",
+        "bold",
+        "poster"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Fjalla One",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-barlow-condensed",
+      "type": "mosio:font",
+      "title": "Barlow Condensed",
+      "description": "The condensed cut of Barlow with nine weights. Bundled as woff2 (9 files, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "highway signage",
+        "narrow",
+        "industrial",
+        "nine weights",
+        "sporty",
+        "versatile"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Barlow Condensed",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-league-gothic",
+      "type": "mosio:font",
+      "title": "League Gothic",
+      "description": "A revived tall Gothic with a variable width axis. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "gothic",
+        "tall",
+        "1900s",
+        "narrow",
+        "poster",
+        "variable width"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "League Gothic",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-big-shoulders-display",
+      "type": "mosio:font",
+      "title": "Big Shoulders Display",
+      "description": "A condensed display face inspired by Chicago civic signage. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "chicago",
+        "industrial",
+        "tall",
+        "bold",
+        "civic",
+        "display"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Big Shoulders Display",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-antonio",
+      "type": "mosio:font",
+      "title": "Antonio",
+      "description": "A refined tall gothic with a light-to-bold range. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "refined",
+        "tall",
+        "gothic",
+        "headline",
+        "light-to-bold",
+        "clean"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Antonio",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-sofia-sans-condensed",
+      "type": "mosio:font",
+      "title": "Sofia Sans Condensed",
+      "description": "A clean condensed sans for tight spaces. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "clean",
+        "narrow",
+        "sans",
+        "versatile",
+        "modern",
+        "text"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Sofia Sans Condensed",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-roboto-condensed",
+      "type": "mosio:font",
+      "title": "Roboto Condensed",
+      "description": "The condensed cut of Roboto, neutral and compact. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "neutral",
+        "narrow",
+        "android",
+        "mechanical",
+        "ui",
+        "compact"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Roboto Condensed",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-staatliches",
+      "type": "mosio:font",
+      "title": "Staatliches",
+      "description": "A bold caps-only condensed display face inspired by German signage. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "caps",
+        "poster",
+        "stencil-like",
+        "retro",
+        "bold",
+        "signage"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Staatliches",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-smooch-sans",
+      "type": "mosio:font",
+      "title": "Smooch Sans",
+      "description": "A friendly tall sans with soft corners and a wide weight range. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "tall",
+        "friendly",
+        "light",
+        "rounded corners",
+        "headline",
+        "soft"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Smooch Sans",
+      "category": "condensed",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-nunito",
+      "type": "mosio:font",
+      "title": "Nunito",
+      "description": "A balanced sans with rounded terminals and a soft, friendly voice. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "rounded terminals",
+        "friendly",
+        "soft",
+        "kids",
+        "warm",
+        "balanced"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Nunito",
+      "category": "rounded",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-quicksand",
+      "type": "mosio:font",
+      "title": "Quicksand",
+      "description": "A light geometric sans with rounded strokes. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "geometric",
+        "rounded",
+        "light",
+        "playful",
+        "clean",
+        "minimal"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Quicksand",
+      "category": "rounded",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-comfortaa",
+      "type": "mosio:font",
+      "title": "Comfortaa",
+      "description": "A geometric rounded sans with a cute, modern logo feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "geometric",
+        "rounded",
+        "modern",
+        "soft",
+        "techy-cute",
+        "logo"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Comfortaa",
+      "category": "rounded",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-varela-round",
+      "type": "mosio:font",
+      "title": "Varela Round",
+      "description": "A simple rounded humanist sans with an educational, friendly look. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "round",
+        "humanist",
+        "friendly",
+        "clean",
+        "simple",
+        "educational"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Varela Round",
+      "category": "rounded",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-fredoka",
+      "type": "mosio:font",
+      "title": "Fredoka",
+      "description": "A bubbly, soft rounded sans popular for children's content. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "bubbly",
+        "kids",
+        "bold",
+        "soft",
+        "playful",
+        "rounded"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Fredoka",
+      "category": "rounded",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-baloo-2",
+      "type": "mosio:font",
+      "title": "Baloo 2",
+      "description": "A bubbly, friendly rounded sans in five weights. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "bubbly",
+        "devanagari-roots",
+        "friendly",
+        "soft",
+        "bold",
+        "playful"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Baloo 2",
+      "category": "rounded",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-dosis",
+      "type": "mosio:font",
+      "title": "Dosis",
+      "description": "A slim sans with rounded ends and a gentle tone. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "narrow rounded",
+        "light",
+        "gentle",
+        "clean",
+        "slim",
+        "soft"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Dosis",
+      "category": "rounded",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-grandstander",
+      "type": "mosio:font",
+      "title": "Grandstander",
+      "description": "A playful kid-oriented rounded face with a lively hand-drawn feel. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "quirky",
+        "playful",
+        "kids",
+        "hand-drawn",
+        "bold",
+        "lively"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Grandstander",
+      "category": "rounded",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-im-fell-english",
+      "type": "mosio:font",
+      "title": "IM FELL English",
+      "description": "A digitisation of 17th-century Fell types, with the rough charm of old letterpress. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "old-style",
+        "1600s",
+        "historical",
+        "letterpress",
+        "antique",
+        "ink-bled"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "IM FELL English",
+      "category": "serif",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-vt323",
+      "type": "mosio:font",
+      "title": "VT323",
+      "description": "A monospace recreation of the DEC VT220 terminal screen. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "terminal",
+        "vt220",
+        "1980s",
+        "retro",
+        "green-screen",
+        "pixel"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "VT323",
+      "category": "mono",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-limelight",
+      "type": "mosio:font",
+      "title": "Limelight",
+      "description": "A glamorous art-deco display face with the look of a theatre marquee. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "art deco",
+        "1920s",
+        "theatre",
+        "marquee",
+        "high-contrast",
+        "glamorous"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Limelight",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-noto-sans",
+      "type": "mosio:font",
+      "title": "Noto Sans",
+      "description": "A neutral humanist sans from the Noto family, an everyday safe default. Bundled as woff2 (1 file, OFL-1.1, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "neutral",
+        "humanist",
+        "universal",
+        "plain",
+        "google",
+        "safe"
+      ],
+      "version": "1.0.0",
+      "license": "OFL-1.1",
+      "family": "Noto Sans",
+      "category": "sans",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": true
+    },
+    {
+      "name": "font-special-elite",
+      "type": "mosio:font",
+      "title": "Special Elite",
+      "description": "A distressed typewriter face that looks hit on paper by an old machine. Bundled as woff2 (1 file, Apache-2.0, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "typewriter",
+        "distressed",
+        "1930s",
+        "vintage",
+        "case-file",
+        "grungy"
+      ],
+      "version": "1.0.0",
+      "license": "Apache-2.0",
+      "family": "Special Elite",
+      "category": "display",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
+    },
+    {
+      "name": "font-permanent-marker",
+      "type": "mosio:font",
+      "title": "Permanent Marker",
+      "description": "A bold felt-marker hand with a loud, sharpie look. Bundled as woff2 (1 file, Apache-2.0, latin + latin-ext). Scenes that need it list it in registryDependencies.",
+      "tags": [
+        "font",
+        "marker",
+        "bold",
+        "sharpie",
+        "graffiti",
+        "casual",
+        "loud"
+      ],
+      "version": "1.0.0",
+      "license": "Apache-2.0",
+      "family": "Permanent Marker",
+      "category": "handwritten",
+      "subsets": [
+        "latin",
+        "latin-ext"
+      ],
+      "variable": false
     }
   ]
 }
