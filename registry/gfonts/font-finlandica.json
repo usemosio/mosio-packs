@@ -1,0 +1,66 @@
+{
+ "name": "font-finlandica",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Helsinki Type Studio, Niklas Ekholm, Juho Hiilivirta, Jaakko Suomalainen",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/finlandica",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Finlandica",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "headline",
+  "traditional",
+  "variable",
+  "italic",
+  "cyrillic",
+  "cyrillic-ext",
+  "latin",
+  "latin-ext"
+ ],
+ "subsets": [
+  "cyrillic",
+  "cyrillic-ext",
+  "latin",
+  "latin-ext"
+ ],
+ "variable": true,
+ "description": "The official typeface of Finland commissioned by the Prime ministers office and Business Finland for the promotion of Finnish exports. Its strong and compressed shapes embody a traditional virtue in Finnish culture: honest and resilient determination - \"Sisu\". Ink traps like cuts from a blunt ax, makes the typeface reliable in small sizes and gives it character in large headlines. Like the Finnhorse it's a breed suitable both as riding horse and workhorse. To contribute, see github.com/HelsinkiTypeStudio/Finlandica.",
+ "faces": [
+  {
+   "path": "fonts/Finlandica-wght.ttf",
+   "weight": "400 700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Finlandica-Italic-wght.ttf",
+   "weight": "400 700",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2015 The Finlandica Project Authors (https://github.com/HelsinkiTypeStudio/Finlandica)\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttps://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n© 2022 GitHub, Inc.\nTerms\nPrivacy\nSecurity\nStatus\nDocs\nContact GitHub\nPricing\nAPI\nTraining\nBlog\nAbout\n"
+  },
+  {
+   "path": "fonts/Finlandica-wght.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/finlandica/Finlandica%5Bwght%5D.ttf",
+   "sha256": "8192c7f916ad929890b799bd4fe0974200be62e024c267c7b234632caca6658e",
+   "size": 143908
+  },
+  {
+   "path": "fonts/Finlandica-Italic-wght.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/finlandica/Finlandica-Italic%5Bwght%5D.ttf",
+   "sha256": "70b7bddb5b5d01aeb8461e5a4c0d022efbc892ad96f68eb7d163cb3440360725",
+   "size": 151992
+  }
+ ],
+ "sha256": "04f96087576683d44ec46a6a462392706e99a4edf719d74e52b373e83ba73074"
+}

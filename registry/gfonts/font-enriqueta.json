@@ -1,0 +1,93 @@
+{
+ "name": "font-enriqueta",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "FontFuror",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/enriqueta",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Enriqueta",
+ "category": "serif",
+ "tags": [
+  "serif",
+  "humanist",
+  "slab",
+  "pixel",
+  "headline",
+  "editorial",
+  "ui",
+  "display",
+  "latin",
+  "latin-ext"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext"
+ ],
+ "variable": false,
+ "description": "Enriqueta is a serif typeface designed to meet the technical demands of silkscreen printing. Since that is a grid system, this makes it an excellent candidate for digital display applications too since they are built in pixels. Its a slab serif type with clear, direct and not so subtle features, that was conceived as a hybrid that takes from the Egyptian style some robustness and strong serifs, and from Roman fonts the proportions and soft humanist tones, resulting in a harmonic and legible typeface for texts.",
+ "faces": [
+  {
+   "path": "fonts/Enriqueta-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Enriqueta-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Enriqueta-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Enriqueta-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright (c) 2011, FontFuror (info@fontfuror.com), \nwith Reserved Font Names \"Enriqueta\" and \"Enriqueta Pro\".\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/Enriqueta-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/enriqueta/Enriqueta-Regular.ttf",
+   "sha256": "5e3aca4c6daf22188a92717b7ed53221519daa96b7f85117601ebf1890686716",
+   "size": 74508
+  },
+  {
+   "path": "fonts/Enriqueta-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/enriqueta/Enriqueta-Medium.ttf",
+   "sha256": "be7455fe09db15b36ee858d66ac59d0ab31e37b04b4253099fd869258f9b5592",
+   "size": 74732
+  },
+  {
+   "path": "fonts/Enriqueta-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/enriqueta/Enriqueta-SemiBold.ttf",
+   "sha256": "b866967948a53bd516d441c0b04f0bbc4b45061a8d1d57e7a8989eab2bd9cc18",
+   "size": 74272
+  },
+  {
+   "path": "fonts/Enriqueta-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/enriqueta/Enriqueta-Bold.ttf",
+   "sha256": "bb453797b5e353990c4569994754c2496640f427331c9f33b51414ed56777412",
+   "size": 74088
+  }
+ ],
+ "reserved_font_name": [
+  "Enriqueta",
+  "Enriqueta Pro"
+ ],
+ "sha256": "82e9c4c2fb955ed999a4a322fd3cb6c6efb89a64c34c48b976726300e5b3ec30"
+}

@@ -1,0 +1,256 @@
+{
+ "name": "font-be-vietnam-pro",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Lâm Bảo, Tony Le, ViệtAnh Nguyễn",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Be Vietnam Pro",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "elegant",
+  "grotesque",
+  "many weights",
+  "italic",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "Be Vietnam Pro is a Neo Grotesk which is well suited to tech companies and startups. We have refined Vietnamese letterforms with diacritics adaptive forms and engineered them for the best readability. To contribute, see github.com/bettergui/BeVietnamPro.",
+ "faces": [
+  {
+   "path": "fonts/BeVietnamPro-Thin.ttf",
+   "weight": "100",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BeVietnamPro-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BeVietnamPro-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BeVietnamPro-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BeVietnamPro-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BeVietnamPro-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BeVietnamPro-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BeVietnamPro-ExtraBold.ttf",
+   "weight": "800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BeVietnamPro-Black.ttf",
+   "weight": "900",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BeVietnamPro-ThinItalic.ttf",
+   "weight": "100",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BeVietnamPro-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BeVietnamPro-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BeVietnamPro-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BeVietnamPro-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BeVietnamPro-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BeVietnamPro-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BeVietnamPro-ExtraBoldItalic.ttf",
+   "weight": "800",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BeVietnamPro-BlackItalic.ttf",
+   "weight": "900",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2021 The Be Vietnam Pro Project Authors (https://github.com/bettergui/BeVietnamPro),\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded,\nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/BeVietnamPro-Thin.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-Thin.ttf",
+   "sha256": "3ff7cae0bdd4b2087fe24583d1137dc0a6ecfed96c62ee39955992fa1629176c",
+   "size": 127040
+  },
+  {
+   "path": "fonts/BeVietnamPro-ThinItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-ThinItalic.ttf",
+   "sha256": "14c50e3d6c8980656681ede48068d12ae645c71b1eaa40ff14267d54a49c5c5a",
+   "size": 129556
+  },
+  {
+   "path": "fonts/BeVietnamPro-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-ExtraLight.ttf",
+   "sha256": "3df1650399fd891967082bd2f78e1d87fe4eb82fc7bdbb7ab94ba8bda848caa1",
+   "size": 134464
+  },
+  {
+   "path": "fonts/BeVietnamPro-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-ExtraLightItalic.ttf",
+   "sha256": "fc4410f0aa39430463f103463d27be5486c2018d11854f1733dd27be7348b41c",
+   "size": 131492
+  },
+  {
+   "path": "fonts/BeVietnamPro-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-Light.ttf",
+   "sha256": "f0b7143edac3fd99960312706cfa51cbafec28e7afa6d4afbd08a73bb246af13",
+   "size": 136772
+  },
+  {
+   "path": "fonts/BeVietnamPro-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-LightItalic.ttf",
+   "sha256": "baeadf148ee2b6640d7910ebab99b01aaaf5eb009463bdf466ab2b43108389fd",
+   "size": 136084
+  },
+  {
+   "path": "fonts/BeVietnamPro-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-Regular.ttf",
+   "sha256": "cd1ef6e9d7db28ad5cdb88a65ccbe693870e60d340b791f349d248342b4fe4c3",
+   "size": 132948
+  },
+  {
+   "path": "fonts/BeVietnamPro-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-Italic.ttf",
+   "sha256": "a33ebb3f68e0e260a7d3874d64259ad309971a2daf969e7ce5f444d70bce535f",
+   "size": 137244
+  },
+  {
+   "path": "fonts/BeVietnamPro-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-Medium.ttf",
+   "sha256": "b60832bfa0fcd015158112c64d7e3fdad3b0c6287d1823f85a3103636e845268",
+   "size": 135980
+  },
+  {
+   "path": "fonts/BeVietnamPro-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-MediumItalic.ttf",
+   "sha256": "b7d43a5f943048f7d4e49a080052acce1902f1eab07f4160299d84abab8119fa",
+   "size": 138280
+  },
+  {
+   "path": "fonts/BeVietnamPro-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-SemiBold.ttf",
+   "sha256": "bd8e27eb02720b9d91e59e4f10a90878643219f25ce6a8d9a4f06a8a88d3bb71",
+   "size": 136736
+  },
+  {
+   "path": "fonts/BeVietnamPro-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-SemiBoldItalic.ttf",
+   "sha256": "f7dbf8a63f4b4a6f7d7f1f4f27443495d01475663bb8fe5cb1a6fc6740e82a27",
+   "size": 134740
+  },
+  {
+   "path": "fonts/BeVietnamPro-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-Bold.ttf",
+   "sha256": "7f738fe5c43c8872807b20e2d30d42163618de8a4daf7f48a939adac32c16847",
+   "size": 140300
+  },
+  {
+   "path": "fonts/BeVietnamPro-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-BoldItalic.ttf",
+   "sha256": "a2a65bdf9b251beb3d658ae691889d71ce63c0290940c87ca60b449ceb0bdaee",
+   "size": 137748
+  },
+  {
+   "path": "fonts/BeVietnamPro-ExtraBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-ExtraBold.ttf",
+   "sha256": "44dbfa01553d227bec76ba6446c5618870a76a4a3297f41630dde859d0650d02",
+   "size": 139680
+  },
+  {
+   "path": "fonts/BeVietnamPro-ExtraBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-ExtraBoldItalic.ttf",
+   "sha256": "b5544a50b74c3153f7aa68614cfaebbea924869e6d6fdfd4ec80decfdd7ff4cd",
+   "size": 138076
+  },
+  {
+   "path": "fonts/BeVietnamPro-Black.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-Black.ttf",
+   "sha256": "dd0ec461782da7f4a58698b431a67c455ced7c09deb9c40d7b47e61975d3ffdb",
+   "size": 142612
+  },
+  {
+   "path": "fonts/BeVietnamPro-BlackItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/bevietnampro/BeVietnamPro-BlackItalic.ttf",
+   "sha256": "d55266c614d1fb013a6661c5cd1d98f31f2e03418d83e90f509b210f452c0cdf",
+   "size": 140468
+  }
+ ],
+ "sha256": "75b814d2c27497fa45be0543ea133b0b3b94cab12b7a0c5bb297d30dccbb89c4"
+}

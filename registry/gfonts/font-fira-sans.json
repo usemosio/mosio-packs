@@ -1,0 +1,263 @@
+{
+ "name": "font-fira-sans",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Carrois Apostrophe",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Fira Sans",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "ui",
+  "many weights",
+  "italic",
+  "cyrillic",
+  "cyrillic-ext",
+  "greek",
+  "greek-ext",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "subsets": [
+  "cyrillic",
+  "cyrillic-ext",
+  "greek",
+  "greek-ext",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "Designed to integrate with the character of the Mozilla FirefoxOS, the Fira typefaces also aim to cover the legibility needs for a large range of handsets varying in screen quality and rendering. The Fira font family comes in 3 widths, all accompanied by italic styles. The package also includes a Mono Spaced variant. This project is led by Carrois, a type foundry based in Berlin. To contribute, see github.com/mozilla/Fira",
+ "faces": [
+  {
+   "path": "fonts/FiraSans-Thin.ttf",
+   "weight": "100",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/FiraSans-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/FiraSans-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/FiraSans-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/FiraSans-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/FiraSans-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/FiraSans-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/FiraSans-ExtraBold.ttf",
+   "weight": "800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/FiraSans-Black.ttf",
+   "weight": "900",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/FiraSans-ThinItalic.ttf",
+   "weight": "100",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/FiraSans-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/FiraSans-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/FiraSans-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/FiraSans-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/FiraSans-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/FiraSans-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/FiraSans-ExtraBoldItalic.ttf",
+   "weight": "800",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/FiraSans-BlackItalic.ttf",
+   "weight": "900",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright (c) 2012-2015, The Mozilla Foundation and Telefonica S.A.\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded,\nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/FiraSans-Thin.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-Thin.ttf",
+   "sha256": "cd9d582ffae151bc616b26cf84b3c4912d04363b9c5e1b3e599b66e0e7d532a4",
+   "size": 442852
+  },
+  {
+   "path": "fonts/FiraSans-ThinItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-ThinItalic.ttf",
+   "sha256": "7275879630990f5bc13a3c3fcd68eea1c902aa8827769de4985390104a71a149",
+   "size": 457188
+  },
+  {
+   "path": "fonts/FiraSans-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-ExtraLight.ttf",
+   "sha256": "f575442d8b863086599208c9b69d0e345a0936f3ec27b12b3fbc41526b56e838",
+   "size": 447324
+  },
+  {
+   "path": "fonts/FiraSans-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-ExtraLightItalic.ttf",
+   "sha256": "f4d66af27c828a269d5df483a488404605957d0f4aeead8ebbc9a20dad24b115",
+   "size": 463000
+  },
+  {
+   "path": "fonts/FiraSans-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-Light.ttf",
+   "sha256": "e2172f4a23e9be22f977c34de3897d890401bbc5e9c47df968dfa2c01fb32235",
+   "size": 449660
+  },
+  {
+   "path": "fonts/FiraSans-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-LightItalic.ttf",
+   "sha256": "ca4228bdd77761e229e74e3e30f3a3786a75275b77e675decb75f7d356d7f7b4",
+   "size": 463212
+  },
+  {
+   "path": "fonts/FiraSans-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-Regular.ttf",
+   "sha256": "c29556a2719bf613ef3d5e070e40d903a8965d9c081beca1375dc1e6e0f93c23",
+   "size": 456996
+  },
+  {
+   "path": "fonts/FiraSans-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-Italic.ttf",
+   "sha256": "a4204f9a8029c1c55daa5385ac95936f74abea3e232770f1fb2862a19d1dfa13",
+   "size": 472396
+  },
+  {
+   "path": "fonts/FiraSans-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-Medium.ttf",
+   "sha256": "cbc1842cbed8c1d1146ba7c9db97d8f28c9bedfd25f41c5b0e1259ca48622328",
+   "size": 457248
+  },
+  {
+   "path": "fonts/FiraSans-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-MediumItalic.ttf",
+   "sha256": "d892b7a6e874d839bc7e712b1d57cf64bcf8013ae143c3eab09e0fd9a0604411",
+   "size": 472624
+  },
+  {
+   "path": "fonts/FiraSans-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-SemiBold.ttf",
+   "sha256": "db0321f83eb3e9f527b8af384a1b3fefdc1039cf2b06fd39b3f61492bda9561c",
+   "size": 489028
+  },
+  {
+   "path": "fonts/FiraSans-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-SemiBoldItalic.ttf",
+   "sha256": "97dc5696fe0aabcabf7e041527e0ca39215661cb8174cd1a92c01d9fe224c73d",
+   "size": 506544
+  },
+  {
+   "path": "fonts/FiraSans-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-Bold.ttf",
+   "sha256": "a4d8e149ecdd4874a0726eb0af894488b3b31c423d6b0017c8f415ed1b795b45",
+   "size": 489720
+  },
+  {
+   "path": "fonts/FiraSans-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-BoldItalic.ttf",
+   "sha256": "1b96c16db9819bcaa9d588068bb397bb6e977c4874965d3d50d789a1943757eb",
+   "size": 506864
+  },
+  {
+   "path": "fonts/FiraSans-ExtraBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-ExtraBold.ttf",
+   "sha256": "0a26cff904d790f7ade2bffaf227b5fecdbeffdac1695fdbd640e086fe4e7152",
+   "size": 497028
+  },
+  {
+   "path": "fonts/FiraSans-ExtraBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-ExtraBoldItalic.ttf",
+   "sha256": "eb26df1afeec1f817977c8729b4a1ba5ef07d7c821d39cbff6348e491c748f5f",
+   "size": 536744
+  },
+  {
+   "path": "fonts/FiraSans-Black.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-Black.ttf",
+   "sha256": "0ab27e9178d7f74898dd26e3a5f10eb7922bb2a88a2903e00796c4f7c7e08cc0",
+   "size": 507204
+  },
+  {
+   "path": "fonts/FiraSans-BlackItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/firasans/FiraSans-BlackItalic.ttf",
+   "sha256": "81bc0f5fac5b1ba562c1625319676e8202fec01b47e1e09b35db88210c30cf68",
+   "size": 527560
+  }
+ ],
+ "sha256": "222af8eb764a3788cc08da526cec2c112b4a098c915b9893da64576594583fb2"
+}

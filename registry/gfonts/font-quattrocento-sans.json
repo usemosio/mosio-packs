@@ -1,0 +1,92 @@
+{
+ "name": "font-quattrocento-sans",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Impallari Type",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/quattrocentosans",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Quattrocento Sans",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "elegant",
+  "friendly",
+  "headline",
+  "book",
+  "ui",
+  "traditional",
+  "italic",
+  "latin",
+  "latin-ext"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext"
+ ],
+ "variable": false,
+ "description": "Quattrocento Sans is a classic, elegant and sober typeface family. Warm, readable and not intrusive. It's the perfect sans-serif companion for Quattrocento. The wide and open letterforms and large x-height make it very legible for body text at small sizes. All the tiny details that only shows up at bigger sizes make it also great for display use.",
+ "faces": [
+  {
+   "path": "fonts/QuattrocentoSans-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/QuattrocentoSans-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/QuattrocentoSans-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/QuattrocentoSans-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright (c) 2011, Pablo Impallari (www.impallari.com|impallari@gmail.com),\nCopyright (c) 2011, Igino Marini. (www.ikern.com|mail@iginomarini.com),\nCopyright (c) 2011, Brenda Gallo. (gbrenda1987@gmail.com),\nwith Reserved Font Name Quattrocento Sans.\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/QuattrocentoSans-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/quattrocentosans/QuattrocentoSans-Regular.ttf",
+   "sha256": "8ee55c4a998c079efce0db96a30520a121d2bb90fe568f6a9e5cef54cc82ad59",
+   "size": 98340
+  },
+  {
+   "path": "fonts/QuattrocentoSans-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/quattrocentosans/QuattrocentoSans-Italic.ttf",
+   "sha256": "4107f2ad5d4993e764df336df9d6919ce5cf3600c5fc44488e1d724116f99114",
+   "size": 108700
+  },
+  {
+   "path": "fonts/QuattrocentoSans-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/quattrocentosans/QuattrocentoSans-Bold.ttf",
+   "sha256": "3c5fcbfa0108c6b8d5f182fbba798d838f6be42c0ca6b4b3462e88a275682eb5",
+   "size": 100560
+  },
+  {
+   "path": "fonts/QuattrocentoSans-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/quattrocentosans/QuattrocentoSans-BoldItalic.ttf",
+   "sha256": "f96418eff31cc33e1c68e68103c10310007280dc06b734cbf936584d532ec29e",
+   "size": 100748
+  }
+ ],
+ "reserved_font_name": [
+  "Quattrocento Sans"
+ ],
+ "sha256": "1e68d7805008b742687532e53691136514b4980bbd28c3dd642ff39d621e823b"
+}

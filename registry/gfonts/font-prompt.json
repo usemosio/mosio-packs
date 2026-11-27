@@ -1,0 +1,262 @@
+{
+ "name": "font-prompt",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Cadson Demak",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Prompt",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "geometric",
+  "futuristic",
+  "headline",
+  "editorial",
+  "ui",
+  "traditional",
+  "many weights",
+  "italic",
+  "latin",
+  "latin-ext",
+  "thai",
+  "vietnamese"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext",
+  "thai",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "Prompt in Thai means “ready,” the same as in English. Prompt is a loopless Thai and sans Latin typeface. The simple and geometric Latin was developed to work harmoniously with the loopless Thai that has wide proportions and airy negative space. It is suitable for both web and print usage, such as magazines, newspapers, and posters. A similarity between some glyphs such as ก ถ ภ ฤ ฦ, ฎ ฏ, บ ป, ข ช is something to take into consideration because it might lead to confusion when typesetting very short texts.",
+ "faces": [
+  {
+   "path": "fonts/Prompt-Thin.ttf",
+   "weight": "100",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Prompt-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Prompt-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Prompt-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Prompt-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Prompt-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Prompt-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Prompt-ExtraBold.ttf",
+   "weight": "800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Prompt-Black.ttf",
+   "weight": "900",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Prompt-ThinItalic.ttf",
+   "weight": "100",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Prompt-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Prompt-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Prompt-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Prompt-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Prompt-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Prompt-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Prompt-ExtraBoldItalic.ttf",
+   "weight": "800",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Prompt-BlackItalic.ttf",
+   "weight": "900",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright (c) 2015, Cadson Demak (info@cadsondemak.com)\r\n\r\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\r\nThis license is copied below, and is also available with a FAQ at:\r\nhttp://scripts.sil.org/OFL\r\n\r\n\r\n-----------------------------------------------------------\r\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\r\n-----------------------------------------------------------\r\n\r\nPREAMBLE\r\nThe goals of the Open Font License (OFL) are to stimulate worldwide\r\ndevelopment of collaborative font projects, to support the font creation\r\nefforts of academic and linguistic communities, and to provide a free and\r\nopen framework in which fonts may be shared and improved in partnership\r\nwith others.\r\n\r\nThe OFL allows the licensed fonts to be used, studied, modified and\r\nredistributed freely as long as they are not sold by themselves. The\r\nfonts, including any derivative works, can be bundled, embedded, \r\nredistributed and/or sold with any software provided that any reserved\r\nnames are not used by derivative works. The fonts and derivatives,\r\nhowever, cannot be released under any other type of license. The\r\nrequirement for fonts to remain under this license does not apply\r\nto any document created using the fonts or their derivatives.\r\n\r\nDEFINITIONS\r\n\"Font Software\" refers to the set of files released by the Copyright\r\nHolder(s) under this license and clearly marked as such. This may\r\ninclude source files, build scripts and documentation.\r\n\r\n\"Reserved Font Name\" refers to any names specified as such after the\r\ncopyright statement(s).\r\n\r\n\"Original Version\" refers to the collection of Font Software components as\r\ndistributed by the Copyright Holder(s).\r\n\r\n\"Modified Version\" refers to any derivative made by adding to, deleting,\r\nor substituting -- in part or in whole -- any of the components of the\r\nOriginal Version, by changing formats or by porting the Font Software to a\r\nnew environment.\r\n\r\n\"Author\" refers to any designer, engineer, programmer, technical\r\nwriter or other person who contributed to the Font Software.\r\n\r\nPERMISSION & CONDITIONS\r\nPermission is hereby granted, free of charge, to any person obtaining\r\na copy of the Font Software, to use, study, copy, merge, embed, modify,\r\nredistribute, and sell modified and unmodified copies of the Font\r\nSoftware, subject to the following conditions:\r\n\r\n1) Neither the Font Software nor any of its individual components,\r\nin Original or Modified Versions, may be sold by itself.\r\n\r\n2) Original or Modified Versions of the Font Software may be bundled,\r\nredistributed and/or sold with any software, provided that each copy\r\ncontains the above copyright notice and this license. These can be\r\nincluded either as stand-alone text files, human-readable headers or\r\nin the appropriate machine-readable metadata fields within text or\r\nbinary files as long as those fields can be easily viewed by the user.\r\n\r\n3) No Modified Version of the Font Software may use the Reserved Font\r\nName(s) unless explicit written permission is granted by the corresponding\r\nCopyright Holder. This restriction only applies to the primary font name as\r\npresented to the users.\r\n\r\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\r\nSoftware shall not be used to promote, endorse or advertise any\r\nModified Version, except to acknowledge the contribution(s) of the\r\nCopyright Holder(s) and the Author(s) or with their explicit written\r\npermission.\r\n\r\n5) The Font Software, modified or unmodified, in part or in whole,\r\nmust be distributed entirely under this license, and must not be\r\ndistributed under any other license. The requirement for fonts to\r\nremain under this license does not apply to any document created\r\nusing the Font Software.\r\n\r\nTERMINATION\r\nThis license becomes null and void if any of the above conditions are\r\nnot met.\r\n\r\nDISCLAIMER\r\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\r\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\r\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\r\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\r\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\r\nOTHER DEALINGS IN THE FONT SOFTWARE.\r\n"
+  },
+  {
+   "path": "fonts/Prompt-Thin.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-Thin.ttf",
+   "sha256": "a389f077b15b3eae6681d4824ee04bc081dbe0ebdcc160ab65a3282171608b1e",
+   "size": 164456
+  },
+  {
+   "path": "fonts/Prompt-ThinItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-ThinItalic.ttf",
+   "sha256": "5c3c28a7210430ff457279b4cb57d0d444d0d0b21d5465e556e6a068a9d8630b",
+   "size": 176092
+  },
+  {
+   "path": "fonts/Prompt-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-ExtraLight.ttf",
+   "sha256": "5492f48c746a6f725ad21a787bb49ec4e948dbed7a3fa1e357b0efc1eef8d881",
+   "size": 163680
+  },
+  {
+   "path": "fonts/Prompt-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-ExtraLightItalic.ttf",
+   "sha256": "19236c1e38938799c326ceb78ad55712b6f13bccacdd0561292a8368803f03b1",
+   "size": 175300
+  },
+  {
+   "path": "fonts/Prompt-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-Light.ttf",
+   "sha256": "79412cf5ef7f60d7f1dff4e178707b0bc662dd76608697a7a36b4769454f8b82",
+   "size": 161980
+  },
+  {
+   "path": "fonts/Prompt-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-LightItalic.ttf",
+   "sha256": "58a64e6d2d3a2e37f0f488f68995f458a5e2b6c15fa0b2cd07e5b38fb613f45f",
+   "size": 173496
+  },
+  {
+   "path": "fonts/Prompt-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-Regular.ttf",
+   "sha256": "dbd497803cec3caffbc6b7f599ca6fed8beea0ed7e0ad1e098130c5ebbc4fd42",
+   "size": 168932
+  },
+  {
+   "path": "fonts/Prompt-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-Italic.ttf",
+   "sha256": "c1188176de49e376990dff829c1bc0d686b17df96dd465f9e9368ccb2f2883cd",
+   "size": 179208
+  },
+  {
+   "path": "fonts/Prompt-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-Medium.ttf",
+   "sha256": "6a42451be692eba473c639f4bcdc6c6d9160a3d632319a64287e3ed1fae15d6b",
+   "size": 176444
+  },
+  {
+   "path": "fonts/Prompt-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-MediumItalic.ttf",
+   "sha256": "e2cf416eeb5cd1f2f57ddaab7b05b9dae81178aac8f43bf8a77263f5217a104c",
+   "size": 183936
+  },
+  {
+   "path": "fonts/Prompt-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-SemiBold.ttf",
+   "sha256": "3285c9e6a4ebc480a6476a1a26b44d6eb0f9874025fa96e42afd52172b7f02b9",
+   "size": 175300
+  },
+  {
+   "path": "fonts/Prompt-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-SemiBoldItalic.ttf",
+   "sha256": "f01838c433f60813dfbdcd7f2c935169011298f0d621c318ca8e352d776c8354",
+   "size": 185108
+  },
+  {
+   "path": "fonts/Prompt-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-Bold.ttf",
+   "sha256": "02813ca4f93c1df27e271f10fef3db6e34e66751ae1f4a3ed82ae06cb20150ea",
+   "size": 178804
+  },
+  {
+   "path": "fonts/Prompt-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-BoldItalic.ttf",
+   "sha256": "d1c26068cd1291d238c04a064e169ce867315aab256bf7bd12cbe0969bb36b3a",
+   "size": 186428
+  },
+  {
+   "path": "fonts/Prompt-ExtraBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-ExtraBold.ttf",
+   "sha256": "f19ebea740940d6c6eb080d5ede1c78e5e68bd5b1faa34efbac251bb84740100",
+   "size": 176172
+  },
+  {
+   "path": "fonts/Prompt-ExtraBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-ExtraBoldItalic.ttf",
+   "sha256": "23560ab8e908c1041befa0ac6873fbaa710de6d0ae21bc60c5b2fdedd83eeb86",
+   "size": 186668
+  },
+  {
+   "path": "fonts/Prompt-Black.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-Black.ttf",
+   "sha256": "4fbb63f90ce9ea4214461942b521b13f6d2f7194a67de848363d829c3fdf3e66",
+   "size": 176388
+  },
+  {
+   "path": "fonts/Prompt-BlackItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/prompt/Prompt-BlackItalic.ttf",
+   "sha256": "b1b27215efa6a451c2a1549c5de4c96bb389cf89e86921b3ee488ddb6702e09a",
+   "size": 199068
+  }
+ ],
+ "sha256": "57aea0f9ca64e42eed61d5d957c32e4dfa739375535cdfcb15527f98ca803c7b"
+}

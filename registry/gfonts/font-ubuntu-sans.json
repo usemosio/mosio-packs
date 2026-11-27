@@ -1,0 +1,68 @@
+{
+ "name": "font-ubuntu-sans",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "UFL-1.0",
+ "author": "Dalton Maag, David Jonathan Ross, Dual Type",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntusans",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Ubuntu Sans",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "variable",
+  "italic",
+  "cyrillic",
+  "cyrillic-ext",
+  "greek",
+  "greek-ext",
+  "latin",
+  "latin-ext"
+ ],
+ "subsets": [
+  "cyrillic",
+  "cyrillic-ext",
+  "greek",
+  "greek-ext",
+  "latin",
+  "latin-ext"
+ ],
+ "variable": true,
+ "description": "The Ubuntu Font Family are a set of matching new libre/open fonts in development during 2010-2011, with further expansion work and bug fixing in 2015 and 2022-2023. The development is being funded by Canonical Ltd on behalf the wider Free Software community and the Ubuntu project. The technical font design work and implementation has been undertaken by Dalton Maag, Type Network, DJR, and Dual Type.",
+ "faces": [
+  {
+   "path": "fonts/UbuntuSans-wdth-wght.ttf",
+   "weight": "100 800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/UbuntuSans-Italic-wdth-wght.ttf",
+   "weight": "100 800",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "LICENCE.txt",
+   "role": "license",
+   "content": "-------------------------------\nUBUNTU FONT LICENCE Version 1.0\n-------------------------------\n\nPREAMBLE\nThis licence allows the licensed fonts to be used, studied, modified and\nredistributed freely. The fonts, including any derivative works, can be\nbundled, embedded, and redistributed provided the terms of this licence\nare met. The fonts and derivatives, however, cannot be released under\nany other licence. The requirement for fonts to remain under this\nlicence does not require any document created using the fonts or their\nderivatives to be published under this licence, as long as the primary\npurpose of the document is not to be a vehicle for the distribution of\nthe fonts.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this licence and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Original Version\" refers to the collection of Font Software components\nas received under this licence.\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to\na new environment.\n\n\"Copyright Holder(s)\" refers to all individuals and companies who have a\ncopyright ownership of the Font Software.\n\n\"Substantially Changed\" refers to Modified Versions which can be easily\nidentified as dissimilar to the Font Software by users of the Font\nSoftware comparing the Original Version with the Modified Version.\n\nTo \"Propagate\" a work means to do anything with it that, without\npermission, would make you directly or secondarily liable for\ninfringement under applicable copyright law, except executing it on a\ncomputer or modifying a private copy. Propagation includes copying,\ndistribution (with or without modification and with or without charging\na redistribution fee), making available to the public, and in some\ncountries other activities as well.\n\nPERMISSION & CONDITIONS\nThis licence does not grant any rights under trademark law and all such\nrights are reserved.\n\nPermission is hereby granted, free of charge, to any person obtaining a\ncopy of the Font Software, to propagate the Font Software, subject to\nthe below conditions:\n\n1) Each copy of the Font Software must contain the above copyright\nnotice and this licence. These can be included either as stand-alone\ntext files, human-readable headers or in the appropriate machine-\nreadable metadata fields within text or binary files as long as those\nfields can be easily viewed by the user.\n\n2) The font name complies with the following:\n(a) The Original Version must retain its name, unmodified.\n(b) Modified Versions which are Substantially Changed must be renamed to\navoid use of the name of the Original Version or similar names entirely.\n(c) Modified Versions which are not Substantially Changed must be\nrenamed to both (i) retain the name of the Original Version and (ii) add\nadditional naming elements to distinguish the Modified Version from the\nOriginal Version. The name of such Modified Versions must be the name of\nthe Original Version, with \"derivative X\" where X represents the name of\nthe new work, appended to that name.\n\n3) The name(s) of the Copyright Holder(s) and any contributor to the\nFont Software shall not be used to promote, endorse or advertise any\nModified Version, except (i) as required by this licence, (ii) to\nacknowledge the contribution(s) of the Copyright Holder(s) or (iii) with\ntheir explicit written permission.\n\n4) The Font Software, modified or unmodified, in part or in whole, must\nbe distributed entirely under this licence, and must not be distributed\nunder any other licence. The requirement for fonts to remain under this\nlicence does not affect any document created using the Font Software,\nexcept any version of the Font Software extracted from a document\ncreated using the Font Software may only be distributed under this\nlicence.\n\nTERMINATION\nThis licence becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF\nCOPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER\nDEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/UbuntuSans-wdth-wght.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntusans/UbuntuSans%5Bwdth%2Cwght%5D.ttf",
+   "sha256": "37e90bba45a2a1172d9f6078e45daebaa1b4e537943205cc1309f142a254fe40",
+   "size": 1080900
+  },
+  {
+   "path": "fonts/UbuntuSans-Italic-wdth-wght.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntusans/UbuntuSans-Italic%5Bwdth%2Cwght%5D.ttf",
+   "sha256": "603f7a4b837143b742a8df3ad3ad80164a50e4529f02e3f6aa533b78e209d3df",
+   "size": 738444
+  }
+ ],
+ "sha256": "0c7bd6a93de4af4e578976ef75e0b1896b5ebea5faa45ccebe65427b5b07655d"
+}

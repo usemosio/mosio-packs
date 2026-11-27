@@ -1,0 +1,67 @@
+{
+ "name": "font-aref-ruqaa-ink",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Abdullah Aref, Khaled Hosny, Hermann Zapf",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/arefruqaaink",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Aref Ruqaa Ink",
+ "category": "serif",
+ "tags": [
+  "serif",
+  "script",
+  "futuristic",
+  "traditional",
+  "display",
+  "arabic",
+  "latin",
+  "latin-ext"
+ ],
+ "subsets": [
+  "arabic",
+  "latin",
+  "latin-ext"
+ ],
+ "variable": false,
+ "description": "Aref Ruqaa Ink is an Arabic typeface that aspires to capture the essence of the classical Ruqaa calligraphic style. This font uses the COLRv1, CPAL and SVG tables. Please visit the gf-guide color page to learn more about Color Fonts technology. The Aref Ruqaa project is led by Khaled Hosny, a type designer based in Cairo, Egypt. To contribute, see github.com/alif-type/aref-ruqaa",
+ "faces": [
+  {
+   "path": "fonts/ArefRuqaaInk-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/ArefRuqaaInk-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2015-2022 The Aref Ruqaa Project Authors (https://github.com/aliftype/aref-ruqaa), with Reserved Font Name EURM10.\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n---------------------------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n---------------------------------------------------------------------------\n\nPREAMBLE\n\nThe goals of the Open Font License (OFL) are to stimulate worldwide development\nof collaborative font projects, to support the font creation efforts of academic\nand linguistic communities, and to provide a free and open framework in which\nfonts may be shared and improved in partnership with others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and redistributed\nfreely as long as they are not sold by themselves. The fonts, including any\nderivative works, can be bundled, embedded, redistributed and/or sold with any\nsoftware provided that any reserved names are not used by derivative works. The\nfonts and derivatives, however, cannot be released under any other type of license.\nThe requirement for fonts to remain under this license does not apply to any\ndocument created using the fonts or their derivatives.\n\nDEFINITIONS\n\n\"Font Software\" refers to the set of files released by the Copyright Holder(s) under\nthis license and clearly marked as such. This may include source files, build\nscripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the copyright\nstatement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting, or\nsubstituting -- in part or in whole -- any of the components of the Original Version,\nby changing formats or by porting the Font Software to a new environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical writer or other\nperson who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of the\nFont Software, to use, study, copy, merge, embed, modify, redistribute, and sell\nmodified and unmodified copies of the Font Software, subject to the following\nconditions:\n\n1) Neither the Font Software nor any of its individual components, in Original or\nModified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled, redistributed\nand/or sold with any software, provided that each copy contains the above copyright\nnotice and this license. These can be included either as stand-alone text files,\nhuman-readable headers or in the appropriate machine-readable metadata fields within\ntext or binary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font Name(s) unless\nexplicit written permission is granted by the corresponding Copyright Holder. This\nrestriction only applies to the primary font name as presented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font Software shall\nnot be used to promote, endorse or advertise any Modified Version, except to\nacknowledge the contribution(s) of the Copyright Holder(s) and the Author(s) or with\ntheir explicit written permission.\n\n5) The Font Software, modified or unmodified, in part or in whole, must be distributed\nentirely under this license, and must not be distributed under any other license. The\nrequirement for fonts to remain under this license does not apply to any document\ncreated using the Font Software.\n\nTERMINATION\n\nThis license becomes null and void if any of the above conditions are not met.\n\nDISCLAIMER\n\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,\nINCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A\nPARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER\nRIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,\nWHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR\nINABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/ArefRuqaaInk-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/arefruqaaink/ArefRuqaaInk-Regular.ttf",
+   "sha256": "0415c2410b1e453f5d0ea0db114fb95d01f65ba2e9e2dc4ae67c5fb73c33e863",
+   "size": 568056
+  },
+  {
+   "path": "fonts/ArefRuqaaInk-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/arefruqaaink/ArefRuqaaInk-Bold.ttf",
+   "sha256": "601b5c607e7e20e7957673b92947d35eb87620cd406214037a140695221c31b4",
+   "size": 631016
+  }
+ ],
+ "reserved_font_name": [
+  "EURM10"
+ ],
+ "sha256": "52daf9b3b20623b383b608876b41e37260282e9e6b0313d48ab3018dae95db23"
+}

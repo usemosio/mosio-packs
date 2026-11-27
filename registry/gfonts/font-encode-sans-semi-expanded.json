@@ -1,0 +1,149 @@
+{
+ "name": "font-encode-sans-semi-expanded",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Impallari Type, Andres Torresi, Jacques Le Bailly",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/encodesanssemiexpanded",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Encode Sans Semi Expanded",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "condensed",
+  "many weights",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "Encode Sans is a versatile workhorse sans serif design, featuring a huge range of weights and widths, ready for all kind of typographic challenges. This is the Semi Expanded family, which is part of the superfamily along with Normal, Condensed, Semi Condensed, and Expanded families, each with 9 weights. This project is led by Impallari Type, a foundry based in Rosario, Argentina. It was initially designed by Pablo Impallari and Andres Torresi. To contribute, see github.com/impallari/Encode-Sans",
+ "faces": [
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Thin.ttf",
+   "weight": "100",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-ExtraBold.ttf",
+   "weight": "800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Black.ttf",
+   "weight": "900",
+   "style": "normal"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2012 The Encode Project Authors (impallari@gmail.com), with Reserved Font Name \"Encode Sans”.\r\n\r\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\r\nThis license is copied below, and is also available with a FAQ at:\r\nhttp://scripts.sil.org/OFL\r\n\r\n\r\n-----------------------------------------------------------\r\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\r\n-----------------------------------------------------------\r\n\r\nPREAMBLE\r\nThe goals of the Open Font License (OFL) are to stimulate worldwide\r\ndevelopment of collaborative font projects, to support the font creation\r\nefforts of academic and linguistic communities, and to provide a free and\r\nopen framework in which fonts may be shared and improved in partnership\r\nwith others.\r\n\r\nThe OFL allows the licensed fonts to be used, studied, modified and\r\nredistributed freely as long as they are not sold by themselves. The\r\nfonts, including any derivative works, can be bundled, embedded, \r\nredistributed and/or sold with any software provided that any reserved\r\nnames are not used by derivative works. The fonts and derivatives,\r\nhowever, cannot be released under any other type of license. The\r\nrequirement for fonts to remain under this license does not apply\r\nto any document created using the fonts or their derivatives.\r\n\r\nDEFINITIONS\r\n\"Font Software\" refers to the set of files released by the Copyright\r\nHolder(s) under this license and clearly marked as such. This may\r\ninclude source files, build scripts and documentation.\r\n\r\n\"Reserved Font Name\" refers to any names specified as such after the\r\ncopyright statement(s).\r\n\r\n\"Original Version\" refers to the collection of Font Software components as\r\ndistributed by the Copyright Holder(s).\r\n\r\n\"Modified Version\" refers to any derivative made by adding to, deleting,\r\nor substituting -- in part or in whole -- any of the components of the\r\nOriginal Version, by changing formats or by porting the Font Software to a\r\nnew environment.\r\n\r\n\"Author\" refers to any designer, engineer, programmer, technical\r\nwriter or other person who contributed to the Font Software.\r\n\r\nPERMISSION & CONDITIONS\r\nPermission is hereby granted, free of charge, to any person obtaining\r\na copy of the Font Software, to use, study, copy, merge, embed, modify,\r\nredistribute, and sell modified and unmodified copies of the Font\r\nSoftware, subject to the following conditions:\r\n\r\n1) Neither the Font Software nor any of its individual components,\r\nin Original or Modified Versions, may be sold by itself.\r\n\r\n2) Original or Modified Versions of the Font Software may be bundled,\r\nredistributed and/or sold with any software, provided that each copy\r\ncontains the above copyright notice and this license. These can be\r\nincluded either as stand-alone text files, human-readable headers or\r\nin the appropriate machine-readable metadata fields within text or\r\nbinary files as long as those fields can be easily viewed by the user.\r\n\r\n3) No Modified Version of the Font Software may use the Reserved Font\r\nName(s) unless explicit written permission is granted by the corresponding\r\nCopyright Holder. This restriction only applies to the primary font name as\r\npresented to the users.\r\n\r\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\r\nSoftware shall not be used to promote, endorse or advertise any\r\nModified Version, except to acknowledge the contribution(s) of the\r\nCopyright Holder(s) and the Author(s) or with their explicit written\r\npermission.\r\n\r\n5) The Font Software, modified or unmodified, in part or in whole,\r\nmust be distributed entirely under this license, and must not be\r\ndistributed under any other license. The requirement for fonts to\r\nremain under this license does not apply to any document created\r\nusing the Font Software.\r\n\r\nTERMINATION\r\nThis license becomes null and void if any of the above conditions are\r\nnot met.\r\n\r\nDISCLAIMER\r\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\r\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\r\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\r\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\r\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\r\nOTHER DEALINGS IN THE FONT SOFTWARE.\r\n"
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Thin.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/encodesanssemiexpanded/EncodeSansSemiExpanded-Thin.ttf",
+   "sha256": "2d62660af2b106f8ff45356d009c4dbc4107c950e5ce3145522b1a1137c3f86a",
+   "size": 163204
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/encodesanssemiexpanded/EncodeSansSemiExpanded-ExtraLight.ttf",
+   "sha256": "ba81657a3d28eb922075b6419ef79b74098f6bf74770797f90e0ce59796a529a",
+   "size": 166276
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/encodesanssemiexpanded/EncodeSansSemiExpanded-Light.ttf",
+   "sha256": "ed235d922e0f859ac9cbcd559d0441e32506d44ddae24aea89926e98841f982c",
+   "size": 169484
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/encodesanssemiexpanded/EncodeSansSemiExpanded-Regular.ttf",
+   "sha256": "aa69bcb0adf89d178c82e381ab6b959eca58c861440532cafbcc24e03cdce0ff",
+   "size": 169488
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/encodesanssemiexpanded/EncodeSansSemiExpanded-Medium.ttf",
+   "sha256": "ceb8cd76cedec8021892bc46dff129cde6c47ae19cd5d9cf676044ff337b3a98",
+   "size": 170260
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/encodesanssemiexpanded/EncodeSansSemiExpanded-SemiBold.ttf",
+   "sha256": "1bc6f3f5aa3db42d4fc37d924f4b22f313a677fd3575fec805fc1169006e3e1f",
+   "size": 170788
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/encodesanssemiexpanded/EncodeSansSemiExpanded-Bold.ttf",
+   "sha256": "388f18cbf0bcc4dcafc916c5f03989be30de3efebab71ef800f36d1f86b65962",
+   "size": 169420
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-ExtraBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/encodesanssemiexpanded/EncodeSansSemiExpanded-ExtraBold.ttf",
+   "sha256": "b50b6596ceb2e5ba62c33b46ba7e6f3a0a8cc7cf2b491f01bfa4ee30aa177a85",
+   "size": 170916
+  },
+  {
+   "path": "fonts/EncodeSansSemiExpanded-Black.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/encodesanssemiexpanded/EncodeSansSemiExpanded-Black.ttf",
+   "sha256": "5ccf895878db2154b4a21def75594258e89e7122d05134d56cd37981ea22ff8f",
+   "size": 168696
+  }
+ ],
+ "reserved_font_name": [
+  "Encode Sans"
+ ],
+ "sha256": "6449c4865b2a75ef781f20e80ca954d25a1a74dc5a32c24e1c202d1ca4db519e"
+}

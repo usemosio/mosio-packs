@@ -1,0 +1,115 @@
+{
+ "name": "font-overlock",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Dario Manuel Muhafara",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/overlock",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Overlock",
+ "category": "display",
+ "tags": [
+  "display",
+  "friendly",
+  "rounded",
+  "headline",
+  "editorial",
+  "italic",
+  "latin",
+  "latin-ext"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext"
+ ],
+ "variable": false,
+ "description": "The Overlock typeface family was selected by the Letras Latinas Biennal in 2006. The initial idea of this typeface was to simulate the Overlock sewing technique. The special thing about these forms is the warm feeling that they give to your text, because of the particular rounded glyph shapes that emerge. As a result, the Overlock typeface family is great for titles and short texts in magazine style layouts. It looks its very best at bigger sizes. It comes in three weights, Regular, Bold and Black, each with a true italic.",
+ "faces": [
+  {
+   "path": "fonts/Overlock-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Overlock-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Overlock-Black.ttf",
+   "weight": "900",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Overlock-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Overlock-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Overlock-BlackItalic.ttf",
+   "weight": "900",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright (c) 2011, Dario Manuel Muhafara (http://www.tipo.net.ar), \nwith Reserved Font Names \"Overlock\" \"Overlock SC\"\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/Overlock-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/overlock/Overlock-Regular.ttf",
+   "sha256": "e27ec26dcb055e6d3843c5106fcacbc54e0c50accc0409935c7aaa16327bc92a",
+   "size": 49468
+  },
+  {
+   "path": "fonts/Overlock-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/overlock/Overlock-Italic.ttf",
+   "sha256": "8602fc83b372d5a09e774054fadee4056a2770e0f3b9000da263d221d0d804a5",
+   "size": 44024
+  },
+  {
+   "path": "fonts/Overlock-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/overlock/Overlock-Bold.ttf",
+   "sha256": "03ac4ce07ebd6e890aaf9071f8c75bf8b7060f39d44335250dd26bcfc8a16329",
+   "size": 42232
+  },
+  {
+   "path": "fonts/Overlock-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/overlock/Overlock-BoldItalic.ttf",
+   "sha256": "1aa0cf070fc76fde63bc3eb144ed838730abcf33bc65811b0ce9b23adec7691e",
+   "size": 45704
+  },
+  {
+   "path": "fonts/Overlock-Black.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/overlock/Overlock-Black.ttf",
+   "sha256": "57e9a9982075e72a7800c0c4c37c4ff2321dcacec5b66622c4a3e114c5d25f7b",
+   "size": 43128
+  },
+  {
+   "path": "fonts/Overlock-BlackItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/overlock/Overlock-BlackItalic.ttf",
+   "sha256": "a7de24f86f8170b2f923ace452e2889d74e781f82890e10e8c23135b03cccc91",
+   "size": 44020
+  }
+ ],
+ "reserved_font_name": [
+  "Overlock",
+  "Overlock SC"
+ ],
+ "sha256": "733e5bb7b56c7aa19c3e037169739106737ee38fc529974ef56c46e588c32152"
+}

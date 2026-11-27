@@ -1,0 +1,85 @@
+{
+ "name": "font-thabit",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Khaled Hosny",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/thabit",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Thabit",
+ "category": "serif",
+ "tags": [
+  "serif",
+  "script",
+  "display",
+  "italic",
+  "arabic",
+  "latin"
+ ],
+ "subsets": [
+  "arabic",
+  "latin"
+ ],
+ "variable": false,
+ "description": "Thabit (from Arabic ثابت; fixed) is a fixed-width OpenType font family that supports Arabic script. It is developed by Arabeyes.org as part of the Khotot project by Khaled Hosny",
+ "faces": [
+  {
+   "path": "fonts/Thabit.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Thabit-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Thabit-Oblique.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Thabit-BoldOblique.ttf",
+   "weight": "700",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright (c) 2002-2008, Khaled Hosny (http://www.arabeyes.org)\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\nLatin glyphs are included from IBM Courier, downloaded from\nhttp://webcvs.freedesktop.org/xorg/font/ibm-type1/\nand are Copyright (c) IBM Corporation 1990, 1991, and licensed\nunder the following license:\n\n-----------------------------------------------------------\nIBM Courier - Copyright (c) IBM Corporation 1990, 1991\n-----------------------------------------------------------\n\nYou are hereby granted permission under the terms of the IBM/MIT X Consortium\nCourier Typefont agreement to execute, reproduce, distribute, display, market,\nsell and otherwise transfer copies of the IBM Courier font to third parties.\n\nThe font is provided \"AS IS\" without charge.  NO WARRANTIES OR INDEMNIFICATION\nARE GIVEN, WHETHER EXPRESS OR IMPLIED INCLUDING, BUT LIMITED TO THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/Thabit.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/thabit/Thabit.ttf",
+   "sha256": "3fe6f423d751919d6411b38d6de2ff823252292eef9e860c4a532faf779b674a",
+   "size": 124084
+  },
+  {
+   "path": "fonts/Thabit-Oblique.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/thabit/Thabit-Oblique.ttf",
+   "sha256": "dc8ca2cbcdd9d1925394b2261bb46897752b20a190ce7d108e20b56b465ce686",
+   "size": 135552
+  },
+  {
+   "path": "fonts/Thabit-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/thabit/Thabit-Bold.ttf",
+   "sha256": "8dded564a1f6dc6a223112b66f20d12a221ad76a7f688dd570cef794940dd124",
+   "size": 120168
+  },
+  {
+   "path": "fonts/Thabit-BoldOblique.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/thabit/Thabit-BoldOblique.ttf",
+   "sha256": "5375ed9d0d5ea6e9e9806bbddd1dc860b1857018d3229d10f944ca39e04318ff",
+   "size": 130392
+  }
+ ],
+ "sha256": "8ba1d69a50fd7c17acc08c6009ed6dff4f0ccf90d5b2459bb95497df9e7aec15"
+}

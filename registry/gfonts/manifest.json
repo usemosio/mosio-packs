@@ -1,0 +1,799 @@
+{
+ "source": "https://github.com/google/fonts",
+ "commit": "5026800714d07231937d92eb4cceabf06e05d74e",
+ "generator": "scripts/gfonts/generate.py",
+ "counts": {
+  "families": 1877,
+  "skipped": 191,
+  "faces": 3562,
+  "variable": 521,
+  "by_license": {
+   "Apache-2.0": 36,
+   "OFL-1.1": 1836,
+   "UFL-1.0": 5
+  },
+  "by_category": {
+   "display": 500,
+   "handwritten": 252,
+   "mono": 45,
+   "sans": 730,
+   "serif": 350
+  },
+  "with_reserved_font_name": 530,
+  "new": 1877,
+  "changed": 0,
+  "unchanged": 0
+ },
+ "skipped_reasons": {
+  "no latin subset": 147,
+  "no METADATA.pb": 25,
+  "a font file is over the 16 MiB limit": 10,
+  "no licence file": 9
+ },
+ "skipped": [
+  {
+   "dir": "apache/jsmathcmbx10",
+   "reason": "no licence file (LICENSE.txt)"
+  },
+  {
+   "dir": "apache/jsmathcmex10",
+   "reason": "no licence file (LICENSE.txt)"
+  },
+  {
+   "dir": "apache/jsmathcmmi10",
+   "reason": "no licence file (LICENSE.txt)"
+  },
+  {
+   "dir": "apache/jsmathcmr10",
+   "reason": "no licence file (LICENSE.txt)"
+  },
+  {
+   "dir": "apache/jsmathcmsy10",
+   "reason": "no licence file (LICENSE.txt)"
+  },
+  {
+   "dir": "apache/jsmathcmti10",
+   "reason": "no licence file (LICENSE.txt)"
+  },
+  {
+   "dir": "apache/opensanshebrew",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "apache/opensanshebrewcondensed",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/adobeblank",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/aksarabaligalang",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/allkin",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/amstelvaralpha",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/bpmfzihikaistd",
+   "reason": "font file BpmfZihiKaiStd-Regular.ttf is 16.7 MiB, over the 16 MiB limit"
+  },
+  {
+   "dir": "ofl/cactusclassicalserif",
+   "reason": "font file CactusClassicalSerif-Regular.ttf is 27.2 MiB, over the 16 MiB limit"
+  },
+  {
+   "dir": "ofl/chenla",
+   "reason": "no latin subset (subsets: khmer)"
+  },
+  {
+   "dir": "ofl/chirongoroundtc",
+   "reason": "font file ChironGoRoundTC[wght].ttf is 48.8 MiB, over the 16 MiB limit"
+  },
+  {
+   "dir": "ofl/chironheihk",
+   "reason": "font file ChironHeiHK[wght].ttf is 29.7 MiB, over the 16 MiB limit"
+  },
+  {
+   "dir": "ofl/chironsunghk",
+   "reason": "font file ChironSungHK[wght].ttf is 48.3 MiB, over the 16 MiB limit"
+  },
+  {
+   "dir": "ofl/content",
+   "reason": "no latin subset (subsets: khmer)"
+  },
+  {
+   "dir": "ofl/decovaralpha",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/hanna",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/hannari",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/jejugothic",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/jejuhallasan",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/jejumyeongjo",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/karlatamilinclined",
+   "reason": "no latin subset (subsets: tamil)"
+  },
+  {
+   "dir": "ofl/karlatamilupright",
+   "reason": "no latin subset (subsets: tamil)"
+  },
+  {
+   "dir": "ofl/khmer",
+   "reason": "no latin subset (subsets: khmer)"
+  },
+  {
+   "dir": "ofl/khyay",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/kokoro",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/kopubbatang",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/kumaroneoutline",
+   "reason": "no licence file (OFL.txt)"
+  },
+  {
+   "dir": "ofl/lemonadavfbeta",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/libertinusmath",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/linefont",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/lohitbengali",
+   "reason": "no latin subset (subsets: bengali)"
+  },
+  {
+   "dir": "ofl/lohitdevanagari",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/lohittamil",
+   "reason": "no latin subset (subsets: tamil)"
+  },
+  {
+   "dir": "ofl/markazitextvfbeta",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/mavenprovfbeta",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/mplusrounded1c",
+   "reason": "no licence file (OFL.txt)"
+  },
+  {
+   "dir": "ofl/myanmarsanspro",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/nicomoji",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/nikukyu",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/notocoloremoji",
+   "reason": "no latin subset (subsets: emoji)"
+  },
+  {
+   "dir": "ofl/notocoloremojicompattest",
+   "reason": "no latin subset (subsets: emoji)"
+  },
+  {
+   "dir": "ofl/notoemoji",
+   "reason": "no latin subset (subsets: emoji)"
+  },
+  {
+   "dir": "ofl/notonaskharabicui",
+   "reason": "no latin subset (subsets: arabic)"
+  },
+  {
+   "dir": "ofl/notosansarabicui",
+   "reason": "no latin subset (subsets: arabic)"
+  },
+  {
+   "dir": "ofl/notosansbengaliui",
+   "reason": "no latin subset (subsets: bengali)"
+  },
+  {
+   "dir": "ofl/notosansdevanagariui",
+   "reason": "no latin subset (subsets: devanagari)"
+  },
+  {
+   "dir": "ofl/notosansgujaratiui",
+   "reason": "no latin subset (subsets: gujarati)"
+  },
+  {
+   "dir": "ofl/notosansgurmukhiui",
+   "reason": "no latin subset (subsets: gurmukhi)"
+  },
+  {
+   "dir": "ofl/notosanskannadaui",
+   "reason": "no latin subset (subsets: kannada)"
+  },
+  {
+   "dir": "ofl/notosanskhmerui",
+   "reason": "no latin subset (subsets: khmer)"
+  },
+  {
+   "dir": "ofl/notosanslaoui",
+   "reason": "no latin subset (subsets: lao)"
+  },
+  {
+   "dir": "ofl/notosansmalayalamui",
+   "reason": "no latin subset (subsets: malayalam)"
+  },
+  {
+   "dir": "ofl/notosansmath",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/notosansmyanmarui",
+   "reason": "no latin subset (subsets: myanmar)"
+  },
+  {
+   "dir": "ofl/notosansnko_todelist",
+   "reason": "no latin subset (subsets: nko)"
+  },
+  {
+   "dir": "ofl/notosansoriyaui",
+   "reason": "no latin subset (subsets: oriya)"
+  },
+  {
+   "dir": "ofl/notosanssc",
+   "reason": "font file NotoSansSC[wght].ttf is 16.9 MiB, over the 16 MiB limit"
+  },
+  {
+   "dir": "ofl/notosanssinhalaui",
+   "reason": "no latin subset (subsets: sinhala)"
+  },
+  {
+   "dir": "ofl/notosanstamilui",
+   "reason": "no latin subset (subsets: tamil)"
+  },
+  {
+   "dir": "ofl/notosansteluguui",
+   "reason": "no latin subset (subsets: telugu)"
+  },
+  {
+   "dir": "ofl/notosansthaiui",
+   "reason": "no latin subset (subsets: thai)"
+  },
+  {
+   "dir": "ofl/notoserifhk",
+   "reason": "font file NotoSerifHK[wght].ttf is 16.0 MiB, over the 16 MiB limit"
+  },
+  {
+   "dir": "ofl/notoserifkr",
+   "reason": "font file NotoSerifKR[wght].ttf is 22.7 MiB, over the 16 MiB limit"
+  },
+  {
+   "dir": "ofl/notoserifmyanmar",
+   "reason": "no latin subset (subsets: myanmar)"
+  },
+  {
+   "dir": "ofl/notoserifnyiakengpuachuehmong",
+   "reason": "no latin subset (subsets: nyiakeng-puachue-hmong)"
+  },
+  {
+   "dir": "ofl/notoserifsc",
+   "reason": "font file NotoSerifSC[wght].ttf is 24.0 MiB, over the 16 MiB limit"
+  },
+  {
+   "dir": "ofl/notoseriftc",
+   "reason": "font file NotoSerifTC[wght].ttf is 16.1 MiB, over the 16 MiB limit"
+  },
+  {
+   "dir": "ofl/phetsarath",
+   "reason": "no latin subset (subsets: lao)"
+  },
+  {
+   "dir": "ofl/playwritear",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritearguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteat",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteatguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteaunsw",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteaunswguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteauqld",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteauqldguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteausa",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteausaguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteautas",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteautasguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteauvic",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteauvicguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritebevlg",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritebevlgguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritebewal",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritebewalguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritebr",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritebrguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteca",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritecaguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritecl",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteclguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteco",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritecoguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritecu",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritecuguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritecz",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteczguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedegrund",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedegrundguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedela",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedelaguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedesas",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedesasguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedeva",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedevaguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedkloopet",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedkloopetguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedkuloopet",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritedkuloopetguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritees",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteesdeco",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteesdecoguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteesguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritefrmoderne",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritefrmoderneguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritefrtrad",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritefrtradguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritegbj",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritegbjguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritegbs",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritegbsguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritehr",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritehrguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritehrlijeva",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritehrlijevaguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritehu",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritehuguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteid",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteidguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteie",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteieguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritein",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteinguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteis",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteisguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteitmoderna",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteitmodernaguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteittrad",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteittradguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritemx",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritemxguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritengmodern",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritengmodernguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritenl",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritenlguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteno",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritenoguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritenz",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritenzbasic",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritenzbasicguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritenzguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritepe",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritepeguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritepl",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteplguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritept",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteptguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritero",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteroguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritesk",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteskguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritetz",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritetzguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteusmodern",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteusmodernguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteustrad",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteustradguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritevn",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritevnguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwriteza",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/playwritezaguides",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/podkovavfbeta",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/rokkittvfbeta",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/roundedmplus1c",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/siemreap",
+   "reason": "no latin subset (subsets: khmer)"
+  },
+  {
+   "dir": "ofl/singleday",
+   "reason": "no latin subset (subsets: korean)"
+  },
+  {
+   "dir": "ofl/songmyung",
+   "reason": "no latin subset (subsets: korean)"
+  },
+  {
+   "dir": "ofl/souliyo",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/stixtwomath",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/stylish",
+   "reason": "no latin subset (subsets: korean)"
+  },
+  {
+   "dir": "ofl/sunflower",
+   "reason": "no latin subset (subsets: korean)"
+  },
+  {
+   "dir": "ofl/tharlon",
+   "reason": "no METADATA.pb"
+  },
+  {
+   "dir": "ofl/tinos",
+   "reason": "no licence file (OFL.txt)"
+  },
+  {
+   "dir": "ofl/wavefont",
+   "reason": "no latin subset (subsets: none)"
+  },
+  {
+   "dir": "ofl/yinmar",
+   "reason": "no latin subset (subsets: myanmar)"
+  }
+ ]
+}

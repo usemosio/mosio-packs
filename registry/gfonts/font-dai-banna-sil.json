@@ -1,0 +1,161 @@
+{
+ "name": "font-dai-banna-sil",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "SIL International",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Dai Banna SIL",
+ "category": "serif",
+ "tags": [
+  "serif",
+  "script",
+  "italic",
+  "latin",
+  "latin-ext",
+  "new-tai-lue"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext",
+  "new-tai-lue"
+ ],
+ "variable": false,
+ "description": "Dai Banna provides a libre and open font family for the New Tai Lue (Xishuangbanna Dai) script. The New Tai Lue (Xishuangbanna Dai) script is used by approximately 300,000 people who speak the Xishuangbanna Dai language in Yunnan, China. It is a simplification of the Tai Tham (Old Tai Lue) script as used for this language for hundreds of years. To contribute, please see github.com/silnrsi/font-daibannasil.",
+ "faces": [
+  {
+   "path": "fonts/DaiBannaSIL-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/DaiBannaSIL-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/DaiBannaSIL-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/DaiBannaSIL-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/DaiBannaSIL-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/DaiBannaSIL-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/DaiBannaSIL-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/DaiBannaSIL-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/DaiBannaSIL-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/DaiBannaSIL-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright (c) 1998-2022 SIL International (http://www.sil.org/),\r\nwith Reserved Font Name \"SIL\".\r\n\r\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\r\nThis license is copied below, and is also available with a FAQ at:\r\nhttp://scripts.sil.org/OFL\r\n\r\n\r\n-----------------------------------------------------------\r\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\r\n-----------------------------------------------------------\r\n\r\nPREAMBLE\r\nThe goals of the Open Font License (OFL) are to stimulate worldwide\r\ndevelopment of collaborative font projects, to support the font creation\r\nefforts of academic and linguistic communities, and to provide a free and\r\nopen framework in which fonts may be shared and improved in partnership\r\nwith others.\r\n\r\nThe OFL allows the licensed fonts to be used, studied, modified and\r\nredistributed freely as long as they are not sold by themselves. The\r\nfonts, including any derivative works, can be bundled, embedded,\r\nredistributed and/or sold with any software provided that any reserved\r\nnames are not used by derivative works. The fonts and derivatives,\r\nhowever, cannot be released under any other type of license. The\r\nrequirement for fonts to remain under this license does not apply\r\nto any document created using the fonts or their derivatives.\r\n\r\nDEFINITIONS\r\n\"Font Software\" refers to the set of files released by the Copyright\r\nHolder(s) under this license and clearly marked as such. This may\r\ninclude source files, build scripts and documentation.\r\n\r\n\"Reserved Font Name\" refers to any names specified as such after the\r\ncopyright statement(s).\r\n\r\n\"Original Version\" refers to the collection of Font Software components as\r\ndistributed by the Copyright Holder(s).\r\n\r\n\"Modified Version\" refers to any derivative made by adding to, deleting,\r\nor substituting -- in part or in whole -- any of the components of the\r\nOriginal Version, by changing formats or by porting the Font Software to a\r\nnew environment.\r\n\r\n\"Author\" refers to any designer, engineer, programmer, technical\r\nwriter or other person who contributed to the Font Software.\r\n\r\nPERMISSION & CONDITIONS\r\nPermission is hereby granted, free of charge, to any person obtaining\r\na copy of the Font Software, to use, study, copy, merge, embed, modify,\r\nredistribute, and sell modified and unmodified copies of the Font\r\nSoftware, subject to the following conditions:\r\n\r\n1) Neither the Font Software nor any of its individual components,\r\nin Original or Modified Versions, may be sold by itself.\r\n\r\n2) Original or Modified Versions of the Font Software may be bundled,\r\nredistributed and/or sold with any software, provided that each copy\r\ncontains the above copyright notice and this license. These can be\r\nincluded either as stand-alone text files, human-readable headers or\r\nin the appropriate machine-readable metadata fields within text or\r\nbinary files as long as those fields can be easily viewed by the user.\r\n\r\n3) No Modified Version of the Font Software may use the Reserved Font\r\nName(s) unless explicit written permission is granted by the corresponding\r\nCopyright Holder. This restriction only applies to the primary font name as\r\npresented to the users.\r\n\r\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\r\nSoftware shall not be used to promote, endorse or advertise any\r\nModified Version, except to acknowledge the contribution(s) of the\r\nCopyright Holder(s) and the Author(s) or with their explicit written\r\npermission.\r\n\r\n5) The Font Software, modified or unmodified, in part or in whole,\r\nmust be distributed entirely under this license, and must not be\r\ndistributed under any other license. The requirement for fonts to\r\nremain under this license does not apply to any document created\r\nusing the Font Software.\r\n\r\nTERMINATION\r\nThis license becomes null and void if any of the above conditions are\r\nnot met.\r\n\r\nDISCLAIMER\r\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\r\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\r\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\r\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\r\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\r\nOTHER DEALINGS IN THE FONT SOFTWARE.\r\n"
+  },
+  {
+   "path": "fonts/DaiBannaSIL-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil/DaiBannaSIL-Light.ttf",
+   "sha256": "a33a115cb803e1b2f500e48750e68a4513a965ce5248415dd2654a3b3ed24b8b",
+   "size": 68508
+  },
+  {
+   "path": "fonts/DaiBannaSIL-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil/DaiBannaSIL-LightItalic.ttf",
+   "sha256": "091460bd9b0585e94b1b20d5906e6554ec29958e8e573682d37fb7c735f0860b",
+   "size": 71924
+  },
+  {
+   "path": "fonts/DaiBannaSIL-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil/DaiBannaSIL-Regular.ttf",
+   "sha256": "7756d1c25925ba89130aef675d2d11f419602564c1091e9520fef1ac9ed8f193",
+   "size": 68172
+  },
+  {
+   "path": "fonts/DaiBannaSIL-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil/DaiBannaSIL-Italic.ttf",
+   "sha256": "058fb915b7a5a42ee719760406c65c036b82b55470da3f263de4131289f187af",
+   "size": 71768
+  },
+  {
+   "path": "fonts/DaiBannaSIL-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil/DaiBannaSIL-Medium.ttf",
+   "sha256": "cf34bb5312df3531a999a83ec4d1c0daa83a1e37a144be3d40510c06efeb4de6",
+   "size": 68292
+  },
+  {
+   "path": "fonts/DaiBannaSIL-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil/DaiBannaSIL-MediumItalic.ttf",
+   "sha256": "f0ef8fc8c85b4a1e0c9aa780b5765a5951ac4aa4820f61b5c645fd3044279887",
+   "size": 72108
+  },
+  {
+   "path": "fonts/DaiBannaSIL-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil/DaiBannaSIL-SemiBold.ttf",
+   "sha256": "49e0e792d6b0bb625569a49b320dc5f974ca96f02314a8238e5ea98d40cdcc62",
+   "size": 68692
+  },
+  {
+   "path": "fonts/DaiBannaSIL-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil/DaiBannaSIL-SemiBoldItalic.ttf",
+   "sha256": "416bc32287b4d07e8536639f35fc58e5190c4281fb6d115cd76d9ebfdddff020",
+   "size": 72528
+  },
+  {
+   "path": "fonts/DaiBannaSIL-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil/DaiBannaSIL-Bold.ttf",
+   "sha256": "ae562489672abdccbbcf664f29e706c114b41c110edea3fe404a9ea7c8322b55",
+   "size": 69520
+  },
+  {
+   "path": "fonts/DaiBannaSIL-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/daibannasil/DaiBannaSIL-BoldItalic.ttf",
+   "sha256": "001b197160209b8e70302c8e9aeb8504d1a2f17a830b486b20696c1ed9b6e864",
+   "size": 73260
+  }
+ ],
+ "reserved_font_name": [
+  "SIL"
+ ],
+ "sha256": "c38cec7f6557887981ef9fdbed70d368f2505385de9dc40fef68fdf280ea16ea"
+}

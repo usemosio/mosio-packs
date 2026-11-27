@@ -1,0 +1,233 @@
+{
+ "name": "font-livvic",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "LV=, Jacques Le Bailly",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Livvic",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "playful",
+  "friendly",
+  "handwriting",
+  "many weights",
+  "italic",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "Livvic is a custom corporate typeface designed by Jacques Le Bailly for LV=, an insurance company based in the UK. The typeface is part of a brand redesign. Livvic was designed to capture LV=’s brand values and uniqueness. It is an open, friendly and somewhat quirky design. Corporate, yet still fresh and personal. The Roman is an upright Italic, with some inspirations from handwriting. This gives livvic a strong, yet accessible character. The Italic has matching metrics to the Roman. Although the Italic and Roman share a lot of similarities, the construction is different.",
+ "faces": [
+  {
+   "path": "fonts/Livvic-Thin.ttf",
+   "weight": "100",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Livvic-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Livvic-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Livvic-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Livvic-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Livvic-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Livvic-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Livvic-Black.ttf",
+   "weight": "900",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Livvic-ThinItalic.ttf",
+   "weight": "100",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Livvic-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Livvic-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Livvic-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Livvic-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Livvic-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Livvic-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Livvic-BlackItalic.ttf",
+   "weight": "900",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2019 The Livvic Project Authors (https://github.com/Fonthausen/Livvic)\r\n\r\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\r\nThis license is copied below, and is also available with a FAQ at:\r\nhttp://scripts.sil.org/OFL\r\n\r\n\r\n-----------------------------------------------------------\r\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\r\n-----------------------------------------------------------\r\n\r\nPREAMBLE\r\nThe goals of the Open Font License (OFL) are to stimulate worldwide\r\ndevelopment of collaborative font projects, to support the font creation\r\nefforts of academic and linguistic communities, and to provide a free and\r\nopen framework in which fonts may be shared and improved in partnership\r\nwith others.\r\n\r\nThe OFL allows the licensed fonts to be used, studied, modified and\r\nredistributed freely as long as they are not sold by themselves. The\r\nfonts, including any derivative works, can be bundled, embedded, \r\nredistributed and/or sold with any software provided that any reserved\r\nnames are not used by derivative works. The fonts and derivatives,\r\nhowever, cannot be released under any other type of license. The\r\nrequirement for fonts to remain under this license does not apply\r\nto any document created using the fonts or their derivatives.\r\n\r\nDEFINITIONS\r\n\"Font Software\" refers to the set of files released by the Copyright\r\nHolder(s) under this license and clearly marked as such. This may\r\ninclude source files, build scripts and documentation.\r\n\r\n\"Reserved Font Name\" refers to any names specified as such after the\r\ncopyright statement(s).\r\n\r\n\"Original Version\" refers to the collection of Font Software components as\r\ndistributed by the Copyright Holder(s).\r\n\r\n\"Modified Version\" refers to any derivative made by adding to, deleting,\r\nor substituting -- in part or in whole -- any of the components of the\r\nOriginal Version, by changing formats or by porting the Font Software to a\r\nnew environment.\r\n\r\n\"Author\" refers to any designer, engineer, programmer, technical\r\nwriter or other person who contributed to the Font Software.\r\n\r\nPERMISSION & CONDITIONS\r\nPermission is hereby granted, free of charge, to any person obtaining\r\na copy of the Font Software, to use, study, copy, merge, embed, modify,\r\nredistribute, and sell modified and unmodified copies of the Font\r\nSoftware, subject to the following conditions:\r\n\r\n1) Neither the Font Software nor any of its individual components,\r\nin Original or Modified Versions, may be sold by itself.\r\n\r\n2) Original or Modified Versions of the Font Software may be bundled,\r\nredistributed and/or sold with any software, provided that each copy\r\ncontains the above copyright notice and this license. These can be\r\nincluded either as stand-alone text files, human-readable headers or\r\nin the appropriate machine-readable metadata fields within text or\r\nbinary files as long as those fields can be easily viewed by the user.\r\n\r\n3) No Modified Version of the Font Software may use the Reserved Font\r\nName(s) unless explicit written permission is granted by the corresponding\r\nCopyright Holder. This restriction only applies to the primary font name as\r\npresented to the users.\r\n\r\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\r\nSoftware shall not be used to promote, endorse or advertise any\r\nModified Version, except to acknowledge the contribution(s) of the\r\nCopyright Holder(s) and the Author(s) or with their explicit written\r\npermission.\r\n\r\n5) The Font Software, modified or unmodified, in part or in whole,\r\nmust be distributed entirely under this license, and must not be\r\ndistributed under any other license. The requirement for fonts to\r\nremain under this license does not apply to any document created\r\nusing the Font Software.\r\n\r\nTERMINATION\r\nThis license becomes null and void if any of the above conditions are\r\nnot met.\r\n\r\nDISCLAIMER\r\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\r\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\r\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\r\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\r\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\r\nOTHER DEALINGS IN THE FONT SOFTWARE.\r\n"
+  },
+  {
+   "path": "fonts/Livvic-Thin.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-Thin.ttf",
+   "sha256": "17e22e7713967bebd783b1b8745649a2fc54e9ee096d8ad38129f53b47c94aef",
+   "size": 103740
+  },
+  {
+   "path": "fonts/Livvic-ThinItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-ThinItalic.ttf",
+   "sha256": "4ecbdca3573200a38f92b3964f9f5159660969100e2e07b0b96f4414288c462c",
+   "size": 104732
+  },
+  {
+   "path": "fonts/Livvic-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-ExtraLight.ttf",
+   "sha256": "7a69d3faedade4b4ee238069fe703163842f2230b505057563882cec659c59c6",
+   "size": 104564
+  },
+  {
+   "path": "fonts/Livvic-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-ExtraLightItalic.ttf",
+   "sha256": "a4b62b2c66972bc3faf72a7f635085d69eb0e73fe6c595a2574a2ac8b8d2fd67",
+   "size": 105836
+  },
+  {
+   "path": "fonts/Livvic-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-Light.ttf",
+   "sha256": "f3baaa33ac50be741765cf91e70d84835ede9a68dc95a35740de9affde113461",
+   "size": 105164
+  },
+  {
+   "path": "fonts/Livvic-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-LightItalic.ttf",
+   "sha256": "cb15d9db1b29cd88277ecbdc77761730e3922e2e7c23b5dae04e00ab0c3b64c4",
+   "size": 106624
+  },
+  {
+   "path": "fonts/Livvic-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-Regular.ttf",
+   "sha256": "778e7577cf8ed8f0a97eb657bbf4d4f05bc0c6e8eb0ac8458f25a0eaa6ca16e8",
+   "size": 104416
+  },
+  {
+   "path": "fonts/Livvic-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-Italic.ttf",
+   "sha256": "a252ed6488d89f4200b54174c002846424aa5bab454220e6c68f6ab4ad03bbce",
+   "size": 106132
+  },
+  {
+   "path": "fonts/Livvic-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-Medium.ttf",
+   "sha256": "78f9277de8b8734cf172288fb44f359c85f3a38a6f98f2333f8e103ce1acdcf4",
+   "size": 104384
+  },
+  {
+   "path": "fonts/Livvic-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-MediumItalic.ttf",
+   "sha256": "2293e97ef4e012dc74a7a453d3261112de4b50b8b6507f8587ebc95e489490b9",
+   "size": 105952
+  },
+  {
+   "path": "fonts/Livvic-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-SemiBold.ttf",
+   "sha256": "93cf062cf28cfff0359f38dd93a75f46dcf5ba514483bb557069a89b7b3c4e0c",
+   "size": 104560
+  },
+  {
+   "path": "fonts/Livvic-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-SemiBoldItalic.ttf",
+   "sha256": "84a8af5c40ee96f0e9873b8e33a9d65c3a08cc3bdb5b0cd4e83e8174d12bade0",
+   "size": 106080
+  },
+  {
+   "path": "fonts/Livvic-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-Bold.ttf",
+   "sha256": "f2e3a5952c0fe465778a2eb93a8a4fd1f27fb6a9f8080f9aa2c7f085212dcf3f",
+   "size": 104788
+  },
+  {
+   "path": "fonts/Livvic-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-BoldItalic.ttf",
+   "sha256": "b0fdf70102675ee1ac81cc38a0f0e40694a6403a8ba326cc62e99be0bad4cedd",
+   "size": 106312
+  },
+  {
+   "path": "fonts/Livvic-Black.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-Black.ttf",
+   "sha256": "69522e784a487191945fa9f9d92d67e64cd5a4bc6e849ae42d5f4a799a8d9b60",
+   "size": 106204
+  },
+  {
+   "path": "fonts/Livvic-BlackItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/livvic/Livvic-BlackItalic.ttf",
+   "sha256": "83e66c050786059aeabeb5fb69defab2593df93caedde11746dc6277fbf8e523",
+   "size": 109932
+  }
+ ],
+ "sha256": "73dc30b0504a9edd324ac3821a46208886fd47a1fb5f9bd28ab92e3c11407076"
+}

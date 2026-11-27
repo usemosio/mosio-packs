@@ -1,0 +1,184 @@
+{
+ "name": "font-bai-jamjuree",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Cadson Demak",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Bai Jamjuree",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "many weights",
+  "italic",
+  "latin",
+  "latin-ext",
+  "thai",
+  "vietnamese"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext",
+  "thai",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "Bai Jamjuree is a Thai and Latin family which works well for headings and small passages of text. The design was inspired by Eurostyle and other square san serifs.",
+ "faces": [
+  {
+   "path": "fonts/BaiJamjuree-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BaiJamjuree-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BaiJamjuree-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BaiJamjuree-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BaiJamjuree-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BaiJamjuree-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/BaiJamjuree-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BaiJamjuree-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BaiJamjuree-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BaiJamjuree-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BaiJamjuree-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/BaiJamjuree-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2018 Bai Jamjuree (https://github.com/cadsondemak/Bai-Jamjuree)\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/BaiJamjuree-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-ExtraLight.ttf",
+   "sha256": "da49f9d1efd6f190ac444af02a25606c0cd38fc78d4fc1e459d8e0171b65af11",
+   "size": 81880
+  },
+  {
+   "path": "fonts/BaiJamjuree-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-ExtraLightItalic.ttf",
+   "sha256": "4dfac6888704172ca10ee1986d6de89de820a29310b489282b879b69f0304128",
+   "size": 87492
+  },
+  {
+   "path": "fonts/BaiJamjuree-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-Light.ttf",
+   "sha256": "8db41d9372b7425e7c717ba7bd3883965bada642412bccc0545102f9024d6acb",
+   "size": 82208
+  },
+  {
+   "path": "fonts/BaiJamjuree-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-LightItalic.ttf",
+   "sha256": "78e092d9c144538e575da8242888de255e02897eab0a86d75e4bc1e6b33d82fb",
+   "size": 87664
+  },
+  {
+   "path": "fonts/BaiJamjuree-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-Regular.ttf",
+   "sha256": "72b5a30cb78966823eb326c09b9004b0d03b4bddcdfcfd1b8cdbffb6c414547d",
+   "size": 82112
+  },
+  {
+   "path": "fonts/BaiJamjuree-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-Italic.ttf",
+   "sha256": "96e5f86f49442f60fd72cfc7728fde740870cccd3b8bc8a30e75dd8d9fc4b3b4",
+   "size": 87608
+  },
+  {
+   "path": "fonts/BaiJamjuree-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-Medium.ttf",
+   "sha256": "95782f3c3e07866749fb28e1d1a356e383e8f2bdcc7b88d4e3a3fc546613137f",
+   "size": 82292
+  },
+  {
+   "path": "fonts/BaiJamjuree-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-MediumItalic.ttf",
+   "sha256": "f37dc3ccb6597e851e7c23fed94e6ab0df9668fb5c5d166360e81c00dd84b0bc",
+   "size": 87888
+  },
+  {
+   "path": "fonts/BaiJamjuree-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-SemiBold.ttf",
+   "sha256": "daaa68bc721e893861f948f40542b9f1ea8496a3fe4250a0ffc86dab0aee8f3c",
+   "size": 82316
+  },
+  {
+   "path": "fonts/BaiJamjuree-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-SemiBoldItalic.ttf",
+   "sha256": "cdc9cd3c2f168d1791871b72b5d62bfed7a5b87efec1bb0ba356f7fad6d623fd",
+   "size": 87760
+  },
+  {
+   "path": "fonts/BaiJamjuree-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-Bold.ttf",
+   "sha256": "74784411504a295a5255e736e0a8389892af2c8a14e914d3e194329b59279223",
+   "size": 81840
+  },
+  {
+   "path": "fonts/BaiJamjuree-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/baijamjuree/BaiJamjuree-BoldItalic.ttf",
+   "sha256": "afeefa87666738ec8689bb018dfc971a532c8fd9e8cba649d1be0176759d93c1",
+   "size": 87264
+  }
+ ],
+ "sha256": "dbaec0135a4f52cbf63ab37ee81a63c9b64ac02c5108c171242b2900fa4c9760"
+}

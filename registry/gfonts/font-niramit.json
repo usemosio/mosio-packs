@@ -1,0 +1,187 @@
+{
+ "name": "font-niramit",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Cadson Demak",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Niramit",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "decorative",
+  "modern",
+  "traditional",
+  "many weights",
+  "italic",
+  "latin",
+  "latin-ext",
+  "thai",
+  "vietnamese"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext",
+  "thai",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "Niramit is a Thai and Latin family featuring decorative details. The Thai has a modern structure but also features the traditional looped letterforms.",
+ "faces": [
+  {
+   "path": "fonts/Niramit-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Niramit-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Niramit-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Niramit-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Niramit-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Niramit-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Niramit-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Niramit-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Niramit-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Niramit-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Niramit-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Niramit-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2018 the Niramit Project Authors (https://github.com/cadsondemak/Niramit)\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/Niramit-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-ExtraLight.ttf",
+   "sha256": "3e3000d2c03a0922282785b16b2fe747bb3599d37281ef3ae3bc500de722f8f3",
+   "size": 98108
+  },
+  {
+   "path": "fonts/Niramit-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-ExtraLightItalic.ttf",
+   "sha256": "bf8df5b484521f573ddf745345ed038dcf7bc40a021177d0d11d04c98a4cdf96",
+   "size": 101036
+  },
+  {
+   "path": "fonts/Niramit-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-Light.ttf",
+   "sha256": "8377d35d330aa20db2f60c96c7c190215bbf543fa2755a2a3ac9ef34dff0ff9e",
+   "size": 97952
+  },
+  {
+   "path": "fonts/Niramit-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-LightItalic.ttf",
+   "sha256": "a94c0512966e89ca2d4efe596d504389bfab862d018ca9a230fc29dcad2b5791",
+   "size": 100660
+  },
+  {
+   "path": "fonts/Niramit-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-Regular.ttf",
+   "sha256": "04148fad64b055f6a062604c983be26409bfd3e4e1390279288a4eb839909ce0",
+   "size": 97776
+  },
+  {
+   "path": "fonts/Niramit-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-Italic.ttf",
+   "sha256": "f452832218722dc74160b6b17822b26029dbb1f9d388ceaf2a758581a51373e8",
+   "size": 100484
+  },
+  {
+   "path": "fonts/Niramit-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-Medium.ttf",
+   "sha256": "3d081b3dd75de218493d2d7b8aa2079beaaa841ecf92015b870519e1f239fa56",
+   "size": 97764
+  },
+  {
+   "path": "fonts/Niramit-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-MediumItalic.ttf",
+   "sha256": "dac47a23ba915b18661510c0a17fed53544cf1beeef6b7bf8d6992ea2055449d",
+   "size": 100296
+  },
+  {
+   "path": "fonts/Niramit-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-SemiBold.ttf",
+   "sha256": "b37c5e9d01592e3c1d8e381917fe6e2e96aabfa1064cd05e4f1b3ad349ee8e7c",
+   "size": 97720
+  },
+  {
+   "path": "fonts/Niramit-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-SemiBoldItalic.ttf",
+   "sha256": "ba4009ff541aec471256e2a8e8f4933525d520dc98df05fe6fc832eff84a686f",
+   "size": 100456
+  },
+  {
+   "path": "fonts/Niramit-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-Bold.ttf",
+   "sha256": "2ec7ae17137a0ba06017675e38280289a6716a6f6dc6ac210f0b54b2563eac64",
+   "size": 97840
+  },
+  {
+   "path": "fonts/Niramit-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/niramit/Niramit-BoldItalic.ttf",
+   "sha256": "58cb12e37eecdd59076b5fff00fd70f22347e3bbd5088f5a7d0b8f7e2a83d5f9",
+   "size": 100432
+  }
+ ],
+ "sha256": "8cde1e144d8f73a9ea718bd18363cab8f2f3a64f62fd68a8e079498ce2239c04"
+}

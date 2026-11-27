@@ -1,0 +1,236 @@
+{
+ "name": "font-lisu-bosa",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "SIL International",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Lisu Bosa",
+ "category": "serif",
+ "tags": [
+  "serif",
+  "script",
+  "many weights",
+  "italic",
+  "latin",
+  "latin-ext",
+  "lisu"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext",
+  "lisu"
+ ],
+ "variable": false,
+ "description": "This project is intended to provide a libre and open font family for all current languages and writing systems that use the Lisu (Fraser) script. The design is based on LisuTzimu, designed by David Morse. To contribute, please see github.com/silnrsi/font-lisu-bosa.",
+ "faces": [
+  {
+   "path": "fonts/LisuBosa-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/LisuBosa-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/LisuBosa-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/LisuBosa-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/LisuBosa-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/LisuBosa-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/LisuBosa-ExtraBold.ttf",
+   "weight": "800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/LisuBosa-Black.ttf",
+   "weight": "900",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/LisuBosa-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/LisuBosa-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/LisuBosa-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/LisuBosa-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/LisuBosa-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/LisuBosa-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/LisuBosa-ExtraBoldItalic.ttf",
+   "weight": "800",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/LisuBosa-BlackItalic.ttf",
+   "weight": "900",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright (c) 1998-2019 David Morse (original regular)\r\nwith Reserved Font Name \"LisuTzimu\".\r\nCopyright (c) 2019-2023 SIL International (regular revisions, bold, italic, bold italic)\r\nwith Reserved Font Name \"Bosa\".\r\nCopyright (c) 2014-2019 Adobe (http://www.adobe.com/) (Latin glyphs)\r\nwith Reserved Font Name \"Source\".\r\n\r\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\r\nThis license is copied below, and is also available with a FAQ at:\r\nhttp://scripts.sil.org/OFL\r\n\r\n\r\n-----------------------------------------------------------\r\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\r\n-----------------------------------------------------------\r\n\r\nPREAMBLE\r\nThe goals of the Open Font License (OFL) are to stimulate worldwide\r\ndevelopment of collaborative font projects, to support the font creation\r\nefforts of academic and linguistic communities, and to provide a free and\r\nopen framework in which fonts may be shared and improved in partnership\r\nwith others.\r\n\r\nThe OFL allows the licensed fonts to be used, studied, modified and\r\nredistributed freely as long as they are not sold by themselves. The\r\nfonts, including any derivative works, can be bundled, embedded, \r\nredistributed and/or sold with any software provided that any reserved\r\nnames are not used by derivative works. The fonts and derivatives,\r\nhowever, cannot be released under any other type of license. The\r\nrequirement for fonts to remain under this license does not apply\r\nto any document created using the fonts or their derivatives.\r\n\r\nDEFINITIONS\r\n\"Font Software\" refers to the set of files released by the Copyright\r\nHolder(s) under this license and clearly marked as such. This may\r\ninclude source files, build scripts and documentation.\r\n\r\n\"Reserved Font Name\" refers to any names specified as such after the\r\ncopyright statement(s).\r\n\r\n\"Original Version\" refers to the collection of Font Software components as\r\ndistributed by the Copyright Holder(s).\r\n\r\n\"Modified Version\" refers to any derivative made by adding to, deleting,\r\nor substituting -- in part or in whole -- any of the components of the\r\nOriginal Version, by changing formats or by porting the Font Software to a\r\nnew environment.\r\n\r\n\"Author\" refers to any designer, engineer, programmer, technical\r\nwriter or other person who contributed to the Font Software.\r\n\r\nPERMISSION & CONDITIONS\r\nPermission is hereby granted, free of charge, to any person obtaining\r\na copy of the Font Software, to use, study, copy, merge, embed, modify,\r\nredistribute, and sell modified and unmodified copies of the Font\r\nSoftware, subject to the following conditions:\r\n\r\n1) Neither the Font Software nor any of its individual components,\r\nin Original or Modified Versions, may be sold by itself.\r\n\r\n2) Original or Modified Versions of the Font Software may be bundled,\r\nredistributed and/or sold with any software, provided that each copy\r\ncontains the above copyright notice and this license. These can be\r\nincluded either as stand-alone text files, human-readable headers or\r\nin the appropriate machine-readable metadata fields within text or\r\nbinary files as long as those fields can be easily viewed by the user.\r\n\r\n3) No Modified Version of the Font Software may use the Reserved Font\r\nName(s) unless explicit written permission is granted by the corresponding\r\nCopyright Holder. This restriction only applies to the primary font name as\r\npresented to the users.\r\n\r\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\r\nSoftware shall not be used to promote, endorse or advertise any\r\nModified Version, except to acknowledge the contribution(s) of the\r\nCopyright Holder(s) and the Author(s) or with their explicit written\r\npermission.\r\n\r\n5) The Font Software, modified or unmodified, in part or in whole,\r\nmust be distributed entirely under this license, and must not be\r\ndistributed under any other license. The requirement for fonts to\r\nremain under this license does not apply to any document created\r\nusing the Font Software.\r\n\r\nTERMINATION\r\nThis license becomes null and void if any of the above conditions are\r\nnot met.\r\n\r\nDISCLAIMER\r\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\r\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\r\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\r\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\r\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\r\nOTHER DEALINGS IN THE FONT SOFTWARE.\r\n"
+  },
+  {
+   "path": "fonts/LisuBosa-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-ExtraLight.ttf",
+   "sha256": "5ec9be841408c31ceeac98c616efda0052c7b6483ac210d7eea272a8984bc448",
+   "size": 49628
+  },
+  {
+   "path": "fonts/LisuBosa-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-ExtraLightItalic.ttf",
+   "sha256": "fe1c6824bbe9d5166b7f6333d46a4fe0db2f682a1aa0255b9a212cec660ecdc5",
+   "size": 59496
+  },
+  {
+   "path": "fonts/LisuBosa-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-Light.ttf",
+   "sha256": "e14e61301c02466818684c07bb494941b6faf4b3c9dbdbdc6eb1f5bf298a60d2",
+   "size": 49496
+  },
+  {
+   "path": "fonts/LisuBosa-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-LightItalic.ttf",
+   "sha256": "e3ce4065109f02b13e8dfc533e8d465faf5523825cb3aa26109afc6ad50e0374",
+   "size": 59288
+  },
+  {
+   "path": "fonts/LisuBosa-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-Regular.ttf",
+   "sha256": "d1516e8eacbc05b95b032bff3a5c4ed0cb726ceb3db14a19085bc0c4cc2c64a4",
+   "size": 49372
+  },
+  {
+   "path": "fonts/LisuBosa-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-Italic.ttf",
+   "sha256": "266bfc2b8d2157bf6591d8620e04ef79d634a5bb47171152c9fd27d203e73586",
+   "size": 59432
+  },
+  {
+   "path": "fonts/LisuBosa-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-Medium.ttf",
+   "sha256": "f3b0510d65b01621a4bbc02ada39adff9687a515e386c4f77c64130f3afbe1ba",
+   "size": 49364
+  },
+  {
+   "path": "fonts/LisuBosa-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-MediumItalic.ttf",
+   "sha256": "c6ffe490d9dc41df608c41596fe1809fd535c19b5c9f926eef67a5e78a214d87",
+   "size": 59428
+  },
+  {
+   "path": "fonts/LisuBosa-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-SemiBold.ttf",
+   "sha256": "1c0a31ccc975e64ad42e73116ee0691d535ab124f3f83fad9289c1ff35b9593b",
+   "size": 49408
+  },
+  {
+   "path": "fonts/LisuBosa-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-SemiBoldItalic.ttf",
+   "sha256": "542b2300fe9519ce804b6e98d8bb4354dc4871e6f18011c39104e1754179ded5",
+   "size": 59492
+  },
+  {
+   "path": "fonts/LisuBosa-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-Bold.ttf",
+   "sha256": "f37c2557ea5be20c02f2ca1edd2bf509801f5287e5e1f139bd56716afe77b576",
+   "size": 49252
+  },
+  {
+   "path": "fonts/LisuBosa-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-BoldItalic.ttf",
+   "sha256": "1e78cb42e80ff80f88ed0c09a6b908336d30c1f67c5274e6b5bb3a3f1625a4db",
+   "size": 59604
+  },
+  {
+   "path": "fonts/LisuBosa-ExtraBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-ExtraBold.ttf",
+   "sha256": "80b38481eef0901c16deb6b1aa6a5b91220f56ddf0f60498237d6df761b5386a",
+   "size": 49480
+  },
+  {
+   "path": "fonts/LisuBosa-ExtraBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-ExtraBoldItalic.ttf",
+   "sha256": "79394df5682593ddbdfbbf02843cbd239674961d73455976f3af8d69028ce360",
+   "size": 59920
+  },
+  {
+   "path": "fonts/LisuBosa-Black.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-Black.ttf",
+   "sha256": "0098f180285dd4bc649e4806fc1c6d4ac8289fee83ca28e81939c3558501135d",
+   "size": 49492
+  },
+  {
+   "path": "fonts/LisuBosa-BlackItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/lisubosa/LisuBosa-BlackItalic.ttf",
+   "sha256": "ec30db42a6c9aa0f1e37797efccf80f23684d502d8cb78c794f851575412002e",
+   "size": 60016
+  }
+ ],
+ "reserved_font_name": [
+  "LisuTzimu",
+  "Bosa",
+  "Source"
+ ],
+ "sha256": "ef4e5959b742f98cb4c06e71e8ed04889426c74f0ed7b4955fc53f61689130af"
+}

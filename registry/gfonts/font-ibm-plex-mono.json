@@ -1,0 +1,222 @@
+{
+ "name": "font-ibm-plex-mono",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Mike Abbink, Bold Monday",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "IBM Plex Mono",
+ "category": "mono",
+ "tags": [
+  "mono",
+  "friendly",
+  "grotesque",
+  "condensed",
+  "editorial",
+  "ui",
+  "code",
+  "modern",
+  "many weights",
+  "italic",
+  "cyrillic",
+  "cyrillic-ext",
+  "latin",
+  "latin-ext",
+  "symbols2",
+  "vietnamese"
+ ],
+ "subsets": [
+  "cyrillic",
+  "cyrillic-ext",
+  "latin",
+  "latin-ext",
+  "symbols2",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "IBM Plex® is the corporate typeface for IBM worldwide and an open-source project developed by the IBM Brand & Experience team (BX&D). Plex is an international typeface family designed to capture IBM’s brand spirit and history and to illustrate the unique relationship between mankind and machine—a principal theme for IBM since the turn of the century. The result is a neutral yet friendly Grotesque style typeface that balances design with the engineered details that make Plex distinctly IBM.",
+ "faces": [
+  {
+   "path": "fonts/IBMPlexMono-Thin.ttf",
+   "weight": "100",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/IBMPlexMono-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/IBMPlexMono-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/IBMPlexMono-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/IBMPlexMono-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/IBMPlexMono-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/IBMPlexMono-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/IBMPlexMono-ThinItalic.ttf",
+   "weight": "100",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/IBMPlexMono-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/IBMPlexMono-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/IBMPlexMono-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/IBMPlexMono-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/IBMPlexMono-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/IBMPlexMono-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright © 2017 IBM Corp. with Reserved Font Name \"Plex\"\r\n\r\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\r\n\r\nThis license is copied below, and is also available with a FAQ at: http://scripts.sil.org/OFL\r\n\r\n\r\n-----------------------------------------------------------\r\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\r\n-----------------------------------------------------------\r\n\r\nPREAMBLE\r\nThe goals of the Open Font License (OFL) are to stimulate worldwide\r\ndevelopment of collaborative font projects, to support the font creation\r\nefforts of academic and linguistic communities, and to provide a free and\r\nopen framework in which fonts may be shared and improved in partnership\r\nwith others.\r\n\r\nThe OFL allows the licensed fonts to be used, studied, modified and\r\nredistributed freely as long as they are not sold by themselves. The\r\nfonts, including any derivative works, can be bundled, embedded, \r\nredistributed and/or sold with any software provided that any reserved\r\nnames are not used by derivative works. The fonts and derivatives,\r\nhowever, cannot be released under any other type of license. The\r\nrequirement for fonts to remain under this license does not apply\r\nto any document created using the fonts or their derivatives.\r\n\r\nDEFINITIONS\r\n\"Font Software\" refers to the set of files released by the Copyright\r\nHolder(s) under this license and clearly marked as such. This may\r\ninclude source files, build scripts and documentation.\r\n\r\n\"Reserved Font Name\" refers to any names specified as such after the\r\ncopyright statement(s).\r\n\r\n\"Original Version\" refers to the collection of Font Software components as\r\ndistributed by the Copyright Holder(s).\r\n\r\n\"Modified Version\" refers to any derivative made by adding to, deleting,\r\nor substituting -- in part or in whole -- any of the components of the\r\nOriginal Version, by changing formats or by porting the Font Software to a\r\nnew environment.\r\n\r\n\"Author\" refers to any designer, engineer, programmer, technical\r\nwriter or other person who contributed to the Font Software.\r\n\r\nPERMISSION & CONDITIONS\r\nPermission is hereby granted, free of charge, to any person obtaining\r\na copy of the Font Software, to use, study, copy, merge, embed, modify,\r\nredistribute, and sell modified and unmodified copies of the Font\r\nSoftware, subject to the following conditions:\r\n\r\n1) Neither the Font Software nor any of its individual components,\r\nin Original or Modified Versions, may be sold by itself.\r\n\r\n2) Original or Modified Versions of the Font Software may be bundled,\r\nredistributed and/or sold with any software, provided that each copy\r\ncontains the above copyright notice and this license. These can be\r\nincluded either as stand-alone text files, human-readable headers or\r\nin the appropriate machine-readable metadata fields within text or\r\nbinary files as long as those fields can be easily viewed by the user.\r\n\r\n3) No Modified Version of the Font Software may use the Reserved Font\r\nName(s) unless explicit written permission is granted by the corresponding\r\nCopyright Holder. This restriction only applies to the primary font name as\r\npresented to the users.\r\n\r\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\r\nSoftware shall not be used to promote, endorse or advertise any\r\nModified Version, except to acknowledge the contribution(s) of the\r\nCopyright Holder(s) and the Author(s) or with their explicit written\r\npermission.\r\n\r\n5) The Font Software, modified or unmodified, in part or in whole,\r\nmust be distributed entirely under this license, and must not be\r\ndistributed under any other license. The requirement for fonts to\r\nremain under this license does not apply to any document created\r\nusing the Font Software.\r\n\r\nTERMINATION\r\nThis license becomes null and void if any of the above conditions are\r\nnot met.\r\n\r\nDISCLAIMER\r\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\r\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\r\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\r\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\r\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\r\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\r\nOTHER DEALINGS IN THE FONT SOFTWARE.\r\n"
+  },
+  {
+   "path": "fonts/IBMPlexMono-Thin.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-Thin.ttf",
+   "sha256": "c44c820c14b4f1b818344e5f5dc189cee98b1d5e56b4e80055496c228f3cc7ea",
+   "size": 137900
+  },
+  {
+   "path": "fonts/IBMPlexMono-ThinItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-ThinItalic.ttf",
+   "sha256": "3782f01f12b444c62be712676646c552fc23443e8fd02d5b5619c6c4b975516d",
+   "size": 146100
+  },
+  {
+   "path": "fonts/IBMPlexMono-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-ExtraLight.ttf",
+   "sha256": "826b765bd5173b97d521053330a66277edc224f8cc5f1e0035df1d995d5f003c",
+   "size": 135980
+  },
+  {
+   "path": "fonts/IBMPlexMono-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-ExtraLightItalic.ttf",
+   "sha256": "8ae22766094bd04c2808a3c9dec812dcf061786c26ebd25eea211ae685eb2c39",
+   "size": 144672
+  },
+  {
+   "path": "fonts/IBMPlexMono-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-Light.ttf",
+   "sha256": "780bcf65509d72a35ec114b57bcbe220dc6b77d8ea2e9b25e294be3c570c5025",
+   "size": 135216
+  },
+  {
+   "path": "fonts/IBMPlexMono-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-LightItalic.ttf",
+   "sha256": "2bb4dd18abb03cb8a0a1ae69a0a10b194e02027b817c7b13126ef4724a7f5c73",
+   "size": 143432
+  },
+  {
+   "path": "fonts/IBMPlexMono-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
+   "sha256": "6a3412f058c7d8dfd9170c41e85ade48e5156ecb89356110ca57a0a27734af46",
+   "size": 135580
+  },
+  {
+   "path": "fonts/IBMPlexMono-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-Italic.ttf",
+   "sha256": "3362fc791b0652193328b862c1c5f23a789bc7288b1617fa63302f88689a2a34",
+   "size": 143920
+  },
+  {
+   "path": "fonts/IBMPlexMono-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-Medium.ttf",
+   "sha256": "a9b4c49bb299e05b5f6c481e7fb5e78943d2793249a0c8874ab574a2d1ea6755",
+   "size": 136704
+  },
+  {
+   "path": "fonts/IBMPlexMono-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-MediumItalic.ttf",
+   "sha256": "de6e0f805a15a2a1538be5d1074741298a07ffcba6fa1f4cd93983ff73155a7d",
+   "size": 144004
+  },
+  {
+   "path": "fonts/IBMPlexMono-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-SemiBold.ttf",
+   "sha256": "d3c38e55c78f5b0f28009fddba4834ec503278936a5986032424c9bd2d23aa46",
+   "size": 140216
+  },
+  {
+   "path": "fonts/IBMPlexMono-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-SemiBoldItalic.ttf",
+   "sha256": "391ef0e273eb52571eccaab6a6dbddeec48e1d282cb7bf153043512b797ed6f0",
+   "size": 147368
+  },
+  {
+   "path": "fonts/IBMPlexMono-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-Bold.ttf",
+   "sha256": "ac27abd6450a64dd94467580a02fe6235156d5b92f2926ebbc8e7489df64e0be",
+   "size": 137784
+  },
+  {
+   "path": "fonts/IBMPlexMono-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/ibmplexmono/IBMPlexMono-BoldItalic.ttf",
+   "sha256": "af4e05a761e98c1adf064c48a6352c9bec1a6ad70982cd2a544149323391f98e",
+   "size": 144512
+  }
+ ],
+ "reserved_font_name": [
+  "Plex"
+ ],
+ "sha256": "4b41d2492ecbc95860ad2a8c5cd1fd860f7caf6dddc42d1f39e8821aa38e96ae"
+}

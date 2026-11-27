@@ -1,0 +1,260 @@
+{
+ "name": "font-montserrat-alternates",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Julieta Ulanovsky, Sol Matas, Juan Pablo del Peral, Jacques Le Bailly",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Montserrat Alternates",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "headline",
+  "traditional",
+  "many weights",
+  "italic",
+  "cyrillic",
+  "cyrillic-ext",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "subsets": [
+  "cyrillic",
+  "cyrillic-ext",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "The old posters and signs in the traditional Montserrat neighborhood of Buenos Aires inspired Julieta to design this typeface and rescue the beauty of urban typography that emerged in the first half of the twentieth century. As urban development changes that place, it will never return to its original form and loses forever the designs that are so special and unique. The letters that inspired this project have work, dedication, care, color, contrast, light and life, day and night! These are the types that make the city look so beautiful.",
+ "faces": [
+  {
+   "path": "fonts/MontserratAlternates-Thin.ttf",
+   "weight": "100",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/MontserratAlternates-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/MontserratAlternates-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/MontserratAlternates-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/MontserratAlternates-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/MontserratAlternates-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/MontserratAlternates-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/MontserratAlternates-ExtraBold.ttf",
+   "weight": "800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/MontserratAlternates-Black.ttf",
+   "weight": "900",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/MontserratAlternates-ThinItalic.ttf",
+   "weight": "100",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/MontserratAlternates-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/MontserratAlternates-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/MontserratAlternates-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/MontserratAlternates-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/MontserratAlternates-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/MontserratAlternates-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/MontserratAlternates-ExtraBoldItalic.ttf",
+   "weight": "800",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/MontserratAlternates-BlackItalic.ttf",
+   "weight": "900",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2011 The Montserrat Project Authors (https://github.com/JulietaUla/Montserrat)\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/MontserratAlternates-Thin.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-Thin.ttf",
+   "sha256": "51c6e65e305eab5e9ae47ee6334c6cf615e66418dfdb168128a700cd65a6ba97",
+   "size": 212056
+  },
+  {
+   "path": "fonts/MontserratAlternates-ThinItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-ThinItalic.ttf",
+   "sha256": "66f562ad5ff8be653ddf8e194db669b9a8e56571c24d6539fe92d178b1d7e07a",
+   "size": 213840
+  },
+  {
+   "path": "fonts/MontserratAlternates-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-ExtraLight.ttf",
+   "sha256": "61a5008e6564e427593d35e1799d9f230c33f502f9632e75f45935f8eb345e02",
+   "size": 212840
+  },
+  {
+   "path": "fonts/MontserratAlternates-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-ExtraLightItalic.ttf",
+   "sha256": "bbf6a02448865d2085601ef2b9de2571e4c77fbb9a2bd3cffffc35981e6a11a5",
+   "size": 214572
+  },
+  {
+   "path": "fonts/MontserratAlternates-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-Light.ttf",
+   "sha256": "70288e0bda9b8680c2b2fae4c3c6690bb97cb2196a6335ff626b2fe32d5070e9",
+   "size": 212192
+  },
+  {
+   "path": "fonts/MontserratAlternates-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-LightItalic.ttf",
+   "sha256": "df4174a4836a8f7131f9b2a46f4a7a111a405a28a8a3819da524c96093216d21",
+   "size": 214004
+  },
+  {
+   "path": "fonts/MontserratAlternates-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-Regular.ttf",
+   "sha256": "3b7c563f2087888279fdb7c21cc57b073ba1931dbe413e1202485b46ebfb7ead",
+   "size": 215068
+  },
+  {
+   "path": "fonts/MontserratAlternates-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-Italic.ttf",
+   "sha256": "eda385390e3149fb3138f250a949bcec412793484aa99508148322eefdb825d6",
+   "size": 215828
+  },
+  {
+   "path": "fonts/MontserratAlternates-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-Medium.ttf",
+   "sha256": "acd0b8e8ca755b4304caccf9d2c8432c2b60e8a4f292415e8c468ed12c974779",
+   "size": 213000
+  },
+  {
+   "path": "fonts/MontserratAlternates-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-MediumItalic.ttf",
+   "sha256": "1e2e65e29ce84de715fe4aca89b5b6ef0cba823c4c7e68f559ef85f648135186",
+   "size": 214960
+  },
+  {
+   "path": "fonts/MontserratAlternates-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-SemiBold.ttf",
+   "sha256": "8596df6b4c8c51d227ad7bed7a69d6d7bbd4fcb388a318e0afd8e29135c7d909",
+   "size": 213876
+  },
+  {
+   "path": "fonts/MontserratAlternates-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-SemiBoldItalic.ttf",
+   "sha256": "8b2f9a4a694fd9fa487ad387d8f96e3e74d5e462a930af7eaa0a22c843e148e0",
+   "size": 216132
+  },
+  {
+   "path": "fonts/MontserratAlternates-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-Bold.ttf",
+   "sha256": "98f35386bc203067407b20ff1f22eefd750c9ff3e637a6bfb36b2a2ef3b8fbb0",
+   "size": 214248
+  },
+  {
+   "path": "fonts/MontserratAlternates-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-BoldItalic.ttf",
+   "sha256": "11004d3d235bda580fe5ed7e70d6c617919ce91e5521f6734929a8844a65a1b4",
+   "size": 216520
+  },
+  {
+   "path": "fonts/MontserratAlternates-ExtraBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-ExtraBold.ttf",
+   "sha256": "66dcd7efa7e568113a958864e68f45ed18bc96eacc16b5d2c1a85ffeedb9dfc6",
+   "size": 214904
+  },
+  {
+   "path": "fonts/MontserratAlternates-ExtraBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-ExtraBoldItalic.ttf",
+   "sha256": "0cacbf2c2fbaaff1b6a86db6c9554f0d0bb5460b2e8e23758fa5d859df854fc1",
+   "size": 217160
+  },
+  {
+   "path": "fonts/MontserratAlternates-Black.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-Black.ttf",
+   "sha256": "6fa4bf87ef8927790cc11cc87b8bcadefe2d8a1326664b6d750f5b4e5e2cf943",
+   "size": 221652
+  },
+  {
+   "path": "fonts/MontserratAlternates-BlackItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/montserratalternates/MontserratAlternates-BlackItalic.ttf",
+   "sha256": "fe505e4ec2d6a5863ab1bb42e3e721d95a987dd93abd10d3cdfd4c53594e3d31",
+   "size": 224064
+  }
+ ],
+ "sha256": "acf388ed4b2876fc5e4294c67d094b425135fb23bf0227139bb5489f07d1dc3c"
+}

@@ -1,0 +1,193 @@
+{
+ "name": "font-wix-madefor-text",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Dalton Maag",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Wix Madefor Text",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "playful",
+  "geometric",
+  "script",
+  "condensed",
+  "headline",
+  "ui",
+  "modern",
+  "variable",
+  "italic",
+  "cyrillic",
+  "cyrillic-ext",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "subsets": [
+  "cyrillic",
+  "cyrillic-ext",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "variable": true,
+ "description": "Wix Madefor is a compact font family of five weights for display setting, and four text weights for use in user interfaces. The text fonts also have matching italics, with shapes rooted in cursive forms, despite the typeface's geometric structure, allowing Wix to have different expressions, from functional to more playful. The typeface was designed to carry subtle features with an engaging and clean appearance. To contribute, see github.com/wix-incubator/wixmadefor.",
+ "faces": [
+  {
+   "path": "fonts/WixMadeforText-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/WixMadeforText-wght.ttf",
+   "weight": "400 800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/WixMadeforText-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/WixMadeforText-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/WixMadeforText-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/WixMadeforText-ExtraBold.ttf",
+   "weight": "800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/WixMadeforText-Italic-wght.ttf",
+   "weight": "400 800",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/WixMadeforText-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/WixMadeforText-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/WixMadeforText-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/WixMadeforText-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/WixMadeforText-ExtraBoldItalic.ttf",
+   "weight": "800",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2023 The Wix Madefor Project Authors (https://github.com/wix/wixmadefor)\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/WixMadeforText-wght.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText%5Bwght%5D.ttf",
+   "sha256": "7660fbcd33f643a011283d9e96b3ad571a942d25d1a9603e69e9e1b6976fa4e1",
+   "size": 158708
+  },
+  {
+   "path": "fonts/WixMadeforText-Italic-wght.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-Italic%5Bwght%5D.ttf",
+   "sha256": "8c4383ad0ffc560016ad2ecfe16cbf8051e464fbfc4ecbba41d787c551875f97",
+   "size": 86256
+  },
+  {
+   "path": "fonts/WixMadeforText-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-Regular.ttf",
+   "sha256": "dee56f09fd3efc127c1ea95557edc74110c1460a46287da36e0af25efd341ef5",
+   "size": 107700
+  },
+  {
+   "path": "fonts/WixMadeforText-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-Italic.ttf",
+   "sha256": "947fa931d687c9dc698f01851a847f061726183812ac32518642cd97805e9f05",
+   "size": 64936
+  },
+  {
+   "path": "fonts/WixMadeforText-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-Medium.ttf",
+   "sha256": "4ecf270136af928612c76fe4ebade91d8156975e5ea4c0cf9225501dd1788e02",
+   "size": 109048
+  },
+  {
+   "path": "fonts/WixMadeforText-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-MediumItalic.ttf",
+   "sha256": "d0470c2e7e7a39b94c55834caf2d258f3cc07f66c721f11cadc00c58b6a10982",
+   "size": 68044
+  },
+  {
+   "path": "fonts/WixMadeforText-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-SemiBold.ttf",
+   "sha256": "dced97a77624bc5f8b1ae65850360908297f4588e09feb6f22792d29dc7e765b",
+   "size": 88108
+  },
+  {
+   "path": "fonts/WixMadeforText-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-SemiBoldItalic.ttf",
+   "sha256": "603527f1cc2c871a9c8ec273bf32d364a8a8ac2839296aa7b70b1cd8c77d61c0",
+   "size": 51964
+  },
+  {
+   "path": "fonts/WixMadeforText-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-Bold.ttf",
+   "sha256": "37c179b4fefb63ea9637322b84583a2df53aa226c150294eea1675c14b1b8e29",
+   "size": 108636
+  },
+  {
+   "path": "fonts/WixMadeforText-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-BoldItalic.ttf",
+   "sha256": "81a32794a42384039d6a8ef05871700d2f1e41f31c4be25f1e226535c419e514",
+   "size": 66208
+  },
+  {
+   "path": "fonts/WixMadeforText-ExtraBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-ExtraBold.ttf",
+   "sha256": "62e2fe4718129f36ecdb0ae4de385bd6b81ecc876146447167c6c140fad699a9",
+   "size": 109084
+  },
+  {
+   "path": "fonts/WixMadeforText-ExtraBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/wixmadefortext/WixMadeforText-ExtraBoldItalic.ttf",
+   "sha256": "d8d2b7db3762ff85b89cee1427d57e95ff91659bc5b8b63c1fca8aefaee44057",
+   "size": 66912
+  }
+ ],
+ "sha256": "6ff8524ed2f6db1543445e32e431899ae1cdf05682d2a2e43c310d3d450d1d04"
+}

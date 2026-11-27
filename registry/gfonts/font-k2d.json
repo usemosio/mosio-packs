@@ -1,0 +1,235 @@
+{
+ "name": "font-k2d",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Cadson Demak",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "K2D",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "modern",
+  "traditional",
+  "display",
+  "many weights",
+  "italic",
+  "latin",
+  "latin-ext",
+  "thai",
+  "vietnamese"
+ ],
+ "subsets": [
+  "latin",
+  "latin-ext",
+  "thai",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "K2D is a Thai and Latin family which has a modern appearance but features Thai's traditional looped letterforms.",
+ "faces": [
+  {
+   "path": "fonts/K2D-Thin.ttf",
+   "weight": "100",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/K2D-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/K2D-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/K2D-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/K2D-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/K2D-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/K2D-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/K2D-ExtraBold.ttf",
+   "weight": "800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/K2D-ThinItalic.ttf",
+   "weight": "100",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/K2D-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/K2D-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/K2D-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/K2D-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/K2D-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/K2D-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/K2D-ExtraBoldItalic.ttf",
+   "weight": "800",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2018 The K2D Project Authors (https://github.com/cadsondemak/K2D)\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttp://scripts.sil.org/OFL\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/K2D-Thin.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-Thin.ttf",
+   "sha256": "33ca61459477f91ac726e551eb9ecb4d470af41afc33ddcb5cc1a985e4869adb",
+   "size": 96196
+  },
+  {
+   "path": "fonts/K2D-ThinItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-ThinItalic.ttf",
+   "sha256": "c1813a64b87902729d730f57a3bb920727abf8b1e25a35610f9e213b237b5791",
+   "size": 100236
+  },
+  {
+   "path": "fonts/K2D-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-ExtraLight.ttf",
+   "sha256": "3b3c724b0ae259e1b163e9f4451f6c25903b13f3a2049ea73bea7f635d171dc4",
+   "size": 96008
+  },
+  {
+   "path": "fonts/K2D-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-ExtraLightItalic.ttf",
+   "sha256": "ce3a2cb01a913733de2d85159cd1b757c766fa79a0266363f1c60b489e3fb2e9",
+   "size": 100272
+  },
+  {
+   "path": "fonts/K2D-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-Light.ttf",
+   "sha256": "f69664fb42121ad85555822d821bfd6ccde64f201984d5b688c22f300a1efb3d",
+   "size": 96000
+  },
+  {
+   "path": "fonts/K2D-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-LightItalic.ttf",
+   "sha256": "56d2f1171dc62770c3668964f231562fae0d882914609133fca914cd82bea203",
+   "size": 100260
+  },
+  {
+   "path": "fonts/K2D-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-Regular.ttf",
+   "sha256": "bfab1193b93b9200455119c968f0ccac24b68d2408d26a8123a4c3c01fb11821",
+   "size": 96144
+  },
+  {
+   "path": "fonts/K2D-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-Italic.ttf",
+   "sha256": "e423a6554e790cefa6841af2ee34837465f9313fd5e6a1074f9b795d7073b504",
+   "size": 100376
+  },
+  {
+   "path": "fonts/K2D-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-Medium.ttf",
+   "sha256": "0ea9a92a4d005f69a6cf53b1eaed244f70817a477dcd66bc06fef1f4d9821795",
+   "size": 96608
+  },
+  {
+   "path": "fonts/K2D-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-MediumItalic.ttf",
+   "sha256": "29cda60bfda134132fdc72cb02a74604ffe9120cba1f038ed2522edfe210bc5c",
+   "size": 100792
+  },
+  {
+   "path": "fonts/K2D-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-SemiBold.ttf",
+   "sha256": "7d6225a49110e9981d24bbccaf06ae5774b641297edef16ffa2b372497840d07",
+   "size": 96720
+  },
+  {
+   "path": "fonts/K2D-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-SemiBoldItalic.ttf",
+   "sha256": "57d890588743f161b1644ffffc18907c49115b64cd32d2e9bcc5f6f0c99326ea",
+   "size": 100948
+  },
+  {
+   "path": "fonts/K2D-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-Bold.ttf",
+   "sha256": "0876882908abb4ee3bcf9f73007128dddd52b77fe36414101fb12da0a67edb3d",
+   "size": 96692
+  },
+  {
+   "path": "fonts/K2D-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-BoldItalic.ttf",
+   "sha256": "6128b62d3da6a8dfdbba554a74538afce7bbe08e9881108596f8efa8485e7d78",
+   "size": 100996
+  },
+  {
+   "path": "fonts/K2D-ExtraBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-ExtraBold.ttf",
+   "sha256": "46aa84ed5ffa8f7c1e156ddff85441ebbc1913b8aa3349bf3cd722e7b97df761",
+   "size": 96764
+  },
+  {
+   "path": "fonts/K2D-ExtraBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/k2d/K2D-ExtraBoldItalic.ttf",
+   "sha256": "fb0c965d96921d852426426709344dacdd8107d2f405513a092601b0077b4e89",
+   "size": 101196
+  }
+ ],
+ "sha256": "752b49275a69a2d538d18391c4ceb3b23d2ae8711aec4b875bc7a84d17f1d762"
+}

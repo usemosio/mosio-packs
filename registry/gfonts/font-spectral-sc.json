@@ -1,0 +1,212 @@
+{
+ "name": "font-spectral-sc",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "OFL-1.1",
+ "author": "Production Type",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Spectral SC",
+ "category": "serif",
+ "tags": [
+  "serif",
+  "book",
+  "ui",
+  "many weights",
+  "italic",
+  "cyrillic",
+  "cyrillic-ext",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "subsets": [
+  "cyrillic",
+  "cyrillic-ext",
+  "latin",
+  "latin-ext",
+  "vietnamese"
+ ],
+ "variable": false,
+ "description": "Spectral is a new and versatile serif face available in seven weights of roman and italic, with small caps. Spectral offers an efficient, beautiful design that’s intended primarily for text-rich, screen-first environments and long-form reading. Brought to you by Production Type and commissioned by Google Fonts, Spectral is now free to use across Google Docs, Sheets, and Slides, or in any of your projects. To contribute, see github.com/productiontype/Spectral.",
+ "faces": [
+  {
+   "path": "fonts/SpectralSC-ExtraLight.ttf",
+   "weight": "200",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/SpectralSC-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/SpectralSC-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/SpectralSC-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/SpectralSC-SemiBold.ttf",
+   "weight": "600",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/SpectralSC-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/SpectralSC-ExtraBold.ttf",
+   "weight": "800",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/SpectralSC-ExtraLightItalic.ttf",
+   "weight": "200",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/SpectralSC-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/SpectralSC-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/SpectralSC-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/SpectralSC-SemiBoldItalic.ttf",
+   "weight": "600",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/SpectralSC-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/SpectralSC-ExtraBoldItalic.ttf",
+   "weight": "800",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "OFL.txt",
+   "role": "license",
+   "content": "Copyright 2017 The Spectral Project Authors (https://github.com/productiontype/Spectral)\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttps://openfontlicense.org\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE."
+  },
+  {
+   "path": "fonts/SpectralSC-ExtraLight.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-ExtraLight.ttf",
+   "sha256": "997326a9e206285ca211ec68aa34487853d08f1b2e5eaa51b76b603ad34e2021",
+   "size": 244656
+  },
+  {
+   "path": "fonts/SpectralSC-ExtraLightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-ExtraLightItalic.ttf",
+   "sha256": "d0f32620ee3604d42417f6388c13cd8f87d80563a9d35a4612bda23d19a1fff6",
+   "size": 267392
+  },
+  {
+   "path": "fonts/SpectralSC-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-Light.ttf",
+   "sha256": "53ef48cb4905c3bbae15baa4f0d72e2cde19350f80a8a497665dfe5a68ddc080",
+   "size": 269160
+  },
+  {
+   "path": "fonts/SpectralSC-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-LightItalic.ttf",
+   "sha256": "ab0c53a48ff4671a15b2a25a53f130e02ecd828a8caa948b1b4e49f4ea28103c",
+   "size": 282688
+  },
+  {
+   "path": "fonts/SpectralSC-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-Regular.ttf",
+   "sha256": "11b89ee8eff243c4068a9fc105650f8d90005b288f90c98c6d40fecd85a0306d",
+   "size": 260936
+  },
+  {
+   "path": "fonts/SpectralSC-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-Italic.ttf",
+   "sha256": "774281eb396b34b89b30ffc7779d32267299f275b050be6723c7cc252177e33d",
+   "size": 270316
+  },
+  {
+   "path": "fonts/SpectralSC-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-Medium.ttf",
+   "sha256": "68169569f117fd5aa62dc443cc99683a492922b00fdc3be6df7ccf59dadd8418",
+   "size": 272768
+  },
+  {
+   "path": "fonts/SpectralSC-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-MediumItalic.ttf",
+   "sha256": "94ad7436eb6896f24a254c5c17ba4123a53221a27f8f5f8d4ac054bade66feb6",
+   "size": 284168
+  },
+  {
+   "path": "fonts/SpectralSC-SemiBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-SemiBold.ttf",
+   "sha256": "7b907d97835d68c84abe35c6a3294aeedf7ac271ced70292502019b667034477",
+   "size": 272916
+  },
+  {
+   "path": "fonts/SpectralSC-SemiBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-SemiBoldItalic.ttf",
+   "sha256": "d7f8d9793b2c5d76a0b2b9232b6f92051c878951e1a29a87b5608f21751f72ed",
+   "size": 283888
+  },
+  {
+   "path": "fonts/SpectralSC-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-Bold.ttf",
+   "sha256": "ddbd53f4b1fd856f5a9b6f5110c095a4a4f4382bdab6decfd79cffd15656dddc",
+   "size": 273068
+  },
+  {
+   "path": "fonts/SpectralSC-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-BoldItalic.ttf",
+   "sha256": "66d58379ac57b8cf25c4c7e45290934c39098533d3490259826e1e8f2f294caa",
+   "size": 284204
+  },
+  {
+   "path": "fonts/SpectralSC-ExtraBold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-ExtraBold.ttf",
+   "sha256": "63847d218d39256fa2d753339f5c45adb6369b1ec65e09c3644830adffdc5ae7",
+   "size": 260376
+  },
+  {
+   "path": "fonts/SpectralSC-ExtraBoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ofl/spectralsc/SpectralSC-ExtraBoldItalic.ttf",
+   "sha256": "166350d8946a85b0678f65b684ecd0027dcbd7832f27ea93a811b6c998e9d7b0",
+   "size": 273380
+  }
+ ],
+ "sha256": "e9eba8bb6038344edbf00045024d70a1d553ebc255a59358e0aca3fa5591f317"
+}

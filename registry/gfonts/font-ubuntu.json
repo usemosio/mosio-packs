@@ -1,0 +1,140 @@
+{
+ "name": "font-ubuntu",
+ "type": "mosio:font",
+ "version": "1.0.0",
+ "license": "UFL-1.0",
+ "author": "Dalton Maag",
+ "source": {
+  "url": "https://github.com/google/fonts/tree/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntu",
+  "commit": "5026800714d07231937d92eb4cceabf06e05d74e"
+ },
+ "family": "Ubuntu",
+ "category": "sans",
+ "tags": [
+  "sans",
+  "ui",
+  "italic",
+  "cyrillic",
+  "cyrillic-ext",
+  "greek",
+  "greek-ext",
+  "latin",
+  "latin-ext"
+ ],
+ "subsets": [
+  "cyrillic",
+  "cyrillic-ext",
+  "greek",
+  "greek-ext",
+  "latin",
+  "latin-ext"
+ ],
+ "variable": false,
+ "description": "The Ubuntu Font Family are a set of matching new libre/open fonts in development during 2010-2011. The development is being funded by Canonical Ltd on behalf the wider Free Software community and the Ubuntu project. The technical font design work and implementation is being undertaken by Dalton Maag. Both the final font Truetype/OpenType files and the design files used to produce the font family are distributed under an open licence and you are expressly encouraged to experiment, modify, share and improve.",
+ "faces": [
+  {
+   "path": "fonts/Ubuntu-Light.ttf",
+   "weight": "300",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Ubuntu-Regular.ttf",
+   "weight": "400",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Ubuntu-Medium.ttf",
+   "weight": "500",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Ubuntu-Bold.ttf",
+   "weight": "700",
+   "style": "normal"
+  },
+  {
+   "path": "fonts/Ubuntu-LightItalic.ttf",
+   "weight": "300",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Ubuntu-Italic.ttf",
+   "weight": "400",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Ubuntu-MediumItalic.ttf",
+   "weight": "500",
+   "style": "italic"
+  },
+  {
+   "path": "fonts/Ubuntu-BoldItalic.ttf",
+   "weight": "700",
+   "style": "italic"
+  }
+ ],
+ "files": [
+  {
+   "path": "UFL.txt",
+   "role": "license",
+   "content": "-------------------------------\nUBUNTU FONT LICENCE Version 1.0\n-------------------------------\n\nPREAMBLE\nThis licence allows the licensed fonts to be used, studied, modified and\nredistributed freely. The fonts, including any derivative works, can be\nbundled, embedded, and redistributed provided the terms of this licence\nare met. The fonts and derivatives, however, cannot be released under\nany other licence. The requirement for fonts to remain under this\nlicence does not require any document created using the fonts or their\nderivatives to be published under this licence, as long as the primary\npurpose of the document is not to be a vehicle for the distribution of\nthe fonts.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this licence and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Original Version\" refers to the collection of Font Software components\nas received under this licence.\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to\na new environment.\n\n\"Copyright Holder(s)\" refers to all individuals and companies who have a\ncopyright ownership of the Font Software.\n\n\"Substantially Changed\" refers to Modified Versions which can be easily\nidentified as dissimilar to the Font Software by users of the Font\nSoftware comparing the Original Version with the Modified Version.\n\nTo \"Propagate\" a work means to do anything with it that, without\npermission, would make you directly or secondarily liable for\ninfringement under applicable copyright law, except executing it on a\ncomputer or modifying a private copy. Propagation includes copying,\ndistribution (with or without modification and with or without charging\na redistribution fee), making available to the public, and in some\ncountries other activities as well.\n\nPERMISSION & CONDITIONS\nThis licence does not grant any rights under trademark law and all such\nrights are reserved.\n\nPermission is hereby granted, free of charge, to any person obtaining a\ncopy of the Font Software, to propagate the Font Software, subject to\nthe below conditions:\n\n1) Each copy of the Font Software must contain the above copyright\nnotice and this licence. These can be included either as stand-alone\ntext files, human-readable headers or in the appropriate machine-\nreadable metadata fields within text or binary files as long as those\nfields can be easily viewed by the user.\n\n2) The font name complies with the following:\n(a) The Original Version must retain its name, unmodified.\n(b) Modified Versions which are Substantially Changed must be renamed to\navoid use of the name of the Original Version or similar names entirely.\n(c) Modified Versions which are not Substantially Changed must be\nrenamed to both (i) retain the name of the Original Version and (ii) add\nadditional naming elements to distinguish the Modified Version from the\nOriginal Version. The name of such Modified Versions must be the name of\nthe Original Version, with \"derivative X\" where X represents the name of\nthe new work, appended to that name.\n\n3) The name(s) of the Copyright Holder(s) and any contributor to the\nFont Software shall not be used to promote, endorse or advertise any\nModified Version, except (i) as required by this licence, (ii) to\nacknowledge the contribution(s) of the Copyright Holder(s) or (iii) with\ntheir explicit written permission.\n\n4) The Font Software, modified or unmodified, in part or in whole, must\nbe distributed entirely under this licence, and must not be distributed\nunder any other licence. The requirement for fonts to remain under this\nlicence does not affect any document created using the Font Software,\nexcept any version of the Font Software extracted from a document\ncreated using the Font Software may only be distributed under this\nlicence.\n\nTERMINATION\nThis licence becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF\nCOPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER\nDEALINGS IN THE FONT SOFTWARE.\n"
+  },
+  {
+   "path": "fonts/Ubuntu-Light.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntu/Ubuntu-Light.ttf",
+   "sha256": "a5d3ef89f219e90e1f22616adf2bd4a86c8ddd37aff58cd223482c44e3a92eef",
+   "size": 413600
+  },
+  {
+   "path": "fonts/Ubuntu-LightItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntu/Ubuntu-LightItalic.ttf",
+   "sha256": "8fc50d6238be2076f602578d846c81a680f3c1ad58c372cc272b4dee6e68ff90",
+   "size": 407728
+  },
+  {
+   "path": "fonts/Ubuntu-Regular.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntu/Ubuntu-Regular.ttf",
+   "sha256": "3128df86a31805618436d0ae5651ba4285d0c9de0a39057d025f64ee33bceb64",
+   "size": 351884
+  },
+  {
+   "path": "fonts/Ubuntu-Italic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntu/Ubuntu-Italic.ttf",
+   "sha256": "4ab857e72f781a8967a6e4a9ac8858fbd6b3a9f9782db349d4b62b78ed02860b",
+   "size": 384408
+  },
+  {
+   "path": "fonts/Ubuntu-Medium.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntu/Ubuntu-Medium.ttf",
+   "sha256": "3cd952b8b52581e48a8fa95b31c8829c2baa41b635042a69587d57f98092961e",
+   "size": 339360
+  },
+  {
+   "path": "fonts/Ubuntu-MediumItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntu/Ubuntu-MediumItalic.ttf",
+   "sha256": "54f65387b462fef9b4fb45f4e84344d5a9cfa660e281189e8d5e0ddcfccf5e8c",
+   "size": 365080
+  },
+  {
+   "path": "fonts/Ubuntu-Bold.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntu/Ubuntu-Bold.ttf",
+   "sha256": "679b5c1e09cab3156bb8ef529735f9382bf31ca7ac737382ab959297f8d82ad4",
+   "size": 331612
+  },
+  {
+   "path": "fonts/Ubuntu-BoldItalic.ttf",
+   "role": "font",
+   "url": "https://raw.githubusercontent.com/google/fonts/5026800714d07231937d92eb4cceabf06e05d74e/ufl/ubuntu/Ubuntu-BoldItalic.ttf",
+   "sha256": "875d776e7f33c50b1d1b594791da0eba9865648f232f08bcba00bba9dfa01d96",
+   "size": 354956
+  }
+ ],
+ "sha256": "f6c1150c3cfd648e3b92e051db61e2037fbc18b7fa600c6cb61cd7665cc751c3"
+}
